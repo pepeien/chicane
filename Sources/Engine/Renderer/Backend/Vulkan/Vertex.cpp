@@ -63,7 +63,6 @@ namespace Chicane
                     return attributeDescriptions;
                 }
 
-                // Tangent (xyz) + handedness (w)
                 vk::VertexInputAttributeDescription tangentDescription;
                 tangentDescription.binding  = 0;
                 tangentDescription.location = 4;

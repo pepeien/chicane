@@ -54,7 +54,9 @@ namespace Chicane
               transitions({}),
               animation({}),
               m_parent(nullptr),
-              m_snapshot({})
+              m_snapshot({}),
+              m_snapshotMask({}),
+              m_transitionLookup({})
         {
             display.parseWith(
                 [this](const String& inValue)
@@ -546,6 +548,8 @@ namespace Chicane
 
             transitions = inStyle.transitions;
             animation   = inStyle.animation;
+
+            refreshTransitionLookup();
         }
 
         void Style::resetValues()
@@ -557,26 +561,37 @@ namespace Chicane
 
         void Style::snapshot()
         {
-            m_snapshot = extractAnimatedProperties();
+            m_snapshotMask.reset();
+
+            for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
+            {
+                const StylePropertyId id = static_cast<StylePropertyId>(i);
+
+                if (readAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id)))
+                {
+                    m_snapshotMask.set(i);
+                }
+            }
         }
 
         void Style::restore()
         {
-            for (const auto& [name, value] : m_snapshot)
+            for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
             {
-                if (value.empty())
+                if (!m_snapshotMask.test(i))
                 {
                     continue;
                 }
 
-                const StyleTransition* transition = findTransition(name);
+                const StylePropertyId  id         = static_cast<StylePropertyId>(i);
+                const StyleTransition* transition = findTransition(id);
 
                 if (!transition || transition->duration <= 0.0f)
                 {
                     continue;
                 }
 
-                applyAnimatedProperty(name, value);
+                writeAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id));
             }
         }
 
@@ -658,645 +673,79 @@ namespace Chicane
             height.clamp(outHeight);
         }
 
-        const Style::Properties& Style::getSnapshot() const
+        const Style::AnimatedValues& Style::getSnapshotValues() const
         {
             return m_snapshot;
         }
 
-        Style::Properties Style::extractAnimatedProperties() const
+        const Style::AnimatedMask& Style::getSnapshotMask() const
         {
-            Properties result;
-
-            for (const String& name : ANIMATABLE_PROPERTIES)
-            {
-                const std::vector<float> values = extractAnimatedProperty(name);
-
-                if (values.empty())
-                {
-                    continue;
-                }
-
-                result[name] = values;
-            }
-
-            return result;
+            return m_snapshotMask;
         }
 
-        std::vector<float> Style::extractAnimatedProperty(const String& inName) const
+        bool Style::readAnimated(StylePropertyId inId, float* outValues) const
         {
-            auto asColor = [](const Color::Rgba& inValue) -> std::vector<float>
-            {
-                return {
-                    static_cast<float>(inValue.r),
-                    static_cast<float>(inValue.g),
-                    static_cast<float>(inValue.b),
-                    static_cast<float>(inValue.a)
-                };
-            };
+            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
 
-            if (inName.equals(OPACITY_ATTRIBUTE_NAME))
+            if (!entry.read)
             {
-                return {opacity.get()};
+                return false;
             }
 
-            if (inName.equals(WIDTH_ATTRIBUTE_NAME))
-            {
-                if (width.isAuto())
-                {
-                    return {};
-                }
-
-                return {width.value.get()};
-            }
-
-            if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
-            {
-                if (height.isAuto())
-                {
-                    return {};
-                }
-
-                return {height.value.get()};
-            }
-
-            if (inName.equals(MIN_WIDTH_ATTRIBUTE_NAME))
-            {
-                if (!width.hasMin())
-                {
-                    return {};
-                }
-
-                return {width.min.get()};
-            }
-
-            if (inName.equals(MIN_HEIGHT_ATTRIBUTE_NAME))
-            {
-                if (!height.hasMin())
-                {
-                    return {};
-                }
-
-                return {height.min.get()};
-            }
-
-            if (inName.equals(MAX_WIDTH_ATTRIBUTE_NAME))
-            {
-                if (!width.hasMax())
-                {
-                    return {};
-                }
-
-                return {width.max.get()};
-            }
-
-            if (inName.equals(MAX_HEIGHT_ATTRIBUTE_NAME))
-            {
-                if (!height.hasMax())
-                {
-                    return {};
-                }
-
-                return {height.max.get()};
-            }
-
-            if (inName.equals(Z_INDEX_ATTRIBUTE_NAME))
-            {
-                return {zIndex.get()};
-            }
-
-            if (inName.equals(FOREGROUND_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(foregroundColor.get());
-            }
-
-            if (inName.equals(BACKGROUND_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(background.color.get());
-            }
-
-            if (inName.equals(FONT_SIZE_ATTRIBUTE_NAME))
-            {
-                return {font.size.get()};
-            }
-
-            if (inName.equals(LETTER_SPACING_ATTRIBUTE_NAME))
-            {
-                return {letterSpacing.get()};
-            }
-
-            if (inName.equals(FILTER_ATTRIBUTE_NAME))
-            {
-                return {filter.blur.get()};
-            }
-
-            if (inName.equals(BACKDROP_FILTER_ATTRIBUTE_NAME))
-            {
-                return {backdrop.blur.get()};
-            }
-
-            if (inName.equals(TRANSFORM_ATTRIBUTE_NAME))
-            {
-                const StyleTransform value = transform.get();
-
-                return {value.translation.x, value.translation.y, value.rotation, value.scale.x, value.scale.y};
-            }
-
-            if (inName.equals(TRANSLATE_ATTRIBUTE_NAME))
-            {
-                const Vec2 value = translate.get();
-
-                return {value.x, value.y};
-            }
-
-            if (inName.equals(ROTATE_ATTRIBUTE_NAME))
-            {
-                return {rotate.get()};
-            }
-
-            if (inName.equals(SCALE_ATTRIBUTE_NAME))
-            {
-                const Vec2 value = scale.get();
-
-                return {value.x, value.y};
-            }
-
-            if (inName.equals(TRANSFORM_ORIGIN_ATTRIBUTE_NAME))
-            {
-                if (transformOrigin.getRaw().isEmpty())
-                {
-                    return {};
-                }
-
-                const Vec2 value = transformOrigin.get();
-
-                return {value.x, value.y};
-            }
-
-            if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
-            {
-                return {margin.top.get()};
-            }
-
-            if (inName.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME))
-            {
-                return {margin.bottom.get()};
-            }
-
-            if (inName.equals(MARGIN_LEFT_ATTRIBUTE_NAME))
-            {
-                return {margin.left.get()};
-            }
-
-            if (inName.equals(MARGIN_RIGHT_ATTRIBUTE_NAME))
-            {
-                return {margin.right.get()};
-            }
-
-            if (inName.equals(PADDING_TOP_ATTRIBUTE_NAME))
-            {
-                return {padding.top.get()};
-            }
-
-            if (inName.equals(PADDING_BOTTOM_ATTRIBUTE_NAME))
-            {
-                return {padding.bottom.get()};
-            }
-
-            if (inName.equals(PADDING_LEFT_ATTRIBUTE_NAME))
-            {
-                return {padding.left.get()};
-            }
-
-            if (inName.equals(PADDING_RIGHT_ATTRIBUTE_NAME))
-            {
-                return {padding.right.get()};
-            }
-
-            if (inName.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME))
-            {
-                return {border.width.top.get()};
-            }
-
-            if (inName.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME))
-            {
-                return {border.width.right.get()};
-            }
-
-            if (inName.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME))
-            {
-                return {border.width.bottom.get()};
-            }
-
-            if (inName.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME))
-            {
-                return {border.width.left.get()};
-            }
-
-            if (inName.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(border.colorTop.get());
-            }
-
-            if (inName.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(border.colorRight.get());
-            }
-
-            if (inName.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(border.colorBottom.get());
-            }
-
-            if (inName.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME))
-            {
-                return asColor(border.colorLeft.get());
-            }
-
-            if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
-            {
-                return {gap.top.get()};
-            }
-
-            if (inName.equals(GAP_BOTTOM_ATTRIBUTE_NAME))
-            {
-                return {gap.bottom.get()};
-            }
-
-            if (inName.equals(GAP_LEFT_ATTRIBUTE_NAME))
-            {
-                return {gap.left.get()};
-            }
-
-            if (inName.equals(GAP_RIGHT_ATTRIBUTE_NAME))
-            {
-                return {gap.right.get()};
-            }
-
-            return {};
+            return entry.read(*this, outValues);
         }
 
-        void Style::applyAnimatedProperty(const String& inName, const std::vector<float>& inValue)
+        void Style::writeAnimated(StylePropertyId inId, const float* inValues)
         {
-            if (inValue.empty())
+            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+
+            if (!entry.write)
             {
                 return;
             }
 
-            auto asColor = [](const std::vector<float>& inChannels) -> Color::Rgba
-            {
-                auto channel = [](float inChannel) -> std::uint8_t
-                { return static_cast<std::uint8_t>(std::round(std::clamp(inChannel, 0.0f, 255.0f))); };
+            entry.write(*this, inValues);
+        }
 
-                if (inChannels.size() < 4)
+        void Style::refreshTransitionLookup()
+        {
+            m_transitionLookup.fill(nullptr);
+
+            for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
+            {
+                const String target = StylePropertyTable::get(static_cast<StylePropertyId>(i)).name;
+
+                const StyleTransition* all       = nullptr;
+                const StyleTransition* shorthand = nullptr;
+                const StyleTransition* specific  = nullptr;
+
+                for (const StyleTransition& transition : transitions)
                 {
-                    return Color::Rgba(0U, 0U, 0U, 0U);
+                    if (transition.property.equals(TRANSITION_PROPERTY_ALL))
+                    {
+                        all = &transition;
+                    }
+
+                    if (transition.property.equals(target))
+                    {
+                        specific = &transition;
+                    }
+                    else if (coversProperty(transition.property, target))
+                    {
+                        shorthand = &transition;
+                    }
                 }
 
-                return Color::Rgba(
-                    channel(inChannels.at(0)),
-                    channel(inChannels.at(1)),
-                    channel(inChannels.at(2)),
-                    channel(inChannels.at(3))
-                );
-            };
-
-            if (inName.equals(OPACITY_ATTRIBUTE_NAME))
-            {
-                opacity.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(WIDTH_ATTRIBUTE_NAME))
-            {
-                width.value.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(HEIGHT_ATTRIBUTE_NAME))
-            {
-                height.value.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MIN_WIDTH_ATTRIBUTE_NAME))
-            {
-                width.min.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MIN_HEIGHT_ATTRIBUTE_NAME))
-            {
-                height.min.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MAX_WIDTH_ATTRIBUTE_NAME))
-            {
-                width.max.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MAX_HEIGHT_ATTRIBUTE_NAME))
-            {
-                height.max.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(Z_INDEX_ATTRIBUTE_NAME))
-            {
-                zIndex.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(FOREGROUND_COLOR_ATTRIBUTE_NAME))
-            {
-                foregroundColor.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(BACKGROUND_COLOR_ATTRIBUTE_NAME))
-            {
-                background.color.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(FONT_SIZE_ATTRIBUTE_NAME))
-            {
-                font.size.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(LETTER_SPACING_ATTRIBUTE_NAME))
-            {
-                letterSpacing.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(FILTER_ATTRIBUTE_NAME))
-            {
-                filter.blur.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BACKDROP_FILTER_ATTRIBUTE_NAME))
-            {
-                backdrop.blur.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(TRANSFORM_ATTRIBUTE_NAME))
-            {
-                StyleTransform value = transform.get();
-
-                if (inValue.size() > 0)
-                {
-                    value.translation.x = inValue.at(0);
-                }
-
-                if (inValue.size() > 1)
-                {
-                    value.translation.y = inValue.at(1);
-                }
-
-                if (inValue.size() > 2)
-                {
-                    value.rotation = inValue.at(2);
-                }
-
-                if (inValue.size() > 3)
-                {
-                    value.scale.x = inValue.at(3);
-                }
-
-                if (inValue.size() > 4)
-                {
-                    value.scale.y = inValue.at(4);
-                }
-
-                transform.set(value);
-
-                return;
-            }
-
-            if (inName.equals(TRANSLATE_ATTRIBUTE_NAME))
-            {
-                Vec2 value = translate.get();
-
-                if (inValue.size() > 0)
-                {
-                    value.x = inValue.at(0);
-                }
-
-                if (inValue.size() > 1)
-                {
-                    value.y = inValue.at(1);
-                }
-
-                translate.set(value);
-
-                return;
-            }
-
-            if (inName.equals(ROTATE_ATTRIBUTE_NAME))
-            {
-                rotate.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(SCALE_ATTRIBUTE_NAME))
-            {
-                Vec2 value = scale.get();
-
-                if (inValue.size() > 0)
-                {
-                    value.x = inValue.at(0);
-                    value.y = inValue.at(0);
-                }
-
-                if (inValue.size() > 1)
-                {
-                    value.y = inValue.at(1);
-                }
-
-                scale.set(value);
-
-                return;
-            }
-
-            if (inName.equals(TRANSFORM_ORIGIN_ATTRIBUTE_NAME))
-            {
-                Vec2 value = transformOrigin.get();
-
-                if (inValue.size() > 0)
-                {
-                    value.x = inValue.at(0);
-                }
-
-                if (inValue.size() > 1)
-                {
-                    value.y = inValue.at(1);
-                }
-
-                transformOrigin.set(value);
-
-                return;
-            }
-
-            if (inName.equals(MARGIN_TOP_ATTRIBUTE_NAME))
-            {
-                margin.top.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME))
-            {
-                margin.bottom.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MARGIN_LEFT_ATTRIBUTE_NAME))
-            {
-                margin.left.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(MARGIN_RIGHT_ATTRIBUTE_NAME))
-            {
-                margin.right.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(PADDING_TOP_ATTRIBUTE_NAME))
-            {
-                padding.top.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(PADDING_BOTTOM_ATTRIBUTE_NAME))
-            {
-                padding.bottom.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(PADDING_LEFT_ATTRIBUTE_NAME))
-            {
-                padding.left.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(PADDING_RIGHT_ATTRIBUTE_NAME))
-            {
-                padding.right.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME))
-            {
-                border.width.top.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME))
-            {
-                border.width.right.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME))
-            {
-                border.width.bottom.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME))
-            {
-                border.width.left.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME))
-            {
-                border.colorTop.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME))
-            {
-                border.colorRight.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME))
-            {
-                border.colorBottom.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME))
-            {
-                border.colorLeft.set(asColor(inValue));
-
-                return;
-            }
-
-            if (inName.equals(GAP_TOP_ATTRIBUTE_NAME))
-            {
-                gap.top.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(GAP_BOTTOM_ATTRIBUTE_NAME))
-            {
-                gap.bottom.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(GAP_LEFT_ATTRIBUTE_NAME))
-            {
-                gap.left.set(inValue.at(0));
-
-                return;
-            }
-
-            if (inName.equals(GAP_RIGHT_ATTRIBUTE_NAME))
-            {
-                gap.right.set(inValue.at(0));
+                m_transitionLookup.at(i) = specific ? specific : (shorthand ? shorthand : all);
             }
         }
 
-        const StyleTransition* Style::findTransition(const String& inName) const
+        const StyleTransition* Style::findTransition(StylePropertyId inId) const
+        {
+            return m_transitionLookup.at(static_cast<std::size_t>(inId));
+        }
+
+        bool Style::coversProperty(const String& inProperty, const String& inTarget)
         {
             auto contains = [](const String& inProperty, const String& inTarget) -> bool
             {
@@ -1380,28 +829,7 @@ namespace Chicane
                 return false;
             };
 
-            const StyleTransition* all       = nullptr;
-            const StyleTransition* shorthand = nullptr;
-            const StyleTransition* specific  = nullptr;
-
-            for (const StyleTransition& transition : transitions)
-            {
-                if (transition.property.equals(TRANSITION_PROPERTY_ALL))
-                {
-                    all = &transition;
-                }
-
-                if (transition.property.equals(inName))
-                {
-                    specific = &transition;
-                }
-                else if (contains(transition.property, inName))
-                {
-                    shorthand = &transition;
-                }
-            }
-
-            return specific ? specific : (shorthand ? shorthand : all);
+            return contains(inProperty, inTarget);
         }
 
         bool Style::hasParent() const
@@ -2486,6 +1914,8 @@ namespace Chicane
                 TRANSITION_DELAY_ATTRIBUTE_NAME,
                 [](StyleTransition& outTransition, const String& inValue) { outTransition.delay = parseTime(inValue); }
             );
+
+            refreshTransitionLookup();
         }
 
         void Style::parseAnimation(const StyleRuleset::Properties& inProperties)

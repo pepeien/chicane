@@ -6,6 +6,8 @@ namespace Chicane
 {
     namespace Math
     {
+        static constexpr inline float EPSILON = 0.0001f;
+
         static constexpr inline float PI         = 3.14159265358979323846f;
         static constexpr inline float TWO_PI     = PI * 2.0f;
         static constexpr inline float HALF_PI    = PI * 0.5f;

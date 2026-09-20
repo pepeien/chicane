@@ -21,7 +21,8 @@ namespace Chicane
         void Container::applyBackgroundPrimitive()
         {
             Primitive primitive;
-            primitive.indices = {0, 1, 2, 2, 3, 0};
+            primitive.reference = "Box_Quad";
+            primitive.indices   = {0, 1, 2, 2, 3, 0};
 
             Vertex vertex;
 

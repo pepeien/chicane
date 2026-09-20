@@ -75,9 +75,9 @@ namespace Chicane
             destroy();
 
             VmaAllocatorCreateInfo createInfo = {};
-            createInfo.instance         = static_cast<VkInstance>(inInstance);
-            createInfo.physicalDevice   = static_cast<VkPhysicalDevice>(inPhysicalDevice);
-            createInfo.device           = static_cast<VkDevice>(inLogicalDevice);
+            createInfo.instance               = static_cast<VkInstance>(inInstance);
+            createInfo.physicalDevice         = static_cast<VkPhysicalDevice>(inPhysicalDevice);
+            createInfo.device                 = static_cast<VkDevice>(inLogicalDevice);
             createInfo.vulkanApiVersion =
                 VK_MAKE_API_VERSION(0, VULKAN_MAJOR_VERSION, VULKAN_MINOR_VERSION, VULKAN_PATCH_VERSION);
 
@@ -122,19 +122,19 @@ namespace Chicane
             destroyBuffer(outBuffer);
 
             VkBufferCreateInfo bufferInfo = {};
-            bufferInfo.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-            bufferInfo.size        = inCreateInfo.size;
-            bufferInfo.usage       = static_cast<VkBufferUsageFlags>(inCreateInfo.usage);
-            bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+            bufferInfo.sType              = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+            bufferInfo.size               = inCreateInfo.size;
+            bufferInfo.usage              = static_cast<VkBufferUsageFlags>(inCreateInfo.usage);
+            bufferInfo.sharingMode        = VK_SHARING_MODE_EXCLUSIVE;
 
             VmaAllocationCreateInfo allocationInfo = {};
-            const bool bHostVisible =
+            const bool              bHostVisible =
                 static_cast<bool>(inCreateInfo.memoryProperties & vk::MemoryPropertyFlagBits::eHostVisible);
             if (bHostVisible)
             {
                 allocationInfo.usage = VMA_MEMORY_USAGE_AUTO;
-                allocationInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT |
-                                       VMA_ALLOCATION_CREATE_MAPPED_BIT;
+                allocationInfo.flags =
+                    VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT;
             }
             else
             {
@@ -144,28 +144,22 @@ namespace Chicane
             VkBuffer          buffer     = VK_NULL_HANDLE;
             VmaAllocation     allocation = VK_NULL_HANDLE;
             VmaAllocationInfo info       = {};
-            const VkResult    result     = vmaCreateBuffer(
-                m_allocator,
-                &bufferInfo,
-                &allocationInfo,
-                &buffer,
-                &allocation,
-                &info
-            );
+            const VkResult    result =
+                vmaCreateBuffer(m_allocator, &bufferInfo, &allocationInfo, &buffer, &allocation, &info);
             if (result != VK_SUCCESS)
             {
                 throw std::runtime_error("Failed to create a Vulkan buffer");
             }
 
-            outBuffer.instance    = buffer;
-            outBuffer.memory      = info.deviceMemory;
-            outBuffer.mapped      = info.pMappedData;
-            outBuffer.owner       = this;
-            outBuffer.vma         = m_allocator;
-            outBuffer.allocation  = allocation;
-            outBuffer.size        = inCreateInfo.size;
-            outBuffer.usage       = inCreateInfo.usage;
-            outBuffer.properties  = inCreateInfo.memoryProperties;
+            outBuffer.instance   = buffer;
+            outBuffer.memory     = info.deviceMemory;
+            outBuffer.mapped     = info.pMappedData;
+            outBuffer.owner      = this;
+            outBuffer.vma        = m_allocator;
+            outBuffer.allocation = allocation;
+            outBuffer.size       = inCreateInfo.size;
+            outBuffer.usage      = inCreateInfo.usage;
+            outBuffer.properties = inCreateInfo.memoryProperties;
         }
 
         void VulkanAllocator::destroyBuffer(VulkanBuffer& inBuffer)
@@ -205,7 +199,7 @@ namespace Chicane
             const VkImageCreateInfo vkImageInfo = imageCreateInfo;
 
             VmaAllocationCreateInfo allocationInfo = {};
-            const bool bHostVisible =
+            const bool              bHostVisible =
                 static_cast<bool>(inMemoryCreateInfo.properties & vk::MemoryPropertyFlagBits::eHostVisible);
             if (bHostVisible)
             {
@@ -220,14 +214,8 @@ namespace Chicane
             VkImage           image      = VK_NULL_HANDLE;
             VmaAllocation     allocation = VK_NULL_HANDLE;
             VmaAllocationInfo info       = {};
-            const VkResult    result     = vmaCreateImage(
-                m_allocator,
-                &vkImageInfo,
-                &allocationInfo,
-                &image,
-                &allocation,
-                &info
-            );
+            const VkResult    result =
+                vmaCreateImage(m_allocator, &vkImageInfo, &allocationInfo, &image, &allocation, &info);
             if (result != VK_SUCCESS)
             {
                 throw std::runtime_error("Failed to create a Vulkan image");
@@ -292,13 +280,13 @@ namespace Chicane
             const vk::DeviceSize size = std::max(inSize, static_cast<vk::DeviceSize>(RESOURCE_STAGING_INITIAL_BYTES));
 
             VulkanBufferCreateInfo createInfo;
-            createInfo.size             = size;
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.logicalDevice    = m_logicalDevice;
-            createInfo.physicalDevice   = m_physicalDevice;
+            createInfo.size           = size;
+            createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.logicalDevice  = m_logicalDevice;
+            createInfo.physicalDevice = m_physicalDevice;
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
-            createInfo.allocator        = this;
+            createInfo.allocator = this;
 
             createBuffer(m_staging, createInfo);
             m_stagingMapped = m_staging.mapped;

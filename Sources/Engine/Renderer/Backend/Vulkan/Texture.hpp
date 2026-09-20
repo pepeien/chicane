@@ -38,10 +38,10 @@ namespace Chicane
             vk::Queue          m_queue;
             VulkanAllocator*   m_allocator;
 
-            std::uint32_t      m_sourceWidth;
-            std::uint32_t      m_sourceHeight;
-            std::uint32_t      m_residentMinMip;
-            std::uint32_t      m_mipLevels;
+            std::uint32_t m_sourceWidth;
+            std::uint32_t m_sourceHeight;
+            std::uint32_t m_residentMinMip;
+            std::uint32_t m_mipLevels;
         };
     }
 }

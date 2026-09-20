@@ -90,10 +90,9 @@ namespace Chicane
 
         public:
             void refresh() override;
-            void invalidateDrawCacheSubtree() override;
-            std::vector<Component*> getChildrenFlat() const override;
 
         protected:
+            void refreshPeripherals();
             void onRefresh() override;
             void refreshSize() override;
             void refreshPosition() override;

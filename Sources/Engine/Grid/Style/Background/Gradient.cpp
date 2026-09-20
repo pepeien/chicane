@@ -347,7 +347,7 @@ namespace Chicane
             return result;
         }
 
-        void normalizeStops(std::vector<StyleGradient::Stop>& outStops)
+        void normalizeStops(std::vector<StyleGradientStop>& outStops)
         {
             if (outStops.empty())
             {
@@ -394,7 +394,7 @@ namespace Chicane
             }
 
             float last = 0.0f;
-            for (StyleGradient::Stop& stop : outStops)
+            for (StyleGradientStop& stop : outStops)
             {
                 stop.offset = std::clamp(stop.offset, 0.0f, 1.0f);
 
@@ -480,7 +480,7 @@ namespace Chicane
                     continue;
                 }
 
-                StyleGradient::Stop stop;
+                StyleGradientStop stop;
                 stop.color = inParseColor(color);
 
                 const std::vector<String> offsets    = rest.split(' ');
@@ -510,7 +510,7 @@ namespace Chicane
 
             if (result.stops.size() > MAX_STOPS)
             {
-                StyleGradient::Stop last = result.stops.back();
+                StyleGradientStop last = result.stops.back();
                 result.stops.resize(MAX_STOPS - 1);
                 result.stops.push_back(last);
             }

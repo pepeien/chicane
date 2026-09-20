@@ -37,6 +37,8 @@ namespace Chicane
             refreshAttributes();
 
             m_handle->setParent(this);
+
+            refreshPeripherals();
         }
 
         DockPanel::~DockPanel()
@@ -260,21 +262,16 @@ namespace Chicane
             return nullptr;
         }
 
-        std::vector<Component*> DockPanel::getChildrenFlat() const
+        void DockPanel::refreshPeripherals()
         {
-            std::vector<Component*> result = Component::getChildrenFlat();
+            std::vector<Component*> peripherals;
 
-            appendHitPeripherals(result);
-
-            return result;
-        }
-
-        void DockPanel::appendHitPeripherals(std::vector<Component*>& outChildren) const
-        {
             if (m_handle)
             {
-                outChildren.push_back(m_handle);
+                peripherals.push_back(m_handle);
             }
+
+            setPeripherals(peripherals);
         }
 
         void DockPanel::onRefresh()

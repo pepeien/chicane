@@ -50,10 +50,8 @@ namespace Chicane
 
             void tick(float inDeltaTime) override;
 
-            std::vector<Component*> getChildrenFlat() const override;
-
         protected:
-            void appendHitPeripherals(std::vector<Component*>& outChildren) const override;
+            void refreshPeripherals();
             void refreshSize() override;
 
         public:

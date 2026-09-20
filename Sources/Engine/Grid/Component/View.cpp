@@ -23,7 +23,8 @@ namespace Chicane
               m_focused(nullptr),
               m_dragging(nullptr),
               m_inputs(std::make_unique<ViewInputQueue>()),
-              m_pointer(WindowCursor::Default)
+              m_pointer(WindowCursor::Default),
+              m_roundedAncestors({})
         {
             m_root   = this;
             m_parent = this;
@@ -41,9 +42,41 @@ namespace Chicane
         {
             Container::tick(inDelta);
 
+            m_roundedAncestors.clear();
+
+            ComponentPaintContext context;
+            context.roundedAncestors = &m_roundedAncestors;
+
+            paint(context);
+
             pump();
 
             m_pointer.store(resolvePointer(), std::memory_order_relaxed);
+        }
+
+        void View::collectDrawables(std::vector<Component*>& outComponents)
+        {
+            outComponents.clear();
+
+            appendDrawables(this, outComponents);
+        }
+
+        void View::appendDrawables(Component* inComponent, std::vector<Component*>& outComponents)
+        {
+            if (!inComponent || !inComponent->isDisplayable())
+            {
+                return;
+            }
+
+            if (inComponent->isDrawable())
+            {
+                outComponents.push_back(inComponent);
+            }
+
+            for (Component* child : inComponent->getPaintChildren())
+            {
+                appendDrawables(child, outComponents);
+            }
         }
 
         void View::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)

@@ -148,7 +148,7 @@ namespace Chicane
             std::vector<OpenGLFrame> frames;
 
         private:
-            std::uint32_t                                           m_currentFrameIndex;
+            std::uint32_t m_currentFrameIndex;
 
             std::vector<OpenGLTextureSlot>                          m_textures;
             std::array<OpenGLTextureSizeClass, TEXTURE_CLASS_COUNT> m_classes;
@@ -162,26 +162,26 @@ namespace Chicane
             std::uint32_t                                           m_screenBlitFramebuffer;
             Draw::Id                                                m_screenTextureId;
 
-            RHI::FullscreenPass                                     m_bloomPass;
-            RHI::Buffer                                             m_cameraBuffer;
-            RHI::Buffer                                             m_lightBuffer;
-            RHI::Buffer                                             m_instanceBuffer;
-            RHI::Buffer                                             m_particleBuffer;
-            RHI::Sampler                                            m_linearSampler;
-            RHI::Sampler                                            m_textureSampler;
-            RHI::BindGroupLayout                                    m_textureLayout;
-            RHI::BindGroup                                          m_textureGroup;
-            RHI::Buffer                                             m_textureTableBuffer;
-            std::array<RHI::Image, TEXTURE_CLASS_COUNT>             m_classImages;
-            RHI::Image                                              m_sceneColor;
-            RHI::Image                                              m_sceneDepth;
-            RHI::Image                                              m_presentColor;
-            RHI::Frame                                              m_rhiFrame;
+            RHI::FullscreenPass                         m_bloomPass;
+            RHI::Buffer                                 m_cameraBuffer;
+            RHI::Buffer                                 m_lightBuffer;
+            RHI::Buffer                                 m_instanceBuffer;
+            RHI::Buffer                                 m_particleBuffer;
+            RHI::Sampler                                m_linearSampler;
+            RHI::Sampler                                m_textureSampler;
+            RHI::BindGroupLayout                        m_textureLayout;
+            RHI::BindGroup                              m_textureGroup;
+            RHI::Buffer                                 m_textureTableBuffer;
+            std::array<RHI::Image, TEXTURE_CLASS_COUNT> m_classImages;
+            RHI::Image                                  m_sceneColor;
+            RHI::Image                                  m_sceneDepth;
+            RHI::Image                                  m_presentColor;
+            RHI::Frame                                  m_rhiFrame;
 
             // GPU timing
-            GpuQueries                                              m_gpuQueries;
-            std::vector<bool>                                       m_gpuQueryPending;
-            std::uint32_t                                           m_gpuQueryWrite;
+            GpuQueries        m_gpuQueries;
+            std::vector<bool> m_gpuQueryPending;
+            std::uint32_t     m_gpuQueryWrite;
         };
     }
 }

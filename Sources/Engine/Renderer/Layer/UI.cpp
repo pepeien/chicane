@@ -22,26 +22,20 @@ namespace Chicane
             RHI::Device* device = m_backend->getRHIDevice();
 
             RHI::BufferCreateInfo vertex;
-            vertex.size           = std::min(
-                m_backend->getResourceBudget(Resource::UIVertices), RESOURCE_MESH_INITIAL_BYTES
-            );
-            vertex.usage          = RHI::BufferUsage::Vertex;
+            vertex.size  = std::min(m_backend->getResourceBudget(Resource::UIVertices), RESOURCE_MESH_INITIAL_BYTES);
+            vertex.usage = RHI::BufferUsage::Vertex;
             vertex.bHasHostAccess = false;
             m_vertexBuffer        = device->createBuffer(vertex);
 
             RHI::BufferCreateInfo index;
-            index.size           = std::min(
-                m_backend->getResourceBudget(Resource::UIIndices), RESOURCE_MESH_INITIAL_BYTES
-            );
-            index.usage          = RHI::BufferUsage::Index;
+            index.size  = std::min(m_backend->getResourceBudget(Resource::UIIndices), RESOURCE_MESH_INITIAL_BYTES);
+            index.usage = RHI::BufferUsage::Index;
             index.bHasHostAccess = false;
             m_indexBuffer        = device->createBuffer(index);
 
             RHI::BufferCreateInfo glyph;
-            glyph.size           = std::min(
-                m_backend->getResourceBudget(Resource::UIGlyphs), RESOURCE_MESH_INITIAL_BYTES
-            );
-            glyph.usage          = RHI::BufferUsage::Storage;
+            glyph.size  = std::min(m_backend->getResourceBudget(Resource::UIGlyphs), RESOURCE_MESH_INITIAL_BYTES);
+            glyph.usage = RHI::BufferUsage::Storage;
             glyph.bHasHostAccess = true;
             m_glyphBuffer        = device->createBuffer(glyph);
 

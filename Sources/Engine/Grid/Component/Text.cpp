@@ -121,34 +121,11 @@ namespace Chicane
             syncGlyphs();
         }
 
-        void Text::invalidateDrawCacheSubtree()
+        void Text::refreshPeripherals()
         {
-            Scrollable::invalidateDrawCacheSubtree();
+            std::vector<Component*> peripherals(m_glyphs.begin(), m_glyphs.end());
 
-            for (TextGlyph* glyph : m_glyphs)
-            {
-                if (glyph)
-                {
-                    glyph->invalidateDrawCache();
-                }
-            }
-        }
-
-        std::vector<Component*> Text::getChildrenFlat() const
-        {
-            std::vector<Component*> result = Scrollable::getChildrenFlat();
-
-            for (TextGlyph* glyph : m_glyphs)
-            {
-                if (!glyph)
-                {
-                    continue;
-                }
-
-                result.push_back(glyph);
-            }
-
-            return result;
+            setPeripherals(peripherals);
         }
 
         void Text::onRefresh()
@@ -158,7 +135,7 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(m_text) && !hasFlag(ComponentFlag::LaidOut) && !m_layoutSignature.isEmpty())
+            if (!isReference(m_text) && !hasFlag(ComponentDirty::LaidOut) && !m_layoutSignature.isEmpty())
             {
                 return;
             }
@@ -372,7 +349,7 @@ namespace Chicane
                 return;
             }
 
-            const bool bHadInsets = hasFlag(ComponentFlag::Insets);
+            const bool bHadInsets = hasFlag(ComponentDirty::Insets);
 
             setSize(bIsWidthAuto ? m_contentSize.x : m_size.x, bIsHeightAuto ? m_contentSize.y : m_size.y);
 
@@ -383,7 +360,7 @@ namespace Chicane
                     bIsHeightAuto ? m_style.insetVertical() : 0.0f
                 );
 
-                setFlag(ComponentFlag::Insets);
+                setFlag(ComponentDirty::Insets);
             }
         }
 
@@ -409,7 +386,7 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
-            const float       innerWidth    = (!m_style.width.isAuto() || hasFlag(ComponentFlag::Insets))
+            const float       innerWidth    = (!m_style.width.isAuto() || hasFlag(ComponentDirty::Insets))
                                                   ? std::max(0.0f, m_size.x - m_style.insetHorizontal())
                                                   : m_size.x;
             const String      signature =
@@ -503,7 +480,7 @@ namespace Chicane
 
             if (m_glyphs.size() != glyphCount)
             {
-                markFlatDirty();
+                refreshPeripherals();
             }
 
             m_contentSize = {maxWidth, lineCount * lineHeight};

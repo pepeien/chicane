@@ -16,9 +16,9 @@ namespace Chicane
             vk::MemoryPropertyFlags properties;
 
             // Devices
-            vk::Device              logicalDevice;
-            vk::PhysicalDevice      physicalDevice;
-            VulkanAllocator*        allocator = nullptr;
+            vk::Device         logicalDevice;
+            vk::PhysicalDevice physicalDevice;
+            VulkanAllocator*   allocator = nullptr;
         };
     }
 }

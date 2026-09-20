@@ -57,10 +57,8 @@ namespace Chicane
             ~DockPanel() override;
 
         public:
-            std::vector<Component*> getChildrenFlat() const override;
-
         protected:
-            void appendHitPeripherals(std::vector<Component*>& outChildren) const override;
+            void refreshPeripherals();
             void onRefresh() override;
             void refreshSize() override;
             void refreshPosition() override;

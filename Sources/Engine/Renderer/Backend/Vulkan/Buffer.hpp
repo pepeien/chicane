@@ -32,15 +32,15 @@ namespace Chicane
             );
 
         public:
-            vk::Buffer              instance    = nullptr;
-            vk::DeviceMemory        memory      = nullptr;
-            void*                   mapped      = nullptr;
-            VulkanAllocator*        owner       = nullptr;
-            VmaAllocator_T*         vma         = nullptr;
-            VmaAllocation_T*        allocation  = nullptr;
-            vk::DeviceSize          size        = 0;
-            vk::BufferUsageFlags    usage       = {};
-            vk::MemoryPropertyFlags properties  = {};
+            vk::Buffer              instance   = nullptr;
+            vk::DeviceMemory        memory     = nullptr;
+            void*                   mapped     = nullptr;
+            VulkanAllocator*        owner      = nullptr;
+            VmaAllocator_T*         vma        = nullptr;
+            VmaAllocation_T*        allocation = nullptr;
+            vk::DeviceSize          size       = 0;
+            vk::BufferUsageFlags    usage      = {};
+            vk::MemoryPropertyFlags properties = {};
         };
     }
 }

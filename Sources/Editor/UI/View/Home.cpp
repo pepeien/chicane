@@ -44,326 +44,323 @@
 
 namespace Editor
 {
-    namespace
+    static Chicane::String typeTail(const Chicane::String& inName)
     {
-        Chicane::String typeTail(const Chicane::String& inName)
+        const std::size_t split = inName.lastOf(':');
+        if (split == Chicane::String::npos)
         {
-            const std::size_t split = inName.lastOf(':');
-            if (split == Chicane::String::npos)
-            {
-                return inName;
-            }
-
-            return inName.substr(split + 1);
+            return inName;
         }
 
-        const Chicane::ReflectionEnumInfo* findEnum(const Chicane::String& inTypeName)
-        {
-            Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::getInstance();
-            if (const Chicane::ReflectionEnumInfo* found = registry.find(inTypeName))
-            {
-                return found;
-            }
+        return inName.substr(split + 1);
+    }
 
-            return registry.find(typeTail(inTypeName));
+    static const Chicane::ReflectionEnumInfo* findEnum(const Chicane::String& inTypeName)
+    {
+        Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::getInstance();
+        if (const Chicane::ReflectionEnumInfo* found = registry.find(inTypeName))
+        {
+            return found;
         }
 
-        Chicane::String formatVec3(const Chicane::Vec3& inValue)
+        return registry.find(typeTail(inTypeName));
+    }
+
+    static Chicane::String formatVec3(const Chicane::Vec3& inValue)
+    {
+        return Chicane::String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
+    }
+
+    static Chicane::Vec3 parseVec3(const Chicane::String& inValue, const Chicane::Vec3& inFallback)
+    {
+        Chicane::String raw = inValue.trim();
+        if (raw.startsWith("["))
         {
-            return Chicane::String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
+            raw = raw.substr(1);
         }
 
-        Chicane::Vec3 parseVec3(const Chicane::String& inValue, const Chicane::Vec3& inFallback)
+        if (raw.endsWith("]"))
         {
-            Chicane::String raw = inValue.trim();
-            if (raw.startsWith("["))
-            {
-                raw = raw.substr(1);
-            }
-
-            if (raw.endsWith("]"))
-            {
-                raw = raw.substr(0, raw.size() - 1);
-            }
-
-            const std::vector<Chicane::String> parts = raw.split(',');
-            if (parts.size() < 3)
-            {
-                return inFallback;
-            }
-
-            try
-            {
-                return Chicane::Vec3(
-                    std::stof(parts.at(0).trim().toStandard()),
-                    std::stof(parts.at(1).trim().toStandard()),
-                    std::stof(parts.at(2).trim().toStandard())
-                );
-            }
-            catch (const std::exception&)
-            {
-                return inFallback;
-            }
+            raw = raw.substr(0, raw.size() - 1);
         }
 
-        bool isCompleteFloat(const Chicane::String& inValue)
+        const std::vector<Chicane::String> parts = raw.split(',');
+        if (parts.size() < 3)
         {
-            const Chicane::String trimmed = inValue.trim();
-            if (trimmed.isEmpty() || trimmed.equals("-", ".", "-."))
-            {
-                return false;
-            }
-
-            char* end = nullptr;
-            std::strtof(trimmed.toChar(), &end);
-
-            return end && end != trimmed.toChar() && *end == '\0';
+            return inFallback;
         }
 
-        std::shared_ptr<Scene> editorScene()
+        try
         {
-            return Application::getInstance().getHomeScene();
+            return Chicane::Vec3(
+                std::stof(parts.at(0).trim().toStandard()),
+                std::stof(parts.at(1).trim().toStandard()),
+                std::stof(parts.at(2).trim().toStandard())
+            );
         }
-
-        std::shared_ptr<Scene> workspaceScene(bool bIsAssetsWorkspace)
+        catch (const std::exception&)
         {
-            if (bIsAssetsWorkspace)
-            {
-                return Application::getInstance().getViewerScene();
-            }
-
-            return Application::getInstance().getHomeScene();
+            return inFallback;
         }
+    }
 
-        static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
-        static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
-        static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
-
-        static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
-        static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
-        static constexpr inline const char* OUTLINER_ICON_CHARACTER = "PersonSimpleThrow";
-        static constexpr inline const char* OUTLINER_ICON_SKY       = "Globe";
-        static constexpr inline const char* OUTLINER_ICON_MESH      = "Cube";
-        static constexpr inline const char* OUTLINER_ICON_LIGHT     = "Lightbulb";
-        static constexpr inline const char* OUTLINER_ICON_SOUND     = "SpeakerHigh";
-        static constexpr inline const char* OUTLINER_ICON_VIEW      = "Eye";
-        static constexpr inline const char* OUTLINER_ICON_CAMERA    = "Camera";
-        static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Bone";
-
-        Chicane::String outlinerIcon(const Chicane::Object* inObject)
+    static bool isCompleteFloat(const Chicane::String& inValue)
+    {
+        const Chicane::String trimmed = inValue.trim();
+        if (trimmed.isEmpty() || trimmed.equals("-", ".", "-."))
         {
-            if (!inObject)
-            {
-                return OUTLINER_ICON_ACTOR;
-            }
-
-            if (dynamic_cast<const Chicane::ACharacter*>(inObject))
-            {
-                return OUTLINER_ICON_CHARACTER;
-            }
-
-            if (dynamic_cast<const Chicane::APawn*>(inObject))
-            {
-                return OUTLINER_ICON_PAWN;
-            }
-
-            if (dynamic_cast<const Chicane::ASky*>(inObject))
-            {
-                return OUTLINER_ICON_SKY;
-            }
-
-            if (dynamic_cast<const Chicane::ACamera*>(inObject))
-            {
-                return OUTLINER_ICON_CAMERA;
-            }
-
-            if (dynamic_cast<const Chicane::ALight*>(inObject))
-            {
-                return OUTLINER_ICON_LIGHT;
-            }
-
-            if (dynamic_cast<const Chicane::ASound*>(inObject))
-            {
-                return OUTLINER_ICON_SOUND;
-            }
-
-            if (dynamic_cast<const Chicane::CMesh*>(inObject))
-            {
-                return OUTLINER_ICON_MESH;
-            }
-
-            if (dynamic_cast<const Chicane::CLight*>(inObject))
-            {
-                return OUTLINER_ICON_LIGHT;
-            }
-
-            if (dynamic_cast<const Chicane::CSound*>(inObject))
-            {
-                return OUTLINER_ICON_SOUND;
-            }
-
-            if (dynamic_cast<const Chicane::CCamera*>(inObject))
-            {
-                return OUTLINER_ICON_CAMERA;
-            }
-
-            if (dynamic_cast<const Chicane::CPhysics*>(inObject))
-            {
-                return OUTLINER_ICON_PHYSICS;
-            }
-
-            if (dynamic_cast<const Chicane::CView*>(inObject))
-            {
-                return OUTLINER_ICON_VIEW;
-            }
-
-            if (dynamic_cast<const Chicane::Component*>(inObject))
-            {
-                return OUTLINER_ICON_MESH;
-            }
-
-            return OUTLINER_ICON_ACTOR;
-        }
-
-        bool hasOutlinerChildren(const Chicane::Object* inObject)
-        {
-            if (!inObject)
-            {
-                return false;
-            }
-
-            for (Chicane::Component* attachment : inObject->getAttachments())
-            {
-                if (attachment && !attachment->isTransient())
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
 
-        void commitAttributeField(Chicane::Object& inItem, AttributeField& inField)
+        char* end = nullptr;
+        std::strtof(trimmed.toChar(), &end);
+
+        return end && end != trimmed.toChar() && *end == '\0';
+    }
+
+    static std::shared_ptr<Scene> editorScene()
+    {
+        return Application::getInstance().getHomeScene();
+    }
+
+    static std::shared_ptr<Scene> workspaceScene(bool bIsAssetsWorkspace)
+    {
+        if (bIsAssetsWorkspace)
         {
-            if (inField.name.equals("translation"))
-            {
-                inItem.setAbsoluteTranslation(inField.vector);
-                inItem.notifyPropertyEdited(inField.name);
-
-                return;
-            }
-
-            if (inField.name.equals("rotation"))
-            {
-                inItem.setAbsoluteRotation(inField.vector);
-                inItem.notifyPropertyEdited(inField.name);
-
-                return;
-            }
-
-            if (inField.name.equals("scale"))
-            {
-                inItem.setAbsoluteScale(inField.vector);
-                inItem.notifyPropertyEdited(inField.name);
-
-                return;
-            }
-
-            Chicane::String value = inField.text;
-            if (inField.type == AttributeFieldType::Bool)
-            {
-                value = inField.bIsChecked ? "true" : "false";
-            }
-            else if (inField.type == AttributeFieldType::Vec3 || inField.type == AttributeFieldType::Color)
-            {
-                value = formatVec3(inField.vector);
-            }
-
-            Chicane::Track::applyField(inItem, inField.name, value);
+            return Application::getInstance().getViewerScene();
         }
 
-        void syncAttributeField(
-            Chicane::Object& inItem, const Chicane::ReflectionTypeInfo& inType, AttributeField& ioField
-        )
+        return Application::getInstance().getHomeScene();
+    }
+
+    static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
+    static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
+    static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
+
+    static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
+    static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
+    static constexpr inline const char* OUTLINER_ICON_CHARACTER = "PersonSimpleThrow";
+    static constexpr inline const char* OUTLINER_ICON_SKY       = "Globe";
+    static constexpr inline const char* OUTLINER_ICON_MESH      = "Cube";
+    static constexpr inline const char* OUTLINER_ICON_LIGHT     = "Lightbulb";
+    static constexpr inline const char* OUTLINER_ICON_SOUND     = "SpeakerHigh";
+    static constexpr inline const char* OUTLINER_ICON_VIEW      = "Eye";
+    static constexpr inline const char* OUTLINER_ICON_CAMERA    = "Camera";
+    static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Bone";
+
+    static Chicane::String outlinerIcon(const Chicane::Object* inObject)
+    {
+        if (!inObject)
         {
-            const Chicane::ReflectionFieldAccessor accessor = inType.resolve(ioField.name);
-            if (!accessor.isValid())
+            return OUTLINER_ICON_ACTOR;
+        }
+
+        if (dynamic_cast<const Chicane::ACharacter*>(inObject))
+        {
+            return OUTLINER_ICON_CHARACTER;
+        }
+
+        if (dynamic_cast<const Chicane::APawn*>(inObject))
+        {
+            return OUTLINER_ICON_PAWN;
+        }
+
+        if (dynamic_cast<const Chicane::ASky*>(inObject))
+        {
+            return OUTLINER_ICON_SKY;
+        }
+
+        if (dynamic_cast<const Chicane::ACamera*>(inObject))
+        {
+            return OUTLINER_ICON_CAMERA;
+        }
+
+        if (dynamic_cast<const Chicane::ALight*>(inObject))
+        {
+            return OUTLINER_ICON_LIGHT;
+        }
+
+        if (dynamic_cast<const Chicane::ASound*>(inObject))
+        {
+            return OUTLINER_ICON_SOUND;
+        }
+
+        if (dynamic_cast<const Chicane::CMesh*>(inObject))
+        {
+            return OUTLINER_ICON_MESH;
+        }
+
+        if (dynamic_cast<const Chicane::CLight*>(inObject))
+        {
+            return OUTLINER_ICON_LIGHT;
+        }
+
+        if (dynamic_cast<const Chicane::CSound*>(inObject))
+        {
+            return OUTLINER_ICON_SOUND;
+        }
+
+        if (dynamic_cast<const Chicane::CCamera*>(inObject))
+        {
+            return OUTLINER_ICON_CAMERA;
+        }
+
+        if (dynamic_cast<const Chicane::CPhysics*>(inObject))
+        {
+            return OUTLINER_ICON_PHYSICS;
+        }
+
+        if (dynamic_cast<const Chicane::CView*>(inObject))
+        {
+            return OUTLINER_ICON_VIEW;
+        }
+
+        if (dynamic_cast<const Chicane::Component*>(inObject))
+        {
+            return OUTLINER_ICON_MESH;
+        }
+
+        return OUTLINER_ICON_ACTOR;
+    }
+
+    static bool hasOutlinerChildren(const Chicane::Object* inObject)
+    {
+        if (!inObject)
+        {
+            return false;
+        }
+
+        for (Chicane::Component* attachment : inObject->getAttachments())
+        {
+            if (attachment && !attachment->isTransient())
             {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static void commitAttributeField(Chicane::Object& inItem, AttributeField& inField)
+    {
+        if (inField.name.equals("translation"))
+        {
+            inItem.setAbsoluteTranslation(inField.vector);
+            inItem.notifyPropertyEdited(inField.name);
+
+            return;
+        }
+
+        if (inField.name.equals("rotation"))
+        {
+            inItem.setAbsoluteRotation(inField.vector);
+            inItem.notifyPropertyEdited(inField.name);
+
+            return;
+        }
+
+        if (inField.name.equals("scale"))
+        {
+            inItem.setAbsoluteScale(inField.vector);
+            inItem.notifyPropertyEdited(inField.name);
+
+            return;
+        }
+
+        Chicane::String value = inField.text;
+        if (inField.type == AttributeFieldType::Bool)
+        {
+            value = inField.bIsChecked ? "true" : "false";
+        }
+        else if (inField.type == AttributeFieldType::Vec3 || inField.type == AttributeFieldType::Color)
+        {
+            value = formatVec3(inField.vector);
+        }
+
+        Chicane::Track::applyField(inItem, inField.name, value);
+    }
+
+    static void syncAttributeField(
+        Chicane::Object& inItem, const Chicane::ReflectionTypeInfo& inType, AttributeField& ioField
+    )
+    {
+        const Chicane::ReflectionFieldAccessor accessor = inType.resolve(ioField.name);
+        if (!accessor.isValid())
+        {
+            return;
+        }
+
+        if (ioField.type == AttributeFieldType::Bool)
+        {
+            const bool* value  = accessor.getValue<bool>(&inItem);
+            ioField.bIsChecked = value && *value;
+
+            return;
+        }
+
+        if (ioField.type == AttributeFieldType::Vec3)
+        {
+            if (ioField.name.equals("translation"))
+            {
+                ioField.vector = inItem.getAbsoluteTranslation();
+                ioField.text   = formatVec3(ioField.vector);
+
                 return;
             }
 
-            if (ioField.type == AttributeFieldType::Bool)
+            if (ioField.name.equals("rotation"))
             {
-                const bool* value  = accessor.getValue<bool>(&inItem);
-                ioField.bIsChecked = value && *value;
+                ioField.vector = inItem.getAbsoluteRotation().getAngles();
+                ioField.text   = formatVec3(ioField.vector);
 
                 return;
             }
 
-            if (ioField.type == AttributeFieldType::Vec3)
+            if (ioField.name.equals("scale"))
             {
-                if (ioField.name.equals("translation"))
-                {
-                    ioField.vector = inItem.getAbsoluteTranslation();
-                    ioField.text   = formatVec3(ioField.vector);
-
-                    return;
-                }
-
-                if (ioField.name.equals("rotation"))
-                {
-                    ioField.vector = inItem.getAbsoluteRotation().getAngles();
-                    ioField.text   = formatVec3(ioField.vector);
-
-                    return;
-                }
-
-                if (ioField.name.equals("scale"))
-                {
-                    ioField.vector = inItem.getAbsoluteScale();
-                    ioField.text   = formatVec3(ioField.vector);
-
-                    return;
-                }
-
-                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
-                {
-                    ioField.vector = *value;
-                    ioField.text   = formatVec3(*value);
-                }
-                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
-                {
-                    ioField.vector = rotator->getAngles();
-                    ioField.text   = formatVec3(ioField.vector);
-                }
+                ioField.vector = inItem.getAbsoluteScale();
+                ioField.text   = formatVec3(ioField.vector);
 
                 return;
             }
 
-            if (ioField.type == AttributeFieldType::Color)
+            if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
             {
-                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
-                {
-                    ioField.vector = *value;
-                    ioField.text   = formatVec3(*value);
-                }
-
-                return;
+                ioField.vector = *value;
+                ioField.text   = formatVec3(*value);
+            }
+            else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
+            {
+                ioField.vector = rotator->getAngles();
+                ioField.text   = formatVec3(ioField.vector);
             }
 
-            if (accessor.isType<Chicane::FileSystem::Path>())
-            {
-                const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-                ioField.text                          = path ? path->toString() : Chicane::String::empty();
+            return;
+        }
 
-                return;
+        if (ioField.type == AttributeFieldType::Color)
+        {
+            if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
+            {
+                ioField.vector = *value;
+                ioField.text   = formatVec3(*value);
             }
 
-            if (ioField.type == AttributeFieldType::Text || ioField.type == AttributeFieldType::Float ||
-                ioField.type == AttributeFieldType::Enum)
-            {
-                ioField.text = accessor.toString(&inItem);
-            }
+            return;
+        }
+
+        if (accessor.isType<Chicane::FileSystem::Path>())
+        {
+            const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
+            ioField.text                          = path ? path->toString() : Chicane::String::empty();
+
+            return;
+        }
+
+        if (ioField.type == AttributeFieldType::Text || ioField.type == AttributeFieldType::Float ||
+            ioField.type == AttributeFieldType::Enum)
+        {
+            ioField.text = accessor.toString(&inItem);
         }
     }
 

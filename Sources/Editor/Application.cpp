@@ -142,8 +142,6 @@ namespace Editor
 
             controller->attachTo(character);
 
-            // Renderer uses the last active CCamera; deactivate level cameras so the
-            // editor orbit camera stays in control after opening a gameplay track.
             for (Chicane::CCamera* camera : inScene->getComponents<Chicane::CCamera>())
             {
                 if (!camera)

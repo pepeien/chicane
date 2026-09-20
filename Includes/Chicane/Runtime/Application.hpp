@@ -228,6 +228,7 @@ namespace Chicane
         std::shared_ptr<Grid::View>              m_view;
         std::thread                              m_viewThread;
         std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
+        std::vector<Grid::Component*>            m_viewDrawables;
         std::atomic<std::size_t>                 m_viewWriteIndex;
         std::atomic<std::size_t>                 m_viewReadIndex;
         std::atomic<std::uint32_t>               m_screenViewportX;

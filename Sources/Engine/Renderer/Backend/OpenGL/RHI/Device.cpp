@@ -17,6 +17,91 @@ namespace Chicane
 {
     namespace Renderer
     {
+        bool isIdentifier(const std::string& inValue)
+        {
+            if (inValue.empty() || std::isdigit(static_cast<unsigned char>(inValue.front())))
+            {
+                return false;
+            }
+
+            return std::all_of(
+                inValue.begin(),
+                inValue.end(),
+                [](char inCharacter)
+                { return inCharacter == '_' || std::isalnum(static_cast<unsigned char>(inCharacter)); }
+            );
+        }
+
+        std::string toBlockName(const std::string& inInstance)
+        {
+            const std::size_t separator = inInstance.find_last_of('_');
+            if (separator == std::string::npos || separator + 1 >= inInstance.size())
+            {
+                return inInstance + "_block";
+            }
+
+            const std::string suffix   = inInstance.substr(separator + 1);
+            const bool        bIsDedup = std::all_of(
+                suffix.begin(),
+                suffix.end(),
+                [](char inCharacter) { return std::isdigit(static_cast<unsigned char>(inCharacter)); }
+            );
+
+            return (bIsDedup ? inInstance.substr(0, separator) : inInstance) + "_block";
+        }
+
+        std::string renameStorageBlocks(std::string inSource)
+        {
+            static const std::string keyword = "buffer ";
+
+            std::size_t cursor = 0;
+            while ((cursor = inSource.find(keyword, cursor)) != std::string::npos)
+            {
+                const std::size_t nameStart = cursor + keyword.size();
+                const std::size_t nameEnd   = inSource.find_first_of(" \t\r\n{", nameStart);
+                if (nameEnd == std::string::npos)
+                {
+                    break;
+                }
+
+                const std::size_t bodyStart = inSource.find_first_not_of(" \t\r\n", nameEnd);
+                const std::string name      = inSource.substr(nameStart, nameEnd - nameStart);
+                if (!isIdentifier(name) || bodyStart == std::string::npos || inSource[bodyStart] != '{')
+                {
+                    cursor = nameEnd;
+                    continue;
+                }
+
+                std::size_t index = bodyStart;
+                int         depth = 0;
+                do
+                {
+                    depth += inSource[index] == '{' ? 1 : (inSource[index] == '}' ? -1 : 0);
+                    index++;
+                } while (depth > 0 && index < inSource.size());
+
+                const std::size_t instanceStart = inSource.find_first_not_of(" \t\r\n", index);
+                const std::size_t instanceEnd   = inSource.find_first_of(" \t\r\n;[", instanceStart);
+                if (instanceStart == std::string::npos || instanceEnd == std::string::npos)
+                {
+                    break;
+                }
+
+                const std::string instance = inSource.substr(instanceStart, instanceEnd - instanceStart);
+                if (!isIdentifier(instance))
+                {
+                    cursor = nameEnd;
+                    continue;
+                }
+
+                const std::string block = toBlockName(instance);
+                inSource.replace(nameStart, name.size(), block);
+                cursor = nameStart + block.size();
+            }
+
+            return inSource;
+        }
+
         OpenGLRHIDevice::OpenGLRHIDevice(OpenGLBackend* inBackend)
             : m_backend(inBackend),
               m_commands(std::make_unique<OpenGLRHICommandList>(this))
@@ -66,13 +151,7 @@ namespace Chicane
                 glNamedBufferData(grown, static_cast<GLsizeiptr>(newSize), nullptr, GL_DYNAMIC_DRAW);
                 if (data->id && data->size > 0)
                 {
-                    glCopyNamedBufferSubData(
-                        data->id,
-                        grown,
-                        0,
-                        0,
-                        static_cast<GLsizeiptr>(data->size)
-                    );
+                    glCopyNamedBufferSubData(data->id, grown, 0, 0, static_cast<GLsizeiptr>(data->size));
                 }
                 if (data->bOwned && data->id)
                 {
@@ -266,94 +345,6 @@ namespace Chicane
         void OpenGLRHIDevice::destroyBindGroup(RHI::BindGroup inGroup)
         {
             delete static_cast<OpenGLRHIGroupData*>(inGroup.handle);
-        }
-
-        namespace
-        {
-            bool isIdentifier(const std::string& inValue)
-            {
-                if (inValue.empty() || std::isdigit(static_cast<unsigned char>(inValue.front())))
-                {
-                    return false;
-                }
-
-                return std::all_of(
-                    inValue.begin(),
-                    inValue.end(),
-                    [](char inCharacter)
-                    { return inCharacter == '_' || std::isalnum(static_cast<unsigned char>(inCharacter)); }
-                );
-            }
-
-            std::string toBlockName(const std::string& inInstance)
-            {
-                const std::size_t separator = inInstance.find_last_of('_');
-                if (separator == std::string::npos || separator + 1 >= inInstance.size())
-                {
-                    return inInstance + "_block";
-                }
-
-                const std::string suffix   = inInstance.substr(separator + 1);
-                const bool        bIsDedup = std::all_of(
-                    suffix.begin(),
-                    suffix.end(),
-                    [](char inCharacter) { return std::isdigit(static_cast<unsigned char>(inCharacter)); }
-                );
-
-                return (bIsDedup ? inInstance.substr(0, separator) : inInstance) + "_block";
-            }
-
-            std::string renameStorageBlocks(std::string inSource)
-            {
-                static const std::string keyword = "buffer ";
-
-                std::size_t cursor = 0;
-                while ((cursor = inSource.find(keyword, cursor)) != std::string::npos)
-                {
-                    const std::size_t nameStart = cursor + keyword.size();
-                    const std::size_t nameEnd   = inSource.find_first_of(" \t\r\n{", nameStart);
-                    if (nameEnd == std::string::npos)
-                    {
-                        break;
-                    }
-
-                    const std::size_t bodyStart = inSource.find_first_not_of(" \t\r\n", nameEnd);
-                    const std::string name      = inSource.substr(nameStart, nameEnd - nameStart);
-                    if (!isIdentifier(name) || bodyStart == std::string::npos || inSource[bodyStart] != '{')
-                    {
-                        cursor = nameEnd;
-                        continue;
-                    }
-
-                    std::size_t index = bodyStart;
-                    int         depth = 0;
-                    do
-                    {
-                        depth += inSource[index] == '{' ? 1 : (inSource[index] == '}' ? -1 : 0);
-                        index++;
-                    } while (depth > 0 && index < inSource.size());
-
-                    const std::size_t instanceStart = inSource.find_first_not_of(" \t\r\n", index);
-                    const std::size_t instanceEnd   = inSource.find_first_of(" \t\r\n;[", instanceStart);
-                    if (instanceStart == std::string::npos || instanceEnd == std::string::npos)
-                    {
-                        break;
-                    }
-
-                    const std::string instance = inSource.substr(instanceStart, instanceEnd - instanceStart);
-                    if (!isIdentifier(instance))
-                    {
-                        cursor = nameEnd;
-                        continue;
-                    }
-
-                    const std::string block = toBlockName(instance);
-                    inSource.replace(nameStart, name.size(), block);
-                    cursor = nameStart + block.size();
-                }
-
-                return inSource;
-            }
         }
 
         std::uint32_t OpenGLRHIDevice::compileProgram(const String& inVertex, const String& inFragment) const

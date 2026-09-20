@@ -24,15 +24,13 @@ namespace Chicane
         public:
             void tick(float inDelta) override;
             bool onEvent(const WindowEvent& inEvent) override;
-            std::vector<Component*> getChildrenFlat() const override;
 
         protected:
-            void appendHitPeripherals(std::vector<Component*>& outChildren) const override;
+            void refreshPeripherals();
 
         public:
             const Vec2& getScroll() const;
             Vec2 getScrollOffset() const override;
-            std::uint64_t getScrollGeneration() const override;
             Vec2 getScrollBarGutter() const override;
             Vec2 getScrollMax() const;
             void addScroll(const Vec2& inValue);
@@ -77,7 +75,6 @@ namespace Chicane
 
         protected:
             Vec2                m_currentPosition;
-            std::uint64_t       m_scrollGeneration;
 
             Vec2                m_virtualContentSize;
             bool                m_bHasVirtualContent;

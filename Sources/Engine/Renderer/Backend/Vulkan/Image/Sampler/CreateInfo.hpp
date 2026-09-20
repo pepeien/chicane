@@ -13,14 +13,14 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanImageSamplerCreateInfo
         {
         public:
-            std::uint32_t          mipLevels     = 1;
-            bool                   bAnisotropy   = false;
-            float                  maxAnisotropy = 1.0f;
+            std::uint32_t mipLevels     = 1;
+            bool          bAnisotropy   = false;
+            float         maxAnisotropy = 1.0f;
 
             vk::SamplerAddressMode addressMode;
             vk::BorderColor        borderColor;
 
-            vk::Device             logicalDevice;
+            vk::Device logicalDevice;
         };
     }
 }

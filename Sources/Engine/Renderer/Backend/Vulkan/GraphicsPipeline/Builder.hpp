@@ -233,45 +233,45 @@ namespace Chicane
 
         private:
             // Vertex Input
-            std::vector<vk::VertexInputBindingDescription>     m_vertexBindings;
-            std::vector<vk::VertexInputAttributeDescription>   m_vertexAttributes;
+            std::vector<vk::VertexInputBindingDescription>   m_vertexBindings;
+            std::vector<vk::VertexInputAttributeDescription> m_vertexAttributes;
 
             // Input Assembly
-            vk::PipelineInputAssemblyStateCreateInfo           m_inputAssemby;
+            vk::PipelineInputAssemblyStateCreateInfo m_inputAssemby;
 
             // Viewport
-            std::vector<vk::Viewport>                          m_viewports;
-            std::vector<vk::Rect2D>                            m_scissors;
+            std::vector<vk::Viewport> m_viewports;
+            std::vector<vk::Rect2D>   m_scissors;
 
             // Dynamic State
-            std::vector<vk::DynamicState>                      m_dynamicStates;
+            std::vector<vk::DynamicState> m_dynamicStates;
 
             // Shader Stage
-            std::vector<vk::PipelineShaderStageCreateInfo>     m_shaders;
+            std::vector<vk::PipelineShaderStageCreateInfo> m_shaders;
 
             // Rasterization
-            vk::PipelineRasterizationStateCreateInfo           m_rasterization;
+            vk::PipelineRasterizationStateCreateInfo m_rasterization;
 
             // Sampling
-            vk::PipelineMultisampleStateCreateInfo             m_multisample;
+            vk::PipelineMultisampleStateCreateInfo m_multisample;
 
             // Color Blending
             std::vector<vk::PipelineColorBlendAttachmentState> m_colorBlendings;
 
             // Depthning
-            vk::PipelineDepthStencilStateCreateInfo            m_depthStencil;
+            vk::PipelineDepthStencilStateCreateInfo m_depthStencil;
 
             // Renderpass
-            std::vector<vk::AttachmentDescription>             m_attachments;
-            std::vector<vk::SubpassDependency>                 m_subpassDepedencies;
-            std::vector<vk::SubpassDescription>                m_subpasses;
+            std::vector<vk::AttachmentDescription> m_attachments;
+            std::vector<vk::SubpassDependency>     m_subpassDepedencies;
+            std::vector<vk::SubpassDescription>    m_subpasses;
 
             // Layout
-            std::vector<vk::DescriptorSetLayout>               m_descriptorSetLayouts;
-            std::vector<vk::PushConstantRange>                 m_pushConstants;
+            std::vector<vk::DescriptorSetLayout> m_descriptorSetLayouts;
+            std::vector<vk::PushConstantRange>   m_pushConstants;
 
             // Optional shared render pass
-            vk::RenderPass                                     m_renderPass;
+            vk::RenderPass m_renderPass;
         };
     }
 }

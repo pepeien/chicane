@@ -40,17 +40,26 @@ namespace Chicane
             void tick(float inDelta) override;
 
         public:
+            // Window
             void post(const WindowEvent& inEvent);
             WindowCursor getPointer() const;
             void clearInteraction(Component* inComponent);
+
+            // Event
             void focusOn(Component* inComponent);
 
+            // Hierarchy
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
 
             // Styling
             const StyleFile& getStyleFile() const;
 
+            // Draw
+            void collectDrawables(std::vector<Component*>& outComponents);
+
         protected:
+            static void appendDrawables(Component* inComponent, std::vector<Component*>& outComponents);
+
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
             void handle(const WindowEvent& inEvent);
             void pump();
@@ -73,6 +82,8 @@ namespace Chicane
             Component*                      m_dragging;
             std::unique_ptr<ViewInputQueue> m_inputs;
             std::atomic<WindowCursor>       m_pointer;
+
+            std::vector<const Component*>   m_roundedAncestors;
         };
     }
 }

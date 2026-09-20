@@ -22,7 +22,7 @@ namespace Chicane
             vk::Format           format;
 
             // Devices
-            vk::Device           logicalDevice;
+            vk::Device logicalDevice;
         };
     }
 }

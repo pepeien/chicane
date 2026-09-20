@@ -14,10 +14,7 @@ namespace Chicane
     struct XmlDocument::Impl
     {
         pugi::xml_document document;
-    };
 
-    namespace
-    {
         struct Writer : pugi::xml_writer
         {
             std::string data;
@@ -27,16 +24,16 @@ namespace Chicane
                 data.append(static_cast<const char*>(inData), inSize);
             }
         };
+    };
 
-        pugi::xml_node asPugi(void* inNode)
-        {
-            return pugi::xml_node(static_cast<pugi::xml_node_struct*>(inNode));
-        }
+    static pugi::xml_node asPugi(void* inNode)
+    {
+        return pugi::xml_node(static_cast<pugi::xml_node_struct*>(inNode));
+    }
 
-        void* asHandle(const pugi::xml_node& inNode)
-        {
-            return inNode.internal_object();
-        }
+    static void* asHandle(const pugi::xml_node& inNode)
+    {
+        return inNode.internal_object();
     }
 
     XmlDocument::XmlDocument()
@@ -154,7 +151,7 @@ namespace Chicane
                                           ? FileSystem::resolve(inFilepath)
                                           : FileSystem::Path(std::filesystem::absolute(inFilepath));
 
-        Writer writer;
+        XmlDocument::Impl::Writer writer;
         m_impl->document.save(
             writer,
             "    ",

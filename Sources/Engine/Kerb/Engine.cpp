@@ -113,7 +113,7 @@ namespace Chicane
 
         void setupObjectLayerMatrix(JPH::ObjectLayerPairFilterTable& inTable)
         {
-            // WorldStatic / NonMoving collides with everything dynamic-ish, not other static.
+            // WorldStatic / NonMoving
             enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Moving);
             enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Pawn);
             enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::PhysicsBody);
@@ -134,7 +134,6 @@ namespace Chicane
             enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::PhysicsBody);
             enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Projectile);
             enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Trigger);
-            // Pawn ignores Debris (debris should not shove characters)
 
             // PhysicsBody
             enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::PhysicsBody);
@@ -146,7 +145,7 @@ namespace Chicane
             enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Trigger);
             enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Debris);
 
-            // Trigger overlaps/contacts most things; ignore other triggers
+            // Trigger
             enableLayerPair(inTable, ObjectLayer::Trigger, ObjectLayer::Debris);
         }
 

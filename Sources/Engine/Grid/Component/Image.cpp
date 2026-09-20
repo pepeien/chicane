@@ -27,7 +27,7 @@ namespace Chicane
         {
             Container::onRefresh();
 
-            if (!hasFlag(ComponentFlag::LaidOut) && !src.isEmpty() &&
+            if (!hasFlag(ComponentDirty::LaidOut) && !src.isEmpty() &&
                 !(m_load == Box::AssetLoad::Preview && !m_previewImage))
             {
                 return;

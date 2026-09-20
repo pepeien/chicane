@@ -460,18 +460,10 @@ namespace Chicane
                 return;
             }
 
-            const std::int32_t srcExtentX = static_cast<std::int32_t>(
-                std::max(1u, source->info.extent.width)
-            );
-            const std::int32_t srcExtentY = static_cast<std::int32_t>(
-                std::max(1u, source->info.extent.height)
-            );
-            const std::int32_t dstExtentX = static_cast<std::int32_t>(
-                std::max(1u, dest->info.extent.width)
-            );
-            const std::int32_t dstExtentY = static_cast<std::int32_t>(
-                std::max(1u, dest->info.extent.height)
-            );
+            const std::int32_t srcExtentX = static_cast<std::int32_t>(std::max(1u, source->info.extent.width));
+            const std::int32_t srcExtentY = static_cast<std::int32_t>(std::max(1u, source->info.extent.height));
+            const std::int32_t dstExtentX = static_cast<std::int32_t>(std::max(1u, dest->info.extent.width));
+            const std::int32_t dstExtentY = static_cast<std::int32_t>(std::max(1u, dest->info.extent.height));
 
             const std::int32_t srcX0 = std::clamp(inX, 0, srcExtentX);
             const std::int32_t srcY0 = std::clamp(inY, 0, srcExtentY);

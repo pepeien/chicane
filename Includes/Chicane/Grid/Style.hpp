@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <bitset>
 #include <unordered_map>
 #include <vector>
 
@@ -26,6 +28,8 @@
 #include "Chicane/Grid/Style/Overflow.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Property.hpp"
+#include "Chicane/Grid/Style/Property/Id.hpp"
+#include "Chicane/Grid/Style/Property/Table.hpp"
 #include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 #include "Chicane/Grid/Style/Size.hpp"
@@ -41,7 +45,9 @@ namespace Chicane
         struct CHICANE_GRID Style
         {
         public:
-            using Properties = std::unordered_map<String, std::vector<float>>;
+            using AnimatedValues = std::array<float, StylePropertyTable::VALUE_COUNT>;
+            using AnimatedMask   = std::bitset<StylePropertyTable::COUNT>;
+            using Transitions    = std::array<const StyleTransition*, StylePropertyTable::COUNT>;
 
         public:
             // Extension
@@ -373,49 +379,6 @@ namespace Chicane
                 "border-bottom-right-radius";
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
-            // Lists
-            static inline const std::vector<String> ANIMATABLE_PROPERTIES = {
-                OPACITY_ATTRIBUTE_NAME,
-                WIDTH_ATTRIBUTE_NAME,
-                HEIGHT_ATTRIBUTE_NAME,
-                MIN_WIDTH_ATTRIBUTE_NAME,
-                MIN_HEIGHT_ATTRIBUTE_NAME,
-                MAX_WIDTH_ATTRIBUTE_NAME,
-                MAX_HEIGHT_ATTRIBUTE_NAME,
-                Z_INDEX_ATTRIBUTE_NAME,
-                FOREGROUND_COLOR_ATTRIBUTE_NAME,
-                BACKGROUND_COLOR_ATTRIBUTE_NAME,
-                FONT_SIZE_ATTRIBUTE_NAME,
-                LETTER_SPACING_ATTRIBUTE_NAME,
-                FILTER_ATTRIBUTE_NAME,
-                BACKDROP_FILTER_ATTRIBUTE_NAME,
-                TRANSFORM_ATTRIBUTE_NAME,
-                TRANSLATE_ATTRIBUTE_NAME,
-                ROTATE_ATTRIBUTE_NAME,
-                SCALE_ATTRIBUTE_NAME,
-                TRANSFORM_ORIGIN_ATTRIBUTE_NAME,
-                MARGIN_TOP_ATTRIBUTE_NAME,
-                MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                MARGIN_LEFT_ATTRIBUTE_NAME,
-                MARGIN_RIGHT_ATTRIBUTE_NAME,
-                PADDING_TOP_ATTRIBUTE_NAME,
-                PADDING_BOTTOM_ATTRIBUTE_NAME,
-                PADDING_LEFT_ATTRIBUTE_NAME,
-                PADDING_RIGHT_ATTRIBUTE_NAME,
-                BORDER_TOP_WIDTH_ATTRIBUTE_NAME,
-                BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME,
-                BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME,
-                BORDER_LEFT_WIDTH_ATTRIBUTE_NAME,
-                BORDER_TOP_COLOR_ATTRIBUTE_NAME,
-                BORDER_RIGHT_COLOR_ATTRIBUTE_NAME,
-                BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME,
-                BORDER_LEFT_COLOR_ATTRIBUTE_NAME,
-                GAP_TOP_ATTRIBUTE_NAME,
-                GAP_BOTTOM_ATTRIBUTE_NAME,
-                GAP_LEFT_ATTRIBUTE_NAME,
-                GAP_RIGHT_ATTRIBUTE_NAME
-            };
-
         public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
@@ -444,11 +407,13 @@ namespace Chicane
             void snapshot();
             void restore();
 
-            Properties extractAnimatedProperties() const;
-            std::vector<float> extractAnimatedProperty(const String& inName) const;
-            void applyAnimatedProperty(const String& inName, const std::vector<float>& inValue);
-            const StyleTransition* findTransition(const String& inName) const;
-            const Properties& getSnapshot() const;
+            bool readAnimated(StylePropertyId inId, float* outValues) const;
+            void writeAnimated(StylePropertyId inId, const float* inValues);
+
+            const AnimatedValues& getSnapshotValues() const;
+            const AnimatedMask& getSnapshotMask() const;
+
+            const StyleTransition* findTransition(StylePropertyId inId) const;
 
             StyleTransform getTransform() const;
             Vec2 getTransformOrigin() const;
@@ -460,6 +425,9 @@ namespace Chicane
             void refresh();
 
         private:
+            static bool coversProperty(const String& inProperty, const String& inTarget);
+
+            void refreshTransitionLookup();
             bool canKeepFillPercent(SizeDirection inDirection) const;
             float preservedFillPercent(float inParsed, float inLaidOut) const;
             void refreshDisplay();
@@ -557,7 +525,9 @@ namespace Chicane
 
         private:
             const Component* m_parent;
-            Properties       m_snapshot;
+            AnimatedValues   m_snapshot;
+            AnimatedMask     m_snapshotMask;
+            Transitions      m_transitionLookup;
         };
 
         CHICANE_GRID std::vector<String> splitOneliner(const String& inValue);

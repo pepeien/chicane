@@ -59,18 +59,14 @@ namespace Chicane
             RHI::Device* device = m_backend->getRHIDevice();
 
             RHI::BufferCreateInfo vertex;
-            vertex.size           = std::min(
-                m_backend->getResourceBudget(Resource::SceneVertices), RESOURCE_MESH_INITIAL_BYTES
-            );
-            vertex.usage          = RHI::BufferUsage::Vertex;
+            vertex.size  = std::min(m_backend->getResourceBudget(Resource::SceneVertices), RESOURCE_MESH_INITIAL_BYTES);
+            vertex.usage = RHI::BufferUsage::Vertex;
             vertex.bHasHostAccess = false;
             modelVertexBuffer     = device->createBuffer(vertex);
 
             RHI::BufferCreateInfo index;
-            index.size           = std::min(
-                m_backend->getResourceBudget(Resource::SceneIndices), RESOURCE_MESH_INITIAL_BYTES
-            );
-            index.usage          = RHI::BufferUsage::Index;
+            index.size  = std::min(m_backend->getResourceBudget(Resource::SceneIndices), RESOURCE_MESH_INITIAL_BYTES);
+            index.usage = RHI::BufferUsage::Index;
             index.bHasHostAccess = false;
             modelIndexBuffer     = device->createBuffer(index);
         }

@@ -75,14 +75,14 @@ namespace Chicane
 
         public:
             // Device
-            vk::Device                              logicalDevice;
-            vk::PhysicalDevice                      physicalDevice;
-            VulkanAllocator*                        allocator = nullptr;
+            vk::Device         logicalDevice;
+            vk::PhysicalDevice physicalDevice;
+            VulkanAllocator*   allocator = nullptr;
 
             // Sychronization
-            vk::CommandBuffer                       commandBuffer;
-            vk::Semaphore                           imageAvailableSemaphore;
-            vk::Fence                               fence;
+            vk::CommandBuffer commandBuffer;
+            vk::Semaphore     imageAvailableSemaphore;
+            vk::Fence         fence;
 
             // Resource
             VulkanFrameResource<View>               cameraResource;
@@ -93,11 +93,11 @@ namespace Chicane
             VulkanFrameResource<DrawParticle>       particleResource;
 
             // Descriptor
-            DescriptorSets                          descriptorSets;
-            WriteDescriptorSets                     descriptorSetWrites;
+            DescriptorSets      descriptorSets;
+            WriteDescriptorSets descriptorSetWrites;
 
             // Swapchain
-            VulkanSwapchainImage                    image = {};
+            VulkanSwapchainImage image = {};
         };
     }
 }

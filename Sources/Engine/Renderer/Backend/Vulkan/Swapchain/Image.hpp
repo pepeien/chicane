@@ -50,21 +50,21 @@ namespace Chicane
 
         public:
             // Device
-            vk::Device                                  logicalDevice;
-            vk::PhysicalDevice                          physicalDevice;
-            VulkanAllocator*                            allocator = nullptr;
+            vk::Device         logicalDevice;
+            vk::PhysicalDevice physicalDevice;
+            VulkanAllocator*   allocator = nullptr;
 
             // Image
-            VulkanImageInfo                             colorImage;
-            VulkanImageInfo                             targetImage;
-            VulkanImageInfo                             depthImage;
-            VulkanBloom                                 bloom;
+            VulkanImageInfo colorImage;
+            VulkanImageInfo targetImage;
+            VulkanImageInfo depthImage;
+            VulkanBloom     bloom;
 
             // Buffer
             std::unordered_map<String, vk::Framebuffer> framebuffers;
 
             // Sychronization
-            vk::Semaphore                               renderFineshedSemaphore;
+            vk::Semaphore renderFineshedSemaphore;
         };
     }
 }

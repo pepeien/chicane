@@ -6,17 +6,14 @@
 
 namespace Chicane
 {
-    namespace
+    static pugi::xml_node asPugi(void* inNode)
     {
-        pugi::xml_node asPugi(void* inNode)
-        {
-            return pugi::xml_node(static_cast<pugi::xml_node_struct*>(inNode));
-        }
+        return pugi::xml_node(static_cast<pugi::xml_node_struct*>(inNode));
+    }
 
-        void* asHandle(const pugi::xml_node& inNode)
-        {
-            return inNode.internal_object();
-        }
+    static void* asHandle(const pugi::xml_node& inNode)
+    {
+        return inNode.internal_object();
     }
 
     XmlNode::XmlNode()

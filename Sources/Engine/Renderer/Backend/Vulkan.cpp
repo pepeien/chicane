@@ -427,7 +427,12 @@ namespace Chicane
         void VulkanBackend::buildSwapchain()
         {
             if (!VulkanSwapchain::init(
-                    swapchain, physicalDevice, logicalDevice, surface, {}, getSwapchainFallbackExtent()
+                    swapchain,
+                    physicalDevice,
+                    logicalDevice,
+                    surface,
+                    {},
+                    getSwapchainFallbackExtent()
                 ))
             {
                 throw std::runtime_error("Failed to create the swapchain");
@@ -477,7 +482,12 @@ namespace Chicane
 
             VulkanSwapchainBundle next = {};
             if (!VulkanSwapchain::init(
-                    next, physicalDevice, logicalDevice, surface, swapchain.instance, getSwapchainFallbackExtent()
+                    next,
+                    physicalDevice,
+                    logicalDevice,
+                    surface,
+                    swapchain.instance,
+                    getSwapchainFallbackExtent()
                 ))
             {
                 return;

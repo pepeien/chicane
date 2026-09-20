@@ -4,206 +4,202 @@
 #include <cmath>
 #include <cstdint>
 
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace
+        String toHexRgb(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB)
         {
-            constexpr float kEpsilon = 0.0001f;
+            return String::sprint("#%02X%02X%02X", inR, inG, inB);
+        }
 
-            String toHexRgb(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB)
+        std::uint8_t toByte(float inValue)
+        {
+            return static_cast<std::uint8_t>(std::round(std::clamp(inValue, 0.0f, 1.0f) * 255.0f));
+        }
+
+        String formatInt(float inValue)
+        {
+            return String::sprint("%d", static_cast<int>(std::round(inValue)));
+        }
+
+        void rgbToHsv(float inR, float inG, float inB, float& outH, float& outS, float& outV)
+        {
+            const float max   = std::max(inR, std::max(inG, inB));
+            const float min   = std::min(inR, std::min(inG, inB));
+            const float delta = max - min;
+
+            outV = max;
+            outS = max <= Math::EPSILON ? 0.0f : delta / max;
+
+            if (delta <= Math::EPSILON)
             {
-                return String::sprint("#%02X%02X%02X", inR, inG, inB);
+                outH = 0.0f;
+
+                return;
             }
 
-            std::uint8_t toByte(float inValue)
+            if (max == inR)
             {
-                return static_cast<std::uint8_t>(std::round(std::clamp(inValue, 0.0f, 1.0f) * 255.0f));
+                outH = std::fmod((inG - inB) / delta, 6.0f);
+            }
+            else if (max == inG)
+            {
+                outH = (inB - inR) / delta + 2.0f;
+            }
+            else
+            {
+                outH = (inR - inG) / delta + 4.0f;
             }
 
-            String formatInt(float inValue)
+            outH *= 60.0f;
+            if (outH < 0.0f)
             {
-                return String::sprint("%d", static_cast<int>(std::round(inValue)));
+                outH += 360.0f;
+            }
+        }
+
+        void hsvToRgb(float inH, float inS, float inV, float& outR, float& outG, float& outB)
+        {
+            const float s = std::clamp(inS, 0.0f, 1.0f);
+            const float v = std::clamp(inV, 0.0f, 1.0f);
+            const float c = v * s;
+            const float x = c * (1.0f - std::fabs(std::fmod(inH / 60.0f, 2.0f) - 1.0f));
+            const float m = v - c;
+
+            float r = 0.0f;
+            float g = 0.0f;
+            float b = 0.0f;
+
+            if (inH < 60.0f)
+            {
+                r = c;
+                g = x;
+            }
+            else if (inH < 120.0f)
+            {
+                r = x;
+                g = c;
+            }
+            else if (inH < 180.0f)
+            {
+                g = c;
+                b = x;
+            }
+            else if (inH < 240.0f)
+            {
+                g = x;
+                b = c;
+            }
+            else if (inH < 300.0f)
+            {
+                r = x;
+                b = c;
+            }
+            else
+            {
+                r = c;
+                b = x;
             }
 
-            void rgbToHsv(float inR, float inG, float inB, float& outH, float& outS, float& outV)
+            outR = r + m;
+            outG = g + m;
+            outB = b + m;
+        }
+
+        void rgbToHsl(float inR, float inG, float inB, float& outH, float& outS, float& outL)
+        {
+            const float max   = std::max(inR, std::max(inG, inB));
+            const float min   = std::min(inR, std::min(inG, inB));
+            const float delta = max - min;
+
+            outL = (max + min) * 0.5f;
+
+            if (delta <= Math::EPSILON)
             {
-                const float max   = std::max(inR, std::max(inG, inB));
-                const float min   = std::min(inR, std::min(inG, inB));
-                const float delta = max - min;
+                outH = 0.0f;
+                outS = 0.0f;
 
-                outV = max;
-                outS = max <= kEpsilon ? 0.0f : delta / max;
-
-                if (delta <= kEpsilon)
-                {
-                    outH = 0.0f;
-
-                    return;
-                }
-
-                if (max == inR)
-                {
-                    outH = std::fmod((inG - inB) / delta, 6.0f);
-                }
-                else if (max == inG)
-                {
-                    outH = (inB - inR) / delta + 2.0f;
-                }
-                else
-                {
-                    outH = (inR - inG) / delta + 4.0f;
-                }
-
-                outH *= 60.0f;
-                if (outH < 0.0f)
-                {
-                    outH += 360.0f;
-                }
+                return;
             }
 
-            void hsvToRgb(float inH, float inS, float inV, float& outR, float& outG, float& outB)
+            outS = outL > 0.5f ? delta / (2.0f - max - min) : delta / (max + min);
+
+            if (max == inR)
             {
-                const float s = std::clamp(inS, 0.0f, 1.0f);
-                const float v = std::clamp(inV, 0.0f, 1.0f);
-                const float c = v * s;
-                const float x = c * (1.0f - std::fabs(std::fmod(inH / 60.0f, 2.0f) - 1.0f));
-                const float m = v - c;
-
-                float r = 0.0f;
-                float g = 0.0f;
-                float b = 0.0f;
-
-                if (inH < 60.0f)
-                {
-                    r = c;
-                    g = x;
-                }
-                else if (inH < 120.0f)
-                {
-                    r = x;
-                    g = c;
-                }
-                else if (inH < 180.0f)
-                {
-                    g = c;
-                    b = x;
-                }
-                else if (inH < 240.0f)
-                {
-                    g = x;
-                    b = c;
-                }
-                else if (inH < 300.0f)
-                {
-                    r = x;
-                    b = c;
-                }
-                else
-                {
-                    r = c;
-                    b = x;
-                }
-
-                outR = r + m;
-                outG = g + m;
-                outB = b + m;
+                outH = std::fmod((inG - inB) / delta, 6.0f);
+            }
+            else if (max == inG)
+            {
+                outH = (inB - inR) / delta + 2.0f;
+            }
+            else
+            {
+                outH = (inR - inG) / delta + 4.0f;
             }
 
-            void rgbToHsl(float inR, float inG, float inB, float& outH, float& outS, float& outL)
+            outH *= 60.0f;
+            if (outH < 0.0f)
             {
-                const float max   = std::max(inR, std::max(inG, inB));
-                const float min   = std::min(inR, std::min(inG, inB));
-                const float delta = max - min;
+                outH += 360.0f;
+            }
+        }
 
-                outL = (max + min) * 0.5f;
-
-                if (delta <= kEpsilon)
-                {
-                    outH = 0.0f;
-                    outS = 0.0f;
-
-                    return;
-                }
-
-                outS = outL > 0.5f ? delta / (2.0f - max - min) : delta / (max + min);
-
-                if (max == inR)
-                {
-                    outH = std::fmod((inG - inB) / delta, 6.0f);
-                }
-                else if (max == inG)
-                {
-                    outH = (inB - inR) / delta + 2.0f;
-                }
-                else
-                {
-                    outH = (inR - inG) / delta + 4.0f;
-                }
-
-                outH *= 60.0f;
-                if (outH < 0.0f)
-                {
-                    outH += 360.0f;
-                }
+        float hueToRgb(float inP, float inQ, float inT)
+        {
+            float t = inT;
+            if (t < 0.0f)
+            {
+                t += 1.0f;
             }
 
-            float hueToRgb(float inP, float inQ, float inT)
+            if (t > 1.0f)
             {
-                float t = inT;
-                if (t < 0.0f)
-                {
-                    t += 1.0f;
-                }
-
-                if (t > 1.0f)
-                {
-                    t -= 1.0f;
-                }
-
-                if (t < 1.0f / 6.0f)
-                {
-                    return inP + (inQ - inP) * 6.0f * t;
-                }
-
-                if (t < 0.5f)
-                {
-                    return inQ;
-                }
-
-                if (t < 2.0f / 3.0f)
-                {
-                    return inP + (inQ - inP) * (2.0f / 3.0f - t) * 6.0f;
-                }
-
-                return inP;
+                t -= 1.0f;
             }
 
-            void hslToRgb(float inH, float inS, float inL, float& outR, float& outG, float& outB)
+            if (t < 1.0f / 6.0f)
             {
-                const float s = std::clamp(inS, 0.0f, 1.0f);
-                const float l = std::clamp(inL, 0.0f, 1.0f);
-
-                if (s <= kEpsilon)
-                {
-                    outR = l;
-                    outG = l;
-                    outB = l;
-
-                    return;
-                }
-
-                const float q  = l < 0.5f ? l * (1.0f + s) : l + s - l * s;
-                const float p  = 2.0f * l - q;
-                const float hk = inH / 360.0f;
-
-                outR = hueToRgb(p, q, hk + 1.0f / 3.0f);
-                outG = hueToRgb(p, q, hk);
-                outB = hueToRgb(p, q, hk - 1.0f / 3.0f);
+                return inP + (inQ - inP) * 6.0f * t;
             }
+
+            if (t < 0.5f)
+            {
+                return inQ;
+            }
+
+            if (t < 2.0f / 3.0f)
+            {
+                return inP + (inQ - inP) * (2.0f / 3.0f - t) * 6.0f;
+            }
+
+            return inP;
+        }
+
+        void hslToRgb(float inH, float inS, float inL, float& outR, float& outG, float& outB)
+        {
+            const float s = std::clamp(inS, 0.0f, 1.0f);
+            const float l = std::clamp(inL, 0.0f, 1.0f);
+
+            if (s <= Math::EPSILON)
+            {
+                outR = l;
+                outG = l;
+                outB = l;
+
+                return;
+            }
+
+            const float q  = l < 0.5f ? l * (1.0f + s) : l + s - l * s;
+            const float p  = 2.0f * l - q;
+            const float hk = inH / 360.0f;
+
+            outR = hueToRgb(p, q, hk + 1.0f / 3.0f);
+            outG = hueToRgb(p, q, hk);
+            outB = hueToRgb(p, q, hk - 1.0f / 3.0f);
         }
 
         InputColor::InputColor(const XmlNode& inNode)
@@ -526,7 +522,7 @@ namespace Chicane
             float hsvV = 0.0f;
             rgbToHsv(r, g, b, hsvH, hsvS, hsvV);
 
-            if ((isHsv ? hsvS : hslS) > kEpsilon)
+            if ((isHsv ? hsvS : hslS) > Math::EPSILON)
             {
                 hue        = isHsv ? hsvH : hslH;
                 saturation = (isHsv ? hsvS : hslS) * 100.0f;

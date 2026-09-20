@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
@@ -25,6 +26,11 @@ namespace Chicane
             bool hasGlyph() const;
 
             void clear();
+            void seal();
+
+            const std::shared_ptr<const Vertex::List>& getSharedVertices() const;
+            const std::shared_ptr<const Vertex::Indices>& getSharedIndices() const;
+            const std::shared_ptr<const std::vector<Vec2>>& getSharedOutline() const;
 
         public:
             String            reference  = String::empty();
@@ -35,6 +41,11 @@ namespace Chicane
             Vec2              outlineMin = Vec2::Zero();
             Vec2              outlineMax = Vec2::Zero();
             std::vector<Vec2> outline    = {};
+
+        private:
+            std::shared_ptr<const Vertex::List>      m_sharedVertices = nullptr;
+            std::shared_ptr<const Vertex::Indices>   m_sharedIndices  = nullptr;
+            std::shared_ptr<const std::vector<Vec2>> m_sharedOutline  = nullptr;
         };
     }
 }

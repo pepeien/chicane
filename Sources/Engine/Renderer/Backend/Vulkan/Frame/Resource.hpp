@@ -67,7 +67,7 @@ namespace Chicane
 
         private:
             // Status
-            bool         m_bIsDirty = true;
+            bool m_bIsDirty = true;
 
             // Memory
             std::size_t  m_allocationSize = 0;

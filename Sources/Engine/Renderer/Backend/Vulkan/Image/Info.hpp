@@ -16,14 +16,14 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanImageInfo
         {
         public:
-            vk::Image           instance   = nullptr;
-            vk::ImageView       view       = nullptr;
-            vk::DeviceMemory    memory     = nullptr;
-            vk::Sampler         sampler    = nullptr;
-            vk::Format          format     = vk::Format::eUndefined;
-            vk::Extent2D        extent     = {};
-            VmaAllocator_T*     allocator  = nullptr;
-            VmaAllocation_T*    allocation = nullptr;
+            vk::Image        instance   = nullptr;
+            vk::ImageView    view       = nullptr;
+            vk::DeviceMemory memory     = nullptr;
+            vk::Sampler      sampler    = nullptr;
+            vk::Format       format     = vk::Format::eUndefined;
+            vk::Extent2D     extent     = {};
+            VmaAllocator_T*  allocator  = nullptr;
+            VmaAllocation_T* allocation = nullptr;
         };
     }
 }

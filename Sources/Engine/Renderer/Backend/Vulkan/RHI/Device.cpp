@@ -175,14 +175,14 @@ namespace Chicane
             if (inOffset + inSize > data->size)
             {
                 VulkanBufferCreateInfo info;
-                info.logicalDevice    = m_backend->logicalDevice;
-                info.physicalDevice   = m_backend->physicalDevice;
-                info.allocator        = &m_backend->allocator;
-                info.size             = std::max(inOffset + inSize, data->size * 2);
-                info.usage            = data->usage;
-                info.memoryProperties = data->bHost
-                                            ? vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent
-                                            : vk::MemoryPropertyFlagBits::eDeviceLocal;
+                info.logicalDevice  = m_backend->logicalDevice;
+                info.physicalDevice = m_backend->physicalDevice;
+                info.allocator      = &m_backend->allocator;
+                info.size           = std::max(inOffset + inSize, data->size * 2);
+                info.usage          = data->usage;
+                info.memoryProperties =
+                    data->bHost ? vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent
+                                : vk::MemoryPropertyFlagBits::eDeviceLocal;
 
                 VulkanBuffer grown;
                 grown.init(info);
@@ -354,11 +354,11 @@ namespace Chicane
                 static_cast<std::size_t>(inWidth) * inHeight * (data->format == RHI::ImageFormat::RGBA16F ? 8u : 4u);
 
             VulkanBufferCreateInfo info;
-            info.logicalDevice    = m_backend->logicalDevice;
-            info.physicalDevice   = m_backend->physicalDevice;
-            info.allocator        = &m_backend->allocator;
-            info.size             = size;
-            info.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+            info.logicalDevice  = m_backend->logicalDevice;
+            info.physicalDevice = m_backend->physicalDevice;
+            info.allocator      = &m_backend->allocator;
+            info.size           = size;
+            info.usage          = vk::BufferUsageFlagBits::eTransferSrc;
             info.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             VulkanBuffer staging;
@@ -695,8 +695,7 @@ namespace Chicane
                                           ? vk::FrontFace::eClockwise
                                           : vk::FrontFace::eCounterClockwise;
             rasterization.lineWidth = 1.0f;
-            if (inCreateInfo.fill == RHI::FillMode::Line ||
-                inCreateInfo.topology == RHI::PrimitiveTopology::LineList)
+            if (inCreateInfo.fill == RHI::FillMode::Line || inCreateInfo.topology == RHI::PrimitiveTopology::LineList)
             {
                 rasterization.depthBiasEnable         = VK_TRUE;
                 rasterization.depthBiasConstantFactor = -1.25f;

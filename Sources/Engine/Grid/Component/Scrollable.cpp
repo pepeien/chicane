@@ -20,7 +20,6 @@ namespace Chicane
         Scrollable::Scrollable(const XmlNode& inNode)
             : Component(inNode),
               m_currentPosition(Vec2::Zero()),
-              m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
               m_bReserveHorizontalBar(false),
@@ -32,7 +31,6 @@ namespace Chicane
         Scrollable::Scrollable(const String& inTag)
             : Component(inTag),
               m_currentPosition(Vec2::Zero()),
-              m_scrollGeneration(0),
               m_virtualContentSize(Vec2::Zero()),
               m_bHasVirtualContent(false),
               m_bReserveHorizontalBar(false),
@@ -55,7 +53,7 @@ namespace Chicane
 
             Component::tick(inDelta);
 
-            if (!hasFlag(ComponentFlag::LaidOut) && previous.x == m_currentPosition.x &&
+            if (!hasFlag(ComponentDirty::LaidOut) && previous.x == m_currentPosition.x &&
                 previous.y == m_currentPosition.y)
             {
                 return;
@@ -67,7 +65,7 @@ namespace Chicane
 
             if (m_currentPosition.x != beforeClamp.x || m_currentPosition.y != beforeClamp.y)
             {
-                m_scrollGeneration++;
+                markPaintDirtySubtree();
             }
 
             refreshScrollBars();
@@ -153,19 +151,13 @@ namespace Chicane
             return true;
         }
 
-        std::vector<Component*> Scrollable::getChildrenFlat() const
+        void Scrollable::refreshPeripherals()
         {
-            std::vector<Component*> result = Component::getChildrenFlat();
+            std::vector<Component*> peripherals;
+            m_verticalBar.append(peripherals);
+            m_horizontalBar.append(peripherals);
 
-            appendHitPeripherals(result);
-
-            return result;
-        }
-
-        void Scrollable::appendHitPeripherals(std::vector<Component*>& outChildren) const
-        {
-            m_verticalBar.append(outChildren);
-            m_horizontalBar.append(outChildren);
+            setPeripherals(peripherals);
         }
 
         const Vec2& Scrollable::getScroll() const
@@ -176,11 +168,6 @@ namespace Chicane
         Vec2 Scrollable::getScrollOffset() const
         {
             return m_currentPosition;
-        }
-
-        std::uint64_t Scrollable::getScrollGeneration() const
-        {
-            return m_scrollGeneration;
         }
 
         Vec2 Scrollable::getScrollBarGutter() const
@@ -247,7 +234,7 @@ namespace Chicane
                 return;
             }
 
-            m_scrollGeneration++;
+            markPaintDirtySubtree();
             refreshScrollBars();
         }
 
@@ -649,13 +636,13 @@ namespace Chicane
             if (!inBar.trackBar)
             {
                 inBar.trackBar = makePart();
-                markFlatDirty();
+                refreshPeripherals();
             }
 
             if (!inBar.thumbBar)
             {
                 inBar.thumbBar = makePart();
-                markFlatDirty();
+                refreshPeripherals();
             }
         }
 

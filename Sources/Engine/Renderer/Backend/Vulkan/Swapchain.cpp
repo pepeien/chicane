@@ -76,9 +76,7 @@ namespace Chicane
                 outPresentMode = vk::PresentModeKHR::eFifo;
             }
 
-            vk::Extent2D chooseExtent(
-                const vk::SurfaceCapabilitiesKHR& inCapabilities, const vk::Extent2D& inFallback
-            )
+            vk::Extent2D chooseExtent(const vk::SurfaceCapabilitiesKHR& inCapabilities, const vk::Extent2D& inFallback)
             {
                 if (inCapabilities.currentExtent.width != std::numeric_limits<std::uint32_t>::max() &&
                     inCapabilities.currentExtent.height != std::numeric_limits<std::uint32_t>::max())
@@ -130,7 +128,7 @@ namespace Chicane
                 const vk::Extent2D&       inFallbackExtent
             )
             {
-                VulkanQueueFamilyIndices familyIndices(inPhysicalDevice, inSurface);
+                VulkanQueueFamilyIndices           familyIndices(inPhysicalDevice, inSurface);
                 const std::array<std::uint32_t, 2> queueFamilyIndices = {
                     familyIndices.graphicsFamily.value(),
                     familyIndices.presentFamily.value()

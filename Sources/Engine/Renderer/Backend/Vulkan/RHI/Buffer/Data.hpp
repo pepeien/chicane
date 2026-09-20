@@ -10,12 +10,12 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanRHIBufferData
         {
         public:
-            VulkanBuffer   buffer     = {};
-            vk::DeviceSize size       = 0;
-            vk::BufferUsageFlags usage = {};
-            bool           bHost      = false;
-            bool           bOwned     = true;
-            void*          mapped     = nullptr;
+            VulkanBuffer         buffer = {};
+            vk::DeviceSize       size   = 0;
+            vk::BufferUsageFlags usage  = {};
+            bool                 bHost  = false;
+            bool                 bOwned = true;
+            void*                mapped = nullptr;
         };
     }
 }

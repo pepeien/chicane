@@ -62,14 +62,14 @@ namespace Chicane
             std::uint64_t commandKey(vk::CommandBuffer inCommandBuffer) const;
 
         private:
-            VulkanRHIDevice*                                                    m_device;
-            vk::CommandBuffer                                                   m_commands    = nullptr;
-            VulkanRHIPipelineData*                                              m_pipeline    = nullptr;
-            bool                                                                m_bInPass     = false;
-            vk::RenderPass                                                      m_pass        = nullptr;
-            vk::Framebuffer                                                     m_framebuffer = nullptr;
-            VulkanRHIImageData*                                                 m_passColor   = nullptr;
-            VulkanRHIImageData*                                                 m_passDepth   = nullptr;
+            VulkanRHIDevice*                                                     m_device;
+            vk::CommandBuffer                                                    m_commands    = nullptr;
+            VulkanRHIPipelineData*                                               m_pipeline    = nullptr;
+            bool                                                                 m_bInPass     = false;
+            vk::RenderPass                                                       m_pass        = nullptr;
+            vk::Framebuffer                                                      m_framebuffer = nullptr;
+            VulkanRHIImageData*                                                  m_passColor   = nullptr;
+            VulkanRHIImageData*                                                  m_passDepth   = nullptr;
             std::unordered_map<std::uint64_t, std::vector<VulkanRHIPassObjects>> m_retiredPasses;
         };
     }

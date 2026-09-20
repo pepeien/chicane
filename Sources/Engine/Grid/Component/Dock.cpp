@@ -32,6 +32,8 @@ namespace Chicane
             importStyleFile("Assets/Engine/UI/Components/Dock.decal");
 
             m_drop->setParent(this);
+
+            refreshPeripherals();
         }
 
         Dock::~Dock()
@@ -120,21 +122,16 @@ namespace Chicane
             refreshDrop();
         }
 
-        std::vector<Component*> Dock::getChildrenFlat() const
+        void Dock::refreshPeripherals()
         {
-            std::vector<Component*> result = Component::getChildrenFlat();
+            std::vector<Component*> peripherals;
 
-            appendHitPeripherals(result);
-
-            return result;
-        }
-
-        void Dock::appendHitPeripherals(std::vector<Component*>& outChildren) const
-        {
             if (m_drop)
             {
-                outChildren.push_back(m_drop);
+                peripherals.push_back(m_drop);
             }
+
+            setPeripherals(peripherals);
         }
 
         const DockRegion* Dock::findRegion(const DockPanel* inPanel) const

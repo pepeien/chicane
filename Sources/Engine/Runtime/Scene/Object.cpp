@@ -19,90 +19,87 @@
 
 namespace Chicane
 {
-    namespace
+    static String typeTail(const String& inName)
     {
-        String typeTail(const String& inName)
+        const std::size_t split = inName.lastOf(':');
+        if (split == String::npos)
         {
-            const std::size_t split = inName.lastOf(':');
-            if (split == String::npos)
-            {
-                return inName;
-            }
-
-            return inName.substr(split + 1);
+            return inName;
         }
 
-        const ReflectionEnumInfo* findEnum(const String& inTypeName)
-        {
-            ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
-            if (const ReflectionEnumInfo* found = registry.find(inTypeName))
-            {
-                return found;
-            }
+        return inName.substr(split + 1);
+    }
 
-            return registry.find(typeTail(inTypeName));
+    static const ReflectionEnumInfo* findEnum(const String& inTypeName)
+    {
+        ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
+        if (const ReflectionEnumInfo* found = registry.find(inTypeName))
+        {
+            return found;
         }
 
-        void writeEnumValue(void* inAddress, std::size_t inSize, int inValue)
+        return registry.find(typeTail(inTypeName));
+    }
+
+    static void writeEnumValue(void* inAddress, std::size_t inSize, int inValue)
+    {
+        if (!inAddress)
         {
-            if (!inAddress)
-            {
-                return;
-            }
-
-            switch (inSize)
-            {
-            case 1:
-                *static_cast<std::uint8_t*>(inAddress) = static_cast<std::uint8_t>(inValue);
-                break;
-
-            case 2:
-                *static_cast<std::uint16_t*>(inAddress) = static_cast<std::uint16_t>(inValue);
-                break;
-
-            case 4:
-                *static_cast<int*>(inAddress) = inValue;
-                break;
-
-            default:
-                break;
-            }
+            return;
         }
 
-        bool applyEnum(const ReflectionFieldAccessor& inAccessor, void* inInstance, const String& inValue)
+        switch (inSize)
         {
-            const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
-            if (!info)
-            {
-                return false;
-            }
+        case 1:
+            *static_cast<std::uint8_t*>(inAddress) = static_cast<std::uint8_t>(inValue);
+            break;
 
-            for (const ReflectionEnumeratorInfo& enumerator : info->enumerators)
-            {
-                if (!enumerator.name.equals(inValue) && !typeTail(enumerator.name).equals(inValue))
-                {
-                    continue;
-                }
+        case 2:
+            *static_cast<std::uint16_t*>(inAddress) = static_cast<std::uint16_t>(inValue);
+            break;
 
-                writeEnumValue(inAccessor.address(inInstance), inAccessor.size, enumerator.value);
+        case 4:
+            *static_cast<int*>(inAddress) = inValue;
+            break;
 
-                return true;
-            }
+        default:
+            break;
+        }
+    }
 
+    static bool applyEnum(const ReflectionFieldAccessor& inAccessor, void* inInstance, const String& inValue)
+    {
+        const ReflectionEnumInfo* info = findEnum(inAccessor.typeName);
+        if (!info)
+        {
             return false;
         }
 
-        bool isTransformAttribute(const String& inName)
+        for (const ReflectionEnumeratorInfo& enumerator : info->enumerators)
         {
-            return inName.equals(
-                Object::RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
-                Object::RELATIVE_ROTATION_ATTRIBUTE_NAME,
-                Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
-                Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
-                Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-                Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
-            );
+            if (!enumerator.name.equals(inValue) && !typeTail(enumerator.name).equals(inValue))
+            {
+                continue;
+            }
+
+            writeEnumValue(inAccessor.address(inInstance), inAccessor.size, enumerator.value);
+
+            return true;
         }
+
+        return false;
+    }
+
+    static bool isTransformAttribute(const String& inName)
+    {
+        return inName.equals(
+            Object::RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+            Object::RELATIVE_ROTATION_ATTRIBUTE_NAME,
+            Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
+            Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+            Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
+        );
     }
 
     Object::Object()

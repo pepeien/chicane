@@ -115,7 +115,7 @@ namespace Editor
 
         refreshState();
         refreshPosition();
-        invalidateDrawCache();
+        markPaintDirty();
         setCulled(false);
 
         if (inShouldRestyle || previousKind != kind || !previousType.equals(typeClass))
@@ -183,7 +183,7 @@ namespace Editor
         refreshState();
         restyleChildren();
         moveGhost(inPointer);
-        invalidateDrawCache();
+        markPaintDirty();
         setCulled(false);
         markLayoutDirty();
     }
@@ -198,7 +198,7 @@ namespace Editor
         m_pointer = inPointer;
         setPosition(m_pointer.x - m_grab.x, m_pointer.y - m_grab.y);
         addCursor(m_style.insetLeft(), m_style.insetTop());
-        invalidateDrawCache();
+        markPaintDirty();
         markLayoutDirty();
     }
 
@@ -222,7 +222,7 @@ namespace Editor
 
         refreshState();
         restyleChildren();
-        invalidateDrawCache();
+        markPaintDirty();
         markLayoutDirty();
     }
 

@@ -274,6 +274,7 @@ namespace Chicane
           m_view(nullptr),
           m_viewThread({}),
           m_viewCommandBuffers({}),
+          m_viewDrawables({}),
           m_viewWriteIndex(0),
           m_viewReadIndex(1),
           m_screenViewportX(0),
@@ -1126,6 +1127,8 @@ namespace Chicane
 
     void Application::tickUI()
     {
+        Time::Point lastTick = Time::Clock::now();
+
         while (m_bIsRunning)
         {
             Box::pumpPreview();
@@ -1134,17 +1137,23 @@ namespace Chicane
 
             if (!view)
             {
+                lastTick = Time::Clock::now();
                 std::this_thread::yield();
 
                 continue;
             }
+
+            const Time::Point now   = Time::Clock::now();
+            const float       delta = std::min(Time::miliseconds(now - lastTick), 100.0f);
+            lastTick                = now;
 
             {
                 m_telemetry.ui.start();
 
                 view->setSize(getRendererResolution());
 
-                view->tick(m_telemetry.ui.frame.delta);
+                view->tick(delta);
+
                 snapshotScreenViewport(view);
 
                 buildUICommands(view);
@@ -1223,22 +1232,13 @@ namespace Chicane
 
         const Vec2& viewSize = inView->getSize();
 
-        std::vector<Grid::Component*> components;
-        components.push_back(inView.get());
+        inView->collectDrawables(m_viewDrawables);
 
-        const std::vector<Grid::Component*> children = inView->getChildrenFlat();
-        components.insert(components.end(), children.begin(), children.end());
-
-        for (Grid::Component* component : components)
+        for (Grid::Component* component : m_viewDrawables)
         {
-            if (!component->isDrawable())
-            {
-                continue;
-            }
-
-            const Bounds2D clip = component->getOverflowClip();
-            Bounds2D       draw = component->getDrawBounds();
-            const float    blur = component->getFilterBlur();
+            const Bounds2D& clip = component->getOverflowClip();
+            Bounds2D        draw = component->getDrawBounds();
+            const float     blur = component->getFilterBlur();
 
             if (blur > 0.0f)
             {
@@ -1263,13 +1263,13 @@ namespace Chicane
             const Vec3             mapped       = paint * Vec3(visualCenter.x, visualCenter.y, 1.0f);
 
             Renderer::DrawPoly2DCommandFill subcommand;
-            subcommand.polygon.reference = primitive.reference;
-            subcommand.polygon.vertices  = primitive.vertices;
-            subcommand.polygon.indices   = primitive.indices;
-            subcommand.instance.view     = viewSize;
-            subcommand.instance.scale    = component->getScale();
-            subcommand.instance.size     = size;
-            subcommand.instance.offset   = Vec2::Zero();
+            subcommand.polygon         = primitive.reference;
+            subcommand.vertices        = primitive.getSharedVertices();
+            subcommand.indices         = primitive.getSharedIndices();
+            subcommand.instance.view   = viewSize;
+            subcommand.instance.scale  = component->getScale();
+            subcommand.instance.size   = size;
+            subcommand.instance.offset = Vec2::Zero();
             subcommand.instance
                 .position = {mapped.x - (size.x * 0.5f), mapped.y - (size.y * 0.5f), component->getDepth()};
             subcommand.instance.transformX = {paint[0][0], paint[0][1]};
@@ -1287,25 +1287,14 @@ namespace Chicane
             const String backgroundImage = style.background.image.getRaw();
             const bool   bImageGradient  = Grid::StyleGradient::isDeclaration(backgroundImage);
 
-            if (!backgroundImage.isEmpty() && !bImageGradient)
-            {
-                subcommand.instance.texture = m_renderer->findTexture(backgroundImage);
+            subcommand.bHasTexture = !backgroundImage.isEmpty() && !bImageGradient;
+            subcommand.texture     = subcommand.bHasTexture ? backgroundImage : Renderer::Draw::InvalidReference;
 
-                if (subcommand.instance.texture <= Renderer::Draw::InvalidId)
-                {
-                    subcommand.instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
-                }
-            }
-            subcommand.instance.glyph = m_renderer->findGlyph(primitive.glyph);
-            if (subcommand.instance.glyph <= Renderer::Draw::InvalidId && !primitive.outline.empty())
-            {
-                Renderer::DrawGlyphData data;
-                data.reference            = primitive.glyph;
-                data.boundsMin            = primitive.outlineMin;
-                data.boundsMax            = primitive.outlineMax;
-                data.points               = primitive.outline;
-                subcommand.instance.glyph = m_renderer->loadGlyph(data);
-            }
+            subcommand.glyph        = primitive.glyph;
+            subcommand.glyphOutline = primitive.getSharedOutline();
+            subcommand.glyphMin     = primitive.outlineMin;
+            subcommand.glyphMax     = primitive.outlineMax;
+
             subcommand.instance.dilation     = primitive.dilation;
             subcommand.instance.filterBlur   = blur;
             subcommand.instance.backdropBlur = style.backdrop.blur.get();
@@ -1338,10 +1327,8 @@ namespace Chicane
                 }
             }
 
-            const float opacity = component->getOpacity();
-            subcommand.instance.color.a =
-                (subcommand.instance.texture > Renderer::Draw::InvalidId ? 255.0f : subcommand.instance.color.a) *
-                opacity;
+            const float opacity         = component->getOpacity();
+            subcommand.instance.color.a = (subcommand.bHasTexture ? 255.0f : subcommand.instance.color.a) * opacity;
 
             if (subcommand.instance.gradientStopCount > 0)
             {
@@ -1389,11 +1376,56 @@ namespace Chicane
 
         const std::size_t index = m_viewReadIndex.load(std::memory_order_acquire);
 
-        const Renderer::DrawPoly2DCommand command = m_viewCommandBuffers.at(index);
+        const Renderer::DrawPoly2DCommand& command = m_viewCommandBuffers.at(index);
 
         for (const Renderer::DrawPoly2DCommandFill& fill : command.fills)
         {
-            m_renderer->drawPoly(m_renderer->loadPoly(Renderer::DrawPolyType::e2D, fill.polygon), fill.instance);
+            Renderer::DrawPoly2DInstance instance = fill.instance;
+
+            if (fill.bHasTexture)
+            {
+                instance.texture = m_renderer->findTexture(fill.texture);
+
+                if (instance.texture <= Renderer::Draw::InvalidId)
+                {
+                    instance.texture = m_renderer->findTexture(Box::Texture::DEFAULT_REFERENCE);
+                }
+            }
+
+            instance.glyph = m_renderer->findGlyph(fill.glyph);
+
+            if (instance.glyph <= Renderer::Draw::InvalidId && fill.glyphOutline && !fill.glyphOutline->empty())
+            {
+                Renderer::DrawGlyphData data;
+                data.reference = fill.glyph;
+                data.boundsMin = fill.glyphMin;
+                data.boundsMax = fill.glyphMax;
+                data.points    = *fill.glyphOutline;
+
+                instance.glyph = m_renderer->loadGlyph(data);
+            }
+
+            Renderer::Draw::Id polygon = m_renderer->findPoly(Renderer::DrawPolyType::e2D, fill.polygon);
+
+            if (polygon <= Renderer::Draw::InvalidId)
+            {
+                Renderer::DrawPolyData data;
+                data.reference = fill.polygon;
+
+                if (fill.vertices)
+                {
+                    data.vertices = *fill.vertices;
+                }
+
+                if (fill.indices)
+                {
+                    data.indices = *fill.indices;
+                }
+
+                polygon = m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
+            }
+
+            m_renderer->drawPoly(polygon, instance);
         }
     }
 }

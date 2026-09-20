@@ -8,6 +8,19 @@ namespace Chicane
 {
     namespace Grid
     {
+        bool areNear(const float* inLeft, const float* inRight, std::uint8_t inArity)
+        {
+            for (std::uint8_t i = 0; i < inArity; i++)
+            {
+                if (std::fabs(inLeft[i] - inRight[i]) > 0.001f)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         Animatable::Animatable()
             : Transformable2D(),
               m_animator(),
@@ -20,8 +33,6 @@ namespace Chicane
 
         void Animatable::tickAnimation(Style& outStyle, float inDeltaTime)
         {
-            const Style::Properties targets = outStyle.extractAnimatedProperties();
-
             auto rememberResolved = [&outStyle, this]()
             {
                 m_lastTransformRaw = outStyle.transform.getRaw();
@@ -47,93 +58,69 @@ namespace Chicane
                 return;
             }
 
-            auto sameValues = [](const std::vector<float>& inLeft, const std::vector<float>& inRight) -> bool
+            const Style::AnimatedValues& visual     = outStyle.getSnapshotValues();
+            const Style::AnimatedMask&   visualMask = outStyle.getSnapshotMask();
+
+            float target[MAX_PROPERTY_ARITY] = {};
+
+            for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
             {
-                if (inLeft.size() != inRight.size())
+                const StylePropertyId id = static_cast<StylePropertyId>(i);
+
+                if (!outStyle.readAnimated(id, target))
                 {
-                    return false;
-                }
-
-                for (std::size_t i = 0; i < inLeft.size(); i++)
-                {
-                    if (std::fabs(inLeft.at(i) - inRight.at(i)) > 0.001f)
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            };
-
-            const Style::Properties& visual = outStyle.getSnapshot();
-
-            for (const String& name : Style::ANIMATABLE_PROPERTIES)
-            {
-                const auto               targetFound = targets.find(name);
-                const std::vector<float> to = targetFound != targets.end() ? targetFound->second : std::vector<float>();
-
-                if (to.empty())
-                {
-                    m_animator.stopTween(name);
+                    m_animator.stopTween(id);
 
                     continue;
                 }
 
-                const auto               visualFound = visual.find(name);
-                const std::vector<float> from =
-                    visualFound != visual.end() && !visualFound->second.empty() ? visualFound->second : to;
-
-                const StyleTransition* transition = outStyle.findTransition(name);
+                const StyleTransition* transition = outStyle.findTransition(id);
 
                 if (!transition || transition->duration <= 0.0f)
                 {
-                    m_animator.stopTween(name);
+                    m_animator.stopTween(id);
 
                     continue;
                 }
 
-                if (sameValues(from, to))
-                {
-                    if (!m_animator.hasTween(name))
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    const bool bHasPercentBasis =
-                        (name.equals(Style::TRANSFORM_ATTRIBUTE_NAME) && outStyle.transform.getRaw().contains('%') &&
-                         outStyle.transform.getRaw().equals(m_lastTransformRaw)) ||
-                        (name.equals(Style::TRANSLATE_ATTRIBUTE_NAME) && outStyle.translate.getRaw().contains('%') &&
-                         outStyle.translate.getRaw().equals(m_lastTranslateRaw));
+                const std::uint8_t arity = StylePropertyTable::get(id).arity;
+                const float* from = visualMask.test(i) ? (visual.data() + StylePropertyTable::offset(id)) : target;
 
-                    if (bHasPercentBasis && !m_animator.hasTween(name))
-                    {
-                        continue;
-                    }
-
-                    m_animator.tween(name, from, to, transition->duration, transition->delay, transition->easing);
+                if (areNear(from, target, arity))
+                {
+                    continue;
                 }
+
+                const bool bHasPercentBasis =
+                    (id == StylePropertyId::Transform && outStyle.transform.getRaw().contains('%') &&
+                     outStyle.transform.getRaw().equals(m_lastTransformRaw)) ||
+                    (id == StylePropertyId::Translate && outStyle.translate.getRaw().contains('%') &&
+                     outStyle.translate.getRaw().equals(m_lastTranslateRaw));
+
+                if (bHasPercentBasis && !m_animator.hasTween(id))
+                {
+                    continue;
+                }
+
+                m_animator.tween(id, from, target, transition->duration, transition->delay, transition->easing);
             }
 
             const String animationName = outStyle.animation.name.trim();
 
             if (animationName.isEmpty() || animationName.equals(Style::ANIMATION_NAME_NONE))
             {
-                m_animator.stopPlayer("style");
+                m_animator.stopPlayer();
                 m_animationClip = "";
             }
-            else if (!m_animationClip.equals(animationName) || !m_animator.hasPlayer("style"))
+            else if (!m_animationClip.equals(animationName) || !m_animator.hasPlayer())
             {
                 const StyleKeyframe::List* frames = findKeyframes(animationName);
 
                 if (frames && !frames->empty() && outStyle.animation.duration > 0.0f)
                 {
-                    const Drift::Clip clip = makeAnimationClip(*frames);
+                    m_animator.play(makeAnimationClip(*frames));
 
-                    m_animator.play("style", clip);
-
-                    if (Drift::Player* player = m_animator.getPlayer("style"))
+                    if (Drift::Player* player = m_animator.getPlayer())
                     {
                         player->setDelay(outStyle.animation.delay);
                         player->setDirection(
@@ -151,7 +138,7 @@ namespace Chicane
                     m_animationClip = animationName;
                 }
             }
-            else if (Drift::Player* player = m_animator.getPlayer("style"))
+            else if (Drift::Player* player = m_animator.getPlayer())
             {
                 if (outStyle.animation.bIsPaused)
                 {
@@ -165,17 +152,17 @@ namespace Chicane
 
             m_animator.tick(inDeltaTime);
 
-            for (const String& name : Style::ANIMATABLE_PROPERTIES)
-            {
-                if (!m_animator.hasTween(name))
-                {
-                    continue;
-                }
+            float sampled[MAX_PROPERTY_ARITY] = {};
 
-                outStyle.applyAnimatedProperty(name, m_animator.getTweenValue(name));
+            for (const StyleAnimatorTween& entry : m_animator.getTweens())
+            {
+                if (m_animator.readTween(entry.id, sampled))
+                {
+                    outStyle.writeAnimated(entry.id, sampled);
+                }
             }
 
-            if (const Drift::Player* player = m_animator.getPlayer("style"))
+            if (const Drift::Player* player = m_animator.getPlayer())
             {
                 const bool bIsWaiting = player->isWaiting();
                 const bool bIsActive  = player->isPlaying() || player->isPaused();
@@ -184,16 +171,17 @@ namespace Chicane
 
                 if ((!bIsWaiting && (bIsActive || bIsFilled)) || bIsBack)
                 {
-                    for (const Drift::Track& track : player->getClip().tracks)
+                    for (const StyleAnimatorTrack& track : m_animator.getPlayerTracks())
                     {
                         const std::vector<float> value = player->sample(track.name);
+                        const std::uint8_t       arity = StylePropertyTable::get(track.id).arity;
 
-                        if (value.empty())
+                        if (value.size() < static_cast<std::size_t>(arity))
                         {
                             continue;
                         }
 
-                        outStyle.applyAnimatedProperty(track.name, value);
+                        outStyle.writeAnimated(track.id, value.data());
                     }
                 }
             }

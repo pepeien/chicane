@@ -4,11 +4,11 @@
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Transformable/2D.hpp"
 
-#include "Chicane/Drift/Animator.hpp"
 #include "Chicane/Drift/Clip.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/Style/Animator.hpp"
 #include "Chicane/Grid/Style/Keyframe.hpp"
 
 namespace Chicane
@@ -18,6 +18,9 @@ namespace Chicane
         CH_TYPE(Manual)
         class CHICANE_GRID Animatable : public Transformable2D
         {
+        public:
+            static constexpr inline const std::size_t MAX_PROPERTY_ARITY = 5;
+
         public:
             Animatable();
 
@@ -32,12 +35,12 @@ namespace Chicane
             void tickAnimation(Style& outStyle, float inDeltaTime);
 
         protected:
-            Drift::Animator m_animator;
-            String          m_animationClip;
-            String          m_lastTransformRaw;
-            String          m_lastTranslateRaw;
-            float           m_animationDelta;
-            bool            m_bIsAnimationReady;
+            StyleAnimator m_animator;
+            String        m_animationClip;
+            String        m_lastTransformRaw;
+            String        m_lastTranslateRaw;
+            float         m_animationDelta;
+            bool          m_bIsAnimationReady;
         };
     }
 }

@@ -34,7 +34,7 @@ namespace Chicane
                 instanceCreateInfo.count  = 1;
                 instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
                 instanceCreateInfo.usage  = vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled;
-                instanceCreateInfo.format        = inFormat;
+                instanceCreateInfo.format = inFormat;
                 instanceCreateInfo.logicalDevice = inLogicalDevice;
 
                 VulkanImageMemoryCreateInfo memoryCreateInfo;

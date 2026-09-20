@@ -29,8 +29,9 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Animatable.hpp"
+#include "Chicane/Grid/Component/Dirty.hpp"
 #include "Chicane/Grid/Component/DrawCache.hpp"
-#include "Chicane/Grid/Component/Flag.hpp"
+#include "Chicane/Grid/Component/PaintContext.hpp"
 #include "Chicane/Grid/Component/Status.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
@@ -111,11 +112,7 @@ namespace Chicane
 
             // Scroll
             virtual Vec2 getScrollOffset() const;
-            virtual std::uint64_t getScrollGeneration() const;
             virtual Vec2 getScrollBarGutter() const;
-
-            // Hierarchy
-            virtual std::vector<Component*> getChildrenFlat() const;
 
         protected:
             // Lifecycle hooks
@@ -139,8 +136,8 @@ namespace Chicane
             virtual void refreshSize();
             virtual void refreshPosition();
 
-            // Hit detection
-            virtual void appendHitPeripherals(std::vector<Component*>& outChildren) const { return; }
+            // Drawables this component owns outside of the layout flow, such as glyphs or scroll bars
+            void setPeripherals(const std::vector<Component*>& inPeripherals);
 
         public:
             // Checkers
@@ -156,8 +153,8 @@ namespace Chicane
             ComponentStatus getStatus() const;
             bool hasStatus(ComponentStatus inStatus) const;
 
-            bool hasFlag(ComponentFlag inFlag) const;
-            void setFlag(ComponentFlag inFlag, bool inEnabled = true);
+            bool hasFlag(ComponentDirty inFlag) const;
+            void setFlag(ComponentDirty inFlag, bool inEnabled = true);
 
             bool canAdopt(Component* inComponent) const;
 
@@ -245,13 +242,21 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
-            void markFlatDirty();
+
+            // Hiearchy
+            const std::vector<Component*>& getPaintChildren() const;
+
+            std::vector<Component*> getChildrenFlat() const;
+            void appendChildrenFlat(std::vector<Component*>& outChildren) const;
+
             void markStyleDirty();
             void markLayoutDirty();
             void markStyleDirtySubtree();
             void markLayoutDirtySubtree();
-            void invalidateDrawCache();
-            virtual void invalidateDrawCacheSubtree();
+            void markPaintDirty();
+            void markPaintDirtySubtree();
+
+            void paint(const ComponentPaintContext& inContext);
             Component* getHitAt(const Vec2& inLocation) const;
             bool containsPoint(const Vec2& inLocation) const;
             bool broadcastEvent(const WindowEvent& inEvent);
@@ -294,7 +299,7 @@ namespace Chicane
             void setPosition(const Vec2& inValue);
             void setPosition(float inX, float inY);
 
-            Mat3 getPaintMatrix() const;
+            const Mat3& getPaintMatrix() const;
 
             const Vec2& getCursor() const;
             void addCursor(const Vec2& inValue);
@@ -304,8 +309,8 @@ namespace Chicane
 
             // Collision
             const Bounds2D& getBounds() const;
-            Bounds2D getDrawBounds() const;
-            Bounds2D getOverflowClip() const;
+            const Bounds2D& getDrawBounds() const;
+            const Bounds2D& getOverflowClip() const;
             void getOverflowRoundClips(
                 Vec4& outFirst,
                 Vec4& outFirstRadiusX,
@@ -362,7 +367,6 @@ namespace Chicane
             void refreshBounds();
             void resetFlowCursor();
             void reflowChildPositions();
-            void refreshCullSubtree();
 
             bool isReference(const String& inValue) const;
             String parseReference(const String& inValue) const;
@@ -383,11 +387,11 @@ namespace Chicane
 
             bool isCulledByAncestor() const;
             bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
-            void rebuildFlatChildren();
+            void rebuildPaintChildren();
             bool hideIfDirective();
-            void syncDrawCache() const;
-            Vec2 computeDrawPosition() const;
-            Mat3 computePaintMatrix() const;
+            Mat3 computeLocalPaintMatrix(const StyleTransform& inTransform) const;
+            void paintRadius(const std::vector<const Component*>& inRoundedAncestors);
+            void paintRoundClips(const std::vector<const Component*>& inRoundedAncestors);
 
         protected:
             // Properties
@@ -397,7 +401,7 @@ namespace Chicane
 
             // Status
             ComponentStatus            m_status;
-            ComponentFlag              m_flags;
+            ComponentDirty             m_flags;
 
             // Hash
             String                     m_live;
@@ -424,7 +428,8 @@ namespace Chicane
             Component*                 m_root;
             Component*                 m_parent;
             std::vector<Component*>    m_children;
-            std::vector<Component*>    m_flatChildren;
+            std::vector<Component*>    m_peripherals;
+            std::vector<Component*>    m_paintChildren;
 
             // Position
             Vec2                       m_size;

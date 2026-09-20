@@ -18,7 +18,7 @@ namespace Chicane
         {
             Container::onTick(inDeltaTime);
 
-            if (!isReference(getAttribute(PERCENTAGE_ATTRIBUTE_NAME)) && !hasFlag(ComponentFlag::LaidOut))
+            if (!isReference(getAttribute(PERCENTAGE_ATTRIBUTE_NAME)) && !hasFlag(ComponentDirty::LaidOut))
             {
                 return;
             }

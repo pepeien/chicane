@@ -4,12 +4,9 @@
 
 namespace Editor
 {
-    namespace
+    static Chicane::String flagState(bool inValue)
     {
-        Chicane::String flagState(bool inValue)
-        {
-            return inValue ? "checked" : "idle";
-        }
+        return inValue ? "checked" : "idle";
     }
 
     ShowFlags::ShowFlags(const Chicane::XmlNode& inNode)

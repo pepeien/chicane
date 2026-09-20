@@ -106,27 +106,27 @@ namespace Chicane
 
         public:
             // Instance
-            vk::Instance                                instance;
+            vk::Instance instance;
 
             // Devices
-            vk::PhysicalDevice                          physicalDevice;
-            vk::Device                                  logicalDevice;
-            VulkanAllocator                             allocator;
+            vk::PhysicalDevice physicalDevice;
+            vk::Device         logicalDevice;
+            VulkanAllocator    allocator;
 
             // Surface
-            vk::SurfaceKHR                              surface;
+            vk::SurfaceKHR surface;
 
             // Queues
-            vk::Queue                                   graphicsQueue;
+            vk::Queue graphicsQueue;
 
             // Command
-            vk::CommandBuffer                           mainCommandBuffer;
+            vk::CommandBuffer mainCommandBuffer;
 
             // Swap Chain
-            VulkanSwapchainBundle                       swapchain;
+            VulkanSwapchainBundle swapchain;
 
             // Frames
-            std::vector<VulkanFrame>                    frames;
+            std::vector<VulkanFrame> frames;
 
             // Textures
             VulkanDescriptorBundle                      textureDescriptor;
@@ -135,28 +135,28 @@ namespace Chicane
 
         private:
             // Frame
-            std::uint32_t              m_currentFrameIndex;
-            Draw::Id                   m_screenTextureId;
+            std::uint32_t m_currentFrameIndex;
+            Draw::Id      m_screenTextureId;
 
             // Instance
-            vk::DispatchLoaderDynamic  m_dispatcher;
+            vk::DispatchLoaderDynamic m_dispatcher;
 
             // Debug
             vk::DebugUtilsMessengerEXT m_debugMessenger;
 
             // Queues
-            vk::Queue                  m_presentQueue;
+            vk::Queue m_presentQueue;
 
             // Command
-            vk::CommandPool            m_mainCommandPool;
+            vk::CommandPool m_mainCommandPool;
 
             // GPU timing
-            vk::QueryPool              m_timestampQueryPool;
-            float                      m_timestampPeriod;
-            bool                       m_bIsTimestampsEnabled;
-            std::vector<bool>          m_timestampSubmitted;
-            RHI::Frame                 m_rhiFrame;
-            RHI::Sampler               m_linearSampler;
+            vk::QueryPool     m_timestampQueryPool;
+            float             m_timestampPeriod;
+            bool              m_bIsTimestampsEnabled;
+            std::vector<bool> m_timestampSubmitted;
+            RHI::Frame        m_rhiFrame;
+            RHI::Sampler      m_linearSampler;
         };
     }
 }

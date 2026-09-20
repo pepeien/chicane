@@ -9,6 +9,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Style/Background/Gradient/Stop.hpp"
 #include "Chicane/Grid/Style/Background/Gradient/Type.hpp"
 
 namespace Chicane
@@ -20,13 +21,6 @@ namespace Chicane
         public:
             using ColorParser = std::function<Color::Rgba(const String&)>;
 
-            struct Stop
-            {
-            public:
-                Color::Rgba color  = Color::toRgba(Color::TEXT_COLOR_TRANSPARENT);
-                float       offset = -1.0f;
-            };
-
             static constexpr inline std::uint32_t MAX_STOPS = 8;
 
         public:
@@ -37,9 +31,9 @@ namespace Chicane
             bool isActive() const;
 
         public:
-            StyleGradientType type = StyleGradientType::None;
-            Vec2              axis = Vec2(0.0f, 1.0f);
-            std::vector<Stop> stops;
+            StyleGradientType              type = StyleGradientType::None;
+            Vec2                           axis = Vec2(0.0f, 1.0f);
+            std::vector<StyleGradientStop> stops;
         };
     }
 }

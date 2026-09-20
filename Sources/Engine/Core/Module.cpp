@@ -13,71 +13,68 @@ namespace Chicane
 {
     namespace Module
     {
-        namespace
+        using InitFn     = bool (*)();
+        using ShutdownFn = void (*)();
+
+        struct Entry
         {
-            using InitFn     = bool (*)();
-            using ShutdownFn = void (*)();
+            SDL_SharedObject* handle   = nullptr;
+            ShutdownFn        shutdown = nullptr;
+        };
 
-            struct Entry
-            {
-                SDL_SharedObject* handle   = nullptr;
-                ShutdownFn        shutdown = nullptr;
-            };
+        std::mutex& mutex()
+        {
+            static std::mutex instance;
 
-            std::mutex& mutex()
-            {
-                static std::mutex instance;
+            return instance;
+        }
 
-                return instance;
-            }
+        std::unordered_map<String, Entry>& entries()
+        {
+            static std::unordered_map<String, Entry> instance;
 
-            std::unordered_map<String, Entry>& entries()
-            {
-                static std::unordered_map<String, Entry> instance;
+            return instance;
+        }
 
-                return instance;
-            }
-
-            String sharedExtension()
-            {
+        String sharedExtension()
+        {
 #if IS_WINDOWS
-                return ".dll";
+            return ".dll";
 #else
-                return ".so";
+            return ".so";
 #endif
-            }
+        }
 
-            String keyFor(const FileSystem::Path& inPath)
+        String keyFor(const FileSystem::Path& inPath)
+        {
+            if (inPath.isEmpty())
             {
-                if (inPath.isEmpty())
-                {
-                    return {};
-                }
-
-                return inPath.lexicallyNormal().toString();
+                return {};
             }
 
-            FileSystem::Path resolvePath(const FileSystem::Path& inPath)
+            return inPath.lexicallyNormal().toString();
+        }
+
+        FileSystem::Path resolvePath(const FileSystem::Path& inPath)
+        {
+            if (inPath.isEmpty())
             {
-                if (inPath.isEmpty())
-                {
-                    return {};
-                }
-
-                FileSystem::Path path = inPath;
-                if (!path.hasExtension())
-                {
-                    path = FileSystem::Path(path.toString() + sharedExtension());
-                }
-
-                const FileSystem::Path resolved = FileSystem::resolve(path, FileSystem::executableDirectory());
-                if (!resolved.isEmpty())
-                {
-                    return resolved.lexicallyNormal();
-                }
-
-                return (FileSystem::executableDirectory() / path).lexicallyNormal();
+                return {};
             }
+
+            FileSystem::Path path = inPath;
+            if (!path.hasExtension())
+            {
+                path = FileSystem::Path(path.toString() + sharedExtension());
+            }
+
+            const FileSystem::Path resolved = FileSystem::resolve(path, FileSystem::executableDirectory());
+            if (!resolved.isEmpty())
+            {
+                return resolved.lexicallyNormal();
+            }
+
+            return (FileSystem::executableDirectory() / path).lexicallyNormal();
         }
 
         bool isLoaded(const FileSystem::Path& inPath)
@@ -120,8 +117,6 @@ namespace Chicane
 
                 return false;
             }
-
-            // Static ReflectionTypeAutoRegister constructors have already run.
 
             auto* init = reinterpret_cast<InitFn>(SDL_LoadFunction(handle, "ChicaneModuleInit"));
             if (!init)

@@ -53,7 +53,7 @@ namespace Chicane
             pumpDecoded(inResources);
 
             std::unordered_map<Draw::Id, TextureStreamerPriority> priorities;
-            auto                                   consider = [&](Draw::Id inId, float inScreenPx, bool inPinned)
+            auto consider = [&](Draw::Id inId, float inScreenPx, bool inPinned)
             {
                 if (inId <= Draw::InvalidId)
                 {
@@ -61,9 +61,9 @@ namespace Chicane
                 }
 
                 TextureStreamerPriority& entry = priorities[inId];
-                entry.id        = inId;
-                entry.bPinned   = entry.bPinned || inPinned;
-                entry.screenPx  = std::max(entry.screenPx, inScreenPx);
+                entry.id                       = inId;
+                entry.bPinned                  = entry.bPinned || inPinned;
+                entry.screenPx                 = std::max(entry.screenPx, inScreenPx);
             };
 
             for (const DrawPoly2DInstance& instance : inFrame.getInstances2D())
@@ -305,8 +305,8 @@ namespace Chicane
                 return;
             }
 
-            const Draw::Id                       id      = inTexture.id;
-            const std::shared_ptr<ImageMipChain> mips    = inTexture.mips;
+            const Draw::Id                                id      = inTexture.id;
+            const std::shared_ptr<ImageMipChain>          mips    = inTexture.mips;
             const std::shared_ptr<TextureStreamerMailbox> mailbox = m_mailbox;
             m_inFlight.insert(key);
 

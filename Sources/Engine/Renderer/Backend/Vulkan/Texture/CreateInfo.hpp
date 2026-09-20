@@ -21,7 +21,7 @@ namespace Chicane
             const DrawTexture* texture = nullptr;
             Image::Reference   image;
 
-            std::uint32_t      residentMinMip = 0;
+            std::uint32_t residentMinMip = 0;
 
             vk::Device         logicalDevice;
             vk::PhysicalDevice physicalDevice;

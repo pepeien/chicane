@@ -1561,34 +1561,11 @@ namespace Chicane
             syncShapes();
         }
 
-        void Svg::invalidateDrawCacheSubtree()
+        void Svg::refreshPeripherals()
         {
-            Component::invalidateDrawCacheSubtree();
+            std::vector<Component*> peripherals(m_shapes.begin(), m_shapes.end());
 
-            for (SvgShape* shape : m_shapes)
-            {
-                if (shape)
-                {
-                    shape->invalidateDrawCache();
-                }
-            }
-        }
-
-        std::vector<Component*> Svg::getChildrenFlat() const
-        {
-            std::vector<Component*> result = Component::getChildrenFlat();
-
-            for (SvgShape* shape : m_shapes)
-            {
-                if (!shape)
-                {
-                    continue;
-                }
-
-                result.push_back(shape);
-            }
-
-            return result;
+            setPeripherals(peripherals);
         }
 
         void Svg::onRefresh()
@@ -1598,7 +1575,7 @@ namespace Chicane
                 return;
             }
 
-            if (!hasFlag(ComponentFlag::LaidOut) && !m_shapes.empty())
+            if (!hasFlag(ComponentDirty::LaidOut) && !m_shapes.empty())
             {
                 rebuildShapes();
 
@@ -1606,6 +1583,7 @@ namespace Chicane
             }
 
             applySizeAttributes();
+
             rebuildShapes();
         }
 
@@ -1877,7 +1855,7 @@ namespace Chicane
 
             if (m_shapes.size() != shapeCount)
             {
-                markFlatDirty();
+                refreshPeripherals();
             }
 
             for (std::size_t i = index; i < m_shapes.size(); i++)

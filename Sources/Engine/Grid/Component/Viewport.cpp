@@ -25,7 +25,7 @@ namespace Chicane
             Container::onTick(inDeltaTime);
 
             if (!isReference(getAttribute(TARGET_ATTRIBUTE_NAME)) && !target.isEmpty() &&
-                !hasFlag(ComponentFlag::LaidOut))
+                !hasFlag(ComponentDirty::LaidOut))
             {
                 return;
             }
