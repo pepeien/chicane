@@ -1,10 +1,10 @@
 {
-    "title": "Data",
-    "filename": "Data",
-    "path": "Renderer/Backend/Vulkan/RHI/Pipeline/Data",
+    "title": "DecodeResult",
+    "filename": "DecodeResult",
+    "path": "Renderer/Texture/Streamer/DecodeResult",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/Vulkan/RHI/Pipeline/Data.hpp",
-        "namespace": "Chicane::Renderer::VulkanRHIPipelineData",
+        "header": "Includes/Chicane/Renderer/Texture/Streamer/DecodeResult.hpp",
+        "namespace": "Chicane::Renderer::TextureStreamerDecodeResult",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,13 +16,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "VulkanGraphicsPipeline",
+                    "name": "Draw::Id",
                     "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "path": "Renderer/Draw",
                     "templates": []
                 },
-                "name": "pipeline",
-                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PIPELINE_DESCRIPTION"
+                "name": "id",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERDECODERESULT_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -34,24 +34,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "pushSize",
-                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PUSHSIZE_DESCRIPTION"
+                "name": "mip",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERDECODERESULT_MIP_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::ShaderStageFlags",
+                    "name": "Image::Instance",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Image",
                     "templates": []
                 },
-                "name": "pushStages",
-                "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_PUSHSTAGES_DESCRIPTION"
+                "name": "image",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERDECODERESULT_IMAGE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANRHIPIPELINEDATA_DESCRIPTION"
+        "description": "CHICANE_RENDERER_TEXTURESTREAMERDECODERESULT_DESCRIPTION"
     },
     "children": []
 }

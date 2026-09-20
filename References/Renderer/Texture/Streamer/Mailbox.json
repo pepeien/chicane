@@ -1,13 +1,13 @@
 {
-    "title": "SizeCreateInfo",
-    "filename": "SizeCreateInfo",
-    "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
+    "title": "Mailbox",
+    "filename": "Mailbox",
+    "path": "Renderer/Texture/Streamer/Mailbox",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo.hpp",
-        "namespace": "Chicane::Renderer::VulkanDescriptorPoolSizeCreateInfo",
+        "header": "Includes/Chicane/Renderer/Texture/Streamer/Mailbox.hpp",
+        "namespace": "Chicane::Renderer::TextureStreamerMailbox",
         "types": [
             {
-                "name": "List",
+                "name": "Textures",
                 "type": {
                     "prefix": "",
                     "name": "std::vector",
@@ -16,14 +16,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "VulkanDescriptorPoolSizeCreateInfo",
+                            "name": "TextureStreamerDecodeResult",
                             "suffix": "",
-                            "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
+                            "path": "Renderer/Texture/Streamer/DecodeResult",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_LIST_DESCRIPTION"
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_TEXTURES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -36,29 +36,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::DescriptorType",
+                    "name": "std::mutex",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "type",
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_TYPE_DESCRIPTION"
+                "name": "mutex",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_MUTEX_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "Textures",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Texture/Streamer/Mailbox",
                     "templates": []
                 },
-                "name": "descriptorCount",
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_DESCRIPTORCOUNT_DESCRIPTION"
+                "name": "ready",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_READY_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_DESCRIPTION"
+        "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_DESCRIPTION"
     },
     "children": []
 }

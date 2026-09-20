@@ -36,13 +36,149 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPolyData",
+                    "name": "Draw::Reference",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly/Data",
+                    "path": "Renderer/Draw",
                     "templates": []
                 },
                 "name": "polygon",
                 "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_POLYGON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "vertices",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Vertex::Indices",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "indices",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasTexture",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_BHASTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "glyph",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_GLYPH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Vec2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "glyphOutline",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_GLYPHOUTLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "glyphMin",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_GLYPHMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "glyphMax",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DCOMMANDFILL_GLYPHMAX_DESCRIPTION"
             },
             {
                 "accessor": "public",

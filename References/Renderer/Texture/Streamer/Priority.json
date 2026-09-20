@@ -1,10 +1,10 @@
 {
-    "title": "Bundle",
-    "filename": "Bundle",
-    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
+    "title": "Priority",
+    "filename": "Priority",
+    "path": "Renderer/Texture/Streamer/Priority",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp",
-        "namespace": "Chicane::Renderer::VulkanDescriptorBundle",
+        "header": "Includes/Chicane/Renderer/Texture/Streamer/Priority.hpp",
+        "namespace": "Chicane::Renderer::TextureStreamerPriority",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,42 +16,42 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::DescriptorSetLayout",
+                    "name": "Draw::Id",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/Draw",
                     "templates": []
                 },
-                "name": "setLayout",
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORBUNDLE_SETLAYOUT_DESCRIPTION"
+                "name": "id",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERPRIORITY_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::DescriptorSet",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "set",
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORBUNDLE_SET_DESCRIPTION"
+                "name": "screenPx",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERPRIORITY_SCREENPX_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::DescriptorPool",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "pool",
-                "description": "CHICANE_RENDERER_VULKANDESCRIPTORBUNDLE_POOL_DESCRIPTION"
+                "name": "bPinned",
+                "description": "CHICANE_RENDERER_TEXTURESTREAMERPRIORITY_BPINNED_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANDESCRIPTORBUNDLE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_TEXTURESTREAMERPRIORITY_DESCRIPTION"
     },
     "children": []
 }

@@ -335,41 +335,15 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "RHI::Image",
+                            "name": "UIBackdrop",
                             "suffix": "",
-                            "path": "Renderer/RHI/Image",
+                            "path": "Renderer/Layer/UI/Backdrop",
                             "templates": []
                         }
                     ]
                 },
                 "name": "m_backdrops",
                 "description": "CHICANE_RENDERER_LUI_M_BACKDROPS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_backdropWidth",
-                "description": "CHICANE_RENDERER_LUI_M_BACKDROPWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_backdropHeight",
-                "description": "CHICANE_RENDERER_LUI_M_BACKDROPHEIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LUI_DESCRIPTION"

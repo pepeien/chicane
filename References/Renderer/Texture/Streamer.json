@@ -132,118 +132,6 @@
         "members": [
             {
                 "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "id",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "mip",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_MIP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Image::Instance",
-                    "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "image",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_DECODERESULT_IMAGE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "mutex",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_MAILBOX_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "DecodeResult",
-                            "suffix": "",
-                            "path": "Renderer/Texture/Streamer",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "ready",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_MAILBOX_READY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Draw::Id",
-                    "suffix": "",
-                    "path": "Renderer/Draw",
-                    "templates": []
-                },
-                "name": "id",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "float",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "screenPx",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_SCREENPX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "bPinned",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMER_PRIORITY_BPINNED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "modifiers": [
                     "static",
                     "constexpr"
@@ -269,9 +157,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Mailbox",
+                            "name": "TextureStreamerMailbox",
                             "suffix": "",
-                            "path": "Renderer/Texture/Streamer",
+                            "path": "Renderer/Texture/Streamer/Mailbox",
                             "templates": []
                         }
                     ]

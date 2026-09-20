@@ -243,6 +243,150 @@
                 ],
                 "type": {
                     "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_MESH_INITIAL_BYTES",
+                "description": "CHICANE_RENDERER_RESOURCE_MESH_INITIAL_BYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_STAGING_INITIAL_BYTES",
+                "description": "CHICANE_RENDERER_RESOURCE_STAGING_INITIAL_BYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_SCENE_VERTICES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_SCENE_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_SCENE_INDICES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_SCENE_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_SCENE_INSTANCES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_SCENE_INSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_UI_VERTICES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_UI_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_UI_INDICES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_UI_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_UI_INSTANCES",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_UI_INSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RESOURCE_CAP_UI_GLYPHS",
+                "description": "CHICANE_RENDERER_RESOURCE_CAP_UI_GLYPHS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",

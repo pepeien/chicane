@@ -1,10 +1,10 @@
 {
-    "title": "CreateInfo",
-    "filename": "CreateInfo",
-    "path": "Renderer/Backend/Vulkan/Image/Memory/CreateInfo",
+    "title": "Backdrop",
+    "filename": "Backdrop",
+    "path": "Renderer/Layer/UI/Backdrop",
     "source": {
-        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Memory/CreateInfo.hpp",
-        "namespace": "Chicane::Renderer::VulkanImageMemoryCreateInfo",
+        "header": "Includes/Chicane/Renderer/Layer/UI/Backdrop.hpp",
+        "namespace": "Chicane::Renderer::UIBackdrop",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,42 +16,42 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::MemoryPropertyFlags",
+                    "name": "RHI::Image",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/RHI/Image",
                     "templates": []
                 },
-                "name": "properties",
-                "description": "CHICANE_RENDERER_VULKANIMAGEMEMORYCREATEINFO_PROPERTIES_DESCRIPTION"
+                "name": "image",
+                "description": "CHICANE_RENDERER_UIBACKDROP_IMAGE_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::Device",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "logicalDevice",
-                "description": "CHICANE_RENDERER_VULKANIMAGEMEMORYCREATEINFO_LOGICALDEVICE_DESCRIPTION"
+                "name": "width",
+                "description": "CHICANE_RENDERER_UIBACKDROP_WIDTH_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::PhysicalDevice",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "physicalDevice",
-                "description": "CHICANE_RENDERER_VULKANIMAGEMEMORYCREATEINFO_PHYSICALDEVICE_DESCRIPTION"
+                "name": "height",
+                "description": "CHICANE_RENDERER_UIBACKDROP_HEIGHT_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VULKANIMAGEMEMORYCREATEINFO_DESCRIPTION"
+        "description": "CHICANE_RENDERER_UIBACKDROP_DESCRIPTION"
     },
     "children": []
 }
