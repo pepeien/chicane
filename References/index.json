@@ -6774,6 +6774,41 @@
                         ]
                     },
                     {
+                        "title": "Line",
+                        "filename": "Line",
+                        "path": "Renderer/RHI/Line",
+                        "source": {
+                            "header": null,
+                            "namespace": null,
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Push",
+                                "filename": "Push",
+                                "path": "Renderer/RHI/Line/Push",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/RHI/Line/Push.hpp",
+                                    "namespace": "Chicane::Renderer::RHI::LinePush",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "LoadOp",
                         "filename": "LoadOp",
                         "path": "Renderer/RHI/LoadOp",

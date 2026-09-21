@@ -1,0 +1,17 @@
+{
+    "title": "Line",
+    "filename": "Line",
+    "path": "Renderer/RHI/Line",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": null
+    },
+    "children": []
+}

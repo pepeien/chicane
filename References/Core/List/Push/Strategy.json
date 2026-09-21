@@ -50,6 +50,17 @@
                 },
                 "name": "After",
                 "description": "CHICANE_LISTPUSHSTRATEGY_AFTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Replace",
+                "description": "CHICANE_LISTPUSHSTRATEGY_REPLACE_DESCRIPTION"
             }
         ],
         "constructors": [],

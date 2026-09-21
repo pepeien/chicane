@@ -72,12 +72,13 @@
                     "path": "Core/Worker",
                     "templates": []
                 },
-                "name": "instance",
+                "name": "getInstance",
                 "parameters": [],
                 "modifiers": [
-                    "static"
+                    "static",
+                    "inline"
                 ],
-                "description": "CHICANE_WORKER_INSTANCE_DESCRIPTION"
+                "description": "CHICANE_WORKER_GETINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

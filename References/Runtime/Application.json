@@ -799,6 +799,42 @@
                 "description": "CHICANE_APPLICATION_PUSHTRACE_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushTrace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "inRequest"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_PUSHTRACE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {

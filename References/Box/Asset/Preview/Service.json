@@ -36,12 +36,13 @@
                     "path": "Box/Asset/Preview/Service",
                     "templates": []
                 },
-                "name": "instance",
+                "name": "getInstance",
                 "parameters": [],
                 "modifiers": [
-                    "static"
+                    "static",
+                    "inline"
                 ],
-                "description": "CHICANE_BOX_PREVIEWSERVICE_INSTANCE_DESCRIPTION"
+                "description": "CHICANE_BOX_PREVIEWSERVICE_GETINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

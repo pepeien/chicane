@@ -36,12 +36,13 @@
                     "path": "Core/FileSystem/Listing/Service",
                     "templates": []
                 },
-                "name": "instance",
+                "name": "getInstance",
                 "parameters": [],
                 "modifiers": [
-                    "static"
+                    "static",
+                    "inline"
                 ],
-                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_INSTANCE_DESCRIPTION"
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_GETINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
