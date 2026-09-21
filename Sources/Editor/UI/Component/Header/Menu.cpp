@@ -150,7 +150,25 @@ namespace Editor
 
     bool HeaderMenu::isNested() const
     {
-        return findParentMenu() != nullptr;
+        if (findParentMenu() != nullptr)
+        {
+            return true;
+        }
+
+        for (Chicane::Grid::Component* node = getParent(); node != nullptr; node = node->getParent())
+        {
+            if (node->getClassName().contains("header-menu__list"))
+            {
+                return true;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 
     bool HeaderMenu::hasOpenSibling() const

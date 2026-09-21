@@ -11,7 +11,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual, Group = "Sky")
+    CH_TYPE(Manual, Group = "Actor | Sky")
     class CHICANE_RUNTIME ASky : public Actor
     {
     public:

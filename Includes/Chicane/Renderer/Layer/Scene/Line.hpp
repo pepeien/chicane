@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
+
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/RHI/BindGroup.hpp"
@@ -26,6 +28,10 @@ namespace Chicane
 
             bool onBeginRender(const Frame& inFrame) override;
             void onRender(const Frame& inFrame, void* inData) override;
+
+        protected:
+            virtual Vec4 getWireframeColor() const;
+            virtual Vec4 getOutlineColor() const;
 
         private:
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;

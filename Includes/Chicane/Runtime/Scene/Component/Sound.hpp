@@ -10,7 +10,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Component | Sound")
     class CHICANE_RUNTIME CSound : public Component
     {
     public:

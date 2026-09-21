@@ -8,10 +8,11 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Actor | Sound")
     class CHICANE_RUNTIME ASound : public Actor
     {
     public:
+        CH_CONSTRUCTOR()
         ASound();
 
     protected:

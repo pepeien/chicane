@@ -844,13 +844,13 @@ namespace Chicane
                 return;
             }
 
-            PreviewService::instance().enqueue(path);
+            PreviewService::getInstance().enqueue(path);
         }
 
         void pumpPreview()
         {
             std::vector<std::unique_ptr<AssetPreview>> ready;
-            PreviewService::instance().drain(ready);
+            PreviewService::getInstance().drain(ready);
 
             for (std::unique_ptr<AssetPreview>& preview : ready)
             {

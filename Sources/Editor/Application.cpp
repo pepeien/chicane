@@ -12,6 +12,8 @@
 
 #include "Editor/Actor/Character.hpp"
 #include "Editor/Layer/Grid.hpp"
+#include "Editor/Layer/Icon.hpp"
+#include "Editor/Layer/Line.hpp"
 #include "Editor/UI/View/Home.hpp"
 
 namespace Editor
@@ -35,7 +37,7 @@ namespace Editor
         // Window
         createInfo.window.title   = "Chicane Editor";
         createInfo.window.icon    = "Assets/Editor/Icon.png";
-        createInfo.window.display = 1;
+        createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::WindowedBorderless;
         createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 
@@ -105,12 +107,25 @@ namespace Editor
         Chicane::Application::getInstance().getWindow()->watchBackend(
             [](Chicane::WindowBackend inValue)
             {
-                Chicane::ListPush<Chicane::Renderer::Layer*> settings;
-                settings.strategy  = Chicane::ListPushStrategy::After;
-                settings.predicate = [](Chicane::Renderer::Layer* inLayer)
-                { return inLayer->getId().equals(Chicane::Renderer::SCENE_MESH_LAYER_ID); };
+                Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
 
-                Chicane::Application::getInstance().getRenderer()->addBackendLayer<LGrid>(settings);
+                Chicane::ListPush<Chicane::Renderer::Layer*> grid;
+                grid.strategy  = Chicane::ListPushStrategy::After;
+                grid.predicate = [](Chicane::Renderer::Layer* inLayer)
+                { return inLayer->getId().equals(Chicane::Renderer::SCENE_MESH_LAYER_ID); };
+                renderer->addBackendLayer<LGrid>(grid);
+
+                Chicane::ListPush<Chicane::Renderer::Layer*> line;
+                line.strategy  = Chicane::ListPushStrategy::Replace;
+                line.predicate = [](Chicane::Renderer::Layer* inLayer)
+                { return inLayer->getId().equals(Chicane::Renderer::SCENE_LINE_LAYER_ID); };
+                renderer->addBackendLayer<LLine>(line);
+
+                Chicane::ListPush<Chicane::Renderer::Layer*> icon;
+                icon.strategy  = Chicane::ListPushStrategy::After;
+                icon.predicate = [](Chicane::Renderer::Layer* inLayer)
+                { return inLayer->getId().equals(Chicane::Renderer::SCENE_LINE_LAYER_ID); };
+                renderer->addBackendLayer<LIcon>(icon);
             }
         );
     }

@@ -51,9 +51,6 @@
                 <Button::Check checked="{{ bShowLit }}" onInput="{{ onLitInput() }}">
                     <Text>Lit</Text>
                 </Button::Check>
-                <Button::Check checked="{{ bShowCollider }}" onInput="{{ onColliderInput() }}">
-                    <Text>Collider</Text>
-                </Button::Check>
                 <Button::Check checked="{{ bShowBounds }}" onInput="{{ onBoundsInput() }}">
                     <Text>Bounds</Text>
                 </Button::Check>
@@ -83,10 +80,16 @@
         <Container class="viewport-settings__cols">
             <Text class="viewport-settings__section-title">Physics</Text>
             <Container class="viewport-settings__row">
-                <Button::Check checked="{{ bShowMotionPaths }}" onInput="{{ onMotionPathsInput() }}">
-                    <Text>Motion Paths</Text>
+                <Button::Check checked="{{ bShowCollider }}" onInput="{{ onColliderInput() }}">
+                    <Text>Collider</Text>
                 </Button::Check>
                 <Input::Color value="{{ physicsColor }}" onInput="{{ onPhysicsColorInput() }}" />
+            </Container>
+            <Container class="viewport-settings__row">
+                <Button::Check checked="{{ bShowTracer }}" onInput="{{ onTracerInput() }}">
+                    <Text>Tracer</Text>
+                </Button::Check>
+                <Input::Color value="{{ tracerColor }}" onInput="{{ onTracerColorInput() }}" />
             </Container>
         </Container>
         <Container class="viewport-settings__cols">

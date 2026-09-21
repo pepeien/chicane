@@ -2,16 +2,9 @@
 
 namespace Chicane
 {
-    Worker& Worker::instance()
-    {
-        static Worker worker;
-
-        return worker;
-    }
-
     void Worker::submit(Job inJob)
     {
-        instance().enqueue(std::move(inJob));
+        getInstance().enqueue(std::move(inJob));
     }
 
     Worker::Worker()

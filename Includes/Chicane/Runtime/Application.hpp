@@ -6,6 +6,7 @@
 
 #include "Chicane/Core/FileSystem/Path.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Window.hpp"
 
 #include "Chicane/Grid/Component/View.hpp"
@@ -157,6 +158,7 @@ namespace Chicane
 
         // Debug
         void pushTrace(const SceneTraceRequest& inRequest);
+        void pushTrace(const SceneTraceRequest& inRequest, const Vec4& inColor);
 
     private:
         // Renderer

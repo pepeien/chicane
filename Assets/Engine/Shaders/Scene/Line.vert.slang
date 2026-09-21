@@ -4,6 +4,19 @@ import Poly3D;
 [vk::binding(0, 0)] ConstantBuffer<CameraInstance> gCamera;
 [vk::binding(2, 0)] StructuredBuffer<PolyInstance3D> gMeshes;
 
+struct LinePush
+{
+    float4 color;
+    float4 extra;
+}
+
+#ifdef CHICANE_VULKAN
+[vk::push_constant]
+#else
+[vk::binding(15, 0)]
+#endif
+ConstantBuffer<LinePush> push;
+
 struct VSOut
 {
     float4 color : COLOR;
@@ -20,9 +33,8 @@ VSOut main(
     PolyInstance3D mesh = gMeshes[instanceId];
 
     VSOut output;
-            output.color    = inColor;
-            output.position = mul(gCamera.projection, mul(gCamera.view, mul(mesh.model, float4(inPosition, 1.0))));
-            output.position.z -= max(output.position.w, 0.0) * 0.01;
+    output.color    = push.extra.x > 0.5 ? push.color : inColor;
+    output.position = mul(gCamera.projection, mul(gCamera.view, mul(mesh.model, float4(inPosition, 1.0))));
 
     return output;
 }

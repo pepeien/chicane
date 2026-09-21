@@ -16,7 +16,13 @@ namespace Chicane
         using Job = std::function<void()>;
 
     public:
-        static Worker& instance();
+        static inline Worker& getInstance()
+        {
+            static Worker result;
+
+            return result;
+        }
+
         static void submit(Job inJob);
 
     public:

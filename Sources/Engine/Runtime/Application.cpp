@@ -1071,13 +1071,18 @@ namespace Chicane
 
     void Application::pushTrace(const SceneTraceRequest& inRequest)
     {
+        pushTrace(inRequest, Renderer::Debug::TRACE_COLOR);
+    }
+
+    void Application::pushTrace(const SceneTraceRequest& inRequest, const Vec4& inColor)
+    {
         if (!inRequest.isValid() || !hasRenderer())
         {
             return;
         }
 
         Vertex::List vertices;
-        appendTrace(vertices, inRequest, Renderer::Debug::TRACE_COLOR);
+        appendTrace(vertices, inRequest, inColor);
 
         Renderer::Debug::push(vertices, inRequest.duration);
     }

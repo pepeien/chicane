@@ -71,7 +71,7 @@ namespace Editor
     {
         (void)inFrame;
 
-        if (!ViewportOverlay::get().bGridEnabled)
+        if (!ViewportOverlay::getInstance().bGridEnabled)
         {
             return false;
         }
@@ -100,7 +100,7 @@ namespace Editor
         }
         );
 
-        const ViewportOverlay& overlay = ViewportOverlay::get();
+        const ViewportOverlay& overlay = ViewportOverlay::getInstance();
         GridPush               push;
         push.color[0] = overlay.gridColor.x;
         push.color[1] = overlay.gridColor.y;

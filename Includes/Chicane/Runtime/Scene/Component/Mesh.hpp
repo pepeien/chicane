@@ -25,7 +25,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual, Group = "Mesh")
+    CH_TYPE(Manual, Group = "Component | Mesh")
     class CHICANE_RUNTIME CMesh : public Component
     {
     public:

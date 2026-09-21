@@ -94,7 +94,10 @@ namespace Editor
         void onBonesColorInput();
 
         CH_FUNCTION()
-        void onMotionPathsInput();
+        void onTracerInput();
+
+        CH_FUNCTION()
+        void onTracerColorInput();
 
     private:
         Chicane::Renderer::Instance* getRenderer() const;
@@ -162,6 +165,8 @@ namespace Editor
         CH_FIELD()
         Chicane::Vec3 boneColor;
         CH_FIELD()
-        bool bShowMotionPaths;
+        bool bShowTracer;
+        CH_FIELD()
+        Chicane::Vec4 tracerColor;
     };
 }

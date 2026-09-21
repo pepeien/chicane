@@ -6,13 +6,6 @@ namespace Chicane
 {
     namespace Box
     {
-        PreviewService& PreviewService::instance()
-        {
-            static PreviewService service;
-
-            return service;
-        }
-
         void PreviewService::enqueue(const FileSystem::Path& inFilePath)
         {
             {
@@ -38,7 +31,7 @@ namespace Chicane
                         preview.reset();
                     }
 
-                    PreviewService::instance().finish(inFilePath, std::move(preview));
+                    PreviewService::getInstance().finish(inFilePath, std::move(preview));
                 }
             );
         }

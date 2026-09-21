@@ -106,7 +106,9 @@ namespace Chicane
             return inColor;
         }
 
-        static bool parsePaint(const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled)
+        static bool parsePaint(
+            const String& inValue, const Color::Rgba inCurrent, Color::Rgba& outColor, bool& outEnabled
+        )
         {
             const String value = inValue.trim();
 
@@ -1031,7 +1033,9 @@ namespace Chicane
             return result;
         }
 
-        static Primitive buildFill(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        static Primitive buildFill(
+            const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
         {
             const Curve::List local = toLocalContours(inContours, inPaint, inView);
             Primitive         glyph = contoursToGlyph(local);
@@ -1084,7 +1088,7 @@ namespace Chicane
             static Primitive empty;
 
             const std::string key  = makeGeometryKey("fill", inContours, inPaint, inView).toStandard();
-            SvgTessellation&  tess = SvgTessellation::instance();
+            SvgTessellation&  tess = SvgTessellation::getInstance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
@@ -1107,7 +1111,9 @@ namespace Chicane
             return empty;
         }
 
-        static Primitive buildStroke(const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView)
+        static Primitive buildStroke(
+            const std::vector<Curve>& inContours, const SvgPaint& inPaint, const SvgViewBox& inView
+        )
         {
             Primitive primitive;
 
@@ -1459,7 +1465,7 @@ namespace Chicane
             static Primitive empty;
 
             const std::string key  = makeGeometryKey("stroke", inContours, inPaint, inView).toStandard();
-            SvgTessellation&  tess = SvgTessellation::instance();
+            SvgTessellation&  tess = SvgTessellation::getInstance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
@@ -1525,7 +1531,7 @@ namespace Chicane
 
         void Svg::refresh()
         {
-            SvgTessellation& tess           = SvgTessellation::instance();
+            SvgTessellation& tess           = SvgTessellation::getInstance();
             bool             bNeedsTessSync = tess.pump();
             if (bNeedsTessSync || m_tessVersion != tess.generation())
             {

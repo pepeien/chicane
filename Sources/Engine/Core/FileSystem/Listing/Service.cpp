@@ -7,13 +7,6 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        ListingService& ListingService::instance()
-        {
-            static ListingService service;
-
-            return service;
-        }
-
         void ListingService::enqueue(const Path& inDir)
         {
             const Path dir = inDir.lexicallyNormal();
@@ -50,7 +43,7 @@ namespace Chicane
                         children.clear();
                     }
 
-                    ListingService::instance().finish(dir, std::move(children));
+                    ListingService::getInstance().finish(dir, std::move(children));
                 }
             );
         }

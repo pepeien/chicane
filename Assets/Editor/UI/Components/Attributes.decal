@@ -24,12 +24,35 @@ $attributesHeaderHeight: 1.65em;
 
         &__label {
             width: 40%;
-            max-width: 7em;
+            max-width: 10em;
         }
 
-        Input::Text, Input::Color, Editor::Vec3, Editor::AssetSelector {
+        Input::Text, Input::Select, Input::Color, Editor::Vec3, Editor::AssetSelector {
             width: 100%;
             min-height: 1.2em;
+        }
+
+        Input::Select {
+            overflow: visible;
+
+            .input-select__control, .input-select__list {
+                background-color: $--light-grey;
+                border-radius: 0.15em;
+            }
+
+            .input-select__label {
+                color: $--black;
+                margin: auto 0.4em;
+            }
+
+            .input-select__list {
+                background-color: $--dark-grey;
+                border: 1px solid $--lighter-grey;
+            }
+
+            Input::Select::Option:hover, Input::Select::Option.--active, Input::Select::Option.--selected {
+                background-color: $--light-grey;
+            }
         }
 
         Editor::AssetSelector, Input::Color {

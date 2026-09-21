@@ -2,8 +2,11 @@
 
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/String.hpp>
+#include <Chicane/Core/Window/Event.hpp>
 #include <Chicane/Core/Xml.hpp>
 #include <Chicane/Grid/Component/Container.hpp>
+
+#include "Editor/UI/Component/Header/Menu/Item.hpp"
 
 namespace Editor
 {
@@ -19,13 +22,21 @@ namespace Editor
         static constexpr inline const char* ON_GIZMO_TRANSLATE_ATTRIBUTE = "onGizmoTranslate";
         static constexpr inline const char* ON_GIZMO_ROTATE_ATTRIBUTE    = "onGizmoRotate";
         static constexpr inline const char* ON_GIZMO_SCALE_ATTRIBUTE     = "onGizmoScale";
+        static constexpr inline const char* ON_SPAWN_ATTRIBUTE           = "onSpawn";
+        static constexpr inline const char* ADD_ANCHOR_ID                = "toolbarAdd";
 
     public:
         CH_CONSTRUCTOR()
         Toolbar(const Chicane::XmlNode& inNode);
 
+    public:
+        bool isFocusable() const override;
+        bool escapesOverflow() const override;
+        bool onEvent(const Chicane::WindowEvent& inEvent) override;
+
     protected:
         void onTick(float inDeltaTime) override;
+        void onBlur() override;
 
     public:
         CH_FUNCTION()
@@ -45,6 +56,19 @@ namespace Editor
 
         CH_FUNCTION()
         void closeSettings();
+
+        CH_FUNCTION()
+        void onAddToggle();
+
+        CH_FUNCTION()
+        void closeAdd();
+
+        CH_FUNCTION()
+        void onSpawn(Chicane::String inTypeName);
+
+    private:
+        void initAddMenu();
+        void closeAddMenus();
 
     public:
         CH_FIELD()
@@ -67,5 +91,17 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String settingsState;
+
+        CH_FIELD()
+        bool isAddOpen;
+
+        CH_FIELD()
+        bool showAddHint;
+
+        CH_FIELD()
+        Chicane::String addState;
+
+        CH_FIELD()
+        HeaderMenuItem::List menus;
     };
 }

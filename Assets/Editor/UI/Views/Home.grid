@@ -17,6 +17,7 @@
                 onGizmoTranslate="{{ onGizmoTranslate }}"
                 onGizmoRotate="{{ onGizmoRotate }}"
                 onGizmoScale="{{ onGizmoScale }}"
+                onSpawn="{{ onSpawn }}"
             />
         </DockPanel>
         <DockPanel isGrabbable="false">

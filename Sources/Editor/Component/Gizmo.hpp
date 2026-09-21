@@ -14,6 +14,7 @@
 
 #include "Editor/Component/Gizmo/Axis.hpp"
 #include "Editor/Component/Gizmo/Type.hpp"
+#include "Editor/UI/Component/Attributes/CoordinateSpace.hpp"
 
 namespace Editor
 {
@@ -48,7 +49,15 @@ namespace Editor
         void applyMesh();
         void syncTransform();
         void syncOrigin();
+        void captureDragStart();
+        void poseHandles();
+        void applyTranslationDelta(const Chicane::Vec3& inWorldDelta);
+        void applyRotationDelta(float inDelta);
+        void applyScaleValue(const Chicane::Vec3& inScale);
+        CoordinateSpace coordinateSpace() const;
+        bool isRelativeSpace() const;
         float handleScale() const;
+        float handleScale(const Chicane::Object* inTarget) const;
         Chicane::CCamera* activeCamera() const;
         Chicane::Vec3 axisDirection(GizmoAxis inAxis) const;
 

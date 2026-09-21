@@ -8,10 +8,11 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Actor | Light")
     class CHICANE_RUNTIME ALight : public Actor
     {
     public:
+        CH_CONSTRUCTOR()
         ALight();
 
     protected:

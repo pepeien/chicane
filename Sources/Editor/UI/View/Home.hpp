@@ -8,6 +8,7 @@
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Object.hpp>
 
+#include "Editor/UI/Component/Attributes/CoordinateSpace.hpp"
 #include "Editor/UI/Component/Attributes/Field.hpp"
 #include "Editor/UI/Component/Attributes/Group.hpp"
 #include "Editor/UI/Component/Outliner/Node.hpp"
@@ -82,6 +83,9 @@ namespace Editor
         void onSpawnMesh();
 
         CH_FUNCTION()
+        void onSpawn(Chicane::String inTypeName);
+
+        CH_FUNCTION()
         void onGizmoTranslate();
 
         CH_FUNCTION()
@@ -111,6 +115,9 @@ namespace Editor
         void syncAttributeValues();
         bool hasSelectedItem() const;
         void setWorkspace(const Chicane::String& inValue);
+
+    public:
+        CoordinateSpace getCoordinateSpace() const;
 
     public:
         CH_FIELD()
@@ -157,5 +164,6 @@ namespace Editor
         std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;
         Chicane::Object*                     m_editingOutlinerItem;
         Chicane::String                      m_outlinerEditId;
+        CoordinateSpace                      m_coordinateSpace;
     };
 }

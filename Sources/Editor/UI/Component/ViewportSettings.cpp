@@ -53,25 +53,24 @@ namespace Editor
           physicsColor(Chicane::Vec4::Zero()),
           bShowBones(false),
           boneColor(Chicane::Vec3::Zero()),
-          bShowMotionPaths(false)
+          bShowTracer(false),
+          tracerColor(Chicane::Vec4::Zero())
     {
-        const ViewportOverlay& overlay = ViewportOverlay::get();
-        bGridEnabled    = overlay.bGridEnabled;
-        bGridAxisX      = overlay.bGridAxisX;
-        bGridAxisY      = overlay.bGridAxisY;
-        bGridAxisZ      = overlay.bGridAxisZ;
-        gridColor       = overlay.gridColor;
-        gridScale       = overlay.gridScale;
-        gridDivisions   = overlay.gridDivisions;
-        geometryColor   = overlay.geometryColor;
-        outlinerColor   = overlay.outlinerColor;
-        physicsColor    = overlay.physicsColor;
-        boneColor       = overlay.boneColor;
+        const ViewportOverlay& overlay = ViewportOverlay::getInstance();
+        bGridEnabled                   = overlay.bGridEnabled;
+        bGridAxisX                     = overlay.bGridAxisX;
+        bGridAxisY                     = overlay.bGridAxisY;
+        bGridAxisZ                     = overlay.bGridAxisZ;
+        gridColor                      = overlay.gridColor;
+        gridScale                      = overlay.gridScale;
+        gridDivisions                  = overlay.gridDivisions;
+        geometryColor                  = overlay.geometryColor;
+        outlinerColor                  = overlay.outlinerColor;
+        physicsColor                   = overlay.physicsColor;
+        boneColor                      = overlay.boneColor;
+        tracerColor                    = overlay.tracerColor;
 
-        load(
-            "Assets/Editor/UI/Components/ViewportSettings.grid",
-            "Assets/Editor/UI/Components/ViewportSettings.decal"
-        );
+        load("Assets/Editor/UI/Components/ViewportSettings.grid", "Assets/Editor/UI/Components/ViewportSettings.decal");
 
         Prop::bind(this, IS_OPEN_ATTRIBUTE, isVisible);
         refreshFieldText();
@@ -276,9 +275,14 @@ namespace Editor
         applyOverlay();
     }
 
-    void ViewportSettings::onMotionPathsInput()
+    void ViewportSettings::onTracerInput()
     {
-        setFeature(Chicane::Renderer::RendererFeature::Traces, bShowMotionPaths);
+        setFeature(Chicane::Renderer::RendererFeature::Traces, bShowTracer);
+    }
+
+    void ViewportSettings::onTracerColorInput()
+    {
+        applyOverlay();
     }
 
     Chicane::Renderer::Instance* ViewportSettings::getRenderer() const
@@ -290,20 +294,20 @@ namespace Editor
     {
         const Chicane::Renderer::Instance* renderer = getRenderer();
 
-        bShowFill        = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Fill);
-        bShowLit         = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Light);
-        bShowHdr         = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::HDR);
-        bShowWireframe   = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Wireframe);
-        bShowBounds      = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Bounds);
-        bShowOutline     = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Outline);
-        bShowCollider    = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Colliders);
-        bShowBones       = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Skeletons);
-        bShowMotionPaths = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces);
+        bShowFill      = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Fill);
+        bShowLit       = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Light);
+        bShowHdr       = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::HDR);
+        bShowWireframe = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Wireframe);
+        bShowBounds    = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Bounds);
+        bShowOutline   = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Outline);
+        bShowCollider  = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Colliders);
+        bShowBones     = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Skeletons);
+        bShowTracer    = renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces);
     }
 
     void ViewportSettings::applyOverlay()
     {
-        ViewportOverlay& overlay = ViewportOverlay::get();
+        ViewportOverlay& overlay = ViewportOverlay::getInstance();
         overlay.bGridEnabled     = bGridEnabled;
         overlay.bGridAxisX       = bGridAxisX;
         overlay.bGridAxisY       = bGridAxisY;
@@ -315,6 +319,7 @@ namespace Editor
         overlay.outlinerColor    = outlinerColor;
         overlay.physicsColor     = physicsColor;
         overlay.boneColor        = boneColor;
+        overlay.tracerColor      = tracerColor;
     }
 
     void ViewportSettings::setFeature(Chicane::Renderer::RendererFeature inFeature, bool inEnabled)
@@ -337,8 +342,8 @@ namespace Editor
 
     void ViewportSettings::refreshFieldText()
     {
-        gridScaleText         = formatFloat(gridScale);
-        gridDivisionsText     = formatUint(gridDivisions);
+        gridScaleText     = formatFloat(gridScale);
+        gridDivisionsText = formatUint(gridDivisions);
     }
 
     void ViewportSettings::refreshAxisState()

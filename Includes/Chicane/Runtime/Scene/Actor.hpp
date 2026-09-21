@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Actor | Actor")
     class CHICANE_RUNTIME Actor : public Object
     {
     public:

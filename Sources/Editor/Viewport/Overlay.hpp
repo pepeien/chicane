@@ -8,7 +8,7 @@ namespace Editor
     struct ViewportOverlay
     {
     public:
-        static inline ViewportOverlay& get()
+        static inline ViewportOverlay& getInstance()
         {
             static ViewportOverlay overlay;
 
@@ -31,6 +31,8 @@ namespace Editor
 
         Chicane::Vec4 physicsColor = Chicane::Vec4(0.3f, 1.0f, 0.4f, 1.0f);
 
-        Chicane::Vec3 boneColor       = Chicane::Vec3(0.0f, 0.82f, 1.0f);
+        Chicane::Vec3 boneColor = Chicane::Vec3(0.0f, 0.82f, 1.0f);
+
+        Chicane::Vec4 tracerColor = Chicane::Vec4(0.2f, 0.9f, 1.0f, 1.0f);
     };
 }

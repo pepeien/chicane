@@ -7,6 +7,17 @@
         </Button>
         <ToolTip anchorId="toolbarSave" title="Save" />
         <Container class="toolbar__separator"/>
+        <Container class="toolbar__add">
+            <Button id="toolbarAdd" class="toolbar__item --{{ addState }}" onClick="{{ onAddToggle() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Plus" class="toolbar__icon --regular"/>
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="Plus" class="toolbar__icon --fill"/>
+            </Button>
+            <ToolTip dir:if="{{ showAddHint }}" anchorId="toolbarAdd" title="Add" />
+            <Container class="toolbar__add-list header-menu__list" dir:if="{{ isAddOpen }}">
+                <Editor::HeaderMenu dir:for="menu : menus" />
+            </Container>
+        </Container>
+        <Container class="toolbar__separator"/>
         <Button id="toolbarMove" class="toolbar__item --{{ translateState }}" onClick="{{ onGizmoTranslate() }}">
             <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOutCardinal" class="toolbar__icon --regular"/>
             <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOutCardinal" class="toolbar__icon --fill"/>

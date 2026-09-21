@@ -10,7 +10,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual, Group = "Light")
+    CH_TYPE(Manual, Group = "Component | Light")
     class CHICANE_RUNTIME CLight : public CView
     {
     public:

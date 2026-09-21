@@ -7,7 +7,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Component | Camera")
     class CHICANE_RUNTIME CCamera : public CView
     {
     public:

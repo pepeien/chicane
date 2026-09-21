@@ -4,11 +4,13 @@
 #include <cstring>
 
 #include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Draw/Poly.hpp"
 #include "Chicane/Renderer/Draw/Poly/Topology.hpp"
 #include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
 #include "Chicane/Renderer/Layer/Util.hpp"
+#include "Chicane/Renderer/RHI/Line/Push.hpp"
 #include "Chicane/Renderer/RHI/Outline/Push.hpp"
 #include "Chicane/Renderer/Shader/Bindings.hpp"
 
@@ -79,7 +81,7 @@ namespace Chicane
                 true,
                 RHI::StencilMode::None,
                 true,
-                0,
+                sizeof(RHI::LinePush),
                 "Assets/Engine/Shaders/Scene/Line",
                 "Assets/Engine/Shaders/Scene/Line",
                 rhiPoly3DColorAttributes()
@@ -90,7 +92,7 @@ namespace Chicane
                 true,
                 RHI::StencilMode::None,
                 true,
-                0,
+                sizeof(RHI::LinePush),
                 "Assets/Engine/Shaders/Scene/Line",
                 "Assets/Engine/Shaders/Scene/Line",
                 rhiPoly3DColorAttributes()
@@ -101,7 +103,7 @@ namespace Chicane
                 false,
                 RHI::StencilMode::None,
                 true,
-                0,
+                sizeof(RHI::LinePush),
                 "Assets/Engine/Shaders/Scene/Line",
                 "Assets/Engine/Shaders/Scene/Line",
                 rhiPoly3DColorAttributes()
@@ -195,6 +197,21 @@ namespace Chicane
             return inFrame.hasFeature(RendererFeature::Outline) && inFrame.hasOutlineDraws();
         }
 
+        Vec4 LSceneLine::getWireframeColor() const
+        {
+            return Debug::MESH_COLOR;
+        }
+
+        Vec4 LSceneLine::getOutlineColor() const
+        {
+            return Vec4(
+                static_cast<float>(OUTLINE_COLOR.r) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.g) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.b) / 255.0f,
+                static_cast<float>(OUTLINE_COLOR.a) / 255.0f
+            );
+        }
+
         bool LSceneLine::onBeginRender(const Frame& inFrame)
         {
             return shouldDrawMeshWireframe(inFrame) || shouldDrawLineList(inFrame) || shouldDrawOutline(inFrame);
@@ -246,13 +263,14 @@ namespace Chicane
             RHI::CommandList* inCommands, const Frame& inFrame, float inOffsetX, float inOffsetY
         )
         {
+            const Vec4       outlineColor = getOutlineColor();
             RHI::OutlinePush push;
             push.pixelOffset[0] = inOffsetX;
             push.pixelOffset[1] = inOffsetY;
-            push.color[0]       = static_cast<float>(OUTLINE_COLOR.r) / 255.0f;
-            push.color[1]       = static_cast<float>(OUTLINE_COLOR.g) / 255.0f;
-            push.color[2]       = static_cast<float>(OUTLINE_COLOR.b) / 255.0f;
-            push.color[3]       = static_cast<float>(OUTLINE_COLOR.a) / 255.0f;
+            push.color[0]       = outlineColor.x;
+            push.color[1]       = outlineColor.y;
+            push.color[2]       = outlineColor.z;
+            push.color[3]       = outlineColor.w;
             inCommands->pushConstants(&push, sizeof(push));
 
             for (const DrawPoly& draw : inFrame.getOutlineDraws())
@@ -297,6 +315,15 @@ namespace Chicane
                 rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
                 rhi->commands->bindVertexBuffer(parent->modelVertexBuffer);
                 rhi->commands->bindIndexBuffer(parent->modelIndexBuffer);
+
+                const Vec4    wireframeColor = getWireframeColor();
+                RHI::LinePush push;
+                push.color[0] = wireframeColor.x;
+                push.color[1] = wireframeColor.y;
+                push.color[2] = wireframeColor.z;
+                push.color[3] = wireframeColor.w;
+                push.extra[0] = 1.0f;
+                rhi->commands->pushConstants(&push, sizeof(push));
 
                 auto drawBatch = [&](DrawPolyMode inMode)
                 {
@@ -384,6 +411,9 @@ namespace Chicane
                     rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
                     rhi->commands->bindVertexBuffer(m_immediateVertex);
                     rhi->commands->setLineWidth(1.0f);
+                    RHI::LinePush push;
+                    push.extra[0] = 0.0f;
+                    rhi->commands->pushConstants(&push, sizeof(push));
                     if (draw.indexCount == 0)
                     {
                         rhi->commands->draw(draw.vertexCount, draw.instanceCount, draw.vertexStart, draw.instanceStart);

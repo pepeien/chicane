@@ -207,12 +207,12 @@ namespace Chicane
                 return;
             }
 
-            ListingService::instance().enqueue(inDir);
+            ListingService::getInstance().enqueue(inDir);
         }
 
         void pumpLs(std::vector<Listing>& outReady)
         {
-            ListingService::instance().drain(outReady);
+            ListingService::getInstance().drain(outReady);
         }
 
         String readStringUnsigned(const Path& inFilepath)

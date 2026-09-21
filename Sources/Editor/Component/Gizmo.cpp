@@ -12,6 +12,7 @@
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
+#include <Chicane/Renderer/Feature.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
@@ -19,6 +20,7 @@
 
 #include "Editor/Component/Gizmo/PlaneHandle.hpp"
 #include "Editor/UI/View/Home.hpp"
+#include "Editor/Viewport/Overlay.hpp"
 
 namespace Editor
 {
@@ -147,6 +149,24 @@ namespace Editor
         return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
     }
 
+    static Chicane::QuatFloat inverseQuat(const Chicane::QuatFloat& inValue)
+    {
+        return glm::inverse(static_cast<const glm::quat&>(inValue));
+    }
+
+    static float safeDivide(float inValue, float inScale)
+    {
+        return std::fabs(inScale) > 0.0001f ? inValue / inScale : inValue;
+    }
+
+    static Chicane::Vec3 toRelativeDelta(const Chicane::Object& inItem, const Chicane::Vec3& inWorldDelta)
+    {
+        const Chicane::Vec3 local = inverseQuat(inItem.getAbsoluteRotation().get()) * inWorldDelta;
+        const Chicane::Vec3 scale = inItem.getAbsoluteScale();
+
+        return Chicane::Vec3(safeDivide(local.x, scale.x), safeDivide(local.y, scale.y), safeDivide(local.z, scale.z));
+    }
+
     Gizmo::Gizmo()
         : Gizmo(GizmoType::Translation)
     {}
@@ -266,16 +286,14 @@ namespace Editor
                     const float dist = length(point - origin) / scale;
                     if (dist <= ORIGIN_OUTER)
                     {
-                        m_bIsDragging          = true;
-                        m_dragAxis             = GizmoAxis::Center;
-                        m_dragStartT           = std::max(length(point - origin), MIN_SCALE);
-                        m_dragStartAngle       = startAng;
-                        m_dragOrigin           = origin;
-                        m_dragAxisDir          = view;
-                        m_dragStartHit         = point;
-                        m_dragStartTranslation = m_target->getTranslation();
-                        m_dragStartScale       = m_target->getScale();
-                        m_dragStartRotation    = m_target->getRotation();
+                        m_bIsDragging    = true;
+                        m_dragAxis       = GizmoAxis::Center;
+                        m_dragStartT     = std::max(length(point - origin), MIN_SCALE);
+                        m_dragStartAngle = startAng;
+                        m_dragOrigin     = origin;
+                        m_dragAxisDir    = view;
+                        m_dragStartHit   = point;
+                        captureDragStart();
 
                         return true;
                     }
@@ -323,16 +341,14 @@ namespace Editor
 
             if (hit != GizmoAxis::None)
             {
-                m_bIsDragging          = true;
-                m_dragAxis             = hit;
-                m_dragStartT           = std::max(length(startHit - origin), MIN_SCALE);
-                m_dragStartAngle       = startAng;
-                m_dragOrigin           = origin;
-                m_dragAxisDir          = hitAxis;
-                m_dragStartHit         = startHit;
-                m_dragStartTranslation = m_target->getTranslation();
-                m_dragStartScale       = m_target->getScale();
-                m_dragStartRotation    = m_target->getRotation();
+                m_bIsDragging    = true;
+                m_dragAxis       = hit;
+                m_dragStartT     = std::max(length(startHit - origin), MIN_SCALE);
+                m_dragStartAngle = startAng;
+                m_dragOrigin     = origin;
+                m_dragAxisDir    = hitAxis;
+                m_dragStartHit   = startHit;
+                captureDragStart();
 
                 return true;
             }
@@ -413,16 +429,14 @@ namespace Editor
             return false;
         }
 
-        m_bIsDragging          = true;
-        m_dragAxis             = hit;
-        m_dragStartT           = startT;
-        m_dragStartAngle       = startAng;
-        m_dragOrigin           = origin;
-        m_dragAxisDir          = hitAxis;
-        m_dragStartHit         = startHit;
-        m_dragStartTranslation = m_target->getTranslation();
-        m_dragStartScale       = m_target->getScale();
-        m_dragStartRotation    = m_target->getRotation();
+        m_bIsDragging    = true;
+        m_dragAxis       = hit;
+        m_dragStartT     = startT;
+        m_dragStartAngle = startAng;
+        m_dragOrigin     = origin;
+        m_dragAxisDir    = hitAxis;
+        m_dragStartHit   = startHit;
+        captureDragStart();
 
         return true;
     }
@@ -444,8 +458,7 @@ namespace Editor
 
             const float delta = angleOnPlane(point, m_dragOrigin, m_dragAxisDir) - m_dragStartAngle;
 
-            m_target->setAbsoluteRotation(m_dragStartRotation);
-            m_target->addAbsoluteRotation(Chicane::QuatFloat::fromAxis(m_dragAxisDir, delta));
+            applyRotationDelta(delta);
 
             return;
         }
@@ -458,10 +471,8 @@ namespace Editor
                 const float distance = std::max(length((inOrigin + inDirection * ray) - m_dragOrigin), MIN_SCALE);
                 const float ratio    = distance / std::max(m_dragStartT, MIN_SCALE);
 
-                m_target->setAbsoluteScale(m_dragStartScale * ratio);
-                setAbsoluteTranslation(m_target->getTranslation());
-                setAbsoluteRotation(Chicane::Rotator());
-                setAbsoluteScale(Chicane::Vec3(handleScale()));
+                applyScaleValue(m_dragStartScale * ratio);
+                poseHandles();
 
                 return;
             }
@@ -472,10 +483,8 @@ namespace Editor
                 return;
             }
 
-            m_target->setAbsoluteTranslation(m_dragStartTranslation + (point - m_dragStartHit));
-            setAbsoluteTranslation(m_target->getTranslation());
-            setAbsoluteRotation(Chicane::Rotator());
-            setAbsoluteScale(Chicane::Vec3(handleScale()));
+            applyTranslationDelta(point - m_dragStartHit);
+            poseHandles();
 
             return;
         }
@@ -508,15 +517,13 @@ namespace Editor
                     scale.z = std::max(MIN_SCALE, m_dragStartScale.z * ratio);
                 }
 
-                m_target->setAbsoluteScale(scale);
+                applyScaleValue(scale);
 
                 return;
             }
 
-            m_target->setAbsoluteTranslation(m_dragStartTranslation + (point - m_dragStartHit));
-            setAbsoluteTranslation(m_target->getTranslation());
-            setAbsoluteRotation(Chicane::Rotator());
-            setAbsoluteScale(Chicane::Vec3(handleScale()));
+            applyTranslationDelta(point - m_dragStartHit);
+            poseHandles();
 
             return;
         }
@@ -544,15 +551,13 @@ namespace Editor
                 break;
             }
 
-            m_target->setAbsoluteScale(scale);
+            applyScaleValue(scale);
 
             return;
         }
 
-        m_target->setAbsoluteTranslation(m_dragStartTranslation + m_dragAxisDir * (along - m_dragStartT));
-        setAbsoluteTranslation(m_target->getTranslation());
-        setAbsoluteRotation(Chicane::Rotator());
-        setAbsoluteScale(Chicane::Vec3(handleScale()));
+        applyTranslationDelta(m_dragAxisDir * (along - m_dragStartT));
+        poseHandles();
     }
 
     void Gizmo::endDrag()
@@ -641,7 +646,8 @@ namespace Editor
 
     void Gizmo::syncTransform()
     {
-        if (!m_target)
+        Chicane::Object* target = m_target;
+        if (!target)
         {
             if (m_origin)
             {
@@ -651,15 +657,117 @@ namespace Editor
             return;
         }
 
-        setAbsoluteScale(Chicane::Vec3(handleScale()));
+        setAbsoluteScale(Chicane::Vec3(handleScale(target)));
 
         if (!m_bIsDragging)
         {
-            setAbsoluteTranslation(m_target->getTranslation());
-            setAbsoluteRotation(Chicane::Rotator());
+            setAbsoluteTranslation(target->getTranslation());
+            setAbsoluteRotation(isRelativeSpace() ? target->getRotation() : Chicane::Rotator());
         }
 
         syncOrigin();
+    }
+
+    void Gizmo::captureDragStart()
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        if (isRelativeSpace())
+        {
+            m_dragStartTranslation = m_target->getRelativeTranslation();
+            m_dragStartScale       = m_target->getRelativeScale();
+            m_dragStartRotation    = m_target->getRelativeRotation();
+
+            return;
+        }
+
+        m_dragStartTranslation = m_target->getAbsoluteTranslation();
+        m_dragStartScale       = m_target->getAbsoluteScale();
+        m_dragStartRotation    = m_target->getAbsoluteRotation();
+    }
+
+    void Gizmo::poseHandles()
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        setAbsoluteTranslation(m_target->getTranslation());
+        setAbsoluteScale(Chicane::Vec3(handleScale()));
+    }
+
+    void Gizmo::applyTranslationDelta(const Chicane::Vec3& inWorldDelta)
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        if (isRelativeSpace())
+        {
+            m_target->setRelativeTranslation(m_dragStartTranslation + toRelativeDelta(*m_target, inWorldDelta));
+
+            return;
+        }
+
+        m_target->setAbsoluteTranslation(m_dragStartTranslation + inWorldDelta);
+    }
+
+    void Gizmo::applyRotationDelta(float inDelta)
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        const Chicane::QuatFloat delta = Chicane::QuatFloat::fromAxis(m_dragAxisDir, inDelta);
+        if (isRelativeSpace())
+        {
+            m_target->setRelativeRotation(m_dragStartRotation);
+            const Chicane::Vec3 localAxis = inverseQuat(m_target->getRotation().get()) * m_dragAxisDir;
+            m_target->addRelativeRotation(Chicane::QuatFloat::fromAxis(localAxis, inDelta));
+
+            return;
+        }
+
+        m_target->setAbsoluteRotation(m_dragStartRotation);
+        m_target->addAbsoluteRotation(delta);
+    }
+
+    void Gizmo::applyScaleValue(const Chicane::Vec3& inScale)
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        if (isRelativeSpace())
+        {
+            m_target->setRelativeScale(inScale);
+
+            return;
+        }
+
+        m_target->setAbsoluteScale(inScale);
+    }
+
+    CoordinateSpace Gizmo::coordinateSpace() const
+    {
+        if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
+        {
+            return home->getCoordinateSpace();
+        }
+
+        return CoordinateSpace::Absolute;
+    }
+
+    bool Gizmo::isRelativeSpace() const
+    {
+        return coordinateSpace() == CoordinateSpace::Relative;
     }
 
     void Gizmo::syncOrigin()
@@ -689,7 +797,12 @@ namespace Editor
 
     float Gizmo::handleScale() const
     {
-        if (!m_target)
+        return handleScale(m_target);
+    }
+
+    float Gizmo::handleScale(const Chicane::Object* inTarget) const
+    {
+        if (!inTarget)
         {
             return 1.0f;
         }
@@ -700,7 +813,7 @@ namespace Editor
             return 1.0f;
         }
 
-        const Chicane::Vec3 offset = m_target->getTranslation() - camera->getTranslation();
+        const Chicane::Vec3 offset = inTarget->getTranslation() - camera->getTranslation();
 
         return std::clamp(length(offset) * HANDLE_SCALE, MIN_HANDLE, MAX_HANDLE);
     }
@@ -1007,7 +1120,11 @@ namespace Editor
         Chicane::Object*           target      = nullptr;
         float                      best        = 1.0e9f;
 
-        Chicane::Application::getInstance().pushTrace(request);
+        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        if (renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces))
+        {
+            Chicane::Application::getInstance().pushTrace(request, ViewportOverlay::getInstance().tracerColor);
+        }
 
         for (Chicane::Actor* actor : scene->getActors())
         {

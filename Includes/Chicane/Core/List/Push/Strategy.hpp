@@ -12,7 +12,8 @@ namespace Chicane
         Front,
         Back,
         Before,
-        After
+        After,
+        Replace
     };
 
     inline String toString(ListPushStrategy inValue)
@@ -30,6 +31,9 @@ namespace Chicane
 
         case ListPushStrategy::After:
             return "After";
+
+        case ListPushStrategy::Replace:
+            return "Replace";
 
         default:
             return "";

@@ -8,7 +8,7 @@
 
 namespace Chicane
 {
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Actor | Camera")
     class CHICANE_RUNTIME ACamera : public Actor
     {
     public:

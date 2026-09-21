@@ -43,6 +43,25 @@
 
 namespace Editor
 {
+    static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
+    static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
+    static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
+
+    static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
+    static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
+    static constexpr inline const char* OUTLINER_ICON_CHARACTER = "PersonSimpleThrow";
+    static constexpr inline const char* OUTLINER_ICON_SKY       = "Globe";
+    static constexpr inline const char* OUTLINER_ICON_MESH      = "Cube";
+    static constexpr inline const char* OUTLINER_ICON_LIGHT     = "Lightbulb";
+    static constexpr inline const char* OUTLINER_ICON_SOUND     = "SpeakerHigh";
+    static constexpr inline const char* OUTLINER_ICON_VIEW      = "Eye";
+    static constexpr inline const char* OUTLINER_ICON_CAMERA    = "Camera";
+    static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Bone";
+
+    static constexpr inline const char* TRANSFORM_GROUP_LABEL  = "Transform";
+    static constexpr inline const char* COORDINATE_SPACE_NAME  = "coordinateSpace";
+    static constexpr inline const char* COORDINATE_SPACE_LABEL = "Coordinate Space";
+
     static Chicane::String typeTail(const Chicane::String& inName)
     {
         const std::size_t split = inName.lastOf(':');
@@ -52,6 +71,22 @@ namespace Editor
         }
 
         return inName.substr(split + 1);
+    }
+
+    static Chicane::String typeGroupLabel(const Chicane::String& inGroup)
+    {
+        if (inGroup.isEmpty())
+        {
+            return inGroup;
+        }
+
+        const std::vector<Chicane::String> parts = inGroup.split(" | ");
+        if (parts.empty())
+        {
+            return inGroup;
+        }
+
+        return parts.back().trim();
     }
 
     static const Chicane::ReflectionEnumInfo* findEnum(const Chicane::String& inTypeName)
@@ -131,21 +166,6 @@ namespace Editor
 
         return Application::getInstance().getHomeScene();
     }
-
-    static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
-    static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
-    static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
-
-    static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
-    static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
-    static constexpr inline const char* OUTLINER_ICON_CHARACTER = "PersonSimpleThrow";
-    static constexpr inline const char* OUTLINER_ICON_SKY       = "Globe";
-    static constexpr inline const char* OUTLINER_ICON_MESH      = "Cube";
-    static constexpr inline const char* OUTLINER_ICON_LIGHT     = "Lightbulb";
-    static constexpr inline const char* OUTLINER_ICON_SOUND     = "SpeakerHigh";
-    static constexpr inline const char* OUTLINER_ICON_VIEW      = "Eye";
-    static constexpr inline const char* OUTLINER_ICON_CAMERA    = "Camera";
-    static constexpr inline const char* OUTLINER_ICON_PHYSICS   = "Bone";
 
     static Chicane::String outlinerIcon(const Chicane::Object* inObject)
     {
@@ -240,28 +260,110 @@ namespace Editor
         return false;
     }
 
-    static void commitAttributeField(Chicane::Object& inItem, AttributeField& inField)
+    static bool isCoordinateSpaceAttribute(const Chicane::String& inName)
     {
+        return inName.equals(COORDINATE_SPACE_NAME);
+    }
+
+    static bool isTransformAttribute(const Chicane::String& inName)
+    {
+        return inName.equals("translation", "rotation", "scale");
+    }
+
+    static void assignTransformAttribute(Chicane::Object& inItem, AttributeField& ioField, CoordinateSpace inSpace)
+    {
+        const bool bIsRelative = inSpace == CoordinateSpace::Relative;
+        if (ioField.name.equals("translation"))
+        {
+            ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getAbsoluteTranslation();
+        }
+        else if (ioField.name.equals("rotation"))
+        {
+            ioField.vector =
+                bIsRelative ? inItem.getRelativeRotation().getAngles() : inItem.getAbsoluteRotation().getAngles();
+        }
+        else if (ioField.name.equals("scale"))
+        {
+            ioField.vector = bIsRelative ? inItem.getRelativeScale() : inItem.getAbsoluteScale();
+        }
+
+        ioField.text = formatVec3(ioField.vector);
+    }
+
+    static void applyTransformAttribute(Chicane::Object& inItem, const AttributeField& inField, CoordinateSpace inSpace)
+    {
+        const bool bIsRelative = inSpace == CoordinateSpace::Relative;
         if (inField.name.equals("translation"))
         {
-            inItem.setAbsoluteTranslation(inField.vector);
-            inItem.notifyPropertyEdited(inField.name);
+            if (bIsRelative)
+            {
+                inItem.setRelativeTranslation(inField.vector);
+            }
+            else
+            {
+                inItem.setAbsoluteTranslation(inField.vector);
+            }
+        }
+        else if (inField.name.equals("rotation"))
+        {
+            if (bIsRelative)
+            {
+                inItem.setRelativeRotation(inField.vector);
+            }
+            else
+            {
+                inItem.setAbsoluteRotation(inField.vector);
+            }
+        }
+        else if (inField.name.equals("scale"))
+        {
+            if (bIsRelative)
+            {
+                inItem.setRelativeScale(inField.vector);
+            }
+            else
+            {
+                inItem.setAbsoluteScale(inField.vector);
+            }
+        }
+
+        inItem.notifyPropertyEdited(inField.name);
+    }
+
+    static void insertCoordinateSpaceField(AttributeGroup::List& ioGroups, CoordinateSpace inSpace)
+    {
+        for (AttributeGroup& group : ioGroups)
+        {
+            if (!group.label.equals(TRANSFORM_GROUP_LABEL))
+            {
+                continue;
+            }
+
+            AttributeField field;
+            field.name    = COORDINATE_SPACE_NAME;
+            field.label   = COORDINATE_SPACE_LABEL;
+            field.group   = group.label;
+            field.type    = AttributeFieldType::Enum;
+            field.text    = toString(inSpace);
+            field.options = {"Absolute", "Relative"};
+            group.fields.insert(group.fields.begin(), field);
+
+            return;
+        }
+    }
+
+    static void commitAttributeField(Chicane::Object& inItem, AttributeField& inField, CoordinateSpace& ioSpace)
+    {
+        if (isCoordinateSpaceAttribute(inField.name))
+        {
+            ioSpace = parseCoordinateSpace(inField.text);
 
             return;
         }
 
-        if (inField.name.equals("rotation"))
+        if (isTransformAttribute(inField.name))
         {
-            inItem.setAbsoluteRotation(inField.vector);
-            inItem.notifyPropertyEdited(inField.name);
-
-            return;
-        }
-
-        if (inField.name.equals("scale"))
-        {
-            inItem.setAbsoluteScale(inField.vector);
-            inItem.notifyPropertyEdited(inField.name);
+            applyTransformAttribute(inItem, inField, ioSpace);
 
             return;
         }
@@ -280,9 +382,19 @@ namespace Editor
     }
 
     static void syncAttributeField(
-        Chicane::Object& inItem, const Chicane::ReflectionTypeInfo& inType, AttributeField& ioField
+        Chicane::Object&                   inItem,
+        const Chicane::ReflectionTypeInfo& inType,
+        AttributeField&                    ioField,
+        CoordinateSpace                    inSpace
     )
     {
+        if (isCoordinateSpaceAttribute(ioField.name))
+        {
+            ioField.text = toString(inSpace);
+
+            return;
+        }
+
         const Chicane::ReflectionFieldAccessor accessor = inType.resolve(ioField.name);
         if (!accessor.isValid())
         {
@@ -299,26 +411,9 @@ namespace Editor
 
         if (ioField.type == AttributeFieldType::Vec3)
         {
-            if (ioField.name.equals("translation"))
+            if (isTransformAttribute(ioField.name))
             {
-                ioField.vector = inItem.getAbsoluteTranslation();
-                ioField.text   = formatVec3(ioField.vector);
-
-                return;
-            }
-
-            if (ioField.name.equals("rotation"))
-            {
-                ioField.vector = inItem.getAbsoluteRotation().getAngles();
-                ioField.text   = formatVec3(ioField.vector);
-
-                return;
-            }
-
-            if (ioField.name.equals("scale"))
-            {
-                ioField.vector = inItem.getAbsoluteScale();
-                ioField.text   = formatVec3(ioField.vector);
+                assignTransformAttribute(inItem, ioField, inSpace);
 
                 return;
             }
@@ -383,7 +478,8 @@ namespace Editor
           selectedAssetName(Chicane::String::empty()),
           m_collapsedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
-          m_outlinerEditId(Chicane::String::empty())
+          m_outlinerEditId(Chicane::String::empty()),
+          m_coordinateSpace(CoordinateSpace::Absolute)
     {
         import <AssetManager>();
         import <Attributes>();
@@ -775,15 +871,41 @@ namespace Editor
                 field.text = inValue;
             }
 
-            commitAttributeField(*selectedItem, field);
+            commitAttributeField(*selectedItem, field, m_coordinateSpace);
 
             return true;
+        };
+
+        auto refreshTransformFields = [this]()
+        {
+            for (AttributeGroup& group : attributeGroups)
+            {
+                if (!group.label.equals(TRANSFORM_GROUP_LABEL))
+                {
+                    continue;
+                }
+
+                for (AttributeField& field : group.fields)
+                {
+                    if (isTransformAttribute(field.name))
+                    {
+                        assignTransformAttribute(*selectedItem, field, m_coordinateSpace);
+                    }
+                }
+
+                return;
+            }
         };
 
         for (AttributeField& field : attributeFields)
         {
             if (apply(field))
             {
+                if (isCoordinateSpaceAttribute(inName))
+                {
+                    refreshTransformFields();
+                }
+
                 return;
             }
         }
@@ -794,6 +916,11 @@ namespace Editor
             {
                 if (apply(field))
                 {
+                    if (isCoordinateSpaceAttribute(inName))
+                    {
+                        refreshTransformFields();
+                    }
+
                     return;
                 }
             }
@@ -814,6 +941,55 @@ namespace Editor
         {
             onItemSelection(scene->spawnMeshActor(Chicane::Box::Mesh::DEFAULT_SOURCE));
         }
+    }
+
+    void HomeView::onSpawn(Chicane::String inTypeName)
+    {
+        std::shared_ptr<Scene> scene = editorScene();
+        if (!scene || inTypeName.isEmpty())
+        {
+            return;
+        }
+
+        try
+        {
+            onItemSelection(scene->createActorFromTag(inTypeName));
+
+            return;
+        }
+        catch (const std::exception&)
+        {
+        }
+
+        Chicane::Component* component = nullptr;
+        try
+        {
+            component = scene->createComponentFromTag(inTypeName);
+        }
+        catch (const std::exception&)
+        {
+            return;
+        }
+
+        if (!component)
+        {
+            return;
+        }
+
+        Chicane::Object* parent = selectedItem;
+        if (Chicane::Component* selectedComponent = dynamic_cast<Chicane::Component*>(parent))
+        {
+            parent = selectedComponent->getParent();
+        }
+
+        if (!parent || parent->isTransient())
+        {
+            parent = scene->createActor<Chicane::Actor>();
+        }
+
+        component->attachTo(parent);
+        component->activate();
+        onItemSelection(component);
     }
 
     void HomeView::onGizmoTranslate()
@@ -1111,28 +1287,24 @@ namespace Editor
             else if (accessor.isType<Chicane::Vec3>() || accessor.isType<Chicane::Rotator>())
             {
                 field.type = AttributeFieldType::Vec3;
-                if (name.equals("translation"))
+                if (isTransformAttribute(name))
                 {
-                    field.vector = selectedItem->getAbsoluteTranslation();
-                }
-                else if (name.equals("rotation"))
-                {
-                    field.vector = selectedItem->getAbsoluteRotation().getAngles();
-                }
-                else if (name.equals("scale"))
-                {
-                    field.vector = selectedItem->getAbsoluteScale();
+                    assignTransformAttribute(*selectedItem, field, m_coordinateSpace);
                 }
                 else if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(selectedItem))
                 {
                     field.vector = *value;
+                    field.text   = formatVec3(field.vector);
                 }
                 else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(selectedItem))
                 {
                     field.vector = rotator->getAngles();
+                    field.text   = formatVec3(field.vector);
                 }
-
-                field.text = formatVec3(field.vector);
+                else
+                {
+                    field.text = formatVec3(field.vector);
+                }
             }
             else if (accessor.isType<float>())
             {
@@ -1162,7 +1334,7 @@ namespace Editor
 
             if (field.group.isEmpty())
             {
-                field.group = type->group;
+                field.group = typeGroupLabel(type->group);
             }
 
             if (field.group.isEmpty())
@@ -1192,6 +1364,8 @@ namespace Editor
 
             group->fields.push_back(field);
         }
+
+        insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
     }
 
     void HomeView::syncAttributeValues()
@@ -1210,14 +1384,14 @@ namespace Editor
 
         for (AttributeField& field : attributeFields)
         {
-            syncAttributeField(*selectedItem, *type, field);
+            syncAttributeField(*selectedItem, *type, field, m_coordinateSpace);
         }
 
         for (AttributeGroup& group : attributeGroups)
         {
             for (AttributeField& field : group.fields)
             {
-                syncAttributeField(*selectedItem, *type, field);
+                syncAttributeField(*selectedItem, *type, field, m_coordinateSpace);
             }
         }
     }
@@ -1225,5 +1399,10 @@ namespace Editor
     bool HomeView::hasSelectedItem() const
     {
         return selectedItem != nullptr;
+    }
+
+    CoordinateSpace HomeView::getCoordinateSpace() const
+    {
+        return m_coordinateSpace;
     }
 }

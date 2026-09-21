@@ -20,10 +20,11 @@ namespace Chicane
 {
     class Actor;
 
-    CH_TYPE(Manual)
+    CH_TYPE(Manual, Group = "Component | Physics")
     class CHICANE_RUNTIME CPhysics : public Component
     {
     public:
+        CH_CONSTRUCTOR()
         CPhysics();
         ~CPhysics() override;
 

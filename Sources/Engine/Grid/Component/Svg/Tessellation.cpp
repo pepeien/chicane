@@ -6,13 +6,6 @@ namespace Chicane
 {
     namespace Grid
     {
-        SvgTessellation& SvgTessellation::instance()
-        {
-            static SvgTessellation service;
-
-            return service;
-        }
-
         const Primitive* SvgTessellation::find(const std::string& inKey) const
         {
             const auto found = m_cache.find(inKey);
@@ -54,7 +47,7 @@ namespace Chicane
                         primitive.clear();
                     }
 
-                    SvgTessellation::instance().finish(inKey, std::move(primitive));
+                    SvgTessellation::getInstance().finish(inKey, std::move(primitive));
                 }
             );
         }

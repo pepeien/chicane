@@ -122,6 +122,21 @@ namespace Chicane
 
                     break;
 
+                case ListPushStrategy::Replace:
+                    if (location == m_layers.end())
+                    {
+                        location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
+
+                        break;
+                    }
+
+                    location->get()->onDestruction();
+                    *location = std::make_shared<Target>(inParams...);
+                    location->get()->setBackend(this);
+                    location->get()->onInit();
+
+                    return;
+
                 default:
                     location = m_layers.insert(m_layers.end(), std::make_shared<Target>(inParams...));
 
