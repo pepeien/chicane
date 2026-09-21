@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        enum class RendererFeature : std::uint8_t
+        enum class RendererFeature : std::uint16_t
         {
             None      = 0,
             Fill      = 1 << 0,
@@ -20,19 +20,24 @@ namespace Chicane
             Skeletons = 1 << 5,
             HDR       = 1 << 6,
             Light     = 1 << 7,
+            Outline   = 1 << 8,
 
-            Default = Fill | Light,
-            All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light
+            Default = Fill | Light | Outline,
+            All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light | Outline
         };
 
         inline RendererFeature operator|(RendererFeature inLeft, RendererFeature inRight)
         {
-            return static_cast<RendererFeature>(static_cast<std::uint8_t>(inLeft) | static_cast<std::uint8_t>(inRight));
+            return static_cast<RendererFeature>(
+                static_cast<std::uint16_t>(inLeft) | static_cast<std::uint16_t>(inRight)
+            );
         }
 
         inline RendererFeature operator&(RendererFeature inLeft, RendererFeature inRight)
         {
-            return static_cast<RendererFeature>(static_cast<std::uint8_t>(inLeft) & static_cast<std::uint8_t>(inRight));
+            return static_cast<RendererFeature>(
+                static_cast<std::uint16_t>(inLeft) & static_cast<std::uint16_t>(inRight)
+            );
         }
 
         inline RendererFeature& operator|=(RendererFeature& inLeft, RendererFeature inRight)
@@ -51,7 +56,7 @@ namespace Chicane
 
         inline RendererFeature operator~(RendererFeature inValue)
         {
-            return static_cast<RendererFeature>(~static_cast<std::uint8_t>(inValue));
+            return static_cast<RendererFeature>(~static_cast<std::uint16_t>(inValue));
         }
     }
 
@@ -85,6 +90,9 @@ namespace Chicane
 
         case Renderer::RendererFeature::Light:
             return "Light";
+
+        case Renderer::RendererFeature::Outline:
+            return "Outline";
 
         case Renderer::RendererFeature::Default:
             return "Default";

@@ -192,7 +192,7 @@ namespace Chicane
 
         bool LSceneLine::shouldDrawOutline(const Frame& inFrame) const
         {
-            return inFrame.hasOutlineDraws();
+            return inFrame.hasFeature(RendererFeature::Outline) && inFrame.hasOutlineDraws();
         }
 
         bool LSceneLine::onBeginRender(const Frame& inFrame)

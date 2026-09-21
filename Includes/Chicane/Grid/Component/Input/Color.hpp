@@ -3,8 +3,10 @@
 #include <vector>
 
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window/Event.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -29,6 +31,8 @@ namespace Chicane
 
         public:
             bool isFocusable() const override;
+            bool escapesOverflow() const override;
+            bool onEvent(const WindowEvent& inEvent) override;
 
         protected:
             void onTick(float inDeltaTime) override;
@@ -59,6 +63,15 @@ namespace Chicane
             void commitModel();
 
             CH_FUNCTION()
+            void setRgbModel();
+
+            CH_FUNCTION()
+            void setRgbaModel();
+
+            CH_FUNCTION()
+            void setHsvModel();
+
+            CH_FUNCTION()
             void pickPreset(String inHex);
 
             CH_FUNCTION()
@@ -73,12 +86,19 @@ namespace Chicane
             void syncFromRgb(float inR, float inG, float inB, float inA);
             void refreshDerivedColors();
             void refreshModelFlags();
-            void refreshLabels();
+            void refreshWheel();
+            void refreshTabState();
             Color::Rgba currentRgba() const;
+            Component* findChildId(const String& inId) const;
+            bool pickWheelAt(const Vec2& inLocation);
+            bool pickValueAt(const Vec2& inLocation);
 
         public:
             CH_FIELD()
             String hex;
+
+            CH_FIELD()
+            String swatchHex;
 
             CH_FIELD()
             String vividHex;
@@ -114,30 +134,6 @@ namespace Chicane
             float blue;
 
             CH_FIELD()
-            String hueText;
-
-            CH_FIELD()
-            String saturationText;
-
-            CH_FIELD()
-            String lightnessText;
-
-            CH_FIELD()
-            String brightnessText;
-
-            CH_FIELD()
-            String alphaText;
-
-            CH_FIELD()
-            String redText;
-
-            CH_FIELD()
-            String greenText;
-
-            CH_FIELD()
-            String blueText;
-
-            CH_FIELD()
             String model;
 
             CH_FIELD()
@@ -153,13 +149,44 @@ namespace Chicane
             bool isRgb;
 
             CH_FIELD()
+            bool isRgba;
+
+            CH_FIELD()
             bool isOpen;
 
             CH_FIELD()
             String openState;
 
             CH_FIELD()
+            String rgbState;
+
+            CH_FIELD()
+            String rgbaState;
+
+            CH_FIELD()
+            String hsvState;
+
+            CH_FIELD()
+            float wheelCursorX;
+
+            CH_FIELD()
+            float wheelCursorY;
+
+            CH_FIELD()
+            float valueDim;
+
+            CH_FIELD()
+            float valueThumbY;
+
+            CH_FIELD()
+            float alphaUnit;
+
+            CH_FIELD()
             std::vector<String> presets;
+
+        private:
+            bool m_bIsPickingWheel;
+            bool m_bIsPickingValue;
         };
     }
 }

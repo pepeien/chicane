@@ -149,6 +149,12 @@ namespace Chicane
             return false;
         }
 
+        void Window::tick(float inDeltaTime)
+        {
+            refreshOpenState();
+            Container::tick(inDeltaTime);
+        }
+
         void Window::refreshPosition()
         {
             Container::refreshPosition();
@@ -209,6 +215,23 @@ namespace Chicane
             }
 
             return nullptr;
+        }
+
+        void Window::refreshOpenState()
+        {
+            const String isOpen = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
+            if (!isOpen.isEmpty())
+            {
+                bIsVisible = Xml::parseBool(parseText(isOpen).trim(), true);
+
+                return;
+            }
+
+            const String condition = getAttribute(IF_DIRECTIVE_KEYWORD);
+            if (!condition.isEmpty())
+            {
+                bIsVisible = parseText(condition).equals("true", "1");
+            }
         }
 
         void Window::refreshTitleVisibility()

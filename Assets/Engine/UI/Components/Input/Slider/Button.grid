@@ -1,0 +1,22 @@
+<Container class="input-button-slider">
+    <Button id="sliderDec" class="input-button-slider__nudge" onClick="{{ decrement() }}">
+        <Text class="input-button-slider__chevron">‹</Text>
+    </Button>
+    <Container id="sliderTrack" class="input-button-slider__track">
+        <Container class="input-button-slider__fill" />
+        <Container class="input-button-slider__values">
+            <Text class="input-button-slider__label">{{ label }}</Text>
+            <Input::Text
+                id="sliderValue"
+                class="input-button-slider__value"
+                value="{{ valueText }}"
+                onInput="{{ commitText() }}"
+            >
+                {{ valueText }}
+            </Input::Text>
+        </Container>
+    </Container>
+    <Button id="sliderInc" class="input-button-slider__nudge" onClick="{{ increment() }}">
+        <Text class="input-button-slider__chevron">›</Text>
+    </Button>
+</Container>

@@ -1,26 +1,33 @@
 <Container class="toolbar --{{ orientation }}">
     <Editor::DockHeader id="toolbarHeader" label="Toolbar" />
     <Container class="toolbar__items">
-        <Button class="toolbar__item --idle" onClick="{{ onTrackSave() }}">
+        <Button id="toolbarSave" class="toolbar__item --idle" onClick="{{ onTrackSave() }}">
             <Icon source="Assets/Editor/UI/Icons/Regular" name="FloppyDisk" class="toolbar__icon --regular"/>
             <Icon source="Assets/Editor/UI/Icons/Fill" name="FloppyDisk" class="toolbar__icon --fill"/>
-            <Text>Save</Text>
         </Button>
+        <ToolTip anchorId="toolbarSave" title="Save" />
         <Container class="toolbar__separator"/>
-        <Button class="toolbar__item --{{ translateState }}" onClick="{{ onGizmoTranslate() }}">
+        <Button id="toolbarMove" class="toolbar__item --{{ translateState }}" onClick="{{ onGizmoTranslate() }}">
             <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOutCardinal" class="toolbar__icon --regular"/>
             <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOutCardinal" class="toolbar__icon --fill"/>
-            <Text>Move</Text>
         </Button>
-        <Button class="toolbar__item --{{ rotateState }}" onClick="{{ onGizmoRotate() }}">
+        <ToolTip anchorId="toolbarMove" title="Move" />
+        <Button id="toolbarRotate" class="toolbar__item --{{ rotateState }}" onClick="{{ onGizmoRotate() }}">
             <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowClockwise" class="toolbar__icon --regular"/>
             <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowClockwise" class="toolbar__icon --fill"/>
-            <Text>Rotate</Text>
         </Button>
-        <Button class="toolbar__item --{{ scaleState }}" onClick="{{ onGizmoScale() }}">
+        <ToolTip anchorId="toolbarRotate" title="Rotate" />
+        <Button id="toolbarScale" class="toolbar__item --{{ scaleState }}" onClick="{{ onGizmoScale() }}">
             <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOut" class="toolbar__icon --regular"/>
             <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOut" class="toolbar__icon --fill"/>
-            <Text>Scale</Text>
         </Button>
+        <ToolTip anchorId="toolbarScale" title="Scale" />
+        <Container class="toolbar__separator"/>
+        <Button id="toolbarSettings" class="toolbar__item --{{ settingsState }}" onClick="{{ onSettingsToggle() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="Gear" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="Gear" class="toolbar__icon --fill"/>
+        </Button>
+        <ToolTip dir:if="{{ showSettingsHint }}" anchorId="toolbarSettings" title="Settings" />
+        <Editor::ViewportSettings dir:if="{{ isSettingsOpen }}" isOpen="{{ isSettingsOpen }}" onClose="{{ closeSettings() }}" />
     </Container>
 </Container>

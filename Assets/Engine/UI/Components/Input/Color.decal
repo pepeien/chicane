@@ -1,101 +1,157 @@
 Input::Color {
     width: 100%;
-    min-height: 1.6em;
+    min-height: 1.35em;
     position: relative;
     overflow: visible;
 }
 
 .input-color {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: visible;
 
     &__swatch {
-        width: 1.6em;
-        height: 1.6em;
-        min-width: 1.6em;
-        padding: 0.12em;
-        border-radius: 0.25em;
+        width: 100%;
+        height: 100%;
+        padding: 0.1em;
+        border-radius: 3px;
         cursor: pointer;
         overflow: hidden;
-        border: 1px solid white;
+        background-color: $--white;
+        border: 1px solid $--lighter-grey;
     }
 
     &__swatch__fill {
         width: 100%;
         height: 100%;
-        border-radius: 0.16em;
-        background-color: ref(hex);
+        border-radius: 2px;
+        background-color: ref(swatchHex);
     }
 
     &__popup {
-        width: 18em;
-        margin-top: 1.85em;
+        position: absolute;
+        width: 16.5em;
+        margin-top: 1.7em;
         overflow: visible;
-        z-index: 50;
-    }
-
-    &__preview {
-        width: 100%;
-        height: 6.2em;
-        overflow: hidden;
-        cursor: default;
-    }
-
-    &__preview__fill {
-        width: 100%;
-        height: 100%;
-        background-color: ref(hex);
+        z-index: 130;
+        background-color: #323232;
+        border: 1px solid #524e4e;
+        border-radius: 4px;
     }
 
     &__body {
-        width: 100%;
-        padding: 0.7em 0.75em 0.8em 0.75em;
+        width: 16.5em;
+        padding: 0.55em 0.6em 0.7em 0.6em;
         display: flex;
         flex-direction: column;
-        gap: 0.65em;
-        background-color: transparent;
-
-        Text {
-            color: black;
-        }
+        gap: 0.45em;
+        background-color: #323232;
+        overflow: visible;
     }
 
-    &__toolbar {
+    &__picker {
         width: 100%;
-        height: 1.5em;
+        height: 11.4em;
         display: flex;
         flex-direction: row;
-        gap: 0.4em;
+        gap: 0.55em;
         overflow: visible;
     }
 
-    &__hex {
-        width: 5em;
-        height: 1.5em;
-        color: black;
+    &__wheel {
+        width: 11.4em;
+        height: 11.4em;
+        position: relative;
         overflow: hidden;
+        border-radius: 50%;
+        cursor: pointer;
     }
 
-    &__model {
-        width: 20%;
-        height: 1.5em;
-        color: grey;
-        overflow: visible;
-        margin-left: auto;
-        background-color: blue;
+    &__disc {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: white;
+        background-image: radial-gradient(circle at 50% 0px, red, rgba(242, 13, 13, 0.8) 10%, rgba(230, 26, 26, 0.6) 20%, rgba(204, 51, 51, 0.4) 30%, rgba(166, 89, 89, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 85.3553% 14.6447%, rgb(255, 191, 0), rgba(242, 185, 13, 0.8) 10%, rgba(230, 179, 26, 0.6) 20%, rgba(204, 166, 51, 0.4) 30%, rgba(166, 147, 89, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 100% 50%, rgb(128, 255, 0), rgba(128, 242, 13, 0.8) 10%, rgba(128, 230, 26, 0.6) 20%, rgba(128, 204, 51, 0.4) 30%, rgba(128, 166, 89, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 85.3553% 85.3553%, rgb(0, 255, 64), rgba(13, 242, 70, 0.8) 10%, rgba(26, 230, 77, 0.6) 20%, rgba(51, 204, 89, 0.4) 30%, rgba(89, 166, 108, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 50% 100%, rgb(0, 255, 255), rgba(13, 242, 242, 0.8) 10%, rgba(26, 230, 230, 0.6) 20%, rgba(51, 204, 204, 0.4) 30%, rgba(89, 166, 166, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 14.6447% 85.3553%, rgb(0, 64, 255), rgba(13, 70, 242, 0.8) 10%, rgba(26, 77, 230, 0.6) 20%, rgba(51, 89, 204, 0.4) 30%, rgba(89, 108, 166, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 0px 50%, rgb(127, 0, 255), rgba(128, 13, 242, 0.8) 10%, rgba(128, 26, 230, 0.6) 20%, rgba(128, 51, 204, 0.4) 30%, rgba(128, 89, 166, 0.2) 40%, rgba(128, 128, 128, 0) 50%), radial-gradient(circle at 14.6447% 14.6447%, rgb(255, 0, 191), rgba(242, 13, 185, 0.8) 10%, rgba(230, 26, 179, 0.6) 20%, rgba(204, 51, 166, 0.4) 30%, rgba(166, 89, 147, 0.2) 40%, rgba(128, 128, 128, 0) 50%);
+    }
 
-        .input-select__list {
+    &__shade {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: black;
+        opacity: ref(valueDim);
+    }
+
+    &__cursor {
+        position: absolute;
+        width: 0.72em;
+        height: 0.72em;
+        margin-left: ref(wheelCursorX)%;
+        margin-top: ref(wheelCursorY)%;
+        border-radius: 50%;
+        border: 2px solid white;
+        background-color: transparent;
+        overflow: hidden;
+        z-index: 2;
+    }
+
+    &__value {
+        width: 0.85em;
+        height: 11.4em;
+        position: relative;
+        overflow: visible;
+        border-radius: 2px;
+        background-image: linear-gradient(to bottom, white, black);
+        cursor: pointer;
+
+        &__thumb {
+            position: absolute;
+            width: 1.2em;
+            height: 0.55em;
+            margin-left: -0.175em;
+            margin-top: ref(valueThumbY)%;
+            border-radius: 2px;
             background-color: white;
-            border: 1px solid grey;
-            border-radius: 0.3em;
-            overflow: visible;
-            z-index: 200;
+            border: 1px solid gray;
+            overflow: hidden;
+        }
+    }
+
+    &__tabs {
+        width: 100%;
+        height: 1.45em;
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        border-radius: 3px;
+        background-color: $--white;
+    }
+
+    &__tab {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background-color: transparent;
+        overflow: hidden;
+        cursor: pointer;
+
+        Text {
+            margin: auto;
+            color: $--black;
+            font-size: 0.72em;
         }
 
-        .input-select__label {
-            color: grey;
+        &.--active {
+            background-color: blue;
+
+            Text {
+                color: white;
+            }
         }
     }
 
@@ -103,143 +159,45 @@ Input::Color {
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 0.55em;
+        gap: 0.22em;
         overflow: visible;
     }
 
-    &__channel {
+    Input::ButtonSlider {
         width: 100%;
-        height: 1.15em;
-        display: flex;
-        flex-direction: row;
-        gap: 0.45em;
-        position: relative;
-        overflow: visible;
+        height: 1.4em;
+
+        .input-button-slider {
+            &__label, &__value {
+                font-size: 0.65em;
+            }
+        }
     }
 
-    &__ramp {
-        width: 78%;
-        height: 0.62em;
-        margin: auto 0;
-        overflow: hidden;
-        border-radius: 1em;
-    }
-
-    &__alpha-fill {
+    &__hex-row {
         width: 100%;
-        height: 100%;
-        background-color: linear-gradient(to right, transparent, ref(vividHex));
-    }
-
-    &__slider {
-        width: 90%;
-        cursor: ew-resize;
-        overflow: visible;
-
-        .input-slider__track {
-            height: 0.62em;
-            background-color: transparent;
-        }
-
-        &.--hue .input-slider__track {
-            background-color: linear-gradient(to right, #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-        }
-
-        &.--sat .input-slider__track  {
-            background-color: linear-gradient(to right, ref(grayHex), ref(vividHex));
-        }
-
-        &.--light .input-slider__track  {
-            background-color: linear-gradient(to right, #000000, ref(toneHex), #ffffff);
-        }
-
-        &.--value .input-slider__track  {
-            background-color: linear-gradient(to right, #000000, ref(vividHex));
-        }
-
-        &.--red .input-slider__track  {
-            background-color: linear-gradient(to right, #000000, #ff0000);
-        }
-
-        &.--green .input-slider__track  {
-            background-color: linear-gradient(to right, #000000, #00ff00);
-        }
-
-        &.--blue .input-slider__track  {
-            background-color: linear-gradient(to right, #000000, #0000ff);
-        }
-
-        &.--alpha .input-slider__track  {
-            background-color: #d0d0d0;
-        }
-
-        .input-slider__fill {
-            background-color: transparent;
-        }
-
-        .input-slider__thumb {
-            width: 0.95em;
-            height: 0.95em;
-            background-color: #ffffff;
-            border-radius: 50%;
-        }
-    }
-
-    &__readout {
-        width: 100%;
-        height: 1.15em;
-        color: white;
-        font-size: 0.8em;
-        alignment: right;
-    }
-
-    &__palette {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.45em;
-        overflow: visible;
-    }
-
-    &__palette__label {
-        color: white;
-        font-size: 0.8em;
-    }
-
-    &__chips {
-        width: 100%;
-        height: 1.7em;
+        height: 1.4em;
         display: flex;
         flex-direction: row;
         gap: 0.4em;
         overflow: visible;
     }
 
-    &__chip {
-        width: 1.7em;
-        height: 1.7em;
-        min-width: 1.7em;
-        padding: 0;
-        border-radius: 0.35em;
-        cursor: pointer;
+    &__hex-label {
+        width: 5.6em;
+        margin: auto 0;
+        color: black;
+        font-size: 0.72em;
+    }
+
+    &__hex {
+        width: 100%;
+        height: 1.4em;
+        padding: 0.15em 0.4em;
+        color: black;
+        font-size: 0.72em;
+        background-color: white;
         overflow: hidden;
-
-        &__fill {
-            width: 100%;
-            height: 100%;
-            background-color: ref(swatch);
-        }
-
-        &.--add {
-            border-radius: 4px;
-            border: 1px solid white;
-            overflow: hidden;
-        }
-
-        &__plus {
-            margin: auto;
-            color: black;
-            font-size: 1.1em;
-        }
+        border-radius: 3px;
     }
 }

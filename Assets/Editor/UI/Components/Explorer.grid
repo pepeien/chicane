@@ -39,7 +39,7 @@
                 </Container>
                 <Container class="explorer__footer__group --grow">
                     <Text class="explorer__footer__label">Icon Size</Text>
-                    <Input::Slider id="explorerIconSize" class="explorer__slider" value="{{ iconSizePercent }}" min="0" max="100" onInput="{{ onIconSize() }}" />
+                    <Input::Slider id="explorerIconSize" class="explorer__slider" value="{{ iconSizePercent }}" min="0" max="100" step="1" onInput="{{ onIconSize() }}" />
                 </Container>
                 <Container class="explorer__footer__group">
                     <Text class="explorer__footer__label">Sort By</Text>

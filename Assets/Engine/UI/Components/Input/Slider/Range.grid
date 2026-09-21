@@ -1,0 +1,14 @@
+<Container class="input-range-slider">
+    <Container class="input-range-slider__field">
+        <Input::Text id="rangeLow" class="input-range-slider__value" value="{{ lowText }}" onInput="{{ commitLowText() }}">{{ lowText }}</Input::Text>
+    </Container>
+    <Container id="rangeTrack" class="input-range-slider__track">
+        <Container id="rangeSpan" class="input-range-slider__span">
+            <Container id="rangeHandleLow" class="input-range-slider__handle --low" />
+            <Container id="rangeHandleHigh" class="input-range-slider__handle --high" />
+        </Container>
+    </Container>
+    <Container class="input-range-slider__field">
+        <Input::Text id="rangeHigh" class="input-range-slider__value" value="{{ highText }}" onInput="{{ commitHighText() }}">{{ highText }}</Input::Text>
+    </Container>
+</Container>

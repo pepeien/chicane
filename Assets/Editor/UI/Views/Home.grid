@@ -22,7 +22,6 @@
         <DockPanel isGrabbable="false">
             <Viewport />
             <Editor::Telemetry />
-            <Editor::ShowFlags />
         </DockPanel>
         <DockPanel side="left" size="15%" handle="outlinerHeader">
             <Editor::Outliner

@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Input/Slider.reflected.hpp"
+#include "Chicane/Grid/Component/Input/Slider/Button.reflected.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -19,25 +19,31 @@ namespace Chicane
 {
     namespace Grid
     {
-        InputSlider::InputSlider(const XmlNode& inNode)
+        InputButtonSlider::InputButtonSlider(const XmlNode& inNode)
             : Container(inNode),
               value(0.0f),
               min(0.0f),
               max(100.0f),
               step(0.0f),
               percentage(0.0f),
+              precision(3),
+              label(String::empty()),
+              valueText(String::empty()),
               m_bIsSliding(false),
               m_bIsEdited(false)
         {
-            load("Assets/Engine/UI/Components/Input/Slider.grid", "Assets/Engine/UI/Components/Input/Slider.decal");
+            load(
+                "Assets/Engine/UI/Components/Input/Slider/Button.grid",
+                "Assets/Engine/UI/Components/Input/Slider/Button.decal"
+            );
         }
 
-        bool InputSlider::isFocusable() const
+        bool InputButtonSlider::isFocusable() const
         {
             return true;
         }
 
-        bool InputSlider::onEvent(const WindowEvent& inEvent)
+        bool InputButtonSlider::onEvent(const WindowEvent& inEvent)
         {
             if (inEvent.type == WindowEventType::MouseButtonUp)
             {
@@ -64,6 +70,20 @@ namespace Chicane
                     return false;
                 }
 
+                Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                if (SliderMath::isDescendantId(this, hit, "sliderDec") ||
+                    SliderMath::isDescendantId(this, hit, "sliderInc") ||
+                    SliderMath::isDescendantId(this, hit, "sliderValue"))
+                {
+                    return false;
+                }
+
+                Component* track = SliderMath::findChildId(this, "sliderTrack");
+                if (track && !track->containsPoint(event.location))
+                {
+                    return false;
+                }
+
                 m_bIsSliding = true;
                 applyAt(event.location);
 
@@ -85,7 +105,7 @@ namespace Chicane
 
             if (inEvent.type == WindowEventType::MouseWheel)
             {
-                if (!inEvent.data)
+                if (isEditing() || !inEvent.data)
                 {
                     return false;
                 }
@@ -107,7 +127,7 @@ namespace Chicane
                 return true;
             }
 
-            if (!isFocused() || inEvent.type != WindowEventType::KeyDown || !inEvent.data)
+            if (!isFocused() || inEvent.type != WindowEventType::KeyDown || !inEvent.data || isEditing())
             {
                 return false;
             }
@@ -143,19 +163,21 @@ namespace Chicane
             }
         }
 
-        void InputSlider::onTick(float inDeltaTime)
+        void InputButtonSlider::onTick(float inDeltaTime)
         {
             Container::onTick(inDeltaTime);
 
+            refreshLabel();
             refreshRange();
         }
 
-        void InputSlider::setValue(float inValue)
+        void InputButtonSlider::setValue(float inValue)
         {
             const float next = SliderMath::snapValue(inValue, min, max, step);
             if (std::fabs(value - next) <= 0.0001f)
             {
                 refreshPercentage();
+                refreshValueText();
 
                 return;
             }
@@ -163,15 +185,36 @@ namespace Chicane
             value       = next;
             m_bIsEdited = true;
             refreshPercentage();
+            refreshValueText();
             commit();
             emitInput();
         }
 
-        void InputSlider::refreshRange()
+        void InputButtonSlider::decrement()
         {
-            min  = SliderMath::parseNumber(parseText(getAttribute(MIN_ATTRIBUTE_NAME)), 0.0f);
-            max  = SliderMath::parseNumber(parseText(getAttribute(MAX_ATTRIBUTE_NAME)), 100.0f);
-            step = std::max(0.0f, SliderMath::parseNumber(parseText(getAttribute(STEP_ATTRIBUTE_NAME)), 0.0f));
+            nudge(-1);
+        }
+
+        void InputButtonSlider::increment()
+        {
+            nudge(1);
+        }
+
+        void InputButtonSlider::commitText()
+        {
+            setValue(SliderMath::parseNumber(valueText, value));
+        }
+
+        void InputButtonSlider::refreshRange()
+        {
+            min       = SliderMath::parseNumber(parseText(getAttribute(MIN_ATTRIBUTE_NAME)), 0.0f);
+            max       = SliderMath::parseNumber(parseText(getAttribute(MAX_ATTRIBUTE_NAME)), 100.0f);
+            step      = std::max(0.0f, SliderMath::parseNumber(parseText(getAttribute(STEP_ATTRIBUTE_NAME)), 0.0f));
+            precision = std::clamp(
+                static_cast<int>(SliderMath::parseNumber(parseText(getAttribute(PRECISION_ATTRIBUTE_NAME)), 3.0f)),
+                0,
+                6
+            );
 
             if (max < min)
             {
@@ -191,31 +234,64 @@ namespace Chicane
             }
 
             refreshPercentage();
+            refreshValueText();
         }
 
-        void InputSlider::applyAt(const Vec2& inLocation)
+        void InputButtonSlider::refreshLabel()
         {
-            setValue(SliderMath::fromLocation(inLocation, getDrawBounds(), min, max, step));
+            const String next = parseText(getAttribute(LABEL_ATTRIBUTE_NAME)).trim();
+            if (!next.equals(label))
+            {
+                label = next;
+            }
         }
 
-        void InputSlider::nudge(int inSteps, float inScale)
+        void InputButtonSlider::applyAt(const Vec2& inLocation)
+        {
+            Component*     track = SliderMath::findChildId(this, "sliderTrack");
+            const Bounds2D box   = track ? track->getDrawBounds() : getDrawBounds();
+            setValue(SliderMath::fromLocation(inLocation, box, min, max, step));
+        }
+
+        void InputButtonSlider::nudge(int inSteps, float inScale)
         {
             setValue(value + SliderMath::stepSize(step, min, max) * static_cast<float>(inSteps) * inScale);
         }
 
-        void InputSlider::commit()
+        void InputButtonSlider::commit()
         {
             SliderMath::commitFloat(this, VALUE_ATTRIBUTE_NAME, value);
         }
 
-        void InputSlider::emitInput()
+        void InputButtonSlider::emitInput()
         {
             getMethod(getAttribute(ON_INPUT_ATTRIBUTE_NAME)).invoke();
         }
 
-        void InputSlider::refreshPercentage()
+        void InputButtonSlider::refreshPercentage()
         {
             percentage = SliderMath::percent(value, min, max);
+        }
+
+        void InputButtonSlider::refreshValueText()
+        {
+            if (isEditing())
+            {
+                return;
+            }
+
+            const String next = SliderMath::formatValue(value, step, precision);
+            if (!next.equals(valueText))
+            {
+                valueText = next;
+            }
+        }
+
+        bool InputButtonSlider::isEditing() const
+        {
+            const Component* field = SliderMath::findChildId(this, "sliderValue");
+
+            return field && field->isFocused();
         }
     }
 }

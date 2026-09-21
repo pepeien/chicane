@@ -292,7 +292,16 @@ namespace Chicane
         void InputText::onRefresh()
         {
             refreshValue();
-            setText(value);
+
+            const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
+            if (!isFocused() && isReference(raw))
+            {
+                setText(raw);
+            }
+            else
+            {
+                setText(value);
+            }
 
             Text::onRefresh();
             refreshChrome();

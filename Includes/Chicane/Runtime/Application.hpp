@@ -242,7 +242,7 @@ namespace Chicane
 
         // Renderer
         std::unique_ptr<Renderer::Instance>      m_renderer;
-        std::atomic<std::uint8_t>                m_featureFlags;
+        std::atomic<std::uint16_t>               m_featureFlags;
         std::atomic<std::uint32_t>               m_rendererWidth;
         std::atomic<std::uint32_t>               m_rendererHeight;
     };

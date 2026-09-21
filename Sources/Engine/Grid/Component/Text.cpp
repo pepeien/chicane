@@ -349,19 +349,10 @@ namespace Chicane
                 return;
             }
 
-            const bool bHadInsets = hasFlag(ComponentDirty::Insets);
-
-            setSize(bIsWidthAuto ? m_contentSize.x : m_size.x, bIsHeightAuto ? m_contentSize.y : m_size.y);
-
-            if (bHadInsets)
-            {
-                addSize(
-                    bIsWidthAuto ? m_style.insetHorizontal() : 0.0f,
-                    bIsHeightAuto ? m_style.insetVertical() : 0.0f
-                );
-
-                setFlag(ComponentDirty::Insets);
-            }
+            setSize(
+                bIsWidthAuto ? m_contentSize.x + m_style.insetHorizontal() : m_size.x,
+                bIsHeightAuto ? m_contentSize.y + m_style.insetVertical() : m_size.y
+            );
         }
 
         void Text::refreshPosition()
@@ -386,9 +377,7 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
-            const float       innerWidth    = (!m_style.width.isAuto() || hasFlag(ComponentDirty::Insets))
-                                                  ? std::max(0.0f, m_size.x - m_style.insetHorizontal())
-                                                  : m_size.x;
+            const float       innerWidth    = std::max(0.0f, m_size.x - m_style.insetHorizontal());
             const String      signature =
                 value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
                 std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
@@ -484,19 +473,6 @@ namespace Chicane
             }
 
             m_contentSize = {maxWidth, lineCount * lineHeight};
-
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
-
-            if (bIsWidthAuto)
-            {
-                m_style.width.value.set(m_contentSize.x);
-            }
-
-            if (bIsHeightAuto)
-            {
-                m_style.height.value.set(m_contentSize.y);
-            }
 
             applyContentSize();
             flushLine();

@@ -413,7 +413,7 @@ namespace Chicane
 
         const Vec<2, std::uint32_t> resolution = m_renderer->getResolution();
 
-        m_featureFlags.store(static_cast<std::uint8_t>(m_renderer->getFeature()), std::memory_order_relaxed);
+        m_featureFlags.store(static_cast<std::uint16_t>(m_renderer->getFeature()), std::memory_order_relaxed);
         m_rendererWidth.store(resolution.x, std::memory_order_relaxed);
         m_rendererHeight.store(resolution.y, std::memory_order_relaxed);
     }
@@ -1291,6 +1291,7 @@ namespace Chicane
             );
             const String backgroundImage = style.background.image.getRaw();
             const bool   bImageGradient  = Grid::StyleGradient::isDeclaration(backgroundImage);
+            const bool   bColorGradient  = Grid::StyleGradient::isDeclaration(style.background.color.getRaw());
 
             subcommand.bHasTexture = !backgroundImage.isEmpty() && !bImageGradient;
             subcommand.texture     = subcommand.bHasTexture ? backgroundImage : Renderer::Draw::InvalidReference;
@@ -1305,43 +1306,64 @@ namespace Chicane
             subcommand.instance.backdropBlur = style.backdrop.blur.get();
             subcommand.instance.color        = style.background.color.get();
 
-            const Grid::StyleGradient& gradient = style.background.gradient;
-            if (gradient.isActive())
+            const float opacity = component->getOpacity();
+
+            auto applyGradient = [](Renderer::DrawPoly2DCommandFill& outFill, const Grid::StyleGradient& inGradient)
             {
+                if (!inGradient.isActive())
+                {
+                    return;
+                }
+
                 const std::uint32_t count = static_cast<std::uint32_t>(
-                    std::min(gradient.stops.size(), static_cast<std::size_t>(Grid::StyleGradient::MAX_STOPS))
+                    std::min(inGradient.stops.size(), static_cast<std::size_t>(Grid::StyleGradient::MAX_STOPS))
                 );
 
-                subcommand.instance.gradientType      = static_cast<std::int32_t>(gradient.type);
-                subcommand.instance.gradientStopCount = static_cast<std::int32_t>(count);
-                subcommand.instance.gradientAxis      = gradient.axis;
+                outFill.instance.gradientType      = static_cast<std::int32_t>(inGradient.type);
+                outFill.instance.gradientStopCount = static_cast<std::int32_t>(count);
+                outFill.instance.gradientAxis      = inGradient.axis;
 
                 float offsets[Grid::StyleGradient::MAX_STOPS] = {};
                 for (std::uint32_t i = 0; i < count; i++)
                 {
-                    subcommand.instance.gradientStops[i] = gradient.stops.at(i).color;
-                    offsets[i]                           = gradient.stops.at(i).offset;
+                    outFill.instance.gradientStops[i] = inGradient.stops.at(i).color;
+                    offsets[i]                        = inGradient.stops.at(i).offset;
                 }
 
-                subcommand.instance.gradientOffsets0 = Vec4(offsets[0], offsets[1], offsets[2], offsets[3]);
-                subcommand.instance.gradientOffsets1 = Vec4(offsets[4], offsets[5], offsets[6], offsets[7]);
+                outFill.instance.gradientOffsets0 = Vec4(offsets[0], offsets[1], offsets[2], offsets[3]);
+                outFill.instance.gradientOffsets1 = Vec4(offsets[4], offsets[5], offsets[6], offsets[7]);
 
                 if (count > 0)
                 {
-                    subcommand.instance.color = subcommand.instance.gradientStops[0];
+                    outFill.instance.color = outFill.instance.gradientStops[0];
                 }
-            }
+            };
 
-            const float opacity         = component->getOpacity();
-            subcommand.instance.color.a = (subcommand.bHasTexture ? 255.0f : subcommand.instance.color.a) * opacity;
-
-            if (subcommand.instance.gradientStopCount > 0)
+            auto applyOpacity = [opacity](Renderer::DrawPoly2DCommandFill& outFill)
             {
-                for (std::int32_t i = 0; i < subcommand.instance.gradientStopCount; i++)
+                outFill.instance.color.a = (outFill.bHasTexture ? 255.0f : outFill.instance.color.a) * opacity;
+
+                if (outFill.instance.gradientStopCount > 0)
                 {
-                    subcommand.instance.gradientStops[i].a *= opacity;
+                    for (std::int32_t i = 0; i < outFill.instance.gradientStopCount; i++)
+                    {
+                        outFill.instance.gradientStops[i].a *= opacity;
+                    }
                 }
-            }
+            };
+
+            auto stripOverlay = [](Renderer::DrawPoly2DCommandFill& outFill)
+            {
+                outFill.bHasTexture                = false;
+                outFill.texture                    = Renderer::Draw::InvalidReference;
+                outFill.instance.backdropBlur      = 0.0f;
+                outFill.instance.borderWidth       = Vec4::Zero();
+                outFill.instance.borderColorTop    = Vec4::Zero();
+                outFill.instance.borderColorRight  = Vec4::Zero();
+                outFill.instance.borderColorBottom = Vec4::Zero();
+                outFill.instance.borderColorLeft   = Vec4::Zero();
+            };
+
             subcommand.instance.borderWidth = style.border.paintedWidths();
 
             auto borderColor = [&](const auto& inProperty) -> Vec4
@@ -1357,7 +1379,54 @@ namespace Chicane
             subcommand.instance.borderColorBottom = borderColor(style.border.colorBottom);
             subcommand.instance.borderColorLeft   = borderColor(style.border.colorLeft);
 
-            command.fills.emplace_back(std::move(subcommand));
+            const Grid::StyleGradient::List& gradients = style.background.gradients;
+            std::vector<const Grid::StyleGradient*> layers;
+            layers.reserve(gradients.size());
+            for (const Grid::StyleGradient& layer : gradients)
+            {
+                if (layer.isActive())
+                {
+                    layers.push_back(&layer);
+                }
+            }
+
+            const bool bPaintSolid = !bColorGradient && style.background.color.get().a > 0.0f;
+
+            if (layers.empty())
+            {
+                applyOpacity(subcommand);
+                command.fills.emplace_back(std::move(subcommand));
+            }
+            else
+            {
+                if (bPaintSolid)
+                {
+                    Renderer::DrawPoly2DCommandFill fill = subcommand;
+                    fill.bHasTexture                     = false;
+                    fill.texture                         = Renderer::Draw::InvalidReference;
+                    fill.instance.gradientType           = 0;
+                    fill.instance.gradientStopCount      = 0;
+                    stripOverlay(fill);
+                    applyOpacity(fill);
+                    command.fills.emplace_back(std::move(fill));
+                }
+
+                for (int i = static_cast<int>(layers.size()) - 1; i >= 0; i--)
+                {
+                    Renderer::DrawPoly2DCommandFill fill = subcommand;
+                    fill.bHasTexture                     = false;
+                    fill.texture                         = Renderer::Draw::InvalidReference;
+                    applyGradient(fill, *layers.at(static_cast<std::size_t>(i)));
+
+                    if (i > 0)
+                    {
+                        stripOverlay(fill);
+                    }
+
+                    applyOpacity(fill);
+                    command.fills.emplace_back(std::move(fill));
+                }
+            }
         }
 
         // Sort draw order by z-index

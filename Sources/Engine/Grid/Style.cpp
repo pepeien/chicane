@@ -89,6 +89,16 @@ namespace Chicane
                 {
                     if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Horizontal))
                     {
+                        const Component* layoutParent = m_parent->getParent();
+                        if (layoutParent)
+                        {
+                            const float share = layoutParent->getRemainingContentSize(m_parent).x;
+                            if (share > 0.01f)
+                            {
+                                return share;
+                            }
+                        }
+
                         const float current =
                             preservedFillPercent(width.value.get(), hasParent() ? m_parent->getSize().x : 0.0f);
 
@@ -108,6 +118,16 @@ namespace Chicane
                 {
                     if (isFillPercent(inValue) && canKeepFillPercent(SizeDirection::Vertical))
                     {
+                        const Component* layoutParent = m_parent->getParent();
+                        if (layoutParent)
+                        {
+                            const float share = layoutParent->getRemainingContentSize(m_parent).y;
+                            if (share > 0.01f)
+                            {
+                                return share;
+                            }
+                        }
+
                         const float current =
                             preservedFillPercent(height.value.get(), hasParent() ? m_parent->getSize().y : 0.0f);
 
@@ -528,7 +548,7 @@ namespace Chicane
 
             background.color.copyValue(inStyle.background.color);
             background.image.copyValue(inStyle.background.image);
-            background.gradient = inStyle.background.gradient;
+            background.gradients = inStyle.background.gradients;
 
             foregroundColor.copyValue(inStyle.foregroundColor);
             opacity.copyValue(inStyle.opacity);
@@ -995,17 +1015,17 @@ namespace Chicane
             const String colorRaw = parseText(background.color.getRaw());
             const String imageRaw = parseText(background.image.getRaw());
 
-            if (StyleGradient::isDeclaration(colorRaw))
+            if (StyleGradient::isDeclaration(imageRaw))
             {
-                background.gradient = parseGradient(colorRaw);
+                background.gradients = parseGradients(imageRaw);
             }
-            else if (StyleGradient::isDeclaration(imageRaw))
+            else if (StyleGradient::isDeclaration(colorRaw))
             {
-                background.gradient = parseGradient(imageRaw);
+                background.gradients = parseGradients(colorRaw);
             }
             else
             {
-                background.gradient = {};
+                background.gradients = {};
             }
         }
 
@@ -1532,15 +1552,15 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
-        StyleGradient Style::parseGradient(const String& inValue) const
+        StyleGradient::List Style::parseGradients(const String& inValue) const
         {
-            return StyleGradient::parse(
+            return StyleGradient::parseList(
                 parseText(inValue),
                 [this](const String& inColor) { return parseColor(inColor); }
             );
         }
 
-        static Vec2 percentContainingSize(const Component* inBox)
+        static Vec2 percentContainingSize(const Component* inBox, const Component* inChild)
         {
             if (!inBox)
             {
@@ -1553,6 +1573,18 @@ namespace Chicane
             if (!style.isDisplay(StyleDisplay::Flex) || style.flex.wrap.get() == StyleFlexWrap::Wrap)
             {
                 return size;
+            }
+
+            if (inChild)
+            {
+                const Style& childStyle = inChild->getStyle();
+                const bool   bIsRow     = style.flex.direction.get() == StyleFlexDirection::Row;
+                const bool   bIsFill    = bIsRow ? childStyle.isFillPercent(childStyle.width.value.getRaw())
+                                                 : childStyle.isFillPercent(childStyle.height.value.getRaw());
+                if (bIsFill)
+                {
+                    return inBox->getRemainingContentSize(inChild);
+                }
             }
 
             std::uint32_t count = 0;
@@ -1606,7 +1638,8 @@ namespace Chicane
                 {
                     const bool bIsAbsolute = m_parent->getStyle().isPosition(StylePosition::Absolute);
                     result.setParent(
-                        bIsAbsolute ? containingBlock->getInnerLayoutSize() : percentContainingSize(containingBlock)
+                        bIsAbsolute ? containingBlock->getInnerLayoutSize()
+                                    : percentContainingSize(containingBlock, m_parent)
                     );
                 }
             }

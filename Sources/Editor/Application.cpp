@@ -35,7 +35,7 @@ namespace Editor
         // Window
         createInfo.window.title   = "Chicane Editor";
         createInfo.window.icon    = "Assets/Editor/Icon.png";
-        createInfo.window.display = 0;
+        createInfo.window.display = 1;
         createInfo.window.type    = Chicane::WindowType::WindowedBorderless;
         createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 

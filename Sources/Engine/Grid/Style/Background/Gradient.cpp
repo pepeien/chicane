@@ -39,7 +39,16 @@ namespace Chicane
                 return true;
             }
 
-            if (value.isNaN())
+            if (value.endsWith(Size::PIXEL_UNIT))
+            {
+                value = value.substr(0, value.size() - std::strlen(Size::PIXEL_UNIT)).trim();
+            }
+            else if (value.endsWith(Size::EM_UNIT))
+            {
+                value = value.substr(0, value.size() - std::strlen(Size::EM_UNIT)).trim();
+            }
+
+            if (value.isEmpty() || value.isNaN())
             {
                 return false;
             }
@@ -417,6 +426,40 @@ namespace Chicane
         bool StyleGradient::isActive() const
         {
             return type != StyleGradientType::None && !stops.empty();
+        }
+
+        bool StyleGradient::isActive(const List& inLayers)
+        {
+            for (const StyleGradient& layer : inLayers)
+            {
+                if (layer.isActive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        StyleGradient::List StyleGradient::parseList(const String& inValue, const ColorParser& inParseColor)
+        {
+            List result;
+
+            for (const String& layer : splitStyleList(inValue))
+            {
+                if (!isDeclaration(layer))
+                {
+                    continue;
+                }
+
+                StyleGradient parsed = parse(layer, inParseColor);
+                if (parsed.isActive())
+                {
+                    result.push_back(std::move(parsed));
+                }
+            }
+
+            return result;
         }
 
         StyleGradient StyleGradient::parse(const String& inValue, const ColorParser& inParseColor)

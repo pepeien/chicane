@@ -31,7 +31,7 @@ namespace Chicane
         public:
             StyleProperty<Color::Rgba> color;
             StyleProperty<String>      image;
-            StyleGradient              gradient;
+            StyleGradient::List        gradients;
         };
     }
 }

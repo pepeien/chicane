@@ -458,7 +458,7 @@ namespace Chicane
             StyleBorderType parseBorderType(const String& inValue) const;
             WindowCursor parseCursor(const String& inValue) const;
             Color::Rgba parseColor(const String& inValue) const;
-            StyleGradient parseGradient(const String& inValue) const;
+            StyleGradient::List parseGradients(const String& inValue) const;
             float parseFilter(const String& inValue) const;
             StyleTransform parseTransform(const String& inValue) const;
             Vec2 parseTranslation(const String& inValue) const;

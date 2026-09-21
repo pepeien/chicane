@@ -1,4 +1,7 @@
 #include "Editor/Layer/Grid.hpp"
+#include "Editor/Layer/Grid/Push.hpp"
+
+#include <algorithm>
 
 #include <Chicane/Renderer/Backend.hpp>
 #include <Chicane/Renderer/Layer/Util.hpp>
@@ -6,6 +9,7 @@
 #include <Chicane/Runtime/Application.hpp>
 
 #include "Editor/Viewer/Scene.hpp"
+#include "Editor/Viewport/Overlay.hpp"
 
 namespace Editor
 {
@@ -27,20 +31,22 @@ namespace Editor
         m_layout = device->createBindGroupLayout(layout);
 
         Chicane::Renderer::RHI::PipelineCreateInfo desc;
-        desc.vertexPath     = "Assets/Editor/Shaders/Grid";
-        desc.fragmentPath   = "Assets/Editor/Shaders/Grid";
-        desc.cull           = Chicane::Renderer::CullingMode::Back;
-        desc.frontFace      = Chicane::Renderer::CullingFrontFace::CounterClockwise;
-        desc.bHasDepthTest  = true;
-        desc.bHasDepthWrite = false;
-        desc.depthCompare   = Chicane::Renderer::DepthCompare::LessOrEqual;
-        desc.blend          = Chicane::Renderer::RHI::BlendMode::Alpha;
-        desc.bHasColor      = true;
-        desc.bHasDepth      = true;
-        desc.colorFormat    = device->sceneColorFormat();
-        desc.depthFormat    = device->sceneDepthFormat();
-        desc.layouts        = {m_layout};
-        m_pipeline          = device->createPipeline(desc);
+        desc.vertexPath       = "Assets/Editor/Shaders/Grid";
+        desc.fragmentPath     = "Assets/Editor/Shaders/Grid";
+        desc.cull             = Chicane::Renderer::CullingMode::Back;
+        desc.frontFace        = Chicane::Renderer::CullingFrontFace::CounterClockwise;
+        desc.bHasDepthTest    = true;
+        desc.bHasDepthWrite   = false;
+        desc.depthCompare     = Chicane::Renderer::DepthCompare::LessOrEqual;
+        desc.blend            = Chicane::Renderer::RHI::BlendMode::Alpha;
+        desc.bHasColor        = true;
+        desc.bHasDepth        = true;
+        desc.colorFormat      = device->sceneColorFormat();
+        desc.depthFormat      = device->sceneDepthFormat();
+        desc.pushConstantSize = sizeof(GridPush);
+        desc.bHasPushFragment = true;
+        desc.layouts          = {m_layout};
+        m_pipeline            = device->createPipeline(desc);
 
         initViewport();
     }
@@ -63,6 +69,13 @@ namespace Editor
 
     bool LGrid::onBeginRender(const Chicane::Renderer::Frame& inFrame)
     {
+        (void)inFrame;
+
+        if (!ViewportOverlay::get().bGridEnabled)
+        {
+            return false;
+        }
+
         return dynamic_cast<ViewerScene*>(Chicane::Application::getInstance().getScene().get()) == nullptr;
     }
 
@@ -87,6 +100,18 @@ namespace Editor
         }
         );
 
+        const ViewportOverlay& overlay = ViewportOverlay::get();
+        GridPush               push;
+        push.color[0] = overlay.gridColor.x;
+        push.color[1] = overlay.gridColor.y;
+        push.color[2] = overlay.gridColor.z;
+        push.color[3] = 1.0f;
+        push.cells[0] = std::max(overlay.gridScale, 0.001f);
+        push.cells[1] = std::max(overlay.gridScale, 0.001f) * std::max(overlay.gridDivisions, 1.0f);
+        push.cells[2] = overlay.bGridAxisX ? 1.0f : 0.0f;
+        push.cells[3] = overlay.bGridAxisY ? 1.0f : 0.0f;
+        push.extra[0] = overlay.bGridAxisZ ? 1.0f : 0.0f;
+
         rhi->commands->beginPass(
             Chicane::Renderer::rhiScenePass(
                 *rhi,
@@ -98,6 +123,7 @@ namespace Editor
         Chicane::Renderer::rhiApplyView(rhi->commands, m_backend, this);
         rhi->commands->bindPipeline(m_pipeline);
         rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
+        rhi->commands->pushConstants(&push, sizeof(push));
         rhi->commands->draw(6, 1, 0, 0);
         rhi->commands->endPass();
     }

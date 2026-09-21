@@ -20,12 +20,15 @@ namespace Chicane
         {
         public:
             using ColorParser = std::function<Color::Rgba(const String&)>;
+            using List        = std::vector<StyleGradient>;
 
             static constexpr inline std::uint32_t MAX_STOPS = 8;
 
         public:
             static bool isDeclaration(const String& inValue);
+            static bool isActive(const List& inLayers);
             static StyleGradient parse(const String& inValue, const ColorParser& inParseColor);
+            static List parseList(const String& inValue, const ColorParser& inParseColor);
 
         public:
             bool isActive() const;

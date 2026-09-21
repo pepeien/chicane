@@ -1,0 +1,26 @@
+ToolTip {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    z-index: 120;
+}
+
+.tooltip {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0.35em 0.55em;
+    gap: 0.15em;
+    border-radius: 4px;
+    background-color: black;
+    overflow: visible;
+
+    &__title {
+        color: white;
+        font-size: 0.75em;
+    }
+}

@@ -38,7 +38,6 @@
 #include "Editor/UI/Component/Explorer.hpp"
 #include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
-#include "Editor/UI/Component/ShowFlags.hpp"
 #include "Editor/UI/Component/Toolbar.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
@@ -391,7 +390,6 @@ namespace Editor
         import <Explorer>();
         import <Header>();
         import <Outliner>();
-        import <ShowFlags>();
         import <Telemetry>();
         import <Toolbar>();
 

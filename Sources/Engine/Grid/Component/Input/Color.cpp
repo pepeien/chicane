@@ -4,8 +4,15 @@
 #include <cmath>
 #include <cstdint>
 
+#include "Chicane/Core/Input/Mouse/Button.hpp"
+#include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Math/Vec/Vec4.hpp"
+#include "Chicane/Core/Window/Event/Type.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
@@ -16,14 +23,14 @@ namespace Chicane
             return String::sprint("#%02X%02X%02X", inR, inG, inB);
         }
 
+        static String toHexRgba(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB, std::uint8_t inA)
+        {
+            return String::sprint("#%02X%02X%02X%02X", inR, inG, inB, inA);
+        }
+
         static std::uint8_t toByte(float inValue)
         {
             return static_cast<std::uint8_t>(std::round(std::clamp(inValue, 0.0f, 1.0f) * 255.0f));
-        }
-
-        static String formatInt(float inValue)
-        {
-            return String::sprint("%d", static_cast<int>(std::round(inValue)));
         }
 
         static void rgbToHsv(float inR, float inG, float inB, float& outH, float& outS, float& outV)
@@ -108,6 +115,17 @@ namespace Chicane
             outR = r + m;
             outG = g + m;
             outB = b + m;
+        }
+
+        static float wheelHue(float inDx, float inDy)
+        {
+            float hue = std::atan2(inDx, -inDy) * Math::RAD_TO_DEG;
+            if (hue < 0.0f)
+            {
+                hue += 360.0f;
+            }
+
+            return hue;
         }
 
         static void rgbToHsl(float inR, float inG, float inB, float& outH, float& outS, float& outL)
@@ -205,6 +223,7 @@ namespace Chicane
         InputColor::InputColor(const XmlNode& inNode)
             : Container(inNode),
               hex("#FFFFFF"),
+              swatchHex("#FFFFFF"),
               vividHex("#FFFFFF"),
               grayHex("#808080"),
               toneHex("#808080"),
@@ -216,28 +235,141 @@ namespace Chicane
               red(255.0f),
               green(255.0f),
               blue(255.0f),
-              hueText("0"),
-              saturationText("0"),
-              lightnessText("100"),
-              brightnessText("100"),
-              alphaText("100"),
-              redText("255"),
-              greenText("255"),
-              blueText("255"),
-              model("HSL"),
-              models({"HSL", "HSV", "RGB"}),
-              isHsl(true),
-              isHsv(false),
+              model("HSV"),
+              models({"RGB", "RGBA", "HSV"}),
+              isHsl(false),
+              isHsv(true),
               isRgb(false),
+              isRgba(false),
               isOpen(false),
               openState("closed"),
-              presets({"#FFFFFF", "#000000", "#808080", "#FF0000", "#0000FF"})
+              rgbState("idle"),
+              rgbaState("idle"),
+              hsvState("active"),
+              wheelCursorX(50.0f),
+              wheelCursorY(50.0f),
+              valueDim(0.0f),
+              valueThumbY(0.0f),
+              alphaUnit(1.0f),
+              presets({"#FFFFFF", "#000000", "#808080", "#FF0000", "#0000FF"}),
+              m_bIsPickingWheel(false),
+              m_bIsPickingValue(false)
         {
             load("Assets/Engine/UI/Components/Input/Color.grid", "Assets/Engine/UI/Components/Input/Color.decal");
+            refreshWheel();
         }
 
         bool InputColor::isFocusable() const
         {
+            return false;
+        }
+
+        bool InputColor::escapesOverflow() const
+        {
+            return isOpen;
+        }
+
+        bool InputColor::onEvent(const WindowEvent& inEvent)
+        {
+            if (inEvent.type == WindowEventType::MouseButtonUp)
+            {
+                if (m_bIsPickingWheel || m_bIsPickingValue)
+                {
+                    m_bIsPickingWheel = false;
+                    m_bIsPickingValue = false;
+
+                    return true;
+                }
+
+                if (isOpen && inEvent.data)
+                {
+                    const Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                    if (event.button == Input::MouseButton::Left)
+                    {
+                        Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                        bool       bInside = false;
+                        for (Component* node = hit; node != nullptr; node = node->getParent())
+                        {
+                            if (node == this)
+                            {
+                                bInside = true;
+
+                                break;
+                            }
+
+                            if (node->isRoot())
+                            {
+                                break;
+                            }
+                        }
+
+                        if (!bInside)
+                        {
+                            close();
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            if (inEvent.type == WindowEventType::MouseButtonDown)
+            {
+                if (!inEvent.data)
+                {
+                    return false;
+                }
+
+                const Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+                if (event.button != Input::MouseButton::Left)
+                {
+                    return false;
+                }
+
+                if (pickWheelAt(event.location))
+                {
+                    m_bIsPickingWheel = true;
+                    m_bIsPickingValue = false;
+
+                    return true;
+                }
+
+                if (pickValueAt(event.location))
+                {
+                    m_bIsPickingValue = true;
+                    m_bIsPickingWheel = false;
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (inEvent.type == WindowEventType::MouseMotion)
+            {
+                if (!inEvent.data)
+                {
+                    return false;
+                }
+
+                const Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+                if (m_bIsPickingWheel)
+                {
+                    pickWheelAt(event.location);
+
+                    return true;
+                }
+
+                if (m_bIsPickingValue)
+                {
+                    pickValueAt(event.location);
+
+                    return true;
+                }
+
+                return false;
+            }
+
             return false;
         }
 
@@ -291,8 +423,11 @@ namespace Chicane
 
         void InputColor::commitHex()
         {
+            const String trimmed = hex.trim();
+            const bool   bHasAlpha = trimmed.startsWith("#") && trimmed.size() == 9;
             const Color::Rgba parsed = Color::toRgba(hex);
-            syncFromRgb(parsed.r / 255.0f, parsed.g / 255.0f, parsed.b / 255.0f, parsed.a / 255.0f);
+            const float       a      = bHasAlpha ? parsed.a / 255.0f : alphaUnit;
+            syncFromRgb(parsed.r / 255.0f, parsed.g / 255.0f, parsed.b / 255.0f, a);
             applyToBinding();
             emitInput();
         }
@@ -310,7 +445,7 @@ namespace Chicane
             rgbToHsv(r, g, b, hsvH, hsvS, hsvV);
             brightness = hsvV * 100.0f;
 
-            applyRgb(r, g, b, alpha / 100.0f);
+            applyRgb(r, g, b, alphaUnit);
             applyToBinding();
             emitInput();
         }
@@ -328,14 +463,14 @@ namespace Chicane
             rgbToHsl(r, g, b, hslH, hslS, hslL);
             lightness = hslL * 100.0f;
 
-            applyRgb(r, g, b, alpha / 100.0f);
+            applyRgb(r, g, b, alphaUnit);
             applyToBinding();
             emitInput();
         }
 
         void InputColor::commitRgb()
         {
-            syncFromRgb(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 100.0f);
+            syncFromRgb(red / 255.0f, green / 255.0f, blue / 255.0f, alphaUnit);
             applyToBinding();
             emitInput();
         }
@@ -343,8 +478,42 @@ namespace Chicane
         void InputColor::commitModel()
         {
             refreshModelFlags();
-            syncFromRgb(red / 255.0f, green / 255.0f, blue / 255.0f, alpha / 100.0f);
+            refreshTabState();
+            syncFromRgb(red / 255.0f, green / 255.0f, blue / 255.0f, alphaUnit);
             refreshStyleSubtree();
+        }
+
+        void InputColor::setRgbModel()
+        {
+            if (model.equals("RGB"))
+            {
+                return;
+            }
+
+            model = "RGB";
+            commitModel();
+        }
+
+        void InputColor::setRgbaModel()
+        {
+            if (model.equals("RGBA"))
+            {
+                return;
+            }
+
+            model = "RGBA";
+            commitModel();
+        }
+
+        void InputColor::setHsvModel()
+        {
+            if (model.equals("HSV"))
+            {
+                return;
+            }
+
+            model = "HSV";
+            commitModel();
         }
 
         void InputColor::pickPreset(String inHex)
@@ -355,7 +524,7 @@ namespace Chicane
             }
 
             const Color::Rgba parsed = Color::toRgba(inHex);
-            syncFromRgb(parsed.r / 255.0f, parsed.g / 255.0f, parsed.b / 255.0f, alpha / 100.0f);
+            syncFromRgb(parsed.r / 255.0f, parsed.g / 255.0f, parsed.b / 255.0f, alphaUnit);
             applyToBinding();
             emitInput();
         }
@@ -414,9 +583,16 @@ namespace Chicane
                     const void* instance =
                         accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(node);
 
+                    if (const Vec4* vector = accessor.getValue<Vec4>(instance))
+                    {
+                        syncFromRgb(vector->x, vector->y, vector->z, vector->w);
+
+                        return;
+                    }
+
                     if (const Vec3* vector = accessor.getValue<Vec3>(instance))
                     {
-                        syncFromRgb(vector->x, vector->y, vector->z, alpha / 100.0f);
+                        syncFromRgb(vector->x, vector->y, vector->z, alphaUnit);
 
                         return;
                     }
@@ -462,6 +638,13 @@ namespace Chicane
                     void* instance = accessor.boundInstance != nullptr ? const_cast<void*>(accessor.boundInstance)
                                                                        : static_cast<void*>(node);
 
+                    if (Vec4* vector = accessor.getValue<Vec4>(instance))
+                    {
+                        *vector = Vec4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+
+                        return;
+                    }
+
                     if (Vec3* vector = accessor.getValue<Vec3>(instance))
                     {
                         *vector = Vec3(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f);
@@ -496,14 +679,17 @@ namespace Chicane
             const float b = std::clamp(inB, 0.0f, 1.0f);
             const float a = std::clamp(inA, 0.0f, 1.0f);
 
-            alpha = a * 100.0f;
-            red   = r * 255.0f;
-            green = g * 255.0f;
-            blue  = b * 255.0f;
-            hex   = toHexRgb(toByte(r), toByte(g), toByte(b));
+            alpha     = a * 100.0f;
+            alphaUnit = a;
+            red       = r * 255.0f;
+            green     = g * 255.0f;
+            blue      = b * 255.0f;
+            hex       = isRgba ? toHexRgba(toByte(r), toByte(g), toByte(b), toByte(a))
+                               : toHexRgb(toByte(r), toByte(g), toByte(b));
+            swatchHex = toHexRgb(toByte(r), toByte(g), toByte(b));
 
             refreshDerivedColors();
-            refreshLabels();
+            refreshWheel();
         }
 
         void InputColor::syncFromRgb(float inR, float inG, float inB, float inA)
@@ -557,27 +743,36 @@ namespace Chicane
 
         void InputColor::refreshModelFlags()
         {
-            isHsl = model.equals("HSL");
-            isHsv = model.equals("HSV");
-            isRgb = model.equals("RGB");
+            isHsl  = model.equals("HSL");
+            isHsv  = model.equals("HSV");
+            isRgb  = model.equals("RGB");
+            isRgba = model.equals("RGBA");
 
-            if (!isHsl && !isHsv && !isRgb)
+            if (!isHsl && !isHsv && !isRgb && !isRgba)
             {
-                model = "HSL";
-                isHsl = true;
+                model = "HSV";
+                isHsv = true;
             }
+
+            refreshTabState();
         }
 
-        void InputColor::refreshLabels()
+        void InputColor::refreshWheel()
         {
-            hueText        = formatInt(hue);
-            saturationText = formatInt(saturation);
-            lightnessText  = formatInt(lightness);
-            brightnessText = formatInt(brightness);
-            alphaText      = formatInt(alpha);
-            redText        = formatInt(red);
-            greenText      = formatInt(green);
-            blueText       = formatInt(blue);
+            const float radius = saturation / 100.0f;
+            const float angle  = hue * Math::DEG_TO_RAD;
+
+            wheelCursorX = (0.5f + std::sin(angle) * radius * 0.5f) * 100.0f;
+            wheelCursorY = (0.5f - std::cos(angle) * radius * 0.5f) * 100.0f;
+            valueDim     = 1.0f - std::clamp(brightness / 100.0f, 0.0f, 1.0f);
+            valueThumbY  = valueDim * 100.0f;
+        }
+
+        void InputColor::refreshTabState()
+        {
+            rgbState  = isRgb ? "active" : "idle";
+            rgbaState = isRgba ? "active" : "idle";
+            hsvState  = isHsv ? "active" : "idle";
         }
 
         Color::Rgba InputColor::currentRgba() const
@@ -586,8 +781,93 @@ namespace Chicane
                 toByte(red / 255.0f),
                 toByte(green / 255.0f),
                 toByte(blue / 255.0f),
-                toByte(alpha / 100.0f)
+                toByte(alphaUnit)
             );
+        }
+
+        Component* InputColor::findChildId(const String& inId) const
+        {
+            if (inId.isEmpty())
+            {
+                return nullptr;
+            }
+
+            if (getId().equals(inId))
+            {
+                return const_cast<InputColor*>(this);
+            }
+
+            for (Component* child : getChildrenFlat())
+            {
+                if (child && child->getId().equals(inId))
+                {
+                    return child;
+                }
+            }
+
+            return nullptr;
+        }
+
+        bool InputColor::pickWheelAt(const Vec2& inLocation)
+        {
+            Component* wheel = findChildId("colorWheel");
+            if (!wheel || !wheel->isDisplayable())
+            {
+                return false;
+            }
+
+            const Bounds2D box    = wheel->getDrawBounds();
+            const float    width  = box.right - box.left;
+            const float    height = box.bottom - box.top;
+            const float    radius = std::min(width, height) * 0.5f;
+            if (radius <= 1.0f)
+            {
+                return false;
+            }
+
+            const float dx   = inLocation.x - (box.left + width * 0.5f);
+            const float dy   = inLocation.y - (box.top + height * 0.5f);
+            const float dist = std::sqrt(dx * dx + dy * dy);
+            if (!m_bIsPickingWheel && dist > radius)
+            {
+                return false;
+            }
+
+            hue        = wheelHue(dx, dy);
+            saturation = std::clamp(dist / radius, 0.0f, 1.0f) * 100.0f;
+
+            commitHsv();
+            refreshStyleSubtree();
+
+            return true;
+        }
+
+        bool InputColor::pickValueAt(const Vec2& inLocation)
+        {
+            Component* bar = findChildId("colorValue");
+            if (!bar || !bar->isDisplayable())
+            {
+                return false;
+            }
+
+            const Bounds2D box    = bar->getDrawBounds();
+            const float    height = box.bottom - box.top;
+            if (height <= 1.0f)
+            {
+                return false;
+            }
+
+            if (!m_bIsPickingValue && !box.contains(inLocation))
+            {
+                return false;
+            }
+
+            const float t = std::clamp((inLocation.y - box.top) / height, 0.0f, 1.0f);
+            brightness    = (1.0f - t) * 100.0f;
+            commitHsv();
+            refreshStyleSubtree();
+
+            return true;
         }
     }
 }

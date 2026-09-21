@@ -40,6 +40,12 @@ namespace Editor
         CH_FUNCTION()
         void onGizmoScale();
 
+        CH_FUNCTION()
+        void onSettingsToggle();
+
+        CH_FUNCTION()
+        void closeSettings();
+
     public:
         CH_FIELD()
         Chicane::String orientation;
@@ -52,5 +58,14 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String scaleState;
+
+        CH_FIELD()
+        bool isSettingsOpen;
+
+        CH_FIELD()
+        bool showSettingsHint;
+
+        CH_FIELD()
+        Chicane::String settingsState;
     };
 }

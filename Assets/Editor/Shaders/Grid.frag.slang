@@ -3,6 +3,20 @@ import Grid;
 
 [vk::binding(0, 0)] ConstantBuffer<CameraInstance> gCamera;
 
+struct GridPush
+{
+    float4 color;
+    float4 cells;
+    float4 extra;
+}
+
+#ifdef CHICANE_VULKAN
+[vk::push_constant]
+#else
+[vk::binding(15, 0)]
+#endif
+ConstantBuffer<GridPush> push;
+
 struct VSOut
 {
     float3 nearPoint : TEXCOORD0;
@@ -18,19 +32,28 @@ struct FSOut
 [shader("fragment")]
 FSOut main(VSOut inData)
 {
-    float floorDistance = -inData.nearPoint.z / (inData.farPoint.z - inData.nearPoint.z);
+    float depth = 1.0;
+    float4 color = EvaluateGrid(
+        inData.nearPoint,
+        inData.farPoint,
+        gCamera.translation.xyz,
+        gCamera.projection,
+        gCamera.view,
+        gCamera.clip.xy,
+        push.color,
+        push.cells.xy,
+        float3(push.cells.z, push.cells.w, push.extra.x),
+        depth
+    );
 
-    if (floorDistance < 0.0)
+    if (color.a <= 0.0)
     {
         discard;
     }
 
-    float3 position      = inData.nearPoint + floorDistance * (inData.farPoint - inData.nearPoint);
-    float4 worldPosition = mul(gCamera.projection, mul(gCamera.view, float4(position, 1.0)));
-
     FSOut output;
-    output.color = GridLayer(position, gCamera.translation.xyz, ComputeGridLinearDepth(worldPosition, gCamera.clip.x, gCamera.clip.y));
-    output.depth = ComputeGridDepth(worldPosition);
+    output.color = color;
+    output.depth = depth;
 
     return output;
 }

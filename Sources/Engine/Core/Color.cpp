@@ -160,14 +160,13 @@ namespace Chicane
                     return g_colors.at(HEX_COLOR_TRANSPARENT);
                 }
 
-                for (const String& value : values)
+                for (String& value : values)
                 {
-                    if (!value.isNaN())
+                    value = value.trim();
+                    if (value.isNaN())
                     {
-                        continue;
+                        return g_colors.at(HEX_COLOR_TRANSPARENT);
                     }
-
-                    return g_colors.at(HEX_COLOR_TRANSPARENT);
                 }
 
                 Rgba result = Rgba(

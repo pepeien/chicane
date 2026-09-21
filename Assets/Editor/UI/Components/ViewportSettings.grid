@@ -1,0 +1,102 @@
+<Container class="viewport-settings">
+    <Container class="viewport-settings__body">
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Grid</Text>
+            <Container class="viewport-settings__row">
+                <Button::Check class="viewport-settings__check" checked="{{ bGridEnabled }}" onInput="{{ onGridInput() }}">
+                    <Text>Floor</Text>
+                </Button::Check>
+                <Container class="viewport-settings__axes">
+                    <Text class="viewport-settings__inline-label">Axes</Text>
+                    <Button class="viewport-settings__axis --{{ axisXState }} --x" onClick="{{ onAxisX() }}">
+                        <Text>X</Text>
+                    </Button>
+                    <Button class="viewport-settings__axis --{{ axisYState }} --y" onClick="{{ onAxisY() }}">
+                        <Text>Y</Text>
+                    </Button>
+                    <Button class="viewport-settings__axis --{{ axisZState }} --z" onClick="{{ onAxisZ() }}">
+                        <Text>Z</Text>
+                    </Button>
+                </Container>
+            </Container>
+            <Container class="viewport-settings__row">
+                <Input::ButtonSlider
+                    label="Scale"
+                    value="{{ gridScale }}"
+                    min="0.001"
+                    max="10"
+                    step="0.01"
+                    onInput="{{ onGridScaleInput() }}"
+                />
+                <Input::ButtonSlider
+                    label="Subdivisions"
+                    value="{{ gridDivisions }}"
+                    min="1"
+                    max="64"
+                    step="1"
+                    onInput="{{ onGridDivisionsInput() }}"
+                />
+            </Container>
+            <Container class="viewport-settings__row">
+                <Text class="viewport-settings__inline-label">Color</Text>
+                <Input::Color value="{{ gridColor }}" onInput="{{ onGridColorInput() }}" />
+            </Container>
+        </Container>
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Object</Text>
+            <Container class="viewport-settings__checks">
+                <Button::Check checked="{{ bShowFill }}" onInput="{{ onFillInput() }}">
+                    <Text>Fill</Text>
+                </Button::Check>
+                <Button::Check checked="{{ bShowLit }}" onInput="{{ onLitInput() }}">
+                    <Text>Lit</Text>
+                </Button::Check>
+                <Button::Check checked="{{ bShowCollider }}" onInput="{{ onColliderInput() }}">
+                    <Text>Collider</Text>
+                </Button::Check>
+                <Button::Check checked="{{ bShowBounds }}" onInput="{{ onBoundsInput() }}">
+                    <Text>Bounds</Text>
+                </Button::Check>
+            </Container>
+        </Container>
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Lightning</Text>
+            <Button::Check checked="{{ bShowHdr }}" onInput="{{ onHdrInput() }}">
+                <Text>HDR</Text>
+            </Button::Check>
+        </Container>
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Geometry</Text>
+            <Container class="viewport-settings__row">
+                <Button::Check checked="{{ bShowWireframe }}" onInput="{{ onWireframeInput() }}">
+                    <Text>Wireframe</Text>
+                </Button::Check>
+                <Input::Color value="{{ geometryColor }}" onInput="{{ onGeometryColorInput() }}" />
+            </Container>
+            <Container class="viewport-settings__row">
+                <Button::Check checked="{{ bShowOutline }}" onInput="{{ onOutlineInput() }}">
+                    <Text>Outline</Text>
+                </Button::Check>
+                <Input::Color value="{{ outlinerColor }}" onInput="{{ onOutlinerColorInput() }}" />
+            </Container>
+        </Container>
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Physics</Text>
+            <Container class="viewport-settings__row">
+                <Button::Check checked="{{ bShowMotionPaths }}" onInput="{{ onMotionPathsInput() }}">
+                    <Text>Motion Paths</Text>
+                </Button::Check>
+                <Input::Color value="{{ physicsColor }}" onInput="{{ onPhysicsColorInput() }}" />
+            </Container>
+        </Container>
+        <Container class="viewport-settings__cols">
+            <Text class="viewport-settings__section-title">Animation</Text>
+            <Container class="viewport-settings__row">
+                <Button::Check checked="{{ bShowBones }}" onInput="{{ onBonesInput() }}">
+                    <Text>Bones</Text>
+                </Button::Check>
+                <Input::Color value="{{ boneColor }}" onInput="{{ onBonesColorInput() }}" />
+            </Container>
+        </Container>
+    </Container>
+</Container>

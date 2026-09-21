@@ -25,7 +25,7 @@ namespace Chicane
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
-              m_features(static_cast<std::uint8_t>(RendererFeature::Default)),
+              m_features(static_cast<std::uint16_t>(RendererFeature::Default)),
               m_backend(nullptr)
         {}
 
@@ -188,13 +188,13 @@ namespace Chicane
 
         void Instance::enableFeature(RendererFeature inFeature)
         {
-            m_features.fetch_or(static_cast<std::uint8_t>(inFeature), std::memory_order_relaxed);
+            m_features.fetch_or(static_cast<std::uint16_t>(inFeature), std::memory_order_relaxed);
         }
 
         void Instance::disableFeature(RendererFeature inFeature)
         {
             m_features.fetch_and(
-                static_cast<std::uint8_t>(~static_cast<std::uint8_t>(inFeature)),
+                static_cast<std::uint16_t>(~static_cast<std::uint16_t>(inFeature)),
                 std::memory_order_relaxed
             );
         }

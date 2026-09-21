@@ -1,0 +1,4 @@
+<Container class="tooltip" dir:if="{{ isVisible }}">
+    <Text dir:if="{{ hasTitle }}" class="tooltip__title">{{ title }}</Text>
+    <Content />
+</Container>

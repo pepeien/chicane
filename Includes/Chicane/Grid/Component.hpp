@@ -279,6 +279,8 @@ namespace Chicane
             Vec2 getBorderSize() const;
             Vec2 getRemainingContentSize() const;
             Vec2 getRemainingContentSize(const Component* inChild) const;
+            float getTrailingMainSize(const Component* inChild) const;
+            int countTrailingMainAutoMargins(const Component* inChild) const;
             void addSize(const Vec2& inValue);
             void addSize(float inWidth, float inHeight);
             void setSize(const Vec2& inValue);

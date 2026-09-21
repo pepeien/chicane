@@ -151,7 +151,7 @@ namespace Chicane
             TextureStreamer           m_textureStreamer;
 
             // Feature
-            std::atomic<std::uint8_t> m_features;
+            std::atomic<std::uint16_t> m_features;
 
             // Backend
             std::unique_ptr<Backend>  m_backend;

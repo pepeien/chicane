@@ -2,78 +2,128 @@
     <Button class="input-color__swatch" onClick="{{ toggle() }}">
         <Container class="input-color__swatch__fill" />
     </Button>
-    <Window dir:if="{{ isOpen }}" handle="colorHeader" class="input-color__popup" onClose="{{ close() }}">
-        <Window::Header id="colorHeader" label="Color" />
-        <Container class="input-color__preview">
-            <Container class="input-color__preview__fill" />
-        </Container>
+    <Container dir:if="{{ isOpen }}" class="input-color__popup">
         <Container class="input-color__body">
-            <Container class="input-color__toolbar">
-                <Input::Text class="input-color__hex" value="{{ hex }}" onInput="{{ commitHex() }}" />
-                <Input::Select
-                    class="input-color__model"
-                    value="{{ model }}"
-                    items="HSL,HSV,RGB"
-                    onInput="{{ commitModel() }}"
-                />
+            <Container class="input-color__picker">
+                <Container id="colorWheel" class="input-color__wheel">
+                    <Container class="input-color__disc" />
+                    <Container class="input-color__shade" />
+                    <Container class="input-color__cursor" />
+                </Container>
+                <Container id="colorValue" class="input-color__value">
+                    <Container class="input-color__value__thumb" />
+                </Container>
             </Container>
-            <Container dir:if="{{ isHsl }}" class="input-color__channels">
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --hue" value="{{ hue }}" min="0" max="360" onInput="{{ commitHsl() }}" />
-                    <Text class="input-color__readout">{{ hueText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --sat" value="{{ saturation }}" min="0" max="100" onInput="{{ commitHsl() }}" />
-                    <Text class="input-color__readout">{{ saturationText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --light" value="{{ lightness }}" min="0" max="100" onInput="{{ commitHsl() }}" />
-                    <Text class="input-color__readout">{{ lightnessText }}</Text>
-                </Container>
+            <Container class="input-color__tabs">
+                <Button class="input-color__tab --{{ rgbState }}" onClick="{{ setRgbModel() }}">
+                    <Text>RGB</Text>
+                </Button>
+                <Button class="input-color__tab --{{ rgbaState }}" onClick="{{ setRgbaModel() }}">
+                    <Text>RGBA</Text>
+                </Button>
+                <Button class="input-color__tab --{{ hsvState }}" onClick="{{ setHsvModel() }}">
+                    <Text>HSV</Text>
+                </Button>
             </Container>
             <Container dir:if="{{ isHsv }}" class="input-color__channels">
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --hue" value="{{ hue }}" min="0" max="360" onInput="{{ commitHsv() }}" />
-                    <Text class="input-color__readout">{{ hueText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --sat" value="{{ saturation }}" min="0" max="100" onInput="{{ commitHsv() }}" />
-                    <Text class="input-color__readout">{{ saturationText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --value" value="{{ brightness }}" min="0" max="100" onInput="{{ commitHsv() }}" />
-                    <Text class="input-color__readout">{{ brightnessText }}</Text>
-                </Container>
+                <Input::ButtonSlider
+                    label="Hue"
+                    value="{{ hue }}"
+                    min="0"
+                    max="360"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitHsv() }}"
+                />
+                <Input::ButtonSlider
+                    label="Saturation"
+                    value="{{ saturation }}"
+                    min="0"
+                    max="100"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitHsv() }}"
+                />
+                <Input::ButtonSlider
+                    label="Value"
+                    value="{{ brightness }}"
+                    min="0"
+                    max="100"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitHsv() }}"
+                />
             </Container>
             <Container dir:if="{{ isRgb }}" class="input-color__channels">
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --red" value="{{ red }}" min="0" max="255" onInput="{{ commitRgb() }}" />
-                    <Text class="input-color__readout">{{ redText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --green" value="{{ green }}" min="0" max="255" onInput="{{ commitRgb() }}" />
-                    <Text class="input-color__readout">{{ greenText }}</Text>
-                </Container>
-                <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --blue" value="{{ blue }}" min="0" max="255" onInput="{{ commitRgb() }}" />
-                    <Text class="input-color__readout">{{ blueText }}</Text>
-                </Container>
+                <Input::ButtonSlider
+                    label="Red"
+                    value="{{ red }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
+                <Input::ButtonSlider
+                    label="Green"
+                    value="{{ green }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
+                <Input::ButtonSlider
+                    label="Blue"
+                    value="{{ blue }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
             </Container>
-            <Container class="input-color__channel">
-                    <Input::Slider class="input-color__slider --alpha" value="{{ alpha }}" min="0" max="100" onInput="{{ commitHsl() }}" />
-                <Text class="input-color__readout">{{ alphaText }}</Text>
+            <Container dir:if="{{ isRgba }}" class="input-color__channels">
+                <Input::ButtonSlider
+                    label="Red"
+                    value="{{ red }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
+                <Input::ButtonSlider
+                    label="Green"
+                    value="{{ green }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
+                <Input::ButtonSlider
+                    label="Blue"
+                    value="{{ blue }}"
+                    min="0"
+                    max="255"
+                    step="1"
+                    precision="0"
+                    onInput="{{ commitRgb() }}"
+                />
+                <Input::ButtonSlider
+                    label="Alpha"
+                    value="{{ alphaUnit }}"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    onInput="{{ commitRgb() }}"
+                />
             </Container>
-            <Container class="input-color__palette">
-                <Text class="input-color__palette__label">Presets</Text>
-                <Container class="input-color__chips">
-                    <Button dir:for="swatch : presets" class="input-color__chip" onClick="{{ pickPreset(swatch) }}">
-                        <Container class="input-color__chip__fill" />
-                    </Button>
-                    <Button class="input-color__chip --add" onClick="{{ addPreset() }}">
-                        <Text class="input-color__chip__plus">+</Text>
-                    </Button>
-                </Container>
+            <Container class="input-color__hex-row">
+                <Text class="input-color__hex-label">Hex</Text>
+                <Input::Text class="input-color__hex" value="{{ hex }}" onInput="{{ commitHex() }}" />
             </Container>
         </Container>
-    </Window>
+    </Container>
 </Container>

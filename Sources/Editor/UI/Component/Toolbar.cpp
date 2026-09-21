@@ -1,5 +1,6 @@
 #include "Editor/UI/Component/Toolbar.reflected.hpp"
 
+#include "Editor/UI/Component/ViewportSettings.hpp"
 #include "Editor/UI/Prop.hpp"
 
 namespace Editor
@@ -9,8 +10,13 @@ namespace Editor
           orientation(Chicane::String::empty()),
           translateState(Chicane::String::empty()),
           rotateState(Chicane::String::empty()),
-          scaleState(Chicane::String::empty())
+          scaleState(Chicane::String::empty()),
+          isSettingsOpen(false),
+          showSettingsHint(true),
+          settingsState("idle")
     {
+        import <ViewportSettings>();
+
         load("Assets/Editor/UI/Components/Toolbar.grid", "Assets/Editor/UI/Components/Toolbar.decal");
 
         Prop::bind(this, ORIENTATION_ATTRIBUTE, orientation);
@@ -27,6 +33,9 @@ namespace Editor
         Prop::copy(this, TRANSLATE_STATE_ATTRIBUTE, translateState);
         Prop::copy(this, ROTATE_STATE_ATTRIBUTE, rotateState);
         Prop::copy(this, SCALE_STATE_ATTRIBUTE, scaleState);
+
+        settingsState     = isSettingsOpen ? "active" : "idle";
+        showSettingsHint  = !isSettingsOpen;
     }
 
     void Toolbar::onTrackSave()
@@ -47,5 +56,15 @@ namespace Editor
     void Toolbar::onGizmoScale()
     {
         Prop::invoke(this, ON_GIZMO_SCALE_ATTRIBUTE);
+    }
+
+    void Toolbar::onSettingsToggle()
+    {
+        isSettingsOpen = !isSettingsOpen;
+    }
+
+    void Toolbar::closeSettings()
+    {
+        isSettingsOpen = false;
     }
 }

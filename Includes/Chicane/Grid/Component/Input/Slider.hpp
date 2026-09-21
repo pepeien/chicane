@@ -15,10 +15,8 @@ namespace Chicane
         class CHICANE_GRID InputSlider : public Container
         {
         public:
-            // Tag
             static constexpr inline const char* TAG_ID = "Input::Slider";
 
-            // Attributes
             static constexpr inline const char* VALUE_ATTRIBUTE_NAME    = "value";
             static constexpr inline const char* MIN_ATTRIBUTE_NAME      = "min";
             static constexpr inline const char* MAX_ATTRIBUTE_NAME      = "max";
@@ -43,12 +41,9 @@ namespace Chicane
         private:
             void refreshRange();
             void applyAt(const Vec2& inLocation);
-            void nudge(int inSteps);
+            void nudge(int inSteps, float inScale = 1.0f);
             void commit();
             void emitInput();
-            float parseNumber(const String& inValue, float inFallback) const;
-            float clampValue(float inValue) const;
-            float snapValue(float inValue) const;
             void refreshPercentage();
 
         public:

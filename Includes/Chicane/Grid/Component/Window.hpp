@@ -41,6 +41,7 @@ namespace Chicane
             bool isFocusable() const override;
             bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
+            void tick(float inDeltaTime) override;
 
         protected:
             void refreshPosition() override;
@@ -57,6 +58,7 @@ namespace Chicane
             Component* findAssignedHandle() const;
 
         private:
+            void refreshOpenState();
             void refreshTitleVisibility();
 
             bool canMoveFrom(Component* inHit) const;
