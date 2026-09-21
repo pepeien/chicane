@@ -1,10 +1,10 @@
 {
-    "title": "Slider",
-    "filename": "Slider",
-    "path": "Grid/Component/Input/Slider",
+    "title": "Button",
+    "filename": "Button",
+    "path": "Grid/Component/Input/Slider/Button",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/Input/Slider.hpp",
-        "namespace": "Chicane::Grid::InputSlider",
+        "header": "Includes/Chicane/Grid/Component/Input/Slider/Button.hpp",
+        "namespace": "Chicane::Grid::InputButtonSlider",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "InputSlider",
+                "name": "InputButtonSlider",
                 "parameters": [
                     {
                         "type": {
@@ -32,7 +32,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_INPUTSLIDER_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_INPUTBUTTONSLIDER_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -52,7 +52,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_INPUTSLIDER_ISFOCUSABLE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_ISFOCUSABLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -78,7 +78,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_ONEVENT_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_ONEVENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -104,7 +104,52 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_SETVALUE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_SETVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "decrement",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_DECREMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "increment",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_INCREMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commitText",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_COMMITTEXT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -130,7 +175,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_ONTICK_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_ONTICK_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -145,7 +190,22 @@
                 "name": "refreshRange",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_REFRESHRANGE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_REFRESHRANGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshLabel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_REFRESHLABEL_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -171,7 +231,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_APPLYAT_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_APPLYAT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -207,7 +267,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_NUDGE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_NUDGE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -222,7 +282,7 @@
                 "name": "commit",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_COMMIT_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_COMMIT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -237,7 +297,7 @@
                 "name": "emitInput",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_EMITINPUT_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_EMITINPUT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -252,7 +312,39 @@
                 "name": "refreshPercentage",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTSLIDER_REFRESHPERCENTAGE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_REFRESHPERCENTAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshValueText",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_REFRESHVALUETEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEditing",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_ISEDITING_DESCRIPTION"
             }
         ],
         "members": [
@@ -270,7 +362,7 @@
                     "templates": []
                 },
                 "name": "TAG_ID",
-                "description": "CHICANE_GRID_INPUTSLIDER_TAG_ID_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_TAG_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -286,7 +378,7 @@
                     "templates": []
                 },
                 "name": "VALUE_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_INPUTSLIDER_VALUE_ATTRIBUTE_NAME_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_VALUE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -302,7 +394,7 @@
                     "templates": []
                 },
                 "name": "MIN_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_INPUTSLIDER_MIN_ATTRIBUTE_NAME_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_MIN_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -318,7 +410,7 @@
                     "templates": []
                 },
                 "name": "MAX_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_INPUTSLIDER_MAX_ATTRIBUTE_NAME_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_MAX_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -334,7 +426,39 @@
                     "templates": []
                 },
                 "name": "STEP_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_INPUTSLIDER_STEP_ATTRIBUTE_NAME_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_STEP_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LABEL_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_LABEL_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PRECISION_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_PRECISION_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -350,7 +474,7 @@
                     "templates": []
                 },
                 "name": "ON_INPUT_ATTRIBUTE_NAME",
-                "description": "CHICANE_GRID_INPUTSLIDER_ON_INPUT_ATTRIBUTE_NAME_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_ON_INPUT_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -363,7 +487,7 @@
                     "templates": []
                 },
                 "name": "value",
-                "description": "CHICANE_GRID_INPUTSLIDER_VALUE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_VALUE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -376,7 +500,7 @@
                     "templates": []
                 },
                 "name": "min",
-                "description": "CHICANE_GRID_INPUTSLIDER_MIN_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_MIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -389,7 +513,7 @@
                     "templates": []
                 },
                 "name": "max",
-                "description": "CHICANE_GRID_INPUTSLIDER_MAX_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_MAX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -402,7 +526,7 @@
                     "templates": []
                 },
                 "name": "step",
-                "description": "CHICANE_GRID_INPUTSLIDER_STEP_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_STEP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -415,7 +539,46 @@
                     "templates": []
                 },
                 "name": "percentage",
-                "description": "CHICANE_GRID_INPUTSLIDER_PERCENTAGE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_PERCENTAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "precision",
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_PRECISION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "label",
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_LABEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "valueText",
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_VALUETEXT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -428,7 +591,7 @@
                     "templates": []
                 },
                 "name": "m_bIsSliding",
-                "description": "CHICANE_GRID_INPUTSLIDER_M_BISSLIDING_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_M_BISSLIDING_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -441,10 +604,10 @@
                     "templates": []
                 },
                 "name": "m_bIsEdited",
-                "description": "CHICANE_GRID_INPUTSLIDER_M_BISEDITED_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTBUTTONSLIDER_M_BISEDITED_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_INPUTSLIDER_DESCRIPTION"
+        "description": "CHICANE_GRID_INPUTBUTTONSLIDER_DESCRIPTION"
     },
     "children": []
 }

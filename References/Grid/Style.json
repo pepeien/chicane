@@ -1359,12 +1359,12 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "StyleGradient",
+                    "name": "StyleGradient::List",
                     "suffix": "",
                     "path": "Grid/Style/Background/Gradient",
                     "templates": []
                 },
-                "name": "parseGradient",
+                "name": "parseGradients",
                 "parameters": [
                     {
                         "type": {
@@ -1380,7 +1380,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_STYLE_PARSEGRADIENT_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLE_PARSEGRADIENTS_DESCRIPTION"
             },
             {
                 "accessor": "private",

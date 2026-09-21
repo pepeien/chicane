@@ -10,7 +10,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -21,7 +21,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -32,7 +32,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -43,7 +43,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -54,7 +54,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -65,7 +65,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -76,7 +76,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -87,7 +87,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -98,7 +98,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -109,7 +109,18 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Outline",
+                "description": "CHICANE_RENDERER_RENDERERFEATURE_OUTLINE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -120,7 +131,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::uint16_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

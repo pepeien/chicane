@@ -127,6 +127,32 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_WINDOW_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -259,6 +285,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_WINDOW_REFRESHPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshOpenState",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_WINDOW_REFRESHOPENSTATE_DESCRIPTION"
             },
             {
                 "accessor": "private",

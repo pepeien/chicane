@@ -56,6 +56,49 @@
             },
             {
                 "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "escapesOverflow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTCOLOR_ESCAPESOVERFLOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowEvent",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_ONEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -173,6 +216,51 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_INPUTCOLOR_COMMITMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRgbModel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_SETRGBMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRgbaModel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_SETRGBAMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setHsvModel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_SETHSVMODEL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -455,10 +543,25 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refreshLabels",
+                "name": "refreshWheel",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_INPUTCOLOR_REFRESHLABELS_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTCOLOR_REFRESHWHEEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshTabState",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_REFRESHTABSTATE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -476,6 +579,86 @@
                     "const"
                 ],
                 "description": "CHICANE_GRID_INPUTCOLOR_CURRENTRGBA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "findChildId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_INPUTCOLOR_FINDCHILDID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pickWheelAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_PICKWHEELAT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pickValueAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTCOLOR_PICKVALUEAT_DESCRIPTION"
             }
         ],
         "members": [
@@ -539,6 +722,19 @@
                 },
                 "name": "hex",
                 "description": "CHICANE_GRID_INPUTCOLOR_HEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "swatchHex",
+                "description": "CHICANE_GRID_INPUTCOLOR_SWATCHHEX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -693,110 +889,6 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "hueText",
-                "description": "CHICANE_GRID_INPUTCOLOR_HUETEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "saturationText",
-                "description": "CHICANE_GRID_INPUTCOLOR_SATURATIONTEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "lightnessText",
-                "description": "CHICANE_GRID_INPUTCOLOR_LIGHTNESSTEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "brightnessText",
-                "description": "CHICANE_GRID_INPUTCOLOR_BRIGHTNESSTEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "alphaText",
-                "description": "CHICANE_GRID_INPUTCOLOR_ALPHATEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "redText",
-                "description": "CHICANE_GRID_INPUTCOLOR_REDTEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "greenText",
-                "description": "CHICANE_GRID_INPUTCOLOR_GREENTEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "blueText",
-                "description": "CHICANE_GRID_INPUTCOLOR_BLUETEXT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
                 "name": "model",
                 "description": "CHICANE_GRID_INPUTCOLOR_MODEL_DESCRIPTION"
             },
@@ -870,6 +962,19 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isRgba",
+                "description": "CHICANE_GRID_INPUTCOLOR_ISRGBA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "isOpen",
                 "description": "CHICANE_GRID_INPUTCOLOR_ISOPEN_DESCRIPTION"
             },
@@ -891,6 +996,110 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "rgbState",
+                "description": "CHICANE_GRID_INPUTCOLOR_RGBSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "rgbaState",
+                "description": "CHICANE_GRID_INPUTCOLOR_RGBASTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "hsvState",
+                "description": "CHICANE_GRID_INPUTCOLOR_HSVSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "wheelCursorX",
+                "description": "CHICANE_GRID_INPUTCOLOR_WHEELCURSORX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "wheelCursorY",
+                "description": "CHICANE_GRID_INPUTCOLOR_WHEELCURSORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "valueDim",
+                "description": "CHICANE_GRID_INPUTCOLOR_VALUEDIM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "valueThumbY",
+                "description": "CHICANE_GRID_INPUTCOLOR_VALUETHUMBY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "alphaUnit",
+                "description": "CHICANE_GRID_INPUTCOLOR_ALPHAUNIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -906,6 +1115,32 @@
                 },
                 "name": "presets",
                 "description": "CHICANE_GRID_INPUTCOLOR_PRESETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsPickingWheel",
+                "description": "CHICANE_GRID_INPUTCOLOR_M_BISPICKINGWHEEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsPickingValue",
+                "description": "CHICANE_GRID_INPUTCOLOR_M_BISPICKINGVALUE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_INPUTCOLOR_DESCRIPTION"

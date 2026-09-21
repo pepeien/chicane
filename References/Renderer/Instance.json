@@ -1230,7 +1230,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::uint8_t",
+                            "name": "std::uint16_t",
                             "suffix": "",
                             "path": "",
                             "templates": []

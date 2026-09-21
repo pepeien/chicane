@@ -3789,7 +3789,59 @@
                                     "members": [],
                                     "description": null
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "Button",
+                                        "filename": "Button",
+                                        "path": "Grid/Component/Input/Slider/Button",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Button.hpp",
+                                            "namespace": "Chicane::Grid::InputButtonSlider",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Math",
+                                        "filename": "Math",
+                                        "path": "Grid/Component/Input/Slider/Math",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Math.hpp",
+                                            "namespace": "Chicane::Grid::SliderMath",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Range",
+                                        "filename": "Range",
+                                        "path": "Grid/Component/Input/Slider/Range",
+                                        "source": {
+                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Range.hpp",
+                                            "namespace": "Chicane::Grid::InputRangeSlider::Drag",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
                                 "title": "Text",
@@ -4172,6 +4224,23 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "ToolTip",
+                        "filename": "ToolTip",
+                        "path": "Grid/Component/ToolTip",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/ToolTip.hpp",
+                            "namespace": "Chicane::Grid::ToolTip",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     },
                     {
                         "title": "View",

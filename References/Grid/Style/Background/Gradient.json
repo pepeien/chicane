@@ -24,6 +24,25 @@
                     ]
                 },
                 "description": "CHICANE_GRID_STYLEGRADIENT_COLORPARSER_DESCRIPTION"
+            },
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleGradient",
+                            "suffix": "",
+                            "path": "Grid/Style/Background/Gradient",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEGRADIENT_LIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -63,6 +82,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isActive",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "List",
+                            "suffix": "&",
+                            "path": "Grid/Style/Background/Gradient",
+                            "templates": []
+                        },
+                        "name": "inLayers"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEGRADIENT_ISACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "StyleGradient",
                     "suffix": "",
                     "path": "Grid/Style/Background/Gradient",
@@ -95,6 +142,44 @@
                     "static"
                 ],
                 "description": "CHICANE_GRID_STYLEGRADIENT_PARSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "List",
+                    "suffix": "",
+                    "path": "Grid/Style/Background/Gradient",
+                    "templates": []
+                },
+                "name": "parseList",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ColorParser",
+                            "suffix": "&",
+                            "path": "Grid/Style/Background/Gradient",
+                            "templates": []
+                        },
+                        "name": "inParseColor"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLEGRADIENT_PARSELIST_DESCRIPTION"
             },
             {
                 "accessor": "public",
