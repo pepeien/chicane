@@ -16,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleLocationType inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleLocationType::Local:
-            return "Local";
-
-        case Grid::StyleLocationType::URL:
-            return "URL";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleLocationType inValue);
 }

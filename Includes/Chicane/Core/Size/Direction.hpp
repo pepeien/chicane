@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -12,18 +13,5 @@ namespace Chicane
         Horizontal
     };
 
-    inline String toString(SizeDirection inValue)
-    {
-        switch (inValue)
-        {
-        case SizeDirection::Vertical:
-            return "Vertical";
-
-        case SizeDirection::Horizontal:
-            return "Horizontal";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(SizeDirection inValue);
 }

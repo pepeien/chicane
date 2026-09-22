@@ -140,14 +140,18 @@ namespace Chicane
                 return;
             }
 
-            if (m_immediateVertex.handle)
+            for (ImmediateGeometry& slot : m_immediate)
             {
-                device->destroyBuffer(m_immediateVertex);
+                if (slot.vertex.handle)
+                {
+                    device->destroyBuffer(slot.vertex);
+                }
+                if (slot.index.handle)
+                {
+                    device->destroyBuffer(slot.index);
+                }
             }
-            if (m_immediateIndex.handle)
-            {
-                device->destroyBuffer(m_immediateIndex);
-            }
+            m_immediate.clear();
             for (RHI::BindGroup group : m_groups)
             {
                 device->destroyBindGroup(group);
@@ -217,46 +221,56 @@ namespace Chicane
             return shouldDrawMeshWireframe(inFrame) || shouldDrawLineList(inFrame) || shouldDrawOutline(inFrame);
         }
 
-        void LSceneLine::ensureImmediate(RHI::Device* inDevice, const Frame& inFrame)
+        LSceneLine::ImmediateGeometry& LSceneLine::ensureImmediate(
+            RHI::Device* inDevice, const Frame& inFrame, std::uint32_t inFrameIndex
+        )
         {
-            const std::size_t vertexBytes = sizeof(Vertex) * inFrame.getImmediateVertices().size();
-            const std::size_t indexBytes  = sizeof(Vertex::Index) * inFrame.getImmediateIndices().size();
-
-            if (vertexBytes > m_immediateVertexBytes)
+            if (m_immediate.size() <= inFrameIndex)
             {
-                if (m_immediateVertex.handle)
-                {
-                    inDevice->destroyBuffer(m_immediateVertex);
-                }
-                RHI::BufferCreateInfo desc;
-                desc.size              = vertexBytes;
-                desc.usage             = RHI::BufferUsage::Vertex;
-                desc.bHasHostAccess    = true;
-                m_immediateVertex      = inDevice->createBuffer(desc);
-                m_immediateVertexBytes = vertexBytes;
+                m_immediate.resize(inFrameIndex + 1);
             }
-            if (indexBytes > m_immediateIndexBytes)
+
+            ImmediateGeometry& slot        = m_immediate[inFrameIndex];
+            const std::size_t  vertexBytes = sizeof(Vertex) * inFrame.getImmediateVertices().size();
+            const std::size_t  indexBytes  = sizeof(Vertex::Index) * inFrame.getImmediateIndices().size();
+
+            if (vertexBytes > slot.vertexBytes)
             {
-                if (m_immediateIndex.handle)
+                if (slot.vertex.handle)
                 {
-                    inDevice->destroyBuffer(m_immediateIndex);
+                    inDevice->destroyBuffer(slot.vertex);
                 }
                 RHI::BufferCreateInfo desc;
-                desc.size             = indexBytes;
-                desc.usage            = RHI::BufferUsage::Index;
-                desc.bHasHostAccess   = true;
-                m_immediateIndex      = inDevice->createBuffer(desc);
-                m_immediateIndexBytes = indexBytes;
+                desc.size           = vertexBytes;
+                desc.usage          = RHI::BufferUsage::Vertex;
+                desc.bHasHostAccess = true;
+                slot.vertex         = inDevice->createBuffer(desc);
+                slot.vertexBytes    = vertexBytes;
+            }
+            if (indexBytes > slot.indexBytes)
+            {
+                if (slot.index.handle)
+                {
+                    inDevice->destroyBuffer(slot.index);
+                }
+                RHI::BufferCreateInfo desc;
+                desc.size           = indexBytes;
+                desc.usage          = RHI::BufferUsage::Index;
+                desc.bHasHostAccess = true;
+                slot.index          = inDevice->createBuffer(desc);
+                slot.indexBytes     = indexBytes;
             }
 
             if (vertexBytes > 0)
             {
-                inDevice->updateBuffer(m_immediateVertex, inFrame.getImmediateVertices().data(), vertexBytes);
+                inDevice->updateBuffer(slot.vertex, inFrame.getImmediateVertices().data(), vertexBytes);
             }
             if (indexBytes > 0)
             {
-                inDevice->updateBuffer(m_immediateIndex, inFrame.getImmediateIndices().data(), indexBytes);
+                inDevice->updateBuffer(slot.index, inFrame.getImmediateIndices().data(), indexBytes);
             }
+
+            return slot;
         }
 
         void LSceneLine::drawOutline(
@@ -397,7 +411,7 @@ namespace Chicane
 
             if (shouldDrawLineList(inFrame) && inFrame.hasImmediateVertices())
             {
-                ensureImmediate(device, inFrame);
+                ImmediateGeometry& immediate = ensureImmediate(device, inFrame, rhi->frameIndex);
                 for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
                 {
                     if (!draw.isLineList())
@@ -409,7 +423,7 @@ namespace Chicane
                         inFrame.isForegroundDraw(draw) ? m_lineForegroundPipeline : m_linePipeline
                     );
                     rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
-                    rhi->commands->bindVertexBuffer(m_immediateVertex);
+                    rhi->commands->bindVertexBuffer(immediate.vertex);
                     rhi->commands->setLineWidth(1.0f);
                     RHI::LinePush push;
                     push.extra[0] = 0.0f;
@@ -420,7 +434,7 @@ namespace Chicane
                     }
                     else
                     {
-                        rhi->commands->bindIndexBuffer(m_immediateIndex);
+                        rhi->commands->bindIndexBuffer(immediate.index);
                         rhi->commands->drawIndexed(
                             draw.indexCount,
                             draw.instanceCount,

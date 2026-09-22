@@ -159,4 +159,43 @@ namespace Chicane
             return found->second;
         }
     }
+
+    String toString(Box::AssetType inValue)
+    {
+        switch (inValue)
+        {
+        case Box::AssetType::Undefined:
+            return "Undefined";
+
+        case Box::AssetType::Animation:
+            return "Animation";
+
+        case Box::AssetType::Font:
+            return "Font";
+
+        case Box::AssetType::Mesh:
+            return "Mesh";
+
+        case Box::AssetType::Model:
+            return "Model";
+
+        case Box::AssetType::Skeleton:
+            return "Skeleton";
+
+        case Box::AssetType::Texture:
+            return "Texture";
+
+        case Box::AssetType::Sky:
+            return "Sky";
+
+        case Box::AssetType::Sound:
+            return "Sound";
+
+        case Box::AssetType::Effect:
+            return "Effect";
+
+        default:
+            return "";
+        }
+    }
 }

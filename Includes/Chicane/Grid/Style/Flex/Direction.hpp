@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
@@ -15,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleFlexDirection inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleFlexDirection::Column:
-            return "Column";
-
-        case Grid::StyleFlexDirection::Row:
-            return "Row";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleFlexDirection inValue);
 }

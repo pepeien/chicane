@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -18,18 +19,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::StoreOp inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::StoreOp::Store:
-            return "Store";
-
-        case Renderer::RHI::StoreOp::DontCare:
-            return "DontCare";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::StoreOp inValue);
 }

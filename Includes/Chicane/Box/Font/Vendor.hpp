@@ -14,21 +14,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Box::FontVendor inValue)
-    {
-        switch (inValue)
-        {
-        case Box::FontVendor::Undefined:
-            return "Undefined";
-
-        case Box::FontVendor::OpenType:
-            return "OpenType";
-
-        case Box::FontVendor::TrueType:
-            return "TrueType";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_BOX String toString(Box::FontVendor inValue);
 }

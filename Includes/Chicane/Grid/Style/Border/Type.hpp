@@ -16,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleBorderType inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleBorderType::None:
-            return "None";
-
-        case Grid::StyleBorderType::Solid:
-            return "Solid";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleBorderType inValue);
 }

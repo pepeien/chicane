@@ -19,21 +19,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(FileSystem::ItemType inValue)
-    {
-        switch (inValue)
-        {
-        case FileSystem::ItemType::Undefined:
-            return "Undefined";
-
-        case FileSystem::ItemType::Folder:
-            return "Folder";
-
-        case FileSystem::ItemType::File:
-            return "File";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(FileSystem::ItemType inValue);
 }

@@ -16,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Input::Status inValue)
-    {
-        switch (inValue)
-        {
-        case Input::Status::Pressed:
-            return "Pressed";
-
-        case Input::Status::Released:
-            return "Released";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(Input::Status inValue);
 }

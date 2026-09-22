@@ -1,0 +1,6 @@
+<Asset version="1" id="Gizmo_Arrow">
+    <Group id="Y">
+        <Model source="Assets/Editor/Models/Gizmo/Translation.bmdl">Y</Model>
+        <Texture source="Assets/Editor/Textures/Gizmo/Y.btex">Editor_Gizmo_Y</Texture>
+    </Group>
+</Asset>

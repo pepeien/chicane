@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -30,48 +31,5 @@ namespace Chicane
         using ResourceBudget = std::unordered_map<Resource, float>;
     }
 
-    inline String toString(Renderer::Resource inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::Resource::Scene:
-            return "Scene";
-
-        case Renderer::Resource::SceneIndices:
-            return "SceneIndices";
-
-        case Renderer::Resource::SceneVertices:
-            return "SceneVertices";
-
-        case Renderer::Resource::SceneInstances:
-            return "SceneInstances";
-
-        case Renderer::Resource::SceneCamera:
-            return "SceneCamera";
-
-        case Renderer::Resource::SceneLights:
-            return "SceneLights";
-
-        case Renderer::Resource::Texture:
-            return "Texture";
-
-        case Renderer::Resource::UI:
-            return "UI";
-
-        case Renderer::Resource::UIIndices:
-            return "UIIndices";
-
-        case Renderer::Resource::UIVertices:
-            return "UIVertices";
-
-        case Renderer::Resource::UIInstances:
-            return "UIInstances";
-
-        case Renderer::Resource::UIGlyphs:
-            return "UIGlyphs";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::Resource inValue);
 }

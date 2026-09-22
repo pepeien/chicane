@@ -16,27 +16,5 @@ namespace Chicane
         Replace
     };
 
-    inline String toString(ListPushStrategy inValue)
-    {
-        switch (inValue)
-        {
-        case ListPushStrategy::Front:
-            return "Front";
-
-        case ListPushStrategy::Back:
-            return "Back";
-
-        case ListPushStrategy::Before:
-            return "Before";
-
-        case ListPushStrategy::After:
-            return "After";
-
-        case ListPushStrategy::Replace:
-            return "Replace";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(ListPushStrategy inValue);
 }

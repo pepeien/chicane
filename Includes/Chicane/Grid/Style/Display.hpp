@@ -16,24 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleDisplay inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleDisplay::Flex:
-            return "Flex";
-
-        case Grid::StyleDisplay::Block:
-            return "Block";
-
-        case Grid::StyleDisplay::Hidden:
-            return "Hidden";
-
-        case Grid::StyleDisplay::None:
-            return "None";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleDisplay inValue);
 }

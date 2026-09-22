@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -16,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Renderer::DrawPolyType inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::DrawPolyType::e2D:
-            return "e2D";
-
-        case Renderer::DrawPolyType::e3D:
-            return "e3D";
-
-        case Renderer::DrawPolyType::eParticle:
-            return "eParticle";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::DrawPolyType inValue);
 }

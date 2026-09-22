@@ -16,21 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Box::AnimationLoop inValue)
-    {
-        switch (inValue)
-        {
-        case Box::AnimationLoop::Once:
-            return "Once";
-
-        case Box::AnimationLoop::Repeat:
-            return "Repeat";
-
-        case Box::AnimationLoop::PingPong:
-            return "PingPong";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_BOX String toString(Box::AnimationLoop inValue);
 }

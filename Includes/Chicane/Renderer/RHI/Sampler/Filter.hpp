@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -18,18 +19,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::SamplerFilter inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::SamplerFilter::Nearest:
-            return "Nearest";
-
-        case Renderer::RHI::SamplerFilter::Linear:
-            return "Linear";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::SamplerFilter inValue);
 }

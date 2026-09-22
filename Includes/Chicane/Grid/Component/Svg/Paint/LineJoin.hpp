@@ -17,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::SvgLineJoin inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::SvgLineJoin::Miter:
-            return "Miter";
-
-        case Grid::SvgLineJoin::Round:
-            return "Round";
-
-        case Grid::SvgLineJoin::Bevel:
-            return "Bevel";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::SvgLineJoin inValue);
 }

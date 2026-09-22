@@ -14,21 +14,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Box::ModelVendor inValue)
-    {
-        switch (inValue)
-        {
-        case Box::ModelVendor::Undefined:
-            return "Undefined";
-
-        case Box::ModelVendor::Wavefront:
-            return "Wavefront";
-
-        case Box::ModelVendor::Gltf:
-            return "Gltf";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_BOX String toString(Box::ModelVendor inValue);
 }

@@ -4,6 +4,7 @@
 
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -18,21 +19,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Renderer::ShaderType inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::ShaderType::Fragment:
-            return "Fragment";
-
-        case Renderer::ShaderType::Vertex:
-            return "Vertex";
-
-        case Renderer::ShaderType::Undefined:
-            return "Undefined";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::ShaderType inValue);
 }

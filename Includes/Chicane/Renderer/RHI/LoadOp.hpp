@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::LoadOp inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::LoadOp::Load:
-            return "Load";
-
-        case Renderer::RHI::LoadOp::Clear:
-            return "Clear";
-
-        case Renderer::RHI::LoadOp::DontCare:
-            return "DontCare";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::LoadOp inValue);
 }

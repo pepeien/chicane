@@ -18,24 +18,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleImportType inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleImportType::Undefined:
-            return "Undefined";
-
-        case Grid::StyleImportType::Style:
-            return "Style";
-
-        case Grid::StyleImportType::Font:
-            return "Font";
-
-        case Grid::StyleImportType::Texture:
-            return "Texture";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleImportType inValue);
 }

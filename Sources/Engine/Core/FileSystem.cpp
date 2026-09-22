@@ -7,7 +7,6 @@
     #include <windows.h>
 #endif
 
-#include "Chicane/Core/FileSystem/Item/Type.reflected.hpp"
 #include "Chicane/Core/FileSystem/Listing/Service.hpp"
 
 namespace Chicane

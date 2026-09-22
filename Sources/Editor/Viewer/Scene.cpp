@@ -26,6 +26,7 @@ namespace Editor
 
     void ViewerScene::onLoad()
     {
+        spawnHelpers();
         spawnLights();
         spawnCharacter();
         spawnGizmo();

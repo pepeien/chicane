@@ -13,21 +13,5 @@ namespace Editor
         Files
     };
 
-    inline Chicane::String toString(ExplorerFilter inValue)
-    {
-        switch (inValue)
-        {
-        case ExplorerFilter::All:
-            return "All";
-
-        case ExplorerFilter::Folders:
-            return "Folders";
-
-        case ExplorerFilter::Files:
-            return "Files";
-
-        default:
-            return "";
-        }
-    }
+    Chicane::String toString(ExplorerFilter inValue);
 }

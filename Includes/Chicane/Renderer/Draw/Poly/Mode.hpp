@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -15,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Renderer::DrawPolyMode inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::DrawPolyMode::Fill:
-            return "Fill";
-
-        case Renderer::DrawPolyMode::Line:
-            return "Line";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::DrawPolyMode inValue);
 }

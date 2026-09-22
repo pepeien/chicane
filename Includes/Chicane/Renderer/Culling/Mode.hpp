@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -17,24 +18,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Renderer::CullingMode inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::CullingMode::None:
-            return "None";
-
-        case Renderer::CullingMode::Front:
-            return "Front";
-
-        case Renderer::CullingMode::Back:
-            return "Back";
-
-        case Renderer::CullingMode::FrontAndBack:
-            return "FrontAndBack";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::CullingMode inValue);
 }

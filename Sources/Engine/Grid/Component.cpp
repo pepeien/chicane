@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstdint>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
@@ -1213,7 +1214,21 @@ namespace Chicane
 
         bool Component::canAdopt(Component* inComponent) const
         {
-            return inComponent != nullptr && inComponent != this;
+            if (!inComponent || inComponent == this)
+            {
+                return false;
+            }
+
+            for (const Component* ancestor = this; ancestor != nullptr;
+                 ancestor                  = ancestor->isRoot() ? nullptr : ancestor->m_parent)
+            {
+                if (ancestor == inComponent)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         void Component::hover()
@@ -2376,15 +2391,36 @@ namespace Chicane
 
         void Component::appendChildrenFlat(std::vector<Component*>& outChildren) const
         {
-            for (Component* child : m_paintChildren)
+            std::unordered_set<const Component*> visited;
+            visited.insert(this);
+
+            std::vector<const Component*> stack;
+            stack.push_back(this);
+
+            while (!stack.empty())
             {
-                if (!child || child == this)
+                const Component* node = stack.back();
+                stack.pop_back();
+
+                const std::vector<Component*> children = node->m_paintChildren;
+                std::vector<Component*>       next;
+                next.reserve(children.size());
+
+                for (Component* child : children)
                 {
-                    continue;
+                    if (!child || !visited.insert(child).second)
+                    {
+                        continue;
+                    }
+
+                    outChildren.push_back(child);
+                    next.push_back(child);
                 }
 
-                outChildren.push_back(child);
-                child->appendChildrenFlat(outChildren);
+                for (auto it = next.rbegin(); it != next.rend(); it++)
+                {
+                    stack.push_back(*it);
+                }
             }
         }
 
@@ -2655,8 +2691,10 @@ namespace Chicane
         {
             Component* hit = nullptr;
 
-            std::vector<const Component*> stack;
+            std::vector<const Component*>         stack;
+            std::unordered_set<const Component*> visited;
             stack.push_back(this);
+            visited.insert(this);
 
             auto consider = [&](Component* candidate)
             {
@@ -2691,10 +2729,11 @@ namespace Chicane
                     continue;
                 }
 
-                for (auto it = node->m_paintChildren.rbegin(); it != node->m_paintChildren.rend(); it++)
+                const std::vector<Component*> children = node->m_paintChildren;
+                for (auto it = children.rbegin(); it != children.rend(); it++)
                 {
                     Component* child = *it;
-                    if (!child || !child->isDisplayable())
+                    if (!child || !child->isDisplayable() || !visited.insert(child).second)
                     {
                         continue;
                     }
@@ -4381,24 +4420,41 @@ namespace Chicane
             m_paintChildren.clear();
             m_paintChildren.reserve(m_children.size() + m_peripherals.size());
 
-            for (Component* child : m_children)
+            auto append = [this](Component* node)
             {
-                if (!child || child == this)
+                if (!node || node == this)
                 {
-                    continue;
+                    return;
                 }
 
-                m_paintChildren.push_back(child);
+                for (const Component* ancestor = this; ancestor != nullptr;
+                     ancestor                  = ancestor->isRoot() ? nullptr : ancestor->m_parent)
+                {
+                    if (ancestor == node)
+                    {
+                        return;
+                    }
+                }
+
+                for (Component* existing : m_paintChildren)
+                {
+                    if (existing == node)
+                    {
+                        return;
+                    }
+                }
+
+                m_paintChildren.push_back(node);
+            };
+
+            for (Component* child : m_children)
+            {
+                append(child);
             }
 
             for (Component* peripheral : m_peripherals)
             {
-                if (!peripheral || peripheral == this)
-                {
-                    continue;
-                }
-
-                m_paintChildren.push_back(peripheral);
+                append(peripheral);
             }
         }
     }

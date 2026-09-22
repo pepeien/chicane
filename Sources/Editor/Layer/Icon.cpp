@@ -25,14 +25,12 @@ namespace Editor
     static constexpr inline const char* ICON_LIGHT_SPOT        = "Editor_Icon_Light_Spot";
     static constexpr inline const char* ICON_LIGHT_DIRECTIONAL = "Editor_Icon_Light_Directional";
     static constexpr inline const char* ICON_LIGHT_ENVIRONMENT = "Editor_Icon_Light_Environment";
-    static constexpr inline const char* ICON_CAMERA            = "Editor_Icon_Camera";
     static constexpr inline const char* ICON_SOUND             = "Editor_Icon_Sound";
 
     static constexpr inline const char* PATH_LIGHT_POINT       = "Assets/Editor/Textures/Icons/Light/Point.btex";
     static constexpr inline const char* PATH_LIGHT_SPOT        = "Assets/Editor/Textures/Icons/Light/Spot.btex";
     static constexpr inline const char* PATH_LIGHT_DIRECTIONAL = "Assets/Editor/Textures/Icons/Light/Directional.btex";
     static constexpr inline const char* PATH_LIGHT_ENVIRONMENT = "Assets/Editor/Textures/Icons/Light/Environment.btex";
-    static constexpr inline const char* PATH_CAMERA            = "Assets/Editor/Textures/Icons/Camera.btex";
     static constexpr inline const char* PATH_SOUND             = "Assets/Editor/Textures/Icons/Sound.btex";
 
     static constexpr inline float ICON_SIZE_SCALE = 0.045f;
@@ -183,7 +181,6 @@ namespace Editor
         const Chicane::Renderer::Draw::Id spot        = findIcon(ICON_LIGHT_SPOT);
         const Chicane::Renderer::Draw::Id directional = findIcon(ICON_LIGHT_DIRECTIONAL);
         const Chicane::Renderer::Draw::Id environment = findIcon(ICON_LIGHT_ENVIRONMENT);
-        const Chicane::Renderer::Draw::Id camera      = findIcon(ICON_CAMERA);
         const Chicane::Renderer::Draw::Id sound       = findIcon(ICON_SOUND);
 
         for (Chicane::CLight* light : scene->getComponents<Chicane::CLight>())
@@ -222,16 +219,6 @@ namespace Editor
             );
         }
 
-        for (Chicane::CCamera* component : scene->getComponents<Chicane::CCamera>())
-        {
-            if (!shouldDraw(component))
-            {
-                continue;
-            }
-
-            drawIcon(rhi, component->getTranslation(), iconSize(component), Chicane::Vec4(1.0f), camera);
-        }
-
         for (Chicane::CSound* component : scene->getComponents<Chicane::CSound>())
         {
             if (!shouldDraw(component))
@@ -251,7 +238,6 @@ namespace Editor
         uploadTexture(Chicane::Box::load<Chicane::Box::Texture>(PATH_LIGHT_SPOT));
         uploadTexture(Chicane::Box::load<Chicane::Box::Texture>(PATH_LIGHT_DIRECTIONAL));
         uploadTexture(Chicane::Box::load<Chicane::Box::Texture>(PATH_LIGHT_ENVIRONMENT));
-        uploadTexture(Chicane::Box::load<Chicane::Box::Texture>(PATH_CAMERA));
         uploadTexture(Chicane::Box::load<Chicane::Box::Texture>(PATH_SOUND));
     }
 

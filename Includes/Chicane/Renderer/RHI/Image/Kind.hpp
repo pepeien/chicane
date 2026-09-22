@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -20,24 +21,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::ImageKind inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::ImageKind::Color2D:
-            return "Color2D";
-
-        case Renderer::RHI::ImageKind::Depth2D:
-            return "Depth2D";
-
-        case Renderer::RHI::ImageKind::Depth2DArray:
-            return "Depth2DArray";
-
-        case Renderer::RHI::ImageKind::Cube:
-            return "Cube";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::ImageKind inValue);
 }

@@ -17,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::SvgLineCap inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::SvgLineCap::Butt:
-            return "Butt";
-
-        case Grid::SvgLineCap::Round:
-            return "Round";
-
-        case Grid::SvgLineCap::Square:
-            return "Square";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::SvgLineCap inValue);
 }

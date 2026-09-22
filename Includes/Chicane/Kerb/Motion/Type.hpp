@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Kerb.hpp"
 
 namespace Chicane
 {
@@ -16,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Kerb::MotionType inValue)
-    {
-        switch (inValue)
-        {
-        case Kerb::MotionType::Dynamic:
-            return "Dynamic";
-
-        case Kerb::MotionType::Kinematic:
-            return "Kinematic";
-
-        case Kerb::MotionType::Static:
-            return "Static";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_KERB String toString(Kerb::MotionType inValue);
 }

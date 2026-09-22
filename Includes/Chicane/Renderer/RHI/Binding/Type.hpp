@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::BindingType inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::BindingType::UniformBuffer:
-            return "UniformBuffer";
-
-        case Renderer::RHI::BindingType::StorageBuffer:
-            return "StorageBuffer";
-
-        case Renderer::RHI::BindingType::SampledImage:
-            return "SampledImage";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::BindingType inValue);
 }

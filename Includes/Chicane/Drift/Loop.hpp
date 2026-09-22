@@ -17,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Drift::Loop inValue)
-    {
-        switch (inValue)
-        {
-        case Drift::Loop::Once:
-            return "Once";
-
-        case Drift::Loop::Repeat:
-            return "Repeat";
-
-        case Drift::Loop::PingPong:
-            return "PingPong";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_DRIFT String toString(Drift::Loop inValue);
 }

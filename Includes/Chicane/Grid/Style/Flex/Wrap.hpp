@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
@@ -15,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Grid::StyleFlexWrap inValue)
-    {
-        switch (inValue)
-        {
-        case Grid::StyleFlexWrap::NoWrap:
-            return "NoWrap";
-
-        case Grid::StyleFlexWrap::Wrap:
-            return "Wrap";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_GRID String toString(Grid::StyleFlexWrap inValue);
 }

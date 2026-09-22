@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <unordered_set>
 
 #include <Chicane/Core/Reflection.hpp>
@@ -26,6 +27,8 @@ namespace Editor
 
     public:
         HomeView();
+
+        void tick(float inDeltaTime) override;
 
     protected:
         void onTick(float inDeltaTime) override;
@@ -105,6 +108,9 @@ namespace Editor
 
     private:
         void bindScene();
+        void requestOutlinerRebuild();
+        void requestAttributesRebuild();
+        void flushPendingRebuilds();
         void rebuildOutliner();
         void appendOutlinerNode(
             Chicane::Object* inObject, int inDepth, bool inIsVisible, std::unordered_set<Chicane::Object*>& outLive
@@ -165,5 +171,7 @@ namespace Editor
         Chicane::Object*                     m_editingOutlinerItem;
         Chicane::String                      m_outlinerEditId;
         CoordinateSpace                      m_coordinateSpace;
+        std::atomic<bool>                    m_bOutlinerDirty;
+        std::atomic<bool>                    m_bAttributesDirty;
     };
 }

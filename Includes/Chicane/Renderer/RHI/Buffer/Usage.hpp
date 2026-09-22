@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -20,24 +21,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::BufferUsage inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::BufferUsage::Vertex:
-            return "Vertex";
-
-        case Renderer::RHI::BufferUsage::Index:
-            return "Index";
-
-        case Renderer::RHI::BufferUsage::Uniform:
-            return "Uniform";
-
-        case Renderer::RHI::BufferUsage::Storage:
-            return "Storage";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::BufferUsage inValue);
 }

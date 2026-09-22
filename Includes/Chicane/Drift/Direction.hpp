@@ -16,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Drift::Direction inValue)
-    {
-        switch (inValue)
-        {
-        case Drift::Direction::Forward:
-            return "Forward";
-
-        case Drift::Direction::Reverse:
-            return "Reverse";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_DRIFT String toString(Drift::Direction inValue);
 }

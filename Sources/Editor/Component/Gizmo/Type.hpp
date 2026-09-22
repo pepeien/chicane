@@ -15,21 +15,5 @@ namespace Editor
         Scale
     };
 
-    inline Chicane::String toString(Editor::GizmoType inValue)
-    {
-        switch (inValue)
-        {
-        case GizmoType::Translation:
-            return "Translation";
-
-        case GizmoType::Rotation:
-            return "Rotation";
-
-        case GizmoType::Scale:
-            return "Scale";
-
-        default:
-            return "";
-        }
-    }
+    Chicane::String toString(Editor::GizmoType inValue);
 }

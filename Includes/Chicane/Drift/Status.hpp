@@ -17,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Drift::Status inValue)
-    {
-        switch (inValue)
-        {
-        case Drift::Status::Stopped:
-            return "Stopped";
-
-        case Drift::Status::Playing:
-            return "Playing";
-
-        case Drift::Status::Paused:
-            return "Paused";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_DRIFT String toString(Drift::Status inValue);
 }

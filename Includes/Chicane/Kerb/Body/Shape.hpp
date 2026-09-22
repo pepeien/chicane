@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Kerb.hpp"
 
 namespace Chicane
 {
@@ -16,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Kerb::BodyShape inValue)
-    {
-        switch (inValue)
-        {
-        case Kerb::BodyShape::Box:
-            return "Box";
-
-        case Kerb::BodyShape::Capsule:
-            return "Capsule";
-
-        case Kerb::BodyShape::Polygon:
-            return "Polygon";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_KERB String toString(Kerb::BodyShape inValue);
 }

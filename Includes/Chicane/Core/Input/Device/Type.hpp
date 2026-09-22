@@ -17,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Input::DeviceType inValue)
-    {
-        switch (inValue)
-        {
-        case Input::DeviceType::Gamepad:
-            return "Gamepad";
-
-        case Input::DeviceType::Keyboard:
-            return "Keyboard";
-
-        case Input::DeviceType::Mouse:
-            return "Mouse";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(Input::DeviceType inValue);
 }

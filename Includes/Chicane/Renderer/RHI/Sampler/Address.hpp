@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::SamplerAddress inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::SamplerAddress::ClampToEdge:
-            return "ClampToEdge";
-
-        case Renderer::RHI::SamplerAddress::ClampToBorder:
-            return "ClampToBorder";
-
-        case Renderer::RHI::SamplerAddress::Repeat:
-            return "Repeat";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::SamplerAddress inValue);
 }

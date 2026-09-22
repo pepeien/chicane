@@ -14,21 +14,5 @@ namespace Chicane
         Fullscreen,
     };
 
-    inline String toString(WindowType inValue)
-    {
-        switch (inValue)
-        {
-        case WindowType::Windowed:
-            return "Windowed";
-
-        case WindowType::WindowedBorderless:
-            return "WindowedBorderless";
-
-        case WindowType::Fullscreen:
-            return "Fullscreen";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_CORE String toString(WindowType inValue);
 }

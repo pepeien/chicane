@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::StencilMode inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::StencilMode::None:
-            return "None";
-
-        case Renderer::RHI::StencilMode::WriteReplace:
-            return "WriteReplace";
-
-        case Renderer::RHI::StencilMode::TestNotEqual:
-            return "TestNotEqual";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::StencilMode inValue);
 }

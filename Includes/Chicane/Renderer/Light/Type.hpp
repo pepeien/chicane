@@ -4,6 +4,7 @@
 
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -16,24 +17,5 @@ namespace Chicane
         Environment
     };
 
-    inline String toString(LightType inValue)
-    {
-        switch (inValue)
-        {
-        case LightType::Directional:
-            return "Directional";
-
-        case LightType::Point:
-            return "Point";
-
-        case LightType::Spot:
-            return "Spot";
-
-        case LightType::Environment:
-            return "Environment";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(LightType inValue);
 }

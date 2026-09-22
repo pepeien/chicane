@@ -455,6 +455,10 @@ namespace Editor
             ioField.type == AttributeFieldType::Enum)
         {
             ioField.text = accessor.toString(&inItem);
+            if (ioField.type == AttributeFieldType::Enum)
+            {
+                ioField.text = typeTail(ioField.text);
+            }
         }
     }
 
@@ -479,7 +483,9 @@ namespace Editor
           m_collapsedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
           m_outlinerEditId(Chicane::String::empty()),
-          m_coordinateSpace(CoordinateSpace::Absolute)
+          m_coordinateSpace(CoordinateSpace::Absolute),
+          m_bOutlinerDirty(false),
+          m_bAttributesDirty(false)
     {
         import <AssetManager>();
         import <Attributes>();
@@ -492,6 +498,13 @@ namespace Editor
         load("Assets/Editor/UI/Views/Home.grid", "Assets/Editor/UI/Views/Home.decal");
 
         bindScene();
+    }
+
+    void HomeView::tick(float inDeltaTime)
+    {
+        flushPendingRebuilds();
+
+        Chicane::Grid::View::tick(inDeltaTime);
     }
 
     void HomeView::onTick(float inDeltaTime)
@@ -520,8 +533,8 @@ namespace Editor
                 return;
             }
 
-            scene->watchActors([this](std::vector<Chicane::Actor*>) { rebuildOutliner(); });
-            scene->watchComponents([this](std::vector<Chicane::Component*>) { rebuildOutliner(); });
+            scene->watchActors([this](std::vector<Chicane::Actor*>) { requestOutlinerRebuild(); });
+            scene->watchComponents([this](std::vector<Chicane::Component*>) { requestOutlinerRebuild(); });
         };
 
         bind(Application::getInstance().getHomeScene());
@@ -581,9 +594,8 @@ namespace Editor
             scene->setSelection(selectedItem);
         }
 
-        expandOutlinerAncestors(selectedItem);
-        rebuildOutliner();
-        rebuildAttributes();
+        requestOutlinerRebuild();
+        requestAttributesRebuild();
     }
 
     void HomeView::onItemToggle(Chicane::Object* inItem)
@@ -598,7 +610,7 @@ namespace Editor
             m_collapsedOutlinerItems.insert(inItem);
         }
 
-        rebuildOutliner();
+        requestOutlinerRebuild();
     }
 
     void HomeView::onItemEdit()
@@ -618,7 +630,7 @@ namespace Editor
         m_editingOutlinerItem = selectedItem;
         m_outlinerEditId      = selectedItem->getId();
 
-        rebuildOutliner();
+        requestOutlinerRebuild();
     }
 
     void HomeView::onItemDelete()
@@ -714,8 +726,8 @@ namespace Editor
             Application::getInstance().activateHomeScene();
         }
 
-        rebuildOutliner();
-        rebuildAttributes();
+        requestOutlinerRebuild();
+        requestAttributesRebuild();
     }
 
     void HomeView::onTrackNew()
@@ -1062,6 +1074,8 @@ namespace Editor
 
     void HomeView::rebuildOutliner()
     {
+        expandOutlinerAncestors(selectedItem);
+
         outlinerNodes.clear();
 
         std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
@@ -1208,7 +1222,33 @@ namespace Editor
 
         if (bShouldRebuild)
         {
+            requestOutlinerRebuild();
+            requestAttributesRebuild();
+        }
+    }
+
+    void HomeView::requestOutlinerRebuild()
+    {
+        m_bOutlinerDirty.store(true, std::memory_order_release);
+    }
+
+    void HomeView::requestAttributesRebuild()
+    {
+        m_bAttributesDirty.store(true, std::memory_order_release);
+    }
+
+    void HomeView::flushPendingRebuilds()
+    {
+        const bool bOutliner   = m_bOutlinerDirty.exchange(false, std::memory_order_acq_rel);
+        const bool bAttributes = m_bAttributesDirty.exchange(false, std::memory_order_acq_rel);
+
+        if (bOutliner)
+        {
             rebuildOutliner();
+        }
+
+        if (bAttributes)
+        {
             rebuildAttributes();
         }
     }
@@ -1262,10 +1302,15 @@ namespace Editor
 
                 for (const Chicane::ReflectionEnumeratorInfo& enumerator : enumeration->enumerators)
                 {
-                    field.options.push_back(typeTail(enumerator.name));
-                    if (enumerator.value == 0 && field.text.isEmpty())
+                    const Chicane::String option = typeTail(enumerator.name);
+                    field.options.push_back(option);
+                    if (field.text.equals(enumerator.name, option))
                     {
-                        field.text = typeTail(enumerator.name);
+                        field.text = option;
+                    }
+                    else if (enumerator.value == 0 && field.text.isEmpty())
+                    {
+                        field.text = option;
                     }
                 }
             }

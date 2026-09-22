@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::PrimitiveTopology inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::PrimitiveTopology::TriangleList:
-            return "TriangleList";
-
-        case Renderer::RHI::PrimitiveTopology::TriangleStrip:
-            return "TriangleStrip";
-
-        case Renderer::RHI::PrimitiveTopology::LineList:
-            return "LineList";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::PrimitiveTopology inValue);
 }

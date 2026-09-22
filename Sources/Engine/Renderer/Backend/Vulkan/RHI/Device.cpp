@@ -174,6 +174,8 @@ namespace Chicane
 
             if (inOffset + inSize > data->size)
             {
+                m_backend->logicalDevice.waitIdle();
+
                 VulkanBufferCreateInfo info;
                 info.logicalDevice  = m_backend->logicalDevice;
                 info.physicalDevice = m_backend->physicalDevice;

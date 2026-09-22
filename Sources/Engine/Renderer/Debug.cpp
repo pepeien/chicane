@@ -70,13 +70,37 @@ namespace Chicane
 
             void push(const Vertex::List& inVertices, float inDuration)
             {
+                std::lock_guard<std::mutex> lock(g_tracesMutex);
+                pruneLocked(false);
+
+                if (inDuration < 0.0f)
+                {
+                    g_traces.erase(
+                        std::remove_if(
+                            g_traces.begin(),
+                            g_traces.end(),
+                            [](const Trace& inTrace) { return inTrace.bIsPersistant; }
+                        ),
+                        g_traces.end()
+                    );
+
+                    if (inVertices.empty())
+                    {
+                        return;
+                    }
+
+                    Trace trace;
+                    trace.vertices      = inVertices;
+                    trace.bIsPersistant = true;
+                    g_traces.push_back(std::move(trace));
+
+                    return;
+                }
+
                 if (inVertices.empty())
                 {
                     return;
                 }
-
-                std::lock_guard<std::mutex> lock(g_tracesMutex);
-                pruneLocked(false);
 
                 if (g_traces.size() >= TRACE_CAPACITY)
                 {
@@ -86,11 +110,7 @@ namespace Chicane
                 Trace trace;
                 trace.vertices = inVertices;
 
-                if (inDuration < 0.0f)
-                {
-                    trace.bIsPersistant = true;
-                }
-                else if (inDuration <= 0.0f)
+                if (inDuration <= 0.0f)
                 {
                     trace.bInWillExpireOneFrame = true;
                 }

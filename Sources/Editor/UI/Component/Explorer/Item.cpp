@@ -1,5 +1,4 @@
 #include "Editor/UI/Component/Explorer/Item.reflected.hpp"
-#include "Editor/UI/Component/Explorer/Item/Kind.reflected.hpp"
 
 #include <Chicane/Box.hpp>
 #include <Chicane/Box/Asset/Preview.hpp>

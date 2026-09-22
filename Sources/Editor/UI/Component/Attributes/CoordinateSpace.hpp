@@ -12,18 +12,7 @@ namespace Editor
         Relative
     };
 
-    inline Chicane::String toString(CoordinateSpace inValue)
-    {
-        switch (inValue)
-        {
-        case CoordinateSpace::Relative:
-            return "Relative";
-
-        case CoordinateSpace::Absolute:
-        default:
-            return "Absolute";
-        }
-    }
+    Chicane::String toString(CoordinateSpace inValue);
 
     inline CoordinateSpace parseCoordinateSpace(const Chicane::String& inValue)
     {

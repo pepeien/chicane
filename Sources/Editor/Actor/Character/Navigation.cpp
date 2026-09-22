@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <unordered_set>
 
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
@@ -343,11 +344,32 @@ namespace Editor
             return true;
         }
 
-        for (Chicane::Grid::Component* child : view->getChildrenFlat())
+        std::unordered_set<const Chicane::Grid::Component*> visited;
+        std::vector<Chicane::Grid::Component*>              stack;
+        stack.push_back(view.get());
+        visited.insert(view.get());
+
+        while (!stack.empty())
         {
-            if (child && child->getTag().equals(Chicane::Grid::Viewport::TAG_ID) && child->isHovered())
+            Chicane::Grid::Component* node = stack.back();
+            stack.pop_back();
+
+            if (!node)
+            {
+                continue;
+            }
+
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID) && node->isHovered())
             {
                 return true;
+            }
+
+            for (Chicane::Grid::Component* child : node->getChildren())
+            {
+                if (child && visited.insert(child).second)
+                {
+                    stack.push_back(child);
+                }
             }
         }
 

@@ -15,21 +15,5 @@ namespace Editor
         Preview
     };
 
-    inline Chicane::String toString(ExplorerItemKind inValue)
-    {
-        switch (inValue)
-        {
-        case ExplorerItemKind::Folder:
-            return "Folder";
-
-        case ExplorerItemKind::File:
-            return "File";
-
-        case ExplorerItemKind::Preview:
-            return "Preview";
-
-        default:
-            return "";
-        }
-    }
+    Chicane::String toString(ExplorerItemKind inValue);
 }

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Box.hpp"
 
 namespace Chicane
 {
@@ -16,21 +17,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Box::AssetLoad inValue)
-    {
-        switch (inValue)
-        {
-        case Box::AssetLoad::Header:
-            return "Header";
-
-        case Box::AssetLoad::Preview:
-            return "Preview";
-
-        case Box::AssetLoad::Full:
-            return "Full";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_BOX String toString(Box::AssetLoad inValue);
 }

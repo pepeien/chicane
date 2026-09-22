@@ -1,7 +1,5 @@
 #include "Editor/UI/Component/Attributes/Field.reflected.hpp"
 
-#include "Editor/UI/Component/Attributes/Field/Type.reflected.hpp"
-
 namespace Editor
 {
     AttributeField::AttributeField()

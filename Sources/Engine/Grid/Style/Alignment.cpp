@@ -23,4 +23,22 @@ namespace Chicane
             return StyleAlignment::Start;
         }
     }
+
+    String toString(Grid::StyleAlignment inValue)
+    {
+        switch (inValue)
+        {
+        case Grid::StyleAlignment::Start:
+            return "Start";
+
+        case Grid::StyleAlignment::Center:
+            return "Center";
+
+        case Grid::StyleAlignment::End:
+            return "End";
+
+        default:
+            return "";
+        }
+    }
 }

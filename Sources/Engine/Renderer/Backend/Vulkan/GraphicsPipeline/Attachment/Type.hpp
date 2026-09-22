@@ -16,18 +16,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Renderer::VulkanGraphicsPipelineAttachmentType inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::VulkanGraphicsPipelineAttachmentType::Color:
-            return "Color";
-
-        case Renderer::VulkanGraphicsPipelineAttachmentType::Depth:
-            return "Depth";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::VulkanGraphicsPipelineAttachmentType inValue);
 }

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
@@ -19,21 +20,5 @@ namespace Chicane
         }
     }
 
-    inline String toString(Renderer::RHI::BlendMode inValue)
-    {
-        switch (inValue)
-        {
-        case Renderer::RHI::BlendMode::None:
-            return "None";
-
-        case Renderer::RHI::BlendMode::Alpha:
-            return "Alpha";
-
-        case Renderer::RHI::BlendMode::Additive:
-            return "Additive";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_RENDERER String toString(Renderer::RHI::BlendMode inValue);
 }

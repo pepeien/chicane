@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Kerb.hpp"
 
 namespace Chicane
 {
@@ -21,36 +22,5 @@ namespace Chicane
         };
     }
 
-    inline String toString(Kerb::CollisionPreset inValue)
-    {
-        switch (inValue)
-        {
-        case Kerb::CollisionPreset::Custom:
-            return "Custom";
-
-        case Kerb::CollisionPreset::Default:
-            return "Default";
-
-        case Kerb::CollisionPreset::BlockAll:
-            return "BlockAll";
-
-        case Kerb::CollisionPreset::NoCollision:
-            return "NoCollision";
-
-        case Kerb::CollisionPreset::Pawn:
-            return "Pawn";
-
-        case Kerb::CollisionPreset::PhysicsActor:
-            return "PhysicsActor";
-
-        case Kerb::CollisionPreset::Projectile:
-            return "Projectile";
-
-        case Kerb::CollisionPreset::OverlapAll:
-            return "OverlapAll";
-
-        default:
-            return "";
-        }
-    }
+    CHICANE_KERB String toString(Kerb::CollisionPreset inValue);
 }

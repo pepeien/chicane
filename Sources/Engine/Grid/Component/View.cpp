@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <stdexcept>
+#include <unordered_set>
 
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
@@ -63,19 +64,38 @@ namespace Chicane
 
         void View::appendDrawables(Component* inComponent, std::vector<Component*>& outComponents)
         {
-            if (!inComponent || !inComponent->isDisplayable())
+            if (!inComponent)
             {
                 return;
             }
 
-            if (inComponent->isDrawable())
-            {
-                outComponents.push_back(inComponent);
-            }
+            std::unordered_set<const Component*> visited;
+            std::vector<Component*>              stack;
+            stack.push_back(inComponent);
 
-            for (Component* child : inComponent->getPaintChildren())
+            while (!stack.empty())
             {
-                appendDrawables(child, outComponents);
+                Component* node = stack.back();
+                stack.pop_back();
+
+                if (!node || !node->isDisplayable() || !visited.insert(node).second)
+                {
+                    continue;
+                }
+
+                if (node->isDrawable())
+                {
+                    outComponents.push_back(node);
+                }
+
+                const std::vector<Component*>& children = node->getPaintChildren();
+                for (auto it = children.rbegin(); it != children.rend(); it++)
+                {
+                    if (*it)
+                    {
+                        stack.push_back(*it);
+                    }
+                }
             }
         }
 
