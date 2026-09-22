@@ -193,9 +193,7 @@
                         "name": "inValue"
                     }
                 ],
-                "modifiers": [
-                    "inline"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_TOSTRING_DESCRIPTION"
             }
         ],

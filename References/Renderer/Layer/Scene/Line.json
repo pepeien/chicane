@@ -241,9 +241,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "name": "ImmediateGeometry",
+                    "suffix": "&",
+                    "path": "Renderer/Layer/Scene/Line",
                     "templates": []
                 },
                 "name": "ensureImmediate",
@@ -267,6 +267,16 @@
                             "templates": []
                         },
                         "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFrameIndex"
                     }
                 ],
                 "modifiers": [],
@@ -330,6 +340,58 @@
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "vertex",
+                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_VERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "index",
+                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_INDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_VERTEXBYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_INDEXBYTES_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -434,52 +496,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "RHI::Buffer",
-                    "suffix": "",
-                    "path": "Renderer/RHI/Buffer",
-                    "templates": []
-                },
-                "name": "m_immediateVertex",
-                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEVERTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "RHI::Buffer",
-                    "suffix": "",
-                    "path": "Renderer/RHI/Buffer",
-                    "templates": []
-                },
-                "name": "m_immediateIndex",
-                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ImmediateGeometry",
+                            "suffix": "",
+                            "path": "Renderer/Layer/Scene/Line",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "m_immediateVertexBytes",
-                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEVERTEXBYTES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_immediateIndexBytes",
-                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATEINDEXBYTES_DESCRIPTION"
+                "name": "m_immediate",
+                "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LSCENELINE_DESCRIPTION"
