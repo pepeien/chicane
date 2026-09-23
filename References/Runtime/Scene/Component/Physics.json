@@ -687,6 +687,32 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onPropertyEdited",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_ONPROPERTYEDITED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -812,12 +838,59 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "captureSyncedTransform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_CAPTURESYNCEDTRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "colliderCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CPHYSICS_COLLIDERCENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyBodyTransform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CPHYSICS_APPLYBODYTRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Transform",
                     "suffix": "",
                     "path": "Core/Math/Transform",
                     "templates": []
                 },
-                "name": "makeActorTransform",
+                "name": "makeBodyTransform",
                 "parameters": [
                     {
                         "type": {
@@ -833,12 +906,25 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_CPHYSICS_MAKEACTORTRANSFORM_DESCRIPTION"
+                "description": "CHICANE_CPHYSICS_MAKEBODYTRANSFORM_DESCRIPTION"
             }
         ],
         "members": [
             {
-                "accessor": "protected",
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Kerb::BodyCreateInfo",
+                    "suffix": "",
+                    "path": "Kerb/Body/CreateInfo",
+                    "templates": []
+                },
+                "name": "body",
+                "description": "CHICANE_CPHYSICS_BODY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -851,20 +937,7 @@
                 "description": "CHICANE_CPHYSICS_M_BODY_DESCRIPTION"
             },
             {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Kerb::BodyCreateInfo",
-                    "suffix": "",
-                    "path": "Kerb/Body/CreateInfo",
-                    "templates": []
-                },
-                "name": "m_bodySettings",
-                "description": "CHICANE_CPHYSICS_M_BODYSETTINGS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -877,7 +950,7 @@
                 "description": "CHICANE_CPHYSICS_M_SYNCEDSCALE_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -890,7 +963,33 @@
                 "description": "CHICANE_CPHYSICS_M_SYNCEDLOCALSIZE_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_syncedRelativeTranslation",
+                "description": "CHICANE_CPHYSICS_M_SYNCEDRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_syncedRelativeRotation",
+                "description": "CHICANE_CPHYSICS_M_SYNCEDRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -903,7 +1002,7 @@
                 "description": "CHICANE_CPHYSICS_M_ACTORTOBODY_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -912,8 +1011,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bSyncingBody",
-                "description": "CHICANE_CPHYSICS_M_BSYNCINGBODY_DESCRIPTION"
+                "name": "m_bIsSyncingBody",
+                "description": "CHICANE_CPHYSICS_M_BISSYNCINGBODY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CPHYSICS_DESCRIPTION"

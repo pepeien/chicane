@@ -168,6 +168,16 @@
                             "templates": []
                         },
                         "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inDescription"
                     }
                 ],
                 "modifiers": [],
@@ -363,6 +373,19 @@
                 },
                 "name": "group",
                 "description": "CHICANE_REFLECTIONFIELDINFO_GROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "description",
+                "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION"

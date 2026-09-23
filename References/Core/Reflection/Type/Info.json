@@ -212,6 +212,16 @@
                             "templates": []
                         },
                         "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inDescription"
                     }
                 ],
                 "modifiers": [],
@@ -405,6 +415,22 @@
         "members": [
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OBJECT_SEPARATOR",
+                "description": "CHICANE_REFLECTIONTYPEINFO_OBJECT_SEPARATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -493,6 +519,19 @@
                 },
                 "name": "group",
                 "description": "CHICANE_REFLECTIONTYPEINFO_GROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "description",
+                "description": "CHICANE_REFLECTIONTYPEINFO_DESCRIPTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONTYPEINFO_DESCRIPTION"

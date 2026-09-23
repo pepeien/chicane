@@ -69,19 +69,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Bounds3D",
-                    "suffix": "",
-                    "path": "Core/Math/Bounds/3D",
-                    "templates": []
-                },
-                "name": "bounds",
-                "description": "CHICANE_KERB_BODYCREATEINFO_BOUNDS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -147,6 +134,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsSensor",
+                "description": "CHICANE_KERB_BODYCREATEINFO_BISSENSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "CollisionGroup",
                     "suffix": "",
                     "path": "Kerb/Collision/Group",
@@ -160,13 +160,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "Bounds3D",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Bounds/3D",
                     "templates": []
                 },
-                "name": "bSensor",
-                "description": "CHICANE_KERB_BODYCREATEINFO_BSENSOR_DESCRIPTION"
+                "name": "bounds",
+                "description": "CHICANE_KERB_BODYCREATEINFO_BOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "public",

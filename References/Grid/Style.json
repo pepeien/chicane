@@ -1185,6 +1185,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshWordBreak",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHWORDBREAK_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshCursor",
                 "parameters": [],
                 "modifiers": [],
@@ -3727,6 +3742,70 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "WORD_BREAK_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_WORD_BREAK_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WORD_BREAK_TYPE_NORMAL",
+                "description": "CHICANE_GRID_STYLE_WORD_BREAK_TYPE_NORMAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WORD_BREAK_TYPE_BREAK_WORD",
+                "description": "CHICANE_GRID_STYLE_WORD_BREAK_TYPE_BREAK_WORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WORD_BREAK_TYPE_BREAK_ALL",
+                "description": "CHICANE_GRID_STYLE_WORD_BREAK_TYPE_BREAK_ALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TRANSITION_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_TRANSITION_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -5735,6 +5814,27 @@
                 },
                 "name": "letterSpacing",
                 "description": "CHICANE_GRID_STYLE_LETTERSPACING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleWordBreak",
+                            "suffix": "",
+                            "path": "Grid/Style/WordBreak",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "wordBreak",
+                "description": "CHICANE_GRID_STYLE_WORDBREAK_DESCRIPTION"
             },
             {
                 "accessor": "public",

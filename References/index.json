@@ -5040,6 +5040,23 @@
                         "children": []
                     },
                     {
+                        "title": "StyleWordBreak",
+                        "filename": "WordBreak",
+                        "path": "Grid/Style/WordBreak",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/WordBreak.hpp",
+                            "namespace": "Chicane::Grid::StyleWordBreak",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Transform",
                         "filename": "Transform",
                         "path": "Grid/Style/Transform",

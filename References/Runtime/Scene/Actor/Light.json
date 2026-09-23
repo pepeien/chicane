@@ -44,7 +44,7 @@
         ],
         "members": [
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -53,8 +53,8 @@
                     "path": "Runtime/Scene/Component/Light",
                     "templates": []
                 },
-                "name": "m_light",
-                "description": "CHICANE_ALIGHT_M_LIGHT_DESCRIPTION"
+                "name": "light",
+                "description": "CHICANE_ALIGHT_LIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ALIGHT_DESCRIPTION"

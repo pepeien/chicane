@@ -3907,6 +3907,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshId",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHID_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshStyle",
                 "parameters": [],
                 "modifiers": [],

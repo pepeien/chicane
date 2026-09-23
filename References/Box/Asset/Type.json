@@ -292,10 +292,21 @@
                         }
                     ]
                 },
-                "name": "getTypeExtensions",
-                "parameters": [],
+                "name": "getExtensions",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bHasDots"
+                    }
+                ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_GETTYPEEXTENSIONS_DESCRIPTION"
+                "description": "CHICANE_BOX_GETEXTENSIONS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -322,6 +333,40 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_GETTYPEEXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getTypeRawExtensions",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetType",
+                            "suffix": "",
+                            "path": "Box/Asset/Type",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_GETTYPERAWEXTENSIONS_DESCRIPTION"
             }
         ],
         "members": [],

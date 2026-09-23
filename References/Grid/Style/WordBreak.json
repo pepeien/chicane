@@ -1,0 +1,78 @@
+{
+    "title": "StyleWordBreak",
+    "filename": "WordBreak",
+    "path": "Grid/Style/WordBreak",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/WordBreak.hpp",
+        "namespace": "Chicane::Grid::StyleWordBreak",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Normal",
+                "description": "CHICANE_GRID_STYLEWORDBREAK_NORMAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BreakWord",
+                "description": "CHICANE_GRID_STYLEWORDBREAK_BREAKWORD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BreakAll",
+                "description": "CHICANE_GRID_STYLEWORDBREAK_BREAKALL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Grid::StyleWordBreak",
+                            "suffix": "",
+                            "path": "Grid/Style/WordBreak",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TOSTRING_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEWORDBREAK_DESCRIPTION"
+    },
+    "children": []
+}
