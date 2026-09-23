@@ -81,7 +81,7 @@ namespace Reflector
         {
             if (!isIterable || string.IsNullOrEmpty(elementName))
             {
-                return "\t\t\t\tChicane::ReflectionFieldIterable()\n";
+                return "\t\t\t\tChicane::ReflectionFieldIterable()";
             }
 
             string element = isElementPointer
@@ -106,7 +106,7 @@ namespace Reflector
                 $"\t\t\t\t\t\toutSnapshot = *static_cast<const {containerType}*>(inContainer);\n" +
                 $"\t\t\t\t\t\treturn std::any_cast<{containerType}>(&outSnapshot);\n" +
                 $"\t\t\t\t\t}}\n" +
-                $"\t\t\t\t)\n"
+                $"\t\t\t\t)"
             );
         }
 
@@ -245,12 +245,14 @@ namespace Reflector
                     $"\t\t\t\t{(string.IsNullOrEmpty(f.ElementName) ? "std::nullopt" : $"std::type_index(typeid({f.ElementName}))")},\n" +
                     EmitIterable(f.TypeName, f.IsIterable, f.ElementName, f.IsElementPointer) +
                     $",\n" +
-                    $"\t\t\t\t\"{EmitString(f.Group)}\"\n" +
+                    $"\t\t\t\t\"{EmitString(f.Group)}\",\n" +
+                    $"\t\t\t\t\"{EmitString(f.Description)}\"\n" +
                     $"\t\t\t}},"
                 );
             }
             sb.AppendLine("\t\t},");
-            sb.AppendLine($"\t\t\"{EmitString(t.Group)}\"");
+            sb.AppendLine($"\t\t\"{EmitString(t.Group)}\",");
+            sb.AppendLine($"\t\t\"{EmitString(t.Description)}\"");
             sb.AppendLine("\t)");
             sb.AppendLine(");");
             sb.AppendLine();

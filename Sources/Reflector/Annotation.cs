@@ -34,5 +34,7 @@ namespace Reflector
         Alias,
         [StringValue("Group")]
         Group,
+        [StringValue("Description")]
+        Description,
     }
 }

@@ -1,5 +1,4 @@
 Button::Check {
-    overflow: visible;
 
     &:hover {
         cursor: pointer;
@@ -10,7 +9,6 @@ Button::Check {
     display: flex;
     flex-direction: row;
     gap: 0.4em;
-    overflow: visible;
 
     &__box {
         width: 1em;

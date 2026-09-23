@@ -30,8 +30,10 @@ namespace Chicane
         CHICANE_BOX std::vector<String> getTypeTags();
         CHICANE_BOX const String& getTypeTag(AssetType inValue);
 
-        CHICANE_BOX std::vector<String> getTypeExtensions();
+        CHICANE_BOX std::vector<String> getExtensions(bool bHasDots);
         CHICANE_BOX const String& getTypeExtension(AssetType inValue);
+
+        CHICANE_BOX const std::vector<FileSystem::Path>& getTypeRawExtensions(AssetType inValue);
     }
 
     CHICANE_BOX String toString(Box::AssetType inValue);

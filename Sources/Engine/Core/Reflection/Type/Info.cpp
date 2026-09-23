@@ -6,7 +6,6 @@
 
 namespace Chicane
 {
-
     ReflectionTypeInfo::ReflectionTypeInfo(
         Names               inNames,
         std::size_t         inSize,
@@ -14,7 +13,8 @@ namespace Chicane
         const Constructors& inConstructors,
         const Methods&      inMethods,
         const Fields&       inFields,
-        String              inGroup
+        String              inGroup,
+        String              inDescription
     )
         : names(std::move(inNames)),
           size(inSize),
@@ -22,7 +22,8 @@ namespace Chicane
           constructors(std::move(inConstructors)),
           methods(std::move(inMethods)),
           fields(std::move(inFields)),
-          group(std::move(inGroup))
+          group(std::move(inGroup)),
+          description(std::move(inDescription))
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
@@ -32,7 +33,8 @@ namespace Chicane
           constructors({}),
           methods({}),
           fields({}),
-          group("")
+          group(String::empty()),
+          description(String::empty())
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const
@@ -77,7 +79,7 @@ namespace Chicane
 
     ReflectionFieldAccessor ReflectionTypeInfo::resolve(const String& inAccessor) const
     {
-        std::vector<String> parts = inAccessor.split('.');
+        std::vector<String> parts = inAccessor.split(OBJECT_SEPARATOR);
 
         if (parts.empty())
         {

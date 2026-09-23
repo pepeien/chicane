@@ -225,7 +225,14 @@ namespace Chicane
 
             if (inEvent.type == WindowEventType::MouseButtonUp || inEvent.type == WindowEventType::MouseMotion)
             {
-                if (broadcastEvent(inEvent))
+                if (inEvent.type == WindowEventType::MouseMotion && inEvent.data)
+                {
+                    const Input::MouseMotionEvent event =
+                        *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+                    syncHovered(resolveHit(getHitAt(event.location)));
+                }
+
+                if (broadcastEvent(inEvent) && inEvent.type != WindowEventType::MouseMotion)
                 {
                     return;
                 }
@@ -257,12 +264,6 @@ namespace Chicane
                 {
                     syncDragging(hit);
                 }
-            }
-
-            if (inEvent.type == WindowEventType::MouseMotion)
-            {
-                Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
-                syncHovered(resolveHit(getHitAt(event.location)));
             }
 
             if (inEvent.type == WindowEventType::MouseWheel)
@@ -314,6 +315,11 @@ namespace Chicane
         WindowCursor View::getPointer() const
         {
             return m_pointer.load(std::memory_order_relaxed);
+        }
+
+        Component* View::getHovered() const
+        {
+            return m_hovered;
         }
 
         WindowCursor View::resolvePointer() const

@@ -43,6 +43,7 @@ namespace Chicane
             // Window
             void post(const WindowEvent& inEvent);
             WindowCursor getPointer() const;
+            Component* getHovered() const;
             void clearInteraction(Component* inComponent);
 
             // Event

@@ -20,11 +20,21 @@ $attributesHeaderHeight: 1.65em;
         display: flex;
         flex-direction: row;
         gap: 0.4em;
-        overflow: visible;
 
         &__label {
             width: 40%;
-            max-width: 10em;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3em;
+
+            Text {
+                flex-grow: 1;
+            }
+
+            ToolTip {
+                max-width: 12em;
+            }
         }
 
         Input::Text, Input::Select, Input::Color, Editor::Vec3, Editor::AssetSelector {
@@ -33,7 +43,6 @@ $attributesHeaderHeight: 1.65em;
         }
 
         Input::Select {
-            overflow: visible;
 
             .input-select__control, .input-select__list {
                 background-color: $--light-grey;
@@ -57,7 +66,6 @@ $attributesHeaderHeight: 1.65em;
 
         Editor::AssetSelector, Input::Color {
             padding: 0.15em;
-            overflow: visible;
         }
 
         .input-color {
@@ -73,7 +81,6 @@ $attributesHeaderHeight: 1.65em;
                 padding: 0;
                 color: $--black;
                 font-size: 0.85em;
-                overflow: visible;
                 overflow-x: visible;
                 overflow-y: visible;
                 min-height: 1.4em;

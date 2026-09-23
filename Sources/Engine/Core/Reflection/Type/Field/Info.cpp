@@ -13,7 +13,8 @@ namespace Chicane
         bool                    bInIsIterable,
         TypeIndex               inElementIndex,
         ReflectionFieldIterable inIterable,
-        String                  inGroup
+        String                  inGroup,
+        String                  inDescription
     )
         : names(std::move(inNames)),
           typeName(std::move(inTypeName)),
@@ -25,7 +26,8 @@ namespace Chicane
           bIsIterable(std::move(bInIsIterable)),
           elementIndex(std::move(inElementIndex)),
           iterable(std::move(inIterable)),
-          group(std::move(inGroup))
+          group(std::move(inGroup)),
+          description(std::move(inDescription))
     {}
 
     ReflectionFieldInfo::ReflectionFieldInfo()
@@ -39,7 +41,8 @@ namespace Chicane
           bIsIterable(false),
           elementIndex(std::nullopt),
           iterable({}),
-          group("")
+          group(""),
+          description("")
     {}
 
     bool ReflectionFieldInfo::containsName(const String& inValue) const

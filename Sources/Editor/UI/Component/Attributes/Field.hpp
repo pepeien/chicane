@@ -30,6 +30,8 @@ namespace Editor
         CH_FIELD()
         Chicane::String group;
         CH_FIELD()
+        Chicane::String description;
+        CH_FIELD()
         AttributeFieldType type;
         CH_FIELD()
         Chicane::String kind;

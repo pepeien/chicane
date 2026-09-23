@@ -6,7 +6,6 @@ Editor::HeaderMenu {
 .header-menu {
     height: 100%;
     display: flex;
-    overflow: visible;
 
     &__control {
         height: 100%;
@@ -48,7 +47,6 @@ Editor::HeaderMenu {
         display: flex;
         flex-direction: column;
         gap: 0.25em;
-        overflow: visible;
         margin: calc(100% + 0.2em) 0 0 0;
         padding: 0.5em;
         width: 14em;

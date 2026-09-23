@@ -52,7 +52,6 @@
         &.--visible {
             height: auto;
             padding: 1em;
-            overflow: visible;
         }
     }
 }

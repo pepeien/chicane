@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Body/Shape.hpp"
@@ -17,20 +18,40 @@ namespace Chicane
     {
         using BodyPolygon = std::pair<Vertex::Indices, Vertex::List>;
 
+        CH_TYPE(Manual)
         struct CHICANE_KERB BodyCreateInfo
         {
         public:
-            BodyShape       shape         = BodyShape::Box;
-            MotionType      motion        = MotionType::Static;
-            Bounds3D        bounds        = {};
-            float           mass          = 30.0f;
-            float           massScale     = 1.0f;
-            float           gravityFactor = Gravity::FactorFull;
-            ObjectLayer     layer         = ObjectLayer::Auto;
-            CollisionPreset preset        = CollisionPreset::Custom;
-            CollisionGroup  group         = {};
-            bool            bSensor       = false;
-            BodyPolygon     polygon       = {}; // Only used if `shape` is `BodyShape::Polygon`
+            CH_FIELD()
+            BodyShape shape = BodyShape::Box;
+
+            CH_FIELD()
+            MotionType motion = MotionType::Static;
+
+            CH_FIELD()
+            float mass = 30.0f;
+
+            CH_FIELD()
+            float massScale = 1.0f;
+
+            CH_FIELD()
+            float gravityFactor = Gravity::FactorFull;
+
+            CH_FIELD()
+            ObjectLayer layer = ObjectLayer::Auto;
+
+            CH_FIELD()
+            CollisionPreset preset = CollisionPreset::Custom;
+
+            CH_FIELD()
+            bool bIsSensor = false;
+
+        public:
+            CollisionGroup group = {};
+
+            Bounds3D       bounds = {};
+
+            BodyPolygon    polygon = {}; // Only used if `shape` is `BodyShape::Polygon`
         };
     }
 }

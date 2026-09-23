@@ -365,6 +365,7 @@ namespace Chicane
             void addProjectedContent(const XmlNode& inSlot);
 
             void refreshClassName();
+            void refreshId();
             void refreshStyle();
             void refreshBounds();
             void resetFlowCursor();

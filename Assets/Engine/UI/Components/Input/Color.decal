@@ -2,7 +2,6 @@ Input::Color {
     width: 100%;
     min-height: 1.35em;
     position: relative;
-    overflow: visible;
 }
 
 .input-color {
@@ -10,7 +9,6 @@ Input::Color {
     height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: visible;
 
     &__swatch {
         width: 100%;
@@ -34,7 +32,6 @@ Input::Color {
         position: absolute;
         width: 16.5em;
         margin-top: 1.7em;
-        overflow: visible;
         z-index: 130;
         background-color: #323232;
         border: 1px solid #524e4e;
@@ -48,7 +45,6 @@ Input::Color {
         flex-direction: column;
         gap: 0.45em;
         background-color: #323232;
-        overflow: visible;
     }
 
     &__picker {
@@ -57,7 +53,6 @@ Input::Color {
         display: flex;
         flex-direction: row;
         gap: 0.55em;
-        overflow: visible;
     }
 
     &__wheel {
@@ -104,7 +99,6 @@ Input::Color {
         width: 0.85em;
         height: 11.4em;
         position: relative;
-        overflow: visible;
         border-radius: 2px;
         background-image: linear-gradient(to bottom, white, black);
         cursor: pointer;
@@ -160,7 +154,6 @@ Input::Color {
         display: flex;
         flex-direction: column;
         gap: 0.22em;
-        overflow: visible;
     }
 
     Input::ButtonSlider {
@@ -180,7 +173,6 @@ Input::Color {
         display: flex;
         flex-direction: row;
         gap: 0.4em;
-        overflow: visible;
     }
 
     &__hex-label {

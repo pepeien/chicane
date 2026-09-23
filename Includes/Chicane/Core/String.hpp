@@ -11,9 +11,11 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection.hpp"
 
 namespace Chicane
 {
+    CH_TYPE(Manual)
     struct CHICANE_CORE String
     {
     public:
@@ -147,9 +149,76 @@ namespace Chicane
         inline operator std::string() const { return m_value; }
 
     public:
+        CH_FUNCTION()
         bool isEmpty() const;
+
+        CH_FUNCTION()
         bool isNaN() const;
 
+        CH_FUNCTION()
+        bool contains(const String& inValue) const;
+
+        CH_FUNCTION()
+        bool contains(char inValue) const;
+
+        CH_FUNCTION()
+        bool startsWith(const String& inValue) const;
+
+        CH_FUNCTION()
+        bool startsWith(char inValue) const;
+
+        CH_FUNCTION()
+        bool endsWith(const String& inValue) const;
+
+        CH_FUNCTION()
+        bool endsWith(char inValue) const;
+
+        CH_FUNCTION()
+        String toUpper() const;
+
+        CH_FUNCTION()
+        String toLower() const;
+
+        CH_FUNCTION()
+        String substr(std::size_t inStart, std::size_t inEnd = npos) const;
+
+        CH_FUNCTION()
+        std::size_t firstOf(char inValue, std::size_t inLocation = 0L) const;
+
+        CH_FUNCTION()
+        std::size_t firstOf(const String& inValue, std::size_t inLocation = 0L) const;
+
+        CH_FUNCTION()
+        std::size_t lastOf(char inValue, std::size_t inLocation = npos) const;
+
+        CH_FUNCTION()
+        std::size_t lastOf(const String& inValue, std::size_t inLocation = npos) const;
+
+        CH_FUNCTION()
+        String filter(char inValue) const;
+
+        CH_FUNCTION()
+        String filter(const String& inValue) const;
+
+        CH_FUNCTION()
+        std::size_t find(char inValue) const;
+
+        CH_FUNCTION()
+        std::size_t find(const String& inValue) const;
+
+        CH_FUNCTION()
+        String getBetween(char inOpening, char inClosing) const;
+
+        CH_FUNCTION()
+        String getBetween(const String& inOpening, const String& inClosing) const;
+
+        CH_FUNCTION()
+        String trim() const;
+
+        CH_FUNCTION()
+        std::size_t size() const;
+
+    public:
         template <typename... Args>
         inline bool equals(Args... inDelimeters) const
         {
@@ -177,9 +246,6 @@ namespace Chicane
             return false;
         }
 
-        bool contains(const String& inValue) const;
-        bool contains(char inValue) const;
-
         template <typename... Args>
         inline bool startsWithChars(Args... inValues) const
         {
@@ -206,25 +272,15 @@ namespace Chicane
             return false;
         }
 
-        bool startsWith(const String& inValue) const;
-        bool startsWith(char inValue) const;
-
-        bool endsWith(const String& inValue) const;
-        bool endsWith(char inValue) const;
-
         bool toBool() const;
         const std::string& toStandard() const;
         const char* toChar() const;
 
         int compare(const String& inValue) const;
 
-        String toUpper() const;
-        String toLower() const;
         std::vector<char32_t> toUnicode() const;
 
         char at(std::size_t inIndex) const;
-
-        String substr(std::size_t inStart, std::size_t inEnd = npos) const;
 
         template <typename... Args>
         std::size_t firstOfChars(Args... inValues)
@@ -248,18 +304,6 @@ namespace Chicane
 
             return result;
         }
-
-        std::size_t firstOf(char inValue, std::size_t inLocation = 0L) const;
-        std::size_t firstOf(const String& inValue, std::size_t inLocation = 0L) const;
-
-        std::size_t lastOf(char inValue, std::size_t inLocation = npos) const;
-        std::size_t lastOf(const String& inValue, std::size_t inLocation = npos) const;
-
-        String filter(char inValue) const;
-        String filter(const String& inValue) const;
-
-        std::size_t find(char inValue) const;
-        std::size_t find(const String& inValue) const;
 
         template <typename... Args>
         inline std::vector<String> split(Args... inDelimeters) const
@@ -308,13 +352,6 @@ namespace Chicane
 
             return result;
         }
-
-        String getBetween(char inOpening, char inClosing) const;
-        String getBetween(const String& inOpening, const String& inClosing) const;
-
-        String trim() const;
-
-        std::size_t size() const;
 
         std::string::iterator begin();
         std::string::const_iterator begin() const;

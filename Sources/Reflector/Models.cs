@@ -18,7 +18,8 @@ namespace Reflector
         bool IsIterable,
         string ElementName,
         bool IsElementPointer,
-        string Group
+        string Group,
+        string Description
     )
     {
         public string Name => Names.FirstOrDefault() ?? "";
@@ -29,7 +30,8 @@ namespace Reflector
         List<ConstructorModel> Constructors,
         List<FunctionModel> Functions,
         List<FieldModel> Fields,
-        string Group
+        string Group,
+        string Description
     )
     {
         public bool Resolved { get; set; } = false;

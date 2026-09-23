@@ -9,6 +9,7 @@
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Reflection/Enum/Registry.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
+#include "Chicane/Core/Reflection/Type/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
@@ -120,15 +121,32 @@ namespace Chicane
             return inObject.applySerializedField(inName, inValue);
         }
 
-        static void writeFields(XmlNode& outNode, const Object& inObject)
+        static bool isLeafField(const ReflectionFieldAccessor& inAccessor)
         {
-            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
-            if (!type)
+            return findEnum(inAccessor.typeName) || inAccessor.isType<FileSystem::Path>() ||
+                   inAccessor.isType<String>() || inAccessor.isType<Vec3>() || inAccessor.isType<Rotator>() ||
+                   inAccessor.isType<bool>() || inAccessor.isType<float>() || inAccessor.isType<int>();
+        }
+
+        static const ReflectionTypeInfo* nestedFieldType(const ReflectionFieldInfo& inField)
+        {
+            if (!inField.typeIndex.has_value())
             {
-                return;
+                return nullptr;
             }
 
-            for (const ReflectionFieldInfo& field : type->fields)
+            return ReflectionTypeRegistry::getInstance().find(inField.typeIndex.value());
+        }
+
+        static void writeFields(
+            XmlNode&                   outNode,
+            const Object&              inObject,
+            const ReflectionTypeInfo&  inRoot,
+            const ReflectionTypeInfo&  inType,
+            const String&              inPrefix
+        )
+        {
+            for (const ReflectionFieldInfo& field : inType.fields)
             {
                 if (field.names.empty() || field.bIsPointer || field.bIsIterable)
                 {
@@ -136,14 +154,25 @@ namespace Chicane
                 }
 
                 const String name = field.names.front();
-                if (isTransformAttribute(name))
+                if (inPrefix.isEmpty() && isTransformAttribute(name))
                 {
                     continue;
                 }
 
-                const ReflectionFieldAccessor accessor = type->resolve(name);
+                const String                  path     = inPrefix.isEmpty() ? name : inPrefix + "." + name;
+                const ReflectionFieldAccessor accessor = inRoot.resolve(path);
                 if (!accessor.isValid())
                 {
+                    continue;
+                }
+
+                if (!isLeafField(accessor))
+                {
+                    if (const ReflectionTypeInfo* nested = nestedFieldType(field))
+                    {
+                        writeFields(outNode, inObject, inRoot, *nested, path);
+                    }
+
                     continue;
                 }
 
@@ -154,8 +183,8 @@ namespace Chicane
                 }
                 else if (accessor.isType<FileSystem::Path>())
                 {
-                    const FileSystem::Path* path = accessor.getValue<FileSystem::Path>(&inObject);
-                    value                        = path ? path->toString() : String::empty();
+                    const FileSystem::Path* filePath = accessor.getValue<FileSystem::Path>(&inObject);
+                    value                            = filePath ? filePath->toString() : String::empty();
                 }
                 else if (accessor.isType<Vec3>())
                 {
@@ -172,8 +201,19 @@ namespace Chicane
                     continue;
                 }
 
-                Xml::addAttribute(outNode, name, value);
+                Xml::addAttribute(outNode, path, value);
             }
+        }
+
+        static void writeFields(XmlNode& outNode, const Object& inObject)
+        {
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
+            if (!type)
+            {
+                return;
+            }
+
+            writeFields(outNode, inObject, *type, *type, {});
         }
 
         static void writeObject(XmlNode& outParent, const Object& inObject)

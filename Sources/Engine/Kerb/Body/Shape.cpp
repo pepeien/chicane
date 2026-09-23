@@ -1,4 +1,5 @@
 #include "Chicane/Kerb/Body/Shape.hpp"
+#include "Chicane/Kerb/Body/Shape.reflected.hpp"
 
 namespace Chicane
 {

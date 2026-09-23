@@ -6,13 +6,13 @@ namespace Chicane
 {
     ALight::ALight()
         : Actor(),
-          m_light(nullptr)
+          light(nullptr)
     {}
 
     void ALight::onLoad()
     {
-        m_light = getScene()->createComponent<CLight>();
-        m_light->attachTo(this);
-        m_light->activate();
+        light = getScene()->createComponent<CLight>();
+        light->attachTo(this);
+        light->activate();
     }
 }

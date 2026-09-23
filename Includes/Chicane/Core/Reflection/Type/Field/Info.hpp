@@ -29,7 +29,8 @@ namespace Chicane
             bool                    bInIsIterable,
             TypeIndex               inElementIndex,
             ReflectionFieldIterable inIterable,
-            String                  inGroup = {}
+            String                  inGroup = {},
+            String                  inDescription = {}
         );
         ReflectionFieldInfo();
 
@@ -48,5 +49,6 @@ namespace Chicane
         TypeIndex               elementIndex;
         ReflectionFieldIterable iterable;
         String                  group;
+        String                  description;
     };
 }

@@ -3,6 +3,7 @@
 #include <Chicane/Box/Asset.hpp>
 #include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Effect.hpp>
+#include <Chicane/Box/Font.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
 #include <Chicane/Box/Sky.hpp>
@@ -18,6 +19,35 @@
 
 namespace Editor
 {
+    template <typename T>
+    static Chicane::FileSystem::Path bakeSource(
+        const Chicane::FileSystem::Path& inSource,
+        const Chicane::String&           inExtension
+    )
+    {
+        const Chicane::FileSystem::Path output = inSource.withExtension(inExtension);
+
+        T asset(output);
+        asset.setId(output.stem().toString());
+        asset.setData(inSource);
+        asset.saveXML();
+
+        return output;
+    }
+
+    static bool hasRawExtension(Chicane::Box::AssetType inType, const Chicane::String& inExtension)
+    {
+        for (const Chicane::FileSystem::Path& extension : Chicane::Box::getTypeRawExtensions(inType))
+        {
+            if (inExtension.equals(extension.toString()))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     AssetManager::AssetManager(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
           bHasAsset(false),
@@ -51,32 +81,32 @@ namespace Editor
 
     void AssetManager::onCreateTexture()
     {
-        createAsset(Chicane::Box::AssetType::Texture, Chicane::Box::Texture::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Texture, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
     }
 
     void AssetManager::onCreateMesh()
     {
-        createAsset(Chicane::Box::AssetType::Mesh, Chicane::Box::Mesh::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Mesh, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Mesh));
     }
 
     void AssetManager::onCreateSky()
     {
-        createAsset(Chicane::Box::AssetType::Sky, Chicane::Box::Sky::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Sky, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sky));
     }
 
     void AssetManager::onCreateModel()
     {
-        createAsset(Chicane::Box::AssetType::Model, Chicane::Box::Model::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Model, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model));
     }
 
     void AssetManager::onCreateSound()
     {
-        createAsset(Chicane::Box::AssetType::Sound, Chicane::Box::Sound::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Sound, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sound));
     }
 
     void AssetManager::onCreateEffect()
     {
-        createAsset(Chicane::Box::AssetType::Effect, Chicane::Box::Effect::EXTENSION);
+        createAsset(Chicane::Box::AssetType::Effect, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Effect));
     }
 
     void AssetManager::onSave()
@@ -116,11 +146,17 @@ namespace Editor
         Chicane::FileSystem::FileDialog dialog;
         dialog.bCanSelectMany = false;
         dialog.title          = "Import source";
-        dialog.addFilter("Images", {".png", ".jpg", ".jpeg", ".tga", ".bmp", ".hdr"});
-        dialog.addFilter("Textures", {Chicane::Box::Texture::EXTENSION});
-        dialog.addFilter("Meshes", {Chicane::Box::Mesh::EXTENSION});
-        dialog.addFilter("Models", {Chicane::Box::Model::EXTENSION});
-        dialog.addFilter("Skies", {Chicane::Box::Sky::EXTENSION});
+        dialog.addFilter("Images", Chicane::Box::getTypeRawExtensions(Chicane::Box::AssetType::Texture));
+        dialog.addFilter("Models", Chicane::Box::getTypeRawExtensions(Chicane::Box::AssetType::Model));
+        dialog.addFilter("Audio", Chicane::Box::getTypeRawExtensions(Chicane::Box::AssetType::Sound));
+        dialog.addFilter("Fonts", Chicane::Box::getTypeRawExtensions(Chicane::Box::AssetType::Font));
+        dialog.addFilter("Textures", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture)});
+        dialog.addFilter("Meshes", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Mesh)});
+        dialog.addFilter("Model Assets", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model)});
+        dialog.addFilter("Skies", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sky)});
+        dialog.addFilter("Sounds", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sound)});
+        dialog.addFilter("Font Assets", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Font)});
+        dialog.addFilter("Effects", {Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Effect)});
 
         dialog.open(
             [this](const Chicane::FileSystem::Item::List& inFiles)
@@ -140,11 +176,37 @@ namespace Editor
                         return;
                     }
 
-                    Chicane::FileSystem::Path output = item.path.withExtension(Chicane::Box::Texture::EXTENSION);
-                    Chicane::Box::Texture     texture(output);
-                    texture.setId(output.stem().toString());
-                    texture.setData(item.path);
-                    texture.saveXML();
+                    const Chicane::String     extension = item.path.extension().toString().toLower();
+                    Chicane::FileSystem::Path output;
+
+                    if (hasRawExtension(Chicane::Box::AssetType::Model, extension))
+                    {
+                        output = bakeSource<Chicane::Box::Model>(
+                            item.path,
+                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model)
+                        );
+                    }
+                    else if (hasRawExtension(Chicane::Box::AssetType::Sound, extension))
+                    {
+                        output = bakeSource<Chicane::Box::Sound>(
+                            item.path,
+                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sound)
+                        );
+                    }
+                    else if (hasRawExtension(Chicane::Box::AssetType::Font, extension))
+                    {
+                        output = bakeSource<Chicane::Box::Font>(
+                            item.path,
+                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Font)
+                        );
+                    }
+                    else
+                    {
+                        output = bakeSource<Chicane::Box::Texture>(
+                            item.path,
+                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture)
+                        );
+                    }
 
                     assetPath = output.toString();
                     refreshFromExplorer();

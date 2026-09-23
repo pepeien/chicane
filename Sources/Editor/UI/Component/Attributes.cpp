@@ -36,4 +36,20 @@ namespace Editor
     {
         Prop::invoke(this, ON_ATTRIBUTE_COMMIT_ATTRIBUTE, inName, inValue);
     }
+
+    Chicane::String Attributes::getFieldDescription(Chicane::String inName)
+    {
+        for (const AttributeGroup& group : attributeGroups)
+        {
+            for (const AttributeField& field : group.fields)
+            {
+                if (field.name.equals(inName))
+                {
+                    return field.description;
+                }
+            }
+        }
+
+        return Chicane::String::empty();
+    }
 }

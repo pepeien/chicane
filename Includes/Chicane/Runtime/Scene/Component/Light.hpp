@@ -45,25 +45,25 @@ namespace Chicane
         Renderer::Light getLight() const;
 
     public:
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         LightType type = LightType::Directional;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         Vec3 color = Vec3(1.0f);
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         float intensity = 1.0f;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         float range = 50.0f;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         float innerAngle = 25.0f;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         float outerAngle = 40.0f;
 
-        CH_FIELD()
+        CH_FIELD(Group = "Settings")
         bool castShadows = false;
     };
 }

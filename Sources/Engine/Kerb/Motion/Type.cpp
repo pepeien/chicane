@@ -1,4 +1,5 @@
 #include "Chicane/Kerb/Motion/Type.hpp"
+#include "Chicane/Kerb/Motion/Type.reflected.hpp"
 
 namespace Chicane
 {

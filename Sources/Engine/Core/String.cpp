@@ -1,4 +1,4 @@
-#include "Chicane/Core/String.hpp"
+#include "Chicane/Core/String.reflected.hpp"
 
 #include <algorithm>
 
@@ -105,26 +105,6 @@ namespace Chicane
         return m_value.at(size() - 1) == inValue;
     }
 
-    bool String::toBool() const
-    {
-        return equals("true") || equals("1");
-    }
-
-    const std::string& String::toStandard() const
-    {
-        return m_value;
-    }
-
-    const char* String::toChar() const
-    {
-        return m_value.c_str();
-    }
-
-    int String::compare(const String& inValue) const
-    {
-        return std::strcmp(toChar(), inValue.toChar());
-    }
-
     String String::toUpper() const
     {
         std::string result = m_value;
@@ -139,105 +119,6 @@ namespace Chicane
         std::transform(result.begin(), result.end(), result.begin(), ::tolower);
 
         return result;
-    }
-
-    std::vector<char32_t> String::toUnicode() const
-    {
-        std::vector<char32_t> result;
-
-        for (size_t i = 0; i < size();)
-        {
-            if (at(i) == '&' && i + 3 < size() && at(i + 1) == '#')
-            {
-                size_t j      = i + 2;
-                bool   bIsHex = false;
-
-                if (j < size() && (at(j) == 'x' || at(j) == 'X'))
-                {
-                    bIsHex = true;
-                    j++;
-                }
-
-                size_t start = j;
-
-                while (j < size() && at(j) != ';')
-                {
-                    j++;
-                }
-
-                if (j < size() && at(j) == ';')
-                {
-                    try
-                    {
-                        std::string num       = toStandard().substr(start, j - start);
-                        char32_t    codepoint = (char32_t)std::stoul(num, nullptr, bIsHex ? 16 : 10);
-
-                        result.push_back(codepoint);
-
-                        i = j + 1;
-
-                        continue;
-                    }
-                    catch (...)
-                    {
-                        // fallthrough to UTF-8 decode
-                    }
-                }
-            }
-
-            unsigned char raw   = (unsigned char)at(i);
-            char32_t      code  = 0;
-            size_t        extra = 0;
-
-            if (raw <= 0x7F)
-            {
-                code  = raw;
-                extra = 0;
-            }
-            else if ((raw & 0xE0) == 0xC0)
-            {
-                code  = raw & 0x1F;
-                extra = 1;
-            }
-            else if ((raw & 0xF0) == 0xE0)
-            {
-                code  = raw & 0x0F;
-                extra = 2;
-            }
-            else if ((raw & 0xF8) == 0xF0)
-            {
-                code  = raw & 0x07;
-                extra = 3;
-            }
-            else
-            {
-                i++;
-
-                continue;
-            }
-
-            if (i + extra >= size())
-            {
-                break;
-            }
-
-            for (size_t k = 1; k <= extra; k++)
-            {
-                code <<= 6;
-                code |= (at(i + k) & 0x3F);
-            }
-
-            result.push_back(code);
-
-            i += extra + 1;
-        }
-
-        return result;
-    }
-
-    char String::at(std::size_t inIndex) const
-    {
-        return m_value.at(inIndex);
     }
 
     String String::substr(std::size_t inStart, std::size_t inEnd) const
@@ -337,6 +218,125 @@ namespace Chicane
     std::size_t String::size() const
     {
         return m_value.size();
+    }
+
+    bool String::toBool() const
+    {
+        return equals("true") || equals("1");
+    }
+
+    const std::string& String::toStandard() const
+    {
+        return m_value;
+    }
+
+    const char* String::toChar() const
+    {
+        return m_value.c_str();
+    }
+
+    int String::compare(const String& inValue) const
+    {
+        return std::strcmp(toChar(), inValue.toChar());
+    }
+
+    std::vector<char32_t> String::toUnicode() const
+    {
+        std::vector<char32_t> result;
+
+        for (size_t i = 0; i < size();)
+        {
+            if (at(i) == '&' && i + 3 < size() && at(i + 1) == '#')
+            {
+                size_t j      = i + 2;
+                bool   bIsHex = false;
+
+                if (j < size() && (at(j) == 'x' || at(j) == 'X'))
+                {
+                    bIsHex = true;
+                    j++;
+                }
+
+                size_t start = j;
+
+                while (j < size() && at(j) != ';')
+                {
+                    j++;
+                }
+
+                if (j < size() && at(j) == ';')
+                {
+                    try
+                    {
+                        std::string num       = toStandard().substr(start, j - start);
+                        char32_t    codepoint = (char32_t)std::stoul(num, nullptr, bIsHex ? 16 : 10);
+
+                        result.push_back(codepoint);
+
+                        i = j + 1;
+
+                        continue;
+                    }
+                    catch (...)
+                    {
+                        // fallthrough to UTF-8 decode
+                    }
+                }
+            }
+
+            unsigned char raw   = (unsigned char)at(i);
+            char32_t      code  = 0;
+            size_t        extra = 0;
+
+            if (raw <= 0x7F)
+            {
+                code  = raw;
+                extra = 0;
+            }
+            else if ((raw & 0xE0) == 0xC0)
+            {
+                code  = raw & 0x1F;
+                extra = 1;
+            }
+            else if ((raw & 0xF0) == 0xE0)
+            {
+                code  = raw & 0x0F;
+                extra = 2;
+            }
+            else if ((raw & 0xF8) == 0xF0)
+            {
+                code  = raw & 0x07;
+                extra = 3;
+            }
+            else
+            {
+                i++;
+
+                continue;
+            }
+
+            if (i + extra >= size())
+            {
+                break;
+            }
+
+            for (size_t k = 1; k <= extra; k++)
+            {
+                code <<= 6;
+                code |= (at(i + k) & 0x3F);
+            }
+
+            result.push_back(code);
+
+            i += extra + 1;
+        }
+
+        return result;
+    }
+
+    char String::at(std::size_t inIndex) const
+    {
+        return m_value.at(inIndex);
     }
 
     std::string::iterator String::begin()

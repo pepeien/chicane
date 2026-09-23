@@ -36,6 +36,7 @@ namespace Chicane
         void onDeactivation() override;
         void onAttachment(Object* inParent) override;
         void onRefresh() override;
+        void onPropertyEdited(const String& inName) override;
 
     public:
         bool hasBody() const;
@@ -78,14 +79,22 @@ namespace Chicane
         void syncTickState();
         void syncCollisionSettings();
         void updateCollision();
-        Transform makeActorTransform(const Vec3& inLocation) const;
+        void captureSyncedTransform();
+        Vec3 colliderCenter() const;
+        void applyBodyTransform();
+        Transform makeBodyTransform(const Vec3& inLocation) const;
 
-    protected:
-        Kerb::Body           m_body;
-        Kerb::BodyCreateInfo m_bodySettings;
-        Vec3                 m_syncedScale;
-        Vec3                 m_syncedLocalSize;
-        Vec3                 m_actorToBody;
-        bool                 m_bSyncingBody;
+    public:
+        CH_FIELD(Group = "Body")
+        Kerb::BodyCreateInfo body;
+
+    public:
+        Kerb::Body m_body;
+        Vec3       m_syncedScale;
+        Vec3       m_syncedLocalSize;
+        Vec3       m_syncedRelativeTranslation;
+        Vec3       m_syncedRelativeRotation;
+        Vec3       m_actorToBody;
+        bool       m_bIsSyncingBody;
     };
 }

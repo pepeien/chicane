@@ -312,7 +312,7 @@ namespace Chicane
         }
 
         const ReflectionFieldAccessor accessor = type->resolve(inName);
-        if (!accessor.isValid() || accessor.bNeedsDeref || accessor.bIsIterable)
+        if (!accessor.isValid() || accessor.bIsIterable || !accessor.address(this))
         {
             return false;
         }

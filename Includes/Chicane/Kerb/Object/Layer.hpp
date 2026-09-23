@@ -2,14 +2,16 @@
 
 #include <cstdint>
 
+#include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Motion/Type.hpp"
-#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     namespace Kerb
     {
+        CH_ENUM()
         enum class ObjectLayer : std::uint8_t
         {
             NonMoving = 0, // WorldStatic
@@ -22,7 +24,7 @@ namespace Chicane
             NoCollision,
 
             Count,
-            Auto = 255 // Resolve from motion / collision preset at create time
+            Auto = 255 // Resolve at spawn time
         };
 
         CHICANE_KERB ObjectLayer resolveObjectLayer(ObjectLayer inLayer, MotionType inMotion);

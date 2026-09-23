@@ -2,9 +2,10 @@
 
 #include "Chicane/Core/Input/Mouse/Button.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
-#include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Window/Event/Type.hpp"
 #include "Chicane/Core/Xml.hpp"
+
+#include "Chicane/Grid/Component/View.hpp"
 
 namespace Chicane
 {
@@ -50,7 +51,7 @@ namespace Chicane
 
         bool ToolTip::escapesOverflow() const
         {
-            return true;
+            return isVisible;
         }
 
         bool ToolTip::onEvent(const WindowEvent& inEvent)
@@ -132,13 +133,15 @@ namespace Chicane
 
         void ToolTip::refreshAttributes()
         {
-            const String nextAnchor = parseText(getAttribute(ANCHOR_ID_ATTRIBUTE_NAME)).trim();
+            const Component* context = hasParent() ? getParent() : this;
+
+            const String nextAnchor = context->parseText(getAttribute(ANCHOR_ID_ATTRIBUTE_NAME)).trim();
             if (!nextAnchor.equals(anchorId))
             {
                 anchorId = nextAnchor;
             }
 
-            const String nextTitle = parseText(getAttribute(TITLE_ATTRIBUTE_NAME)).trim();
+            const String nextTitle = context->parseText(getAttribute(TITLE_ATTRIBUTE_NAME)).trim();
             if (!nextTitle.equals(title))
             {
                 title = nextTitle;
@@ -150,7 +153,7 @@ namespace Chicane
 
         void ToolTip::refreshVisibility()
         {
-            bool bReveal = isVisible;
+            bool bReveal = false;
 
             if (isPinned())
             {
@@ -160,10 +163,9 @@ namespace Chicane
 
                 bReveal = Xml::parseBool(parsed, false);
             }
-            else
+            else if (hasTitle || hasContent)
             {
-                Component* anchor = findAnchor();
-                bReveal           = isAnchorHovered(anchor) || (isVisible && isHovered());
+                bReveal = isAnchorHovered(findAnchor()) || (isVisible && isHovered());
             }
 
             if (isVisible == bReveal)
@@ -205,30 +207,54 @@ namespace Chicane
 
         Component* ToolTip::findAnchor() const
         {
-            if (anchorId.isEmpty())
+            if (!anchorId.isEmpty())
             {
-                return nullptr;
-            }
-
-            for (Component* origin = getParent(); origin != nullptr; origin = origin->getParent())
-            {
-                if (Component* found = findAnchorIn(origin, anchorId))
+                for (Component* origin = getParent(); origin != nullptr; origin = origin->getParent())
                 {
-                    return found;
-                }
+                    if (Component* found = findAnchorIn(origin, anchorId))
+                    {
+                        return found;
+                    }
 
-                if (origin->isRoot())
-                {
-                    break;
+                    if (origin->isRoot())
+                    {
+                        break;
+                    }
                 }
             }
 
-            return nullptr;
+            return hasParent() ? getParent() : nullptr;
         }
 
         bool ToolTip::isAnchorHovered(const Component* inAnchor) const
         {
-            return inAnchor && inAnchor->isHovered();
+            if (!inAnchor)
+            {
+                return false;
+            }
+
+            if (inAnchor->isHovered())
+            {
+                return true;
+            }
+
+            const Component* root = getRoot();
+            const View*      view = dynamic_cast<const View*>(root ? root : this);
+            if (!view)
+            {
+                return false;
+            }
+
+            for (Component* node = view->getHovered(); node != nullptr;
+                 node            = node->isRoot() ? nullptr : node->getParent())
+            {
+                if (node == inAnchor)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

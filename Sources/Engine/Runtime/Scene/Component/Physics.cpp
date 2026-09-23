@@ -2,6 +2,7 @@
 
 #include <cmath>
 
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Kerb/Engine.hpp"
 #include "Chicane/Kerb/Collision/Preset/Info.hpp"
 #include "Chicane/Renderer/Debug.hpp"
@@ -28,14 +29,30 @@ namespace Chicane
                std::abs(inLeft.z - inRight.z) > 0.01f;
     }
 
+    static Bounds3D scaledWorldBounds(const Bounds3D& inBounds, const Vec3& inCenter, const Vec3& inScale)
+    {
+        const Vec3 half = inBounds.getSize() * inScale * 0.5f;
+
+        Vertex::List corners(2);
+        corners[0].position = inCenter - half;
+        corners[1].position = inCenter + half;
+
+        Bounds3D bounds(corners);
+        bounds.transform(Mat4(1.0f));
+
+        return bounds;
+    }
+
     CPhysics::CPhysics()
         : Component(),
+          body({}),
           m_body(Kerb::Body::invalid()),
-          m_bodySettings({}),
           m_syncedScale(Vec3::One()),
           m_syncedLocalSize(Vec3::Zero()),
+          m_syncedRelativeTranslation(Vec3::Zero()),
+          m_syncedRelativeRotation(Vec3::Zero()),
           m_actorToBody(Vec3::Zero()),
-          m_bSyncingBody(false)
+          m_bIsSyncingBody(false)
     {}
 
     CPhysics::~CPhysics()
@@ -60,24 +77,22 @@ namespace Chicane
             return;
         }
 
-        Kerb::Engine& physics = Kerb::Engine::getInstance();
-
-        if (m_bodySettings.motion == Kerb::MotionType::Kinematic)
+        if (body.motion == Kerb::MotionType::Kinematic)
         {
-            physics.setBodyTransform(m_body, makeActorTransform(m_parent->getAbsoluteTranslation()));
+            applyBodyTransform();
             updateCollision();
 
             return;
         }
 
-        if (m_bodySettings.motion != Kerb::MotionType::Dynamic)
+        if (body.motion != Kerb::MotionType::Dynamic)
         {
             return;
         }
 
-        const Transform transform = physics.getBodyTransform(m_body, true);
+        const Transform transform = Kerb::Engine::getInstance().getBodyTransform(m_body, true);
         const Vec3      location  = transform.getTranslation() - m_actorToBody;
-        if (changed(location, m_parent->getAbsoluteTranslation()))
+        if (changed(location, m_parent->getTranslation()))
         {
             m_parent->setAbsoluteTranslation(location);
         }
@@ -120,9 +135,69 @@ namespace Chicane
         syncBody();
     }
 
+    void CPhysics::onPropertyEdited(const String& inName)
+    {
+        const std::vector<String> parts = inName.split('.');
+        const String              name  = parts.empty() ? inName : parts.back();
+
+        if (name.equals("shape"))
+        {
+            setShape(body.shape);
+
+            return;
+        }
+
+        if (name.equals("motion"))
+        {
+            setMotion(body.motion);
+
+            return;
+        }
+
+        if (name.equals("mass"))
+        {
+            setMass(body.mass);
+
+            return;
+        }
+
+        if (name.equals("massScale"))
+        {
+            setMassScale(body.massScale);
+
+            return;
+        }
+
+        if (name.equals("gravityFactor"))
+        {
+            setGravityFactor(body.gravityFactor);
+
+            return;
+        }
+
+        if (name.equals("layer"))
+        {
+            setObjectLayer(body.layer);
+
+            return;
+        }
+
+        if (name.equals("preset"))
+        {
+            setCollisionPreset(body.preset);
+
+            return;
+        }
+
+        if (name.equals("bSensor"))
+        {
+            setSensor(body.bIsSensor);
+        }
+    }
+
     Kerb::BodyShape CPhysics::getShape() const
     {
-        return m_bodySettings.shape;
+        return body.shape;
     }
 
     void CPhysics::appendDebugWireframe(Vertex::List& outVertices, const Vec4& inColor) const
@@ -135,9 +210,9 @@ namespace Chicane
         const Transform  transform = Kerb::Engine::getInstance().getBodyTransform(m_body);
         const QuatFloat& rotation  = transform.getRotation().get();
         const Vec3       center    = transform.getTranslation();
-        const Vec3       size      = m_bodySettings.bounds.getSize();
+        const Vec3       size      = body.bounds.getSize();
 
-        if (m_bodySettings.shape == Kerb::BodyShape::Capsule)
+        if (body.shape == Kerb::BodyShape::Capsule)
         {
             const float radius     = std::max(0.05f, std::min(size.x, size.y) * 0.5f);
             const float halfHeight = std::max(0.0f, size.z * 0.5f - radius);
@@ -147,7 +222,7 @@ namespace Chicane
             return;
         }
 
-        if (m_bodySettings.shape == Kerb::BodyShape::Polygon)
+        if (body.shape == Kerb::BodyShape::Polygon)
         {
             const Kerb::BodyPolygon polygon = Kerb::Engine::getInstance().getBodyPolygon(m_body);
             if (polygon.first.size() < 3 || polygon.second.empty())
@@ -188,18 +263,28 @@ namespace Chicane
 
     void CPhysics::setShape(Kerb::BodyShape inType)
     {
-        m_bodySettings.shape = inType;
+        body.shape = inType;
+
+        if (hasBody())
+        {
+            rebuildBody();
+        }
     }
 
     void CPhysics::setShape(const Kerb::BodyPolygon& inPolygon)
     {
-        m_bodySettings.shape   = Kerb::BodyShape::Polygon;
-        m_bodySettings.polygon = inPolygon;
+        body.shape   = Kerb::BodyShape::Polygon;
+        body.polygon = inPolygon;
+
+        if (hasBody())
+        {
+            rebuildBody();
+        }
     }
 
     void CPhysics::setMotion(Kerb::MotionType inType)
     {
-        m_bodySettings.motion = inType;
+        body.motion = inType;
 
         if (hasBody())
         {
@@ -213,31 +298,31 @@ namespace Chicane
 
     void CPhysics::setMass(float inMass)
     {
-        m_bodySettings.mass = inMass;
+        body.mass = inMass;
 
         if (hasBody())
         {
-            Kerb::Engine::getInstance().setBodyMass(m_body, m_bodySettings.mass, m_bodySettings.massScale);
+            Kerb::Engine::getInstance().setBodyMass(m_body, body.mass, body.massScale);
         }
     }
 
     void CPhysics::setMassScale(float inScale)
     {
-        m_bodySettings.massScale = inScale;
+        body.massScale = inScale;
 
         if (hasBody())
         {
-            Kerb::Engine::getInstance().setBodyMass(m_body, m_bodySettings.mass, m_bodySettings.massScale);
+            Kerb::Engine::getInstance().setBodyMass(m_body, body.mass, body.massScale);
         }
     }
 
     void CPhysics::setGravityFactor(float inFactor)
     {
-        m_bodySettings.gravityFactor = inFactor;
+        body.gravityFactor = inFactor;
 
         if (hasBody())
         {
-            Kerb::Engine::getInstance().setBodyGravityFactor(m_body, m_bodySettings.gravityFactor);
+            Kerb::Engine::getInstance().setBodyGravityFactor(m_body, body.gravityFactor);
         }
     }
 
@@ -248,13 +333,13 @@ namespace Chicane
             return Kerb::Engine::getInstance().getBodyGravityFactor(m_body);
         }
 
-        return m_bodySettings.gravityFactor;
+        return body.gravityFactor;
     }
 
     void CPhysics::setObjectLayer(Kerb::ObjectLayer inLayer)
     {
-        m_bodySettings.layer  = inLayer;
-        m_bodySettings.preset = Kerb::CollisionPreset::Custom;
+        body.layer  = inLayer;
+        body.preset = Kerb::CollisionPreset::Custom;
 
         if (hasBody())
         {
@@ -264,14 +349,14 @@ namespace Chicane
 
     void CPhysics::setCollisionPreset(Kerb::CollisionPreset inPreset)
     {
-        const bool bWasSensor = m_bodySettings.bSensor;
-        m_bodySettings.preset = inPreset;
+        const bool bWasSensor = body.bIsSensor;
+        body.preset           = inPreset;
 
         if (inPreset != Kerb::CollisionPreset::Custom)
         {
-            const Kerb::CollisionPresetInfo info = Kerb::resolveCollisionPreset(inPreset, m_bodySettings.motion);
-            m_bodySettings.layer                 = info.layer;
-            m_bodySettings.bSensor               = info.bIsSensor;
+            const Kerb::CollisionPresetInfo info = Kerb::resolveCollisionPreset(inPreset, body.motion);
+            body.layer                           = info.layer;
+            body.bIsSensor                       = info.bIsSensor;
         }
 
         if (!hasBody())
@@ -279,7 +364,7 @@ namespace Chicane
             return;
         }
 
-        if (bWasSensor != m_bodySettings.bSensor)
+        if (bWasSensor != body.bIsSensor)
         {
             rebuildBody();
 
@@ -291,7 +376,7 @@ namespace Chicane
 
     void CPhysics::setCollisionGroup(const Kerb::CollisionGroup& inGroup)
     {
-        m_bodySettings.group = inGroup;
+        body.group = inGroup;
 
         if (hasBody())
         {
@@ -301,12 +386,12 @@ namespace Chicane
 
     void CPhysics::setSensor(bool bInSensor)
     {
-        if (m_bodySettings.bSensor == bInSensor)
+        if (body.bIsSensor == bInSensor)
         {
             return;
         }
 
-        m_bodySettings.bSensor = bInSensor;
+        body.bIsSensor = bInSensor;
 
         if (hasBody())
         {
@@ -321,7 +406,7 @@ namespace Chicane
             return;
         }
 
-        Kerb::Engine::getInstance().setBodyTransform(m_body, makeActorTransform(inLocation));
+        Kerb::Engine::getInstance().setBodyTransform(m_body, makeBodyTransform(inLocation));
     }
 
     void CPhysics::moveBy(const Vec3& inOffset)
@@ -417,11 +502,11 @@ namespace Chicane
             return;
         }
 
-        m_bodySettings.bounds = m_parent->getBounds();
-        m_syncedScale         = m_parent->getAbsoluteScale();
-        m_syncedLocalSize     = localBoundsSize(m_parent->getBounds());
-        m_actorToBody         = m_parent->getBounds().getCenter() - m_parent->getAbsoluteTranslation();
-        m_body                = Kerb::Engine::getInstance().createBody(m_bodySettings);
+        captureSyncedTransform();
+
+        body.bounds   = scaledWorldBounds(m_parent->getBounds(), colliderCenter(), getRelativeScale());
+        m_actorToBody = colliderCenter() - m_parent->getTranslation();
+        m_body        = Kerb::Engine::getInstance().createBody(body);
 
         if (!hasBody())
         {
@@ -435,6 +520,7 @@ namespace Chicane
             Kerb::Engine::getInstance().activateBody(m_body);
         }
 
+        applyBodyTransform();
         syncTickState();
     }
 
@@ -465,31 +551,35 @@ namespace Chicane
 
     void CPhysics::syncBody()
     {
-        if (m_bSyncingBody || !isAttached() || !hasBody() || !m_parent)
+        if (m_bIsSyncingBody || !isAttached() || !hasBody() || !m_parent)
         {
             return;
         }
 
-        const Vec3 scale     = m_parent->getAbsoluteScale();
+        const Vec3 scale     = getScale();
         const Vec3 localSize = localBoundsSize(m_parent->getBounds());
         if (changed(scale, m_syncedScale) || changed(localSize, m_syncedLocalSize))
         {
-            m_bSyncingBody = true;
+            m_bIsSyncingBody = true;
             rebuildBody();
-            m_bSyncingBody = false;
+            m_bIsSyncingBody = false;
 
             return;
         }
 
-        if (m_bodySettings.motion == Kerb::MotionType::Static)
+        const bool bRelativeMoved = changed(getRelativeTranslation(), m_syncedRelativeTranslation) ||
+                                    changed(getRelativeRotation().getAngles(), m_syncedRelativeRotation);
+
+        if (body.motion != Kerb::MotionType::Dynamic || bRelativeMoved)
         {
-            moveTo(m_parent->getBounds().getCenter());
+            applyBodyTransform();
+            captureSyncedTransform();
         }
     }
 
     void CPhysics::syncTickState()
     {
-        setCanTick(hasBody() && m_bodySettings.motion != Kerb::MotionType::Static);
+        setCanTick(hasBody() && body.motion != Kerb::MotionType::Static);
     }
 
     void CPhysics::syncCollisionSettings()
@@ -499,31 +589,53 @@ namespace Chicane
             return;
         }
 
-        Kerb::ObjectLayer layer = m_bodySettings.layer;
-        if (m_bodySettings.preset != Kerb::CollisionPreset::Custom)
+        Kerb::ObjectLayer resolved = body.layer;
+        if (body.preset != Kerb::CollisionPreset::Custom)
         {
-            layer = Kerb::resolveCollisionPreset(m_bodySettings.preset, m_bodySettings.motion).layer;
+            resolved = Kerb::resolveCollisionPreset(body.preset, body.motion).layer;
         }
         else
         {
-            layer = Kerb::resolveObjectLayer(m_bodySettings.layer, m_bodySettings.motion);
+            resolved = Kerb::resolveObjectLayer(body.layer, body.motion);
         }
 
-        Kerb::Engine::getInstance().setBodyObjectLayer(m_body, layer);
+        Kerb::Engine::getInstance().setBodyObjectLayer(m_body, resolved);
     }
 
-    Transform CPhysics::makeActorTransform(const Vec3& inLocation) const
+    void CPhysics::captureSyncedTransform()
     {
-        Transform transform;
+        m_syncedScale               = getScale();
+        m_syncedLocalSize           = m_parent ? localBoundsSize(m_parent->getBounds()) : Vec3::Zero();
+        m_syncedRelativeTranslation = getRelativeTranslation();
+        m_syncedRelativeRotation    = getRelativeRotation().getAngles();
+    }
+
+    Vec3 CPhysics::colliderCenter() const
+    {
         if (!m_parent)
         {
-            transform.setTranslation(inLocation);
-
-            return transform;
+            return getTranslation();
         }
 
-        transform.setScale(m_parent->getAbsoluteScale());
-        transform.setRotation(m_parent->getAbsoluteRotation());
+        return m_parent->getBounds().getCenter() + (getTranslation() - getAbsoluteTranslation());
+    }
+
+    void CPhysics::applyBodyTransform()
+    {
+        if (!hasBody() || !m_parent)
+        {
+            return;
+        }
+
+        m_actorToBody = colliderCenter() - m_parent->getTranslation();
+        Kerb::Engine::getInstance().setBodyTransform(m_body, makeBodyTransform(colliderCenter()));
+    }
+
+    Transform CPhysics::makeBodyTransform(const Vec3& inLocation) const
+    {
+        Transform transform;
+        transform.setScale(getScale());
+        transform.setRotation(getRotation());
         transform.setTranslation(inLocation);
 
         return transform;

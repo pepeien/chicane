@@ -16,12 +16,12 @@ void Sun::onLoad()
     lookAt(Chicane::Vec3::Zero());
 
     const float distanceToFocus = std::sqrt(2.0f) * m_distance;
-    m_light->setNearClip(1.0f);
-    m_light->setFarClip(distanceToFocus + m_distance);
-    m_light->setViewport(50.0f, 50.0f);
-    m_light->setProjectionType(Chicane::ViewProjectionType::Orthographic);
-    m_light->setType(Chicane::LightType::Directional);
-    m_light->setCanCastShadows(true);
-    m_light->setColor(Chicane::Vec3(1.0f));
-    m_light->setIntensity(1.0f);
+    light->setNearClip(1.0f);
+    light->setFarClip(distanceToFocus + m_distance);
+    light->setViewport(50.0f, 50.0f);
+    light->setProjectionType(Chicane::ViewProjectionType::Orthographic);
+    light->setType(Chicane::LightType::Directional);
+    light->setCanCastShadows(true);
+    light->setColor(Chicane::Vec3(1.0f));
+    light->setIntensity(1.0f);
 }

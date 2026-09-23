@@ -13,6 +13,7 @@
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Core/Reflection/Enum/Registry.hpp>
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
+#include <Chicane/Core/Reflection/Type/Info.hpp>
 #include <Chicane/Core/Reflection/Type/Registry.hpp>
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
@@ -970,8 +971,7 @@ namespace Editor
             return;
         }
         catch (const std::exception&)
-        {
-        }
+        {}
 
         Chicane::Component* component = nullptr;
         try
@@ -1253,26 +1253,72 @@ namespace Editor
         }
     }
 
-    void HomeView::rebuildAttributes()
+    static bool isLeafAttribute(const Chicane::ReflectionFieldAccessor& inAccessor, const Chicane::String& inName)
     {
-        attributeFields.clear();
-        attributeGroups.clear();
-
-        if (!selectedItem)
+        if (findEnum(inAccessor.typeName))
         {
-            return;
+            return true;
         }
 
-        const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
-        if (!type)
+        return inAccessor.isType<bool>() || inAccessor.isType<float>() || inAccessor.isType<int>() ||
+               inAccessor.isType<Chicane::Vec3>() || inAccessor.isType<Chicane::Rotator>() ||
+               inAccessor.isType<Chicane::String>() || inAccessor.isType<Chicane::FileSystem::Path>() ||
+               inName.equals("color");
+    }
+
+    static const Chicane::ReflectionTypeInfo* nestedAttributeType(const Chicane::ReflectionFieldInfo& inInfo)
+    {
+        if (!inInfo.typeIndex.has_value())
         {
-            return;
+            return nullptr;
         }
 
-        for (const Chicane::ReflectionFieldInfo& info : type->fields)
+        return Chicane::ReflectionTypeRegistry::getInstance().find(inInfo.typeIndex.value());
+    }
+
+    static void pushAttributeField(AttributeGroup::List& ioGroups, AttributeField inField)
+    {
+        if (inField.group.isEmpty())
         {
-            if (info.names.empty() || info.bIsPointer || info.bIsIterable)
+            inField.group = "Properties";
+        }
+
+        AttributeGroup* group = nullptr;
+        for (AttributeGroup& candidate : ioGroups)
+        {
+            if (!candidate.label.equals(inField.group))
+            {
+                continue;
+            }
+
+            group = &candidate;
+
+            break;
+        }
+
+        if (!group)
+        {
+            ioGroups.push_back({});
+            group        = &ioGroups.back();
+            group->label = inField.group;
+        }
+
+        group->fields.push_back(inField);
+    }
+
+    static void collectAttributeFields(
+        AttributeGroup::List&              ioGroups,
+        Chicane::Object&                   inItem,
+        const Chicane::ReflectionTypeInfo& inRoot,
+        const Chicane::ReflectionTypeInfo& inType,
+        const Chicane::String&             inPrefix,
+        const Chicane::String&             inFallbackGroup,
+        CoordinateSpace                    inSpace
+    )
+    {
+        for (const Chicane::ReflectionFieldInfo& info : inType.fields)
+        {
+            if (info.names.empty() || info.bIsIterable)
             {
                 continue;
             }
@@ -1283,22 +1329,50 @@ namespace Editor
                 continue;
             }
 
-            const Chicane::ReflectionFieldAccessor accessor = type->resolve(name);
+            if (!inPrefix.isEmpty() && isTransformAttribute(name))
+            {
+                continue;
+            }
+
+            const Chicane::String                  path     = inPrefix.isEmpty() ? name : inPrefix + "." + name;
+            const Chicane::ReflectionFieldAccessor accessor = inRoot.resolve(path);
             if (!accessor.isValid())
             {
                 continue;
             }
 
+            Chicane::String group = info.group;
+            if (group.isEmpty())
+            {
+                group = inFallbackGroup;
+            }
+            if (group.isEmpty())
+            {
+                group = typeGroupLabel(inRoot.group);
+            }
+
+            if (info.bIsPointer || !isLeafAttribute(accessor, name))
+            {
+                const Chicane::ReflectionTypeInfo* nested = nestedAttributeType(info);
+                if (nested && nested != &inRoot && nested != &inType)
+                {
+                    collectAttributeFields(ioGroups, inItem, inRoot, *nested, path, group, inSpace);
+                }
+
+                continue;
+            }
+
             AttributeField field;
-            field.name  = name;
-            field.label = name;
-            field.group = info.group;
-            field.type  = AttributeFieldType::Text;
+            field.name        = path;
+            field.label       = name;
+            field.group       = group;
+            field.description = info.description;
+            field.type        = AttributeFieldType::Text;
 
             if (const Chicane::ReflectionEnumInfo* enumeration = findEnum(accessor.typeName))
             {
                 field.type = AttributeFieldType::Enum;
-                field.text = accessor.toString(selectedItem);
+                field.text = accessor.toString(&inItem);
 
                 for (const Chicane::ReflectionEnumeratorInfo& enumerator : enumeration->enumerators)
                 {
@@ -1317,13 +1391,13 @@ namespace Editor
             else if (accessor.isType<bool>())
             {
                 field.type        = AttributeFieldType::Bool;
-                const bool* value = accessor.getValue<bool>(selectedItem);
+                const bool* value = accessor.getValue<bool>(&inItem);
                 field.bIsChecked  = value && *value;
             }
             else if (name.equals("color"))
             {
                 field.type = AttributeFieldType::Color;
-                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(selectedItem))
+                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
                 {
                     field.vector = *value;
                     field.text   = formatVec3(*value);
@@ -1334,14 +1408,14 @@ namespace Editor
                 field.type = AttributeFieldType::Vec3;
                 if (isTransformAttribute(name))
                 {
-                    assignTransformAttribute(*selectedItem, field, m_coordinateSpace);
+                    assignTransformAttribute(inItem, field, inSpace);
                 }
-                else if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(selectedItem))
+                else if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
                 {
                     field.vector = *value;
                     field.text   = formatVec3(field.vector);
                 }
-                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(selectedItem))
+                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
                 {
                     field.vector = rotator->getAngles();
                     field.text   = formatVec3(field.vector);
@@ -1354,7 +1428,7 @@ namespace Editor
             else if (accessor.isType<float>())
             {
                 field.type = AttributeFieldType::Float;
-                field.text = accessor.toString(selectedItem);
+                field.text = accessor.toString(&inItem);
             }
             else if (accessor.isType<Chicane::String>() || accessor.isType<Chicane::FileSystem::Path>() ||
                      accessor.isType<int>())
@@ -1362,14 +1436,14 @@ namespace Editor
                 field.type = AttributeFieldType::Text;
                 if (accessor.isType<Chicane::FileSystem::Path>())
                 {
-                    const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(selectedItem);
+                    const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
                     field.text                            = path ? path->toString() : Chicane::String::empty();
                     field.type                            = AttributeFieldType::Asset;
                     field.kind                            = name;
                 }
                 else
                 {
-                    field.text = accessor.toString(selectedItem);
+                    field.text = accessor.toString(&inItem);
                 }
             }
             else
@@ -1377,39 +1451,28 @@ namespace Editor
                 continue;
             }
 
-            if (field.group.isEmpty())
-            {
-                field.group = typeGroupLabel(type->group);
-            }
+            pushAttributeField(ioGroups, field);
+        }
+    }
 
-            if (field.group.isEmpty())
-            {
-                field.group = "Properties";
-            }
+    void HomeView::rebuildAttributes()
+    {
+        attributeFields.clear();
+        attributeGroups.clear();
 
-            AttributeGroup* group = nullptr;
-            for (AttributeGroup& candidate : attributeGroups)
-            {
-                if (!candidate.label.equals(field.group))
-                {
-                    continue;
-                }
-
-                group = &candidate;
-
-                break;
-            }
-
-            if (!group)
-            {
-                attributeGroups.push_back({});
-                group        = &attributeGroups.back();
-                group->label = field.group;
-            }
-
-            group->fields.push_back(field);
+        if (!selectedItem)
+        {
+            return;
         }
 
+        const Chicane::ReflectionTypeInfo* type =
+            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
+        if (!type)
+        {
+            return;
+        }
+
+        collectAttributeFields(attributeGroups, *selectedItem, *type, *type, {}, {}, m_coordinateSpace);
         insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
     }
 

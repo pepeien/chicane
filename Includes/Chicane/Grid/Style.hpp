@@ -35,6 +35,7 @@
 #include "Chicane/Grid/Style/Size.hpp"
 #include "Chicane/Grid/Style/Transform.hpp"
 #include "Chicane/Grid/Style/Transition.hpp"
+#include "Chicane/Grid/Style/WordBreak.hpp"
 
 namespace Chicane
 {
@@ -222,6 +223,11 @@ namespace Chicane
             static constexpr inline const float FONT_WEIGHT_BOLD_VALUE     = 700.0f;
 
             static constexpr inline const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
+
+            static constexpr inline const char* WORD_BREAK_ATTRIBUTE_NAME   = "word-break";
+            static constexpr inline const char* WORD_BREAK_TYPE_NORMAL      = "normal";
+            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_WORD  = "break-word";
+            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_ALL   = "break-all";
 
             /*
              * Template 1: "`PROPERTY` `DURATION`"
@@ -449,6 +455,7 @@ namespace Chicane
             void refreshTransform();
             void refreshFont();
             void refreshLetterSpacing();
+            void refreshWordBreak();
             void refreshCursor();
 
             void parseTransitions(const StyleRuleset::Properties& inProperties);
@@ -513,8 +520,9 @@ namespace Chicane
             StyleProperty<Vec2>           transformOrigin;
 
             // Text
-            StyleFont                     font;
-            StyleProperty<float>          letterSpacing;
+            StyleFont                        font;
+            StyleProperty<float>             letterSpacing;
+            StyleProperty<StyleWordBreak>    wordBreak;
 
             // Pointer
             StyleProperty<WindowCursor>   cursor;

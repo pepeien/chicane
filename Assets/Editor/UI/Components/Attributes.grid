@@ -9,7 +9,14 @@
                 dir:for="attribute : group.fields"
                 class="attributes__field"
             >
-                <Text class="attributes__field__label">{{ attribute.label }}</Text>
+                <Container class="attributes__field__label">
+                    <ToolTip
+                        dir:if="{{ attribute.description.isEmpty() }}"
+                        handleId="label-{{ attribute.name }}"
+                        title="{{ attribute.description }}"
+                    />
+                    <Text id="label-{{ attribute.name }}">{{ attribute.label }}</Text>
+                </Container>
                 <Input::Text
                     dir:if="{{ attribute.type == Text }}"
                     value="{{ attribute.text }}"

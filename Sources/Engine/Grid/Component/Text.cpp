@@ -56,6 +56,72 @@ namespace Chicane
             outDescender                    = reference.descender;
         }
 
+        static bool isBreakableSpace(char32_t inCode)
+        {
+            return inCode == U' ' || inCode == U'\t' || inCode == U'\r';
+        }
+
+        static float glyphAdvance(
+            const Box::FontFamily& inFamily,
+            char32_t               inCode,
+            char32_t               inPrevious,
+            bool                   bHasPrevious,
+            float                  inFontSize,
+            float                  inLetterSpacing
+        )
+        {
+            const Box::FontGlyph& glyph = resolveGlyph(inFamily, inCode);
+            if (glyph.name.isEmpty())
+            {
+                return 0.0f;
+            }
+
+            float advance = (glyph.advance + inLetterSpacing) * inFontSize;
+            if (bHasPrevious)
+            {
+                advance += inFamily.getKerning(inPrevious, inCode) * inFontSize;
+            }
+
+            return advance;
+        }
+
+        static float measureWord(
+            const Box::FontFamily&      inFamily,
+            const std::vector<char32_t>& inCodes,
+            std::size_t                 inStart,
+            char32_t                    inPrevious,
+            bool                        bHasPrevious,
+            float                       inFontSize,
+            float                       inLetterSpacing
+        )
+        {
+            float    width       = 0.0f;
+            char32_t previous    = inPrevious;
+            bool     hasPrevious = bHasPrevious;
+
+            for (std::size_t i = inStart; i < inCodes.size(); i++)
+            {
+                const char32_t code = inCodes.at(i);
+                if (code == U'\n' || isBreakableSpace(code))
+                {
+                    break;
+                }
+
+                const float advance =
+                    glyphAdvance(inFamily, code, previous, hasPrevious, inFontSize, inLetterSpacing);
+                if (advance <= 0.0f)
+                {
+                    continue;
+                }
+
+                width += advance;
+                previous    = code;
+                hasPrevious = true;
+            }
+
+            return width;
+        }
+
         Text::Text(const XmlNode& inNode)
             : Scrollable(inNode),
               m_text(""),
@@ -377,12 +443,55 @@ namespace Chicane
             const float       fontSize      = m_style.font.size.get();
             const float       letterSpacing = m_style.letterSpacing.get();
             const Color::Rgba color         = m_style.foregroundColor.get();
-            const float       innerWidth    = std::max(0.0f, m_size.x - m_style.insetHorizontal());
-            const String      signature =
+            const float          innerWidth = std::max(0.0f, m_size.x - m_style.insetHorizontal());
+            const StyleWordBreak wordBreak  = m_style.wordBreak.get();
+
+            float wrapWidth = 0.0f;
+            auto  tighten   = [&wrapWidth](float inWidth)
+            {
+                if (inWidth <= 0.0f)
+                {
+                    return;
+                }
+
+                wrapWidth = wrapWidth > 0.0f ? std::min(wrapWidth, inWidth) : inWidth;
+            };
+
+            if (!m_style.width.isAuto())
+            {
+                tighten(innerWidth);
+            }
+
+            const float ownInset = m_style.insetHorizontal();
+            if (m_style.width.hasMax())
+            {
+                tighten(m_style.width.max.get() - ownInset);
+            }
+
+            if (hasParent())
+            {
+                const Style& parentStyle = m_parent->getStyle();
+                const float  parentInset = parentStyle.insetHorizontal();
+                const float  childGutter = ownInset + m_style.margin.left.get() + m_style.margin.right.get();
+
+                if (!parentStyle.width.isAuto())
+                {
+                    tighten(m_parent->getSize().x - parentInset - childGutter);
+                }
+
+                if (parentStyle.width.hasMax())
+                {
+                    tighten(parentStyle.width.max.get() - parentInset - childGutter);
+                }
+            }
+
+            const String signature =
                 value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
                 std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
                 std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a) + "|" +
-                std::to_string(static_cast<int>(m_style.align.get())) + "|" + std::to_string(innerWidth);
+                std::to_string(static_cast<int>(m_style.align.get())) + "|" +
+                std::to_string(static_cast<int>(wordBreak)) + "|" + std::to_string(innerWidth) + "|" +
+                std::to_string(wrapWidth);
 
             if (signature.equals(m_layoutSignature))
             {
@@ -441,6 +550,63 @@ namespace Chicane
                 if (glyph.name.isEmpty())
                 {
                     continue;
+                }
+
+                const float kerning =
+                    hasPrevious ? fontFamily.getKerning(previousCode, codepoint) * fontSize : 0.0f;
+                const float advance = (glyph.advance + letterSpacing) * fontSize;
+                const float nextX   = cursor.x + kerning + advance;
+
+                bool bWrap = false;
+                if (wordBreak != StyleWordBreak::Normal && wrapWidth > 0.0f && cursor.x > 0.0f)
+                {
+                    if (wordBreak == StyleWordBreak::BreakAll)
+                    {
+                        bWrap = nextX > wrapWidth;
+                    }
+                    else
+                    {
+                        const bool bWordStart = !isBreakableSpace(codepoint) &&
+                                                (!hasPrevious || isBreakableSpace(previousCode));
+
+                        if (bWordStart)
+                        {
+                            const float wordWidth = measureWord(
+                                fontFamily,
+                                codepoints,
+                                i,
+                                previousCode,
+                                hasPrevious,
+                                fontSize,
+                                letterSpacing
+                            );
+
+                            if (cursor.x + wordWidth > wrapWidth)
+                            {
+                                bWrap = wordWidth <= wrapWidth || nextX > wrapWidth;
+                            }
+                        }
+                        else
+                        {
+                            bWrap = nextX > wrapWidth;
+                        }
+                    }
+                }
+
+                if (bWrap)
+                {
+                    maxWidth = std::max(maxWidth, cursor.x);
+
+                    flushLine();
+
+                    cursor.x    = 0.0f;
+                    lineCount++;
+                    hasPrevious = false;
+
+                    if (isBreakableSpace(codepoint))
+                    {
+                        continue;
+                    }
                 }
 
                 if (hasPrevious)

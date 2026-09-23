@@ -31,6 +31,14 @@ namespace Reflector
             "Category"
         ];
 
+        static readonly string[] DescriptionKeys =
+        [
+            Enum.GetStringValue(AnnotationParam.Description),
+            "Desc",
+            "Hint",
+            "Tooltip"
+        ];
+
         public static List<string> Split(string value)
         {
             var parts = new List<string>();
@@ -173,6 +181,19 @@ namespace Reflector
             foreach (MacroArg arg in args)
             {
                 if (arg.IsNamed && Matches(arg.Name, GroupKeys))
+                {
+                    return arg.Value;
+                }
+            }
+
+            return "";
+        }
+
+        public static string Description(IEnumerable<MacroArg> args)
+        {
+            foreach (MacroArg arg in args)
+            {
+                if (arg.IsNamed && Matches(arg.Name, DescriptionKeys))
                 {
                     return arg.Value;
                 }

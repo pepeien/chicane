@@ -549,6 +549,7 @@ namespace Reflector
             var methods = new List<FunctionModel>();
             var fields = new List<FieldModel>();
             string typeGroup = MacroArgs.Group(parsed);
+            string typeDescription = MacroArgs.Description(parsed);
 
             bool isAutomatic = MacroArgs.IsAutomatic(parsed);
             bool isPublic = kind == "struct" || kind == "union";
@@ -604,7 +605,7 @@ namespace Reflector
                 default
             );
 
-            return new(kind, names, constructors, methods, fields, typeGroup);
+            return new(kind, names, constructors, methods, fields, typeGroup, typeDescription);
         }
 
         static unsafe ConstructorModel ParseConstructor(CXCursor cursor)
@@ -712,7 +713,8 @@ namespace Reflector
                 isIterable,
                 elementName,
                 isElementPointer,
-                MacroArgs.Group(fieldArgs)
+                MacroArgs.Group(fieldArgs),
+                MacroArgs.Description(fieldArgs)
             );
         }
 

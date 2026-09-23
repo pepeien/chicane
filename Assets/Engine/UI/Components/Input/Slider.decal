@@ -9,7 +9,6 @@ Input::Slider {
     width: 100%;
     height: 100%;
     position: relative;
-    overflow: visible;
 
     &:hover {
         cursor: pointer;
@@ -20,7 +19,6 @@ Input::Slider {
         height: 0.28em;
         margin: auto 0;
         border-radius: 1em;
-        overflow: visible;
         background-color: #524e4e;
     }
 
@@ -29,7 +27,6 @@ Input::Slider {
         width: ref(percentage)%;
         height: 100%;
         background-color: #0b997d;
-        overflow: visible;
     }
 
     &__thumb {
@@ -47,5 +44,4 @@ Input::Slider.--overlay {
     height: 1.15em;
     position: absolute;
     cursor: ew-resize;
-    overflow: visible;
 }

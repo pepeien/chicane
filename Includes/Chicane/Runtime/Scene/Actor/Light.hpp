@@ -18,7 +18,8 @@ namespace Chicane
     protected:
         void onLoad() override;
 
-    protected:
-        CLight* m_light;
+    public:
+        CH_FIELD(Group = "Light")
+        CLight* light;
     };
 }

@@ -1,4 +1,5 @@
 #include "Chicane/Kerb/Object/Layer.hpp"
+#include "Chicane/Kerb/Object/Layer.reflected.hpp"
 
 namespace Chicane
 {

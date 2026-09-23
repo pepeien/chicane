@@ -27,6 +27,9 @@ namespace Editor
         CH_FUNCTION()
         void onAttributeCommit(Chicane::String inName, Chicane::String inValue);
 
+        CH_FUNCTION()
+        Chicane::String getFieldDescription(Chicane::String inName);
+
     public:
         CH_FIELD()
         bool bIsItemSelected;

@@ -40,6 +40,13 @@ namespace Chicane
             {AssetType::Effect,    Effect::EXTENSION   }
         };
 
+        static const std::unordered_map<AssetType, std::vector<FileSystem::Path>> RAW_EXTENSIONS = {
+            {AssetType::Font,    {".ttf", ".otf"}                                         },
+            {AssetType::Model,   {".gltf", ".glb", ".obj"}                                },
+            {AssetType::Texture, {".png", ".jpg", ".jpeg", ".gif", ".tga", ".bmp", ".hdr"}},
+            {AssetType::Sound,   {".wav", ".mp3", ".flac", ".ogg"}                        },
+        };
+
         bool isFileAsset(const FileSystem::Path& inFilepath)
         {
             if (inFilepath.isEmpty() || !inFilepath.hasExtension())
@@ -135,16 +142,37 @@ namespace Chicane
             return found->second;
         }
 
-        std::vector<String> getTypeExtensions()
+        std::vector<String> getExtensions(bool bHasDots)
         {
             std::vector<String> result;
 
             for (const auto& [type, extension] : EXTENSIONS)
             {
-                result.push_back(extension);
+                if (bHasDots || extension.size() == 0 || !extension.startsWith('.'))
+                {
+                    result.push_back(extension);
+
+                    continue;
+                }
+
+                result.push_back(extension.substr(1));
             }
 
             return result;
+        }
+
+        const std::vector<FileSystem::Path>& getTypeRawExtensions(AssetType inValue)
+        {
+            const auto& found = RAW_EXTENSIONS.find(inValue);
+
+            if (found == RAW_EXTENSIONS.end())
+            {
+                static const std::vector<FileSystem::Path> empty;
+
+                return empty;
+            }
+
+            return found->second;
         }
 
         const String& getTypeExtension(AssetType inValue)

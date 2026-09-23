@@ -50,6 +50,7 @@ namespace Chicane
               transformOrigin(Vec2::Zero()),
               font({}),
               letterSpacing(0.0f),
+              wordBreak(StyleWordBreak::Normal),
               cursor(WindowCursor::Default),
               transitions({}),
               animation({}),
@@ -280,6 +281,25 @@ namespace Chicane
             letterSpacing.parseWith([this](const String& inValue)
                                     { return parseSize(inValue, SizeDirection::Horizontal); });
 
+            wordBreak.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue).trim().toLower();
+
+                    if (value.equals(WORD_BREAK_TYPE_BREAK_ALL))
+                    {
+                        return StyleWordBreak::BreakAll;
+                    }
+
+                    if (value.equals(WORD_BREAK_TYPE_BREAK_WORD))
+                    {
+                        return StyleWordBreak::BreakWord;
+                    }
+
+                    return StyleWordBreak::Normal;
+                }
+            );
+
             cursor.parseWith([this](const String& inValue) { return parseCursor(inValue); });
         }
 
@@ -376,6 +396,11 @@ namespace Chicane
             if (inProperties.find(LETTER_SPACING_ATTRIBUTE_NAME) != inProperties.end())
             {
                 letterSpacing.setRaw(inProperties.at(LETTER_SPACING_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(WORD_BREAK_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                wordBreak.setRaw(inProperties.at(WORD_BREAK_ATTRIBUTE_NAME));
             }
 
             flex.setProperties(inProperties);
@@ -564,6 +589,7 @@ namespace Chicane
             font.size.copyValue(inStyle.font.size);
             font.weight.copyValue(inStyle.font.weight);
             letterSpacing.copyValue(inStyle.letterSpacing);
+            wordBreak.copyValue(inStyle.wordBreak);
             cursor.copyValue(inStyle.cursor);
 
             transitions = inStyle.transitions;
@@ -890,6 +916,7 @@ namespace Chicane
             refreshTransform();
             refreshFont();
             refreshLetterSpacing();
+            refreshWordBreak();
             refreshCursor();
         }
 
@@ -1427,6 +1454,18 @@ namespace Chicane
         void Style::refreshLetterSpacing()
         {
             letterSpacing.refresh();
+        }
+
+        void Style::refreshWordBreak()
+        {
+            if (wordBreak.getRaw().isEmpty())
+            {
+                wordBreak.set(hasParent() ? m_parent->getStyle().wordBreak.get() : StyleWordBreak::Normal);
+
+                return;
+            }
+
+            wordBreak.refresh();
         }
 
         void Style::refreshCursor()

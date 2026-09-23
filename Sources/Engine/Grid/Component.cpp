@@ -51,6 +51,7 @@ namespace Chicane
             StyleAlignment     align;
             StyleFlexDirection flexDir;
             StyleFlexWrap      flexWrap;
+            StyleWordBreak     wordBreak;
             String             widthRaw;
             String             heightRaw;
             String             minWidthRaw;
@@ -71,7 +72,8 @@ namespace Chicane
         {
             return inLeft.display == inRight.display && inLeft.position == inRight.position &&
                    inLeft.align == inRight.align && inLeft.flexDir == inRight.flexDir &&
-                   inLeft.flexWrap == inRight.flexWrap && inLeft.widthRaw.equals(inRight.widthRaw) &&
+                   inLeft.flexWrap == inRight.flexWrap && inLeft.wordBreak == inRight.wordBreak &&
+                   inLeft.widthRaw.equals(inRight.widthRaw) &&
                    inLeft.heightRaw.equals(inRight.heightRaw) && inLeft.minWidthRaw.equals(inRight.minWidthRaw) &&
                    inLeft.minHeightRaw.equals(inRight.minHeightRaw) && inLeft.maxWidthRaw.equals(inRight.maxWidthRaw) &&
                    inLeft.maxHeightRaw.equals(inRight.maxHeightRaw) && inLeft.marginL.equals(inRight.marginL) &&
@@ -89,6 +91,7 @@ namespace Chicane
                 inStyle.align.get(),
                 inStyle.flex.direction.get(),
                 inStyle.flex.wrap.get(),
+                inStyle.wordBreak.get(),
                 inStyle.width.value.getRaw(),
                 inStyle.height.value.getRaw(),
                 inStyle.width.min.getRaw(),
@@ -1604,6 +1607,7 @@ namespace Chicane
             }
 
             refreshDirectives();
+            refreshId();
 
             if (m_style.isDisplay(StyleDisplay::None))
             {
@@ -2514,9 +2518,11 @@ namespace Chicane
 
             m_draw.clip = bEscapes ? Bounds2D::unconstrained() : inContext.clip;
 
-            std::vector<const Component*>  ownedAncestors;
-            std::vector<const Component*>& roundedAncestors =
-                (bEscapes || !inContext.roundedAncestors) ? ownedAncestors : *inContext.roundedAncestors;
+            std::vector<const Component*> roundedAncestors;
+            if (!bEscapes && inContext.roundedAncestors)
+            {
+                roundedAncestors = *inContext.roundedAncestors;
+            }
 
             paintRadius(roundedAncestors);
             paintRoundClips(roundedAncestors);
@@ -2546,15 +2552,12 @@ namespace Chicane
 
             for (Component* child : m_paintChildren)
             {
-                if (child)
+                if (!child || child == this)
                 {
-                    child->paint(context);
+                    continue;
                 }
-            }
 
-            if (bIsRoundedClipper && !roundedAncestors.empty())
-            {
-                roundedAncestors.pop_back();
+                child->paint(context);
             }
         }
 
@@ -3792,6 +3795,23 @@ namespace Chicane
             setClassName(className);
         }
 
+        void Component::refreshId()
+        {
+            const auto found = m_attributes.find(ID_ATTRIBUTE_NAME);
+            if (found == m_attributes.end())
+            {
+                return;
+            }
+
+            const String id = parseText(found->second).trim();
+            if (id.equals(m_id))
+            {
+                return;
+            }
+
+            setId(id);
+        }
+
         void Component::refreshStyle()
         {
             m_style.refresh();
@@ -4041,7 +4061,18 @@ namespace Chicane
                 {
                     if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
                     {
-                        return method->toString(method->invoke(instance));
+                        try
+                        {
+                            ReflectionTypeMethod call(method);
+                            call.bind(instance);
+                            populateMethodParams(call, inValue);
+
+                            return method->toString(call.invoke());
+                        }
+                        catch (const std::exception&)
+                        {
+                            return String::empty();
+                        }
                     }
                 }
 

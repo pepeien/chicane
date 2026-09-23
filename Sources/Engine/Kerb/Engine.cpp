@@ -89,10 +89,10 @@ namespace Chicane
             if (inCreateInfo.preset != CollisionPreset::Custom)
             {
                 return resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).bIsSensor ||
-                       inCreateInfo.bSensor;
+                       inCreateInfo.bIsSensor;
             }
 
-            return inCreateInfo.bSensor || inCreateInfo.layer == ObjectLayer::Trigger;
+            return inCreateInfo.bIsSensor || inCreateInfo.layer == ObjectLayer::Trigger;
         }
 
         static float resolveCreateMass(const BodyCreateInfo& inCreateInfo)

@@ -24,6 +24,10 @@ namespace Chicane
         using Constructors = std::vector<Constructor>;
 
     public:
+        // Value
+        static constexpr inline char OBJECT_SEPARATOR = '.';
+
+    public:
         ReflectionTypeInfo(
             Names               inNames,
             std::size_t         inSize,
@@ -31,7 +35,8 @@ namespace Chicane
             const Constructors& inConstructors,
             const Methods&      inMethods,
             const Fields&       inFields,
-            String              inGroup = {}
+            String              inGroup       = String::empty(),
+            String              inDescription = String::empty()
         );
         ReflectionTypeInfo();
 
@@ -84,5 +89,6 @@ namespace Chicane
         Methods      methods;
         Fields       fields;
         String       group;
+        String       description;
     };
 }

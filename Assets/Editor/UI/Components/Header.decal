@@ -5,7 +5,6 @@
     flex-direction: column;
     gap: 0.25em;
     border-bottom: 3px solid $--lighter-grey;
-    overflow: visible;
 
     &:drag {
         cursor: grabbing;
@@ -31,7 +30,6 @@
     &__menus {
         display: flex;
         height: 1.2em;
-        overflow: visible;
         margin-top: 0.35em;
 
         Text {

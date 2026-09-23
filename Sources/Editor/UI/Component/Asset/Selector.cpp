@@ -44,7 +44,7 @@ namespace Editor
         if (type == Chicane::Box::AssetType::Undefined)
         {
             Chicane::FileSystem::FileFilter::Extensions extensions;
-            for (const Chicane::String& extension : Chicane::Box::getTypeExtensions())
+            for (const Chicane::String& extension : Chicane::Box::getExtensions(true))
             {
                 extensions.push_back(extension);
             }
