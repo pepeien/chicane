@@ -38,3 +38,6 @@
 [submodule "Sources/Engine/Renderer/Vendor/VulkanMemoryAllocator"]
 	path = Sources/Engine/Renderer/Vendor/VulkanMemoryAllocator
 	url = https://github.com/pepeien/VulkanMemoryAllocator.git
+[submodule "Sources/Engine/Core/Vendor/lua"]
+	path = Sources/Engine/Core/Vendor/lua
+	url = https://github.com/pepeien/lua

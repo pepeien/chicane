@@ -10,6 +10,7 @@ project(
     ${NAME}
 
     LANGUAGES
+        C
         CXX
     VERSION
         0.1.0

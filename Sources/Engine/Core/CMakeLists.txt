@@ -79,6 +79,7 @@ target_link_libraries(
     PUBLIC
         glm::glm
         SDL3::SDL3
+        lua
 
     PRIVATE
         pugixml::pugixml

@@ -49,3 +49,6 @@ add_subdirectory(SDL EXCLUDE_FROM_ALL)
 
 # pugixml
 add_subdirectory(pugixml)
+
+# lua
+add_subdirectory(lua)
