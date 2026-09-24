@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
+#include "Chicane/Core/Texture/Material.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
@@ -27,8 +27,8 @@ namespace Chicane
             bool has(DrawPoly3DFlag inFlag) const { return Renderer::has(flags, inFlag); }
 
         public:
-            Mat4                                    model    = Mat4::One;
-            std::array<Draw::Id, TEXTURE_MAP_COUNT> textures = {
+            Mat4                                         model    = Mat4::One;
+            std::array<Draw::Id, TEXTURE_MATERIAL_COUNT> textures = {
                 Draw::InvalidId,
                 Draw::InvalidId,
                 Draw::InvalidId,

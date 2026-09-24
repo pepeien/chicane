@@ -4,6 +4,7 @@
 
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
+#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
 
@@ -93,8 +94,8 @@ namespace Chicane
             XmlNode modelNode = groupNode.appendChild(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
-            // Textures
-            inGroup.saveTextures(groupNode);
+            // Material
+            inGroup.saveMaterial(groupNode);
 
             // Transform
             inGroup.saveTransform(groupNode);
@@ -169,8 +170,8 @@ namespace Chicane
             XmlNode modelNode = foundGroupNode.getChild(Model::TAG);
             inGroup.getModel().saveTo(modelNode);
 
-            // Textures
-            inGroup.saveTextures(foundGroupNode);
+            // Material
+            inGroup.saveMaterial(foundGroupNode);
 
             // Transform
             inGroup.saveTransform(foundGroupNode);
@@ -354,10 +355,9 @@ namespace Chicane
                         continue;
                     }
 
-                    const TextureMap textureMap = toTextureMap(currentTag);
-                    if (textureMap != TextureMap::Count)
+                    if (currentTag.equals(Material::TAG))
                     {
-                        group.setTexture(textureMap, assetNode, getFilepath());
+                        group.setMaterial(assetNode, getFilepath());
 
                         continue;
                     }

@@ -139,11 +139,11 @@ namespace Chicane
         }
 
         static void writeFields(
-            XmlNode&                   outNode,
-            const Object&              inObject,
-            const ReflectionTypeInfo&  inRoot,
-            const ReflectionTypeInfo&  inType,
-            const String&              inPrefix
+            XmlNode&                  outNode,
+            const Object&             inObject,
+            const ReflectionTypeInfo& inRoot,
+            const ReflectionTypeInfo& inType,
+            const String&             inPrefix
         )
         {
             for (const ReflectionFieldInfo& field : inType.fields)

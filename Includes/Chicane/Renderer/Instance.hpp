@@ -7,6 +7,7 @@
 
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Window/Backend.hpp"
@@ -50,6 +51,7 @@ namespace Chicane
 
             // Render
             void render();
+            std::unique_ptr<Image> captureScreen();
 
             // View
             void useCamera(const View& inData);
@@ -135,26 +137,26 @@ namespace Chicane
 
         private:
             // Window
-            const Window*             m_window;
+            const Window*              m_window;
 
             // Settings
-            Settings                  m_settings;
+            Settings                   m_settings;
 
             // Frame
-            std::vector<Frame>        m_frames;
-            std::uint32_t             m_currentFrame;
+            std::vector<Frame>         m_frames;
+            std::uint32_t              m_currentFrame;
 
             // Draw
-            DrawPolyResource::Map     m_polyResources;
-            DrawTextureResource       m_textureResources;
-            DrawSkyResource           m_skyResource;
-            TextureStreamer           m_textureStreamer;
+            DrawPolyResource::Map      m_polyResources;
+            DrawTextureResource        m_textureResources;
+            DrawSkyResource            m_skyResource;
+            TextureStreamer            m_textureStreamer;
 
             // Feature
             std::atomic<std::uint16_t> m_features;
 
             // Backend
-            std::unique_ptr<Backend>  m_backend;
+            std::unique_ptr<Backend>   m_backend;
         };
     }
 }

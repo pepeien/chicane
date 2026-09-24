@@ -87,6 +87,17 @@ namespace Chicane
             return;
         }
 
+        bool Backend::captureScreen(
+            std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
+        )
+        {
+            outWidth  = 0;
+            outHeight = 0;
+            outRgba.clear();
+
+            return false;
+        }
+
         const Instance* Backend::getRenderer() const
         {
             return m_renderer;

@@ -157,9 +157,8 @@ namespace Chicane
 
             if (isPinned())
             {
-                const String raw = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
-                const String parsed =
-                    hasParent() ? getParent()->parseText(raw).trim() : parseText(raw).trim();
+                const String raw    = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
+                const String parsed = hasParent() ? getParent()->parseText(raw).trim() : parseText(raw).trim();
 
                 bReveal = Xml::parseBool(parsed, false);
             }

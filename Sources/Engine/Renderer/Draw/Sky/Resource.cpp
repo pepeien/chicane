@@ -28,16 +28,20 @@ namespace Chicane
         {
             const Draw::Id id = findId(inData.reference);
 
-            if (id > Draw::InvalidId)
-            {
-                return id;
-            }
-
-            m_draw.id        = 1;
             m_draw.reference = inData.reference;
             m_draw.model     = inData.model;
             m_draw.textures  = inData.textures;
+            m_draw.kind      = inData.kind;
 
+            if (id > Draw::InvalidId)
+            {
+                m_draw.id = id;
+                markAsDirty();
+
+                return id;
+            }
+
+            m_draw.id = 1;
             markAsDirty();
 
             return m_draw.id;

@@ -27,12 +27,16 @@ namespace Chicane
             void onRender(const Frame& inFrame, void* inData) override;
 
         private:
+            bool                        m_bHasSky     = false;
+            bool                        m_bIsPanorama = false;
+
             RHI::Pipeline               m_pipeline;
+            RHI::Pipeline               m_panoramaPipeline;
             RHI::BindGroupLayout        m_frameLayout;
             RHI::BindGroupLayout        m_textureLayout;
             std::vector<RHI::BindGroup> m_frameGroups;
             RHI::BindGroup              m_textureGroup;
-            bool                        m_bHasSky = false;
+            RHI::BindGroup              m_panoramaGroup;
         };
     }
 }

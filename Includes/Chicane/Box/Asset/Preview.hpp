@@ -44,10 +44,15 @@ namespace Chicane
             static constexpr inline Color::Rgba CLAY_COLOR       = Color::Rgba(228, 232, 236, 255);
             static constexpr inline Color::Rgba AXIS_COLOR       = Color::Rgba(58, 58, 64, 255);
 
-            static constexpr inline Vec3        VIEW_DIRECTION  = Vec3(-0.9f, -0.6f, -0.7f);
-            static constexpr inline Vec3        LIGHT_DIRECTION = Vec3(0.45f, 0.25f, 0.85f);
+            static constexpr inline Vec3        VIEW_DIRECTION  = Vec3(0.46f, -0.85f, -0.26f);
+            static constexpr inline Vec3        LIGHT_DIRECTION = Vec3(-0.50f, 0.50f, 0.70f);
+            static constexpr inline float       START_DISTANCE  = 2.0f;
+
+            static constexpr inline const char* TRACK_DIRECTORY = "Assets/Engine/Levels/Preview";
+            static constexpr inline const char* TRACK_EXTENSION = ".track";
 
             static constexpr inline float       GEOMETRY_FIT        = 0.82f;
+            static constexpr inline float       CAMERA_FIT          = 0.88f;
             static constexpr inline float       GLYPH_FIT           = 0.78f;
             static constexpr inline float       WAVEFORM_HEIGHT     = 0.38f;
             static constexpr inline float       SHADE_MIN           = 0.22f;
@@ -90,18 +95,25 @@ namespace Chicane
 
         public:
             static String textureIdOf(const FileSystem::Path& inAsset);
+            static FileSystem::Path trackPath(AssetType inType);
+            static float cameraDistance(float inRadius, float inFieldOfView = 45.0f, float inAspectRatio = 1.0f);
+            static Vec3 cameraStart(const Vec3& inTarget, const Vec3& inFrom);
+            static Vec3 cameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance);
 
             static std::unique_ptr<AssetPreview> create(
                 const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
             );
             static std::unique_ptr<AssetPreview> createFromGeometry(
-                const FileSystem::Path& inAsset, const std::vector<PreviewGeometryBatch>& inBatches
+                const FileSystem::Path&                  inAsset,
+                const std::vector<PreviewGeometryBatch>& inBatches,
+                const std::vector<Image::Instance>&      inFaces = {}
             );
             static std::unique_ptr<AssetPreview> createFromGeometry(
-                const FileSystem::Path& inAsset,
-                const Vertex::List&     inVertices,
-                const Vertex::Indices&  inIndices,
-                const Image::Instance&  inTexture = {}
+                const FileSystem::Path&             inAsset,
+                const Vertex::List&                 inVertices,
+                const Vertex::Indices&              inIndices,
+                const Image::Instance&              inTexture = {},
+                const std::vector<Image::Instance>& inFaces   = {}
             );
             static std::unique_ptr<AssetPreview> createFromFont(
                 const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel

@@ -36,6 +36,9 @@ namespace Chicane
         case Renderer::RendererFeature::Outline:
             return "Outline";
 
+        case Renderer::RendererFeature::Bloom:
+            return "Bloom";
+
         case Renderer::RendererFeature::Default:
             return "Default";
 

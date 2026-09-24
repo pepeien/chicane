@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <mutex>
 #include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
@@ -113,7 +114,9 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            auto& typed = m_actors[std::type_index(typeid(T))];
+            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
+            auto&                                 typed = m_actors[std::type_index(typeid(T))];
             typed.push_back(new T(inParams...));
 
             Actor* added = typed.back();
@@ -213,7 +216,9 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            auto& typed = m_components[std::type_index(typeid(T))];
+            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
+            auto&                                 typed = m_components[std::type_index(typeid(T))];
             typed.push_back(new T(inParams...));
 
             Component* added = typed.back();
@@ -426,5 +431,7 @@ namespace Chicane
         float                                                        m_cellSize;
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
+
+        std::recursive_mutex                                         m_objectMutex;
     };
 }

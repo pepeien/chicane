@@ -210,6 +210,14 @@ namespace Editor
             return OUTLINER_ICON_MESH;
         }
 
+        if (const Chicane::Component* component = dynamic_cast<const Chicane::Component*>(inObject))
+        {
+            if (dynamic_cast<const Chicane::Component*>(component->getParent()))
+            {
+                return "Image";
+            }
+        }
+
         if (dynamic_cast<const Chicane::CLight*>(inObject))
         {
             return OUTLINER_ICON_LIGHT;

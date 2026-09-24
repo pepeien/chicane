@@ -224,10 +224,10 @@ namespace Chicane
 
             static constexpr inline const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
 
-            static constexpr inline const char* WORD_BREAK_ATTRIBUTE_NAME   = "word-break";
-            static constexpr inline const char* WORD_BREAK_TYPE_NORMAL      = "normal";
-            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_WORD  = "break-word";
-            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_ALL   = "break-all";
+            static constexpr inline const char* WORD_BREAK_ATTRIBUTE_NAME  = "word-break";
+            static constexpr inline const char* WORD_BREAK_TYPE_NORMAL     = "normal";
+            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_WORD = "break-word";
+            static constexpr inline const char* WORD_BREAK_TYPE_BREAK_ALL  = "break-all";
 
             /*
              * Template 1: "`PROPERTY` `DURATION`"
@@ -520,9 +520,9 @@ namespace Chicane
             StyleProperty<Vec2>           transformOrigin;
 
             // Text
-            StyleFont                        font;
-            StyleProperty<float>             letterSpacing;
-            StyleProperty<StyleWordBreak>    wordBreak;
+            StyleFont                     font;
+            StyleProperty<float>          letterSpacing;
+            StyleProperty<StyleWordBreak> wordBreak;
 
             // Pointer
             StyleProperty<WindowCursor>   cursor;

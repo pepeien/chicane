@@ -42,7 +42,7 @@ target_link_libraries(
     ${CHICANE_PROGRAMS_BOX_UTILS_TARGET_NAME}
 
     PRIVATE
-        Chicane::Box
+        Chicane::Runtime
 )
 
 CH_ADD_COMPILER(${CHICANE_PROGRAMS_BOX_UTILS_TARGET_NAME})

@@ -16,9 +16,11 @@ namespace Chicane
     struct CHICANE_CORE Image : public ImageInfo
     {
     public:
-        using Raw    = std::vector<unsigned char>;
-        using Pixel  = unsigned char;
-        using Pixels = unsigned char*;
+        using Raw         = std::vector<unsigned char>;
+        using Pixel       = unsigned char;
+        using Pixels      = unsigned char*;
+        using FloatPixel  = float;
+        using FloatPixels = float*;
 
         using Instance   = std::shared_ptr<const Image>;
         using Reference  = std::weak_ptr<const Image>;
@@ -49,6 +51,7 @@ namespace Chicane
             std::uint32_t inMaxSize  = MAX_SIZE,
             bool          inIsNormal = false
         );
+        static void flipY(Pixels inPixels, int inWidth, int inHeight, int inChannel);
 
     public:
         Image(const FileSystem::Path& inLocation);
@@ -60,11 +63,14 @@ namespace Chicane
 
     public:
         ImageVendor getVendor() const;
+        bool isHdr() const;
         int getFrameCount() const;
         int getDelay(int inFrame = 0) const;
         const Pixels getPixels() const;
         const Pixels getPixels(int inFrame) const;
+        const FloatPixels getFloatPixels() const;
         void blit(Pixels outPixels, int outWidth, int outHeight, int inFrame = 0) const;
+        void blitFloat(FloatPixels outPixels, int outWidth, int outHeight) const;
         Raw encode() const;
 
         std::uint32_t getMemorySize() const;
@@ -76,11 +82,15 @@ namespace Chicane
     protected:
         void decode(const Raw& inData);
         void decodeGif(const Raw& inData);
+        bool decodeHdr(const Raw& inData);
+        bool decodeHdrFile(const FileSystem::Path& inLocation);
+        void rebuildLdrFromHdr();
         int getFrameStride() const;
 
     protected:
         ImageVendor      m_vendor;
         Pixels           m_pixels;
+        FloatPixels      m_floats;
         int              m_frameCount;
         std::vector<int> m_delays;
     };

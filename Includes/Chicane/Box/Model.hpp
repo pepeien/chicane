@@ -45,6 +45,9 @@ namespace Chicane
             const ModelParsed::Map& getData() const;
             void setData(const FileSystem::Path& inFilepath);
             void setData(const ModelRaw& inData);
+            void setCooked(const ModelParsed::Map& inData);
+
+            static void generateTangents(ModelParsed& outModel);
 
             const ModelParsed& getModel(const String& inId) const;
 

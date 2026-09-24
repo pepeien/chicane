@@ -212,10 +212,10 @@ namespace Chicane
             }
 
             static void assignMap(
-                std::map<TextureMap, std::int32_t>& outMaps,
-                TextureMap                          inMap,
-                const tg3_model&                    inModel,
-                std::int32_t                        inTextureIndex
+                std::map<TextureMaterial, std::int32_t>& outMaps,
+                TextureMaterial                          inType,
+                const tg3_model&                         inModel,
+                std::int32_t                             inTextureIndex
             )
             {
                 const std::int32_t index = imageIndex(inModel, inTextureIndex);
@@ -224,7 +224,7 @@ namespace Chicane
                     return;
                 }
 
-                outMaps[inMap] = index;
+                outMaps[inType] = index;
             }
 
             static float emissiveStrength(const tg3_material& inMaterial)
@@ -289,26 +289,31 @@ namespace Chicane
 
                 for (std::uint32_t i = 0; i < model.materials_count; i++)
                 {
-                    const tg3_material&                 material = model.materials[i];
-                    std::map<TextureMap, std::int32_t>& maps     = result.materials[static_cast<std::int32_t>(i)];
+                    const tg3_material&                      material = model.materials[i];
+                    std::map<TextureMaterial, std::int32_t>& maps     = result.materials[static_cast<std::int32_t>(i)];
 
-                    assignMap(maps, TextureMap::Base, model, material.pbr_metallic_roughness.base_color_texture.index);
-                    assignMap(maps, TextureMap::Normal, model, material.normal_texture.index);
+                    assignMap(
+                        maps,
+                        TextureMaterial::Albedo,
+                        model,
+                        material.pbr_metallic_roughness.base_color_texture.index
+                    );
+                    assignMap(maps, TextureMaterial::Normal, model, material.normal_texture.index);
                     // glTF packs AO in R (when shared), roughness in G, metalness in B.
                     assignMap(
                         maps,
-                        TextureMap::Roughness,
+                        TextureMaterial::Roughness,
                         model,
                         material.pbr_metallic_roughness.metallic_roughness_texture.index
                     );
                     assignMap(
                         maps,
-                        TextureMap::Metalness,
+                        TextureMaterial::Metalness,
                         model,
                         material.pbr_metallic_roughness.metallic_roughness_texture.index
                     );
-                    assignMap(maps, TextureMap::AmbientOcclusion, model, material.occlusion_texture.index);
-                    assignMap(maps, TextureMap::SelfIllumination, model, material.emissive_texture.index);
+                    assignMap(maps, TextureMaterial::AmbientOcclusion, model, material.occlusion_texture.index);
+                    assignMap(maps, TextureMaterial::SelfIllumination, model, material.emissive_texture.index);
 
                     const float strength = emissiveStrength(material);
                     if (strength != 1.0f)

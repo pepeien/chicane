@@ -38,6 +38,9 @@ namespace Chicane
 
         public:
             Draw::Id getScreenTextureId() const override;
+            bool captureScreen(
+                std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
+            ) override;
 
         protected:
             // Lifecycle

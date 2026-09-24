@@ -12,6 +12,8 @@
 #include "Chicane/Box/Asset/Type.hpp"
 
 #include "Chicane/Core/Base64.hpp"
+#include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
@@ -135,6 +137,88 @@ namespace Chicane
             return result;
         }
 
+        FileSystem::Path AssetPreview::trackPath(AssetType inType)
+        {
+            const String           name = inType == AssetType::Undefined ? "Default" : toString(inType);
+            const FileSystem::Path path = FileSystem::Path(TRACK_DIRECTORY) / (name + TRACK_EXTENSION);
+            if (FileSystem::exists(path))
+            {
+                return path;
+            }
+
+            return FileSystem::Path(TRACK_DIRECTORY) / (String("Default") + TRACK_EXTENSION);
+        }
+
+        float AssetPreview::cameraDistance(float inRadius, float inFieldOfView, float inAspectRatio)
+        {
+            if (inRadius <= EXTENT_EPSILON)
+            {
+                return START_DISTANCE;
+            }
+
+            const float half   = std::tan(std::max(inFieldOfView, 1.0f) * 0.5f * Math::DEG_TO_RAD);
+            const float aspect = inAspectRatio > 0.0f ? inAspectRatio : 1.0f;
+            const float limit  = half * std::min(1.0f, aspect);
+            if (limit <= EXTENT_EPSILON)
+            {
+                return START_DISTANCE;
+            }
+
+            return inRadius / (CAMERA_FIT * limit);
+        }
+
+        Vec3 AssetPreview::cameraStart(const Vec3& inTarget, const Vec3& inFrom)
+        {
+            return cameraStart(inTarget, inFrom, START_DISTANCE);
+        }
+
+        Vec3 AssetPreview::cameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance)
+        {
+            Vec3 direction = inFrom - inTarget;
+            if (direction.dot(direction) <= EXTENT_EPSILON)
+            {
+                direction = VIEW_DIRECTION * -1.0f;
+            }
+
+            return inTarget + direction.normalize() * std::max(inDistance, EXTENT_EPSILON);
+        }
+
+        static Vec3 viewDirectionFromTrack(AssetType inType)
+        {
+            const FileSystem::Path path = AssetPreview::trackPath(inType);
+            if (!FileSystem::exists(path))
+            {
+                return AssetPreview::VIEW_DIRECTION;
+            }
+
+            const XmlDocument document = Xml::load(path);
+            const XmlNode     root     = document.getFirstChild();
+            if (root.empty())
+            {
+                return AssetPreview::VIEW_DIRECTION;
+            }
+
+            for (const XmlNode& child : root.getChildren())
+            {
+                if (!String(child.getName()).equals("ACamera"))
+                {
+                    continue;
+                }
+
+                const Vec3 camera  = Xml::parseVec3(child, "absoluteTranslation", Vec3::Zero());
+                const Vec3 target  = Xml::parseVec3(Xml::getAttribute("lookTo", child), Vec3::Zero());
+                const Vec3 forward = target - camera;
+                if (forward.dot(forward) < AssetPreview::EXTENT_EPSILON)
+                {
+                    break;
+                }
+
+                return forward.normalize();
+            }
+
+            return AssetPreview::VIEW_DIRECTION;
+        }
+
         std::unique_ptr<AssetPreview> AssetPreview::create(
             const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
         )
@@ -148,6 +232,10 @@ namespace Chicane
                 static_cast<std::size_t>(SIZE) * static_cast<std::size_t>(SIZE) * static_cast<std::size_t>(CHANNELS)
             );
             inImage.blit(pixels.data(), SIZE, SIZE, 0);
+            if (inType == AssetType::Texture)
+            {
+                Image::flipY(pixels.data(), SIZE, SIZE, CHANNELS);
+            }
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
@@ -157,10 +245,14 @@ namespace Chicane
             return result;
         }
 
-        static void previewCamera(Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
+        static void previewCamera(AssetType inType, Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
         {
-            outViewDir = AssetPreview::VIEW_DIRECTION.normalize();
-            outRight   = outViewDir.cross(Vec3::Up());
+            outViewDir = viewDirectionFromTrack(inType);
+            if (outViewDir.dot(outViewDir) < AssetPreview::EXTENT_EPSILON)
+            {
+                outViewDir = AssetPreview::VIEW_DIRECTION.normalize();
+            }
+            outRight = outViewDir.cross(Vec3::Up());
             if (outRight.dot(outRight) < AssetPreview::NORMAL_EPSILON)
             {
                 outRight = Vec3::Right();
@@ -171,7 +263,9 @@ namespace Chicane
             outLight = AssetPreview::LIGHT_DIRECTION.normalize();
         }
 
-        static void sampleCubemap(const std::vector<Image::Instance>& inFaces, const Vec3& inDirection, unsigned char* outRgba)
+        static void sampleCubemap(
+            const std::vector<Image::Instance>& inFaces, const Vec3& inDirection, unsigned char* outRgba
+        )
         {
             writeRgba(outRgba, AssetPreview::BACKGROUND_COLOR);
 
@@ -187,6 +281,39 @@ namespace Chicane
             }
 
             direction = direction.normalize();
+
+            if (inFaces.size() == 1)
+            {
+                const Image::Instance& image = inFaces.front();
+                if (!image || image->getPixels() == nullptr || image->getWidth() <= 0 || image->getHeight() <= 0)
+                {
+                    return;
+                }
+
+                const float yaw   = std::atan2(direction.x, direction.y);
+                const float pitch = std::asin(std::clamp(direction.z, -1.0f, 1.0f));
+                float       u     = yaw * 0.15915494309f + AssetPreview::HALF;
+                float       v     = AssetPreview::HALF - pitch * 0.31830988618f;
+                u                 = u - std::floor(u);
+                v                 = std::clamp(v, 0.0f, 1.0f);
+
+                const int           width    = image->getWidth();
+                const int           height   = image->getHeight();
+                const int           channels = std::max(1, image->getChannel());
+                const int           x = std::clamp(static_cast<int>(u * static_cast<float>(width - 1)), 0, width - 1);
+                const int           y = std::clamp(static_cast<int>(v * static_cast<float>(height - 1)), 0, height - 1);
+                const Image::Pixels pixels = image->getPixels();
+                const std::size_t   offset =
+                    ((static_cast<std::size_t>(y) * static_cast<std::size_t>(width)) + static_cast<std::size_t>(x)) *
+                    static_cast<std::size_t>(channels);
+
+                outRgba[0] = pixels[offset];
+                outRgba[1] = channels > 1 ? pixels[offset + 1] : pixels[offset];
+                outRgba[2] = channels > 2 ? pixels[offset + 2] : pixels[offset];
+                outRgba[3] = 255;
+
+                return;
+            }
 
             const float absX = std::fabs(direction.x);
             const float absY = std::fabs(direction.y);
@@ -240,7 +367,7 @@ namespace Chicane
             outRgba[0] = pixels[offset];
             outRgba[1] = channels > 1 ? pixels[offset + 1] : pixels[offset];
             outRgba[2] = channels > 2 ? pixels[offset + 2] : pixels[offset];
-            outRgba[3] = channels > 3 ? pixels[offset + 3] : AssetPreview::BACKGROUND_COLOR.a;
+            outRgba[3] = 255;
         }
 
         static void appendUnitCube(Vertex::List& outVertices, Vertex::Indices& outIndices)
@@ -349,6 +476,12 @@ namespace Chicane
                 return nullptr;
             }
 
+            Vec3 viewDir;
+            Vec3 right;
+            Vec3 up;
+            Vec3 light;
+            previewCamera(inType, viewDir, right, up, light);
+
             Vec3 minPosition = Vec3::Zero();
             Vec3 maxPosition = Vec3::Zero();
             bool bHasBounds  = false;
@@ -381,12 +514,6 @@ namespace Chicane
             {
                 return nullptr;
             }
-
-            Vec3 viewDir;
-            Vec3 right;
-            Vec3 up;
-            Vec3 light;
-            previewCamera(viewDir, right, up, light);
 
             Vec2 min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             Vec2 max(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
@@ -423,8 +550,6 @@ namespace Chicane
                 static_cast<std::size_t>(AssetPreview::SIZE) * static_cast<std::size_t>(AssetPreview::SIZE);
             std::vector<unsigned char> pixels(pixelCount * static_cast<std::size_t>(AssetPreview::CHANNELS), 0);
             std::vector<float>         depth(pixelCount, std::numeric_limits<float>::max());
-
-            fillBackground(pixels);
 
             auto edge = [](const Vec2& inA, const Vec2& inB, const Vec2& inC)
             { return ((inC.x - inA.x) * (inB.y - inA.y)) - ((inC.y - inA.y) * (inB.x - inA.x)); };
@@ -520,15 +645,15 @@ namespace Chicane
 
                             depth[index] = z;
 
-                            if (!inFaces.empty())
+                            if (!inFaces.empty() && !batch.texture)
                             {
                                 const Vec3 position =
                                     ((batch.vertices.at(i0).position * w0) + (batch.vertices.at(i1).position * w1) +
                                      (batch.vertices.at(i2).position * w2)) /
                                     area;
                                 unsigned char color[AssetPreview::CHANNELS] = {};
-                                writeRgba(color, AssetPreview::BACKGROUND_COLOR);
                                 sampleCubemap(inFaces, position, color);
+                                color[3] = 255;
                                 writeRgba(pixels, index, color);
 
                                 continue;
@@ -545,7 +670,48 @@ namespace Chicane
                                 albedo              = sampleImage(batch.texture, uv);
                             }
 
-                            writeRgba(pixels, index, scaledRgb(albedo, shade));
+                            Color::Rgba lit = scaledRgb(albedo, shade);
+                            if (!inFaces.empty())
+                            {
+                                Vec3 sampleNormal = (batch.vertices.at(i0).normal * w0) +
+                                                    (batch.vertices.at(i1).normal * w1) +
+                                                    (batch.vertices.at(i2).normal * w2);
+                                if (sampleNormal.dot(sampleNormal) < AssetPreview::NORMAL_EPSILON)
+                                {
+                                    sampleNormal = normal;
+                                }
+                                else
+                                {
+                                    sampleNormal = sampleNormal.normalize();
+                                }
+
+                                unsigned char environment[AssetPreview::CHANNELS] = {};
+                                sampleCubemap(inFaces, sampleNormal, environment);
+                                const float envWeight = 0.35f;
+                                lit                   = Color::Rgba(
+                                    static_cast<std::uint8_t>(std::clamp(
+                                        (static_cast<float>(lit.r) * (1.0f - envWeight)) +
+                                            (static_cast<float>(environment[0]) * envWeight),
+                                        0.0f,
+                                        AssetPreview::CHANNEL_MAX
+                                    )),
+                                    static_cast<std::uint8_t>(std::clamp(
+                                        (static_cast<float>(lit.g) * (1.0f - envWeight)) +
+                                            (static_cast<float>(environment[1]) * envWeight),
+                                        0.0f,
+                                        AssetPreview::CHANNEL_MAX
+                                    )),
+                                    static_cast<std::uint8_t>(std::clamp(
+                                        (static_cast<float>(lit.b) * (1.0f - envWeight)) +
+                                            (static_cast<float>(environment[2]) * envWeight),
+                                        0.0f,
+                                        AssetPreview::CHANNEL_MAX
+                                    )),
+                                    albedo.a
+                                );
+                            }
+
+                            writeRgba(pixels, index, lit);
                         }
                     }
                 }
@@ -566,17 +732,26 @@ namespace Chicane
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
-            const FileSystem::Path& inAsset, const std::vector<PreviewGeometryBatch>& inBatches
+            const FileSystem::Path&                  inAsset,
+            const std::vector<PreviewGeometryBatch>& inBatches,
+            const std::vector<Image::Instance>&      inFaces
         )
         {
-            return rasterPreview(inAsset, AssetType::Mesh, inBatches, {});
+            AssetType type = getTypeFromExtension(inAsset);
+            if (type == AssetType::Undefined)
+            {
+                type = AssetType::Mesh;
+            }
+
+            return rasterPreview(inAsset, type, inBatches, inFaces);
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
-            const FileSystem::Path& inAsset,
-            const Vertex::List&     inVertices,
-            const Vertex::Indices&  inIndices,
-            const Image::Instance&  inTexture
+            const FileSystem::Path&             inAsset,
+            const Vertex::List&                 inVertices,
+            const Vertex::Indices&              inIndices,
+            const Image::Instance&              inTexture,
+            const std::vector<Image::Instance>& inFaces
         )
         {
             PreviewGeometryBatch batch;
@@ -584,7 +759,7 @@ namespace Chicane
             batch.indices  = inIndices;
             batch.texture  = inTexture;
 
-            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch>{std::move(batch)});
+            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch>{std::move(batch)}, inFaces);
         }
 
         std::unique_ptr<AssetPreview> AssetPreview::createFromSky(

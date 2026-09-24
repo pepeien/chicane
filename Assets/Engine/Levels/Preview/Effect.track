@@ -1,0 +1,27 @@
+<Track version="1" id="Effect">
+    <ASky id="Sky" sky="Assets/Engine/Skies/Preview.bsky" intensity="1.0" exposure="1.4">
+        <CLight id="Environment" type="Environment" intensity="1.0" color="1,1,1" castShadows="false"/>
+    </ASky>
+    <ACamera id="Camera" absoluteTranslation="-4.2,7.8,3.2" lookTo="0,0,0.8"/>
+    <ALight id="Key" absoluteTranslation="-6.5,10.0,9.0" lookTo="0,0,0.8">
+        <CLight id="KeyLight" type="Directional" intensity="2.4" color="1,1,1" castShadows="false"/>
+    </ALight>
+    <ALight id="Fill" absoluteTranslation="7.0,5.5,5.5" lookTo="0,0,0.8">
+        <CLight id="FillLight" type="Directional" intensity="0.9" color="1,1,1" castShadows="false"/>
+    </ALight>
+    <Actor id="Ground" absoluteTranslation="0,0,-0.1" absoluteScale="36,36,0.2">
+        <CMesh id="GroundMesh" mesh="Assets/Engine/Meshes/Preview/Studio.bmsh"/>
+    </Actor>
+    <Actor id="Backdrop" absoluteTranslation="0,-16,16" absoluteScale="36,0.4,36">
+        <CMesh id="BackdropMesh" mesh="Assets/Engine/Meshes/Preview/Studio.bmsh"/>
+    </Actor>
+    <Actor id="WallRight" absoluteTranslation="16,0,16" absoluteScale="0.4,32,36">
+        <CMesh id="WallRightMesh" mesh="Assets/Engine/Meshes/Preview/Studio.bmsh"/>
+    </Actor>
+    <Actor id="WallLeft" absoluteTranslation="-16,0,16" absoluteScale="0.4,32,36">
+        <CMesh id="WallLeftMesh" mesh="Assets/Engine/Meshes/Preview/Studio.bmsh"/>
+    </Actor>
+    <Actor id="Ceiling" absoluteTranslation="0,0,34" absoluteScale="36,32,0.4">
+        <CMesh id="CeilingMesh" mesh="Assets/Engine/Meshes/Preview/Studio.bmsh"/>
+    </Actor>
+</Track>

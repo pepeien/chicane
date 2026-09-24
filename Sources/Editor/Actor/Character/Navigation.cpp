@@ -4,6 +4,8 @@
 #include <cmath>
 #include <unordered_set>
 
+#include <Chicane/Box/Asset/Preview.hpp>
+#include <Chicane/Core/Math.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Runtime/Application.hpp>
@@ -22,10 +24,10 @@ namespace Editor
     Navigation::Navigation()
         : m_character(nullptr),
           m_camera(nullptr),
-          m_yaw(45.0f),
-          m_pitch(-35.0f),
-          m_distance(17.32f),
-          m_pivot(Chicane::Vec3::Zero()),
+          m_yaw(32.8f),
+          m_pitch(-40.0f),
+          m_distance(Chicane::Box::AssetPreview::START_DISTANCE),
+          m_pivot(Chicane::Vec3(0.0f, 0.0f, 0.45f)),
           m_bShift(false),
           m_bCtrl(false),
           m_bAlt(false),
@@ -103,6 +105,23 @@ namespace Editor
         bindModifier(Chicane::Input::KeyboardButton::RAlt);
 
         inController->bindEvent(std::bind(&Navigation::onGamepadMotion, this, std::placeholders::_1));
+    }
+
+    void Navigation::frame(const Chicane::Vec3& inPosition, const Chicane::Vec3& inPivot)
+    {
+        m_pivot                    = inPivot;
+        const Chicane::Vec3 offset = inPosition - inPivot;
+        const float         horiz  = std::sqrt(offset.x * offset.x + offset.y * offset.y);
+        m_distance                 = std::sqrt(offset.dot(offset));
+        if (m_distance < MIN_DISTANCE)
+        {
+            m_distance = MIN_DISTANCE;
+        }
+
+        m_yaw   = std::atan2(offset.x, -offset.y) * Chicane::Math::RAD_TO_DEG;
+        m_pitch = -std::atan2(offset.z, std::max(horiz, 0.0001f)) * Chicane::Math::RAD_TO_DEG;
+
+        apply();
     }
 
     void Navigation::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)

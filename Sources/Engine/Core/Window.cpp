@@ -86,6 +86,9 @@ namespace Chicane
     {
         const bool bMaximize = inSettings.size.x == 0 && inSettings.size.y == 0;
 
+        m_settings.bIsHidden = inSettings.bIsHidden;
+        m_settings.type      = inSettings.type;
+
         setBackend(inSettings.backend);
         setTitle(inSettings.title);
         setIcon(inSettings.icon);
@@ -96,6 +99,11 @@ namespace Chicane
         if (bMaximize && inSettings.type != WindowType::Fullscreen)
         {
             maximize();
+        }
+
+        if (m_settings.bIsHidden)
+        {
+            hide();
         }
     }
 
@@ -545,11 +553,21 @@ namespace Chicane
             flag |= SDL_WINDOW_RESIZABLE;
         }
 
+        if (m_settings.bIsHidden)
+        {
+            flag |= SDL_WINDOW_HIDDEN;
+        }
+
         m_instance = SDL_CreateWindow("", 0, 0, flag);
 
         if (!m_instance)
         {
             emmitError("Error creating window");
+        }
+
+        if (m_settings.bIsHidden)
+        {
+            SDL_HideWindow(static_cast<SDL_Window*>(m_instance));
         }
 
         applyMoveHitTest();
@@ -935,6 +953,17 @@ namespace Chicane
 
         setPosition(bounds.x, bounds.y);
         setSize(bounds.w, bounds.h);
+    }
+
+    void Window::hide()
+    {
+        if (!hasInstance())
+        {
+            return;
+        }
+
+        m_settings.bIsHidden = true;
+        SDL_HideWindow(static_cast<SDL_Window*>(m_instance));
     }
 
     void Window::close()

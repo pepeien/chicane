@@ -3,6 +3,7 @@
 #include <cmath>
 #include <list>
 #include <unordered_map>
+#include <vector>
 
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
@@ -10,6 +11,7 @@
 #include "Chicane/Box/Asset/Preview/Service.hpp"
 #include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
@@ -20,7 +22,6 @@
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
 
 namespace Chicane
 {
@@ -90,13 +91,70 @@ namespace Chicane
             try
             {
                 const Texture texture(inFilePath);
+                if (Image::Instance image = texture.getData().lock())
+                {
+                    if (image->getPixels() != nullptr || image->getFloatPixels() != nullptr)
+                    {
+                        return image;
+                    }
+                }
 
-                return texture.getData().lock();
+                const std::shared_ptr<ImageMipChain> chain = texture.getMipChain(0);
+                if (chain)
+                {
+                    if (Image::Instance image = chain->decode(0))
+                    {
+                        return image;
+                    }
+                }
+            }
+            catch (...)
+            {}
+
+            return nullptr;
+        }
+
+        static Image::Instance loadMaterialBaseImage(const AssetReference& inMaterial)
+        {
+            if (!inMaterial.isValid())
+            {
+                return nullptr;
+            }
+
+            try
+            {
+                const Material material(inMaterial.getSource());
+                if (!material.hasTexture(TextureMaterial::Albedo))
+                {
+                    return nullptr;
+                }
+
+                return loadTextureImage(material.getTexture(TextureMaterial::Albedo).getSource());
             }
             catch (...)
             {
                 return nullptr;
             }
+        }
+
+        static void orientTexturePreview(AssetPreview& inPreview)
+        {
+            const Image::Instance source = inPreview.image;
+            if (!source || source->getPixels() == nullptr || source->getWidth() <= 0 || source->getHeight() <= 0)
+            {
+                return;
+            }
+
+            const int                  width  = source->getWidth();
+            const int                  height = source->getHeight();
+            std::vector<unsigned char> pixels(
+                static_cast<std::size_t>(width) * static_cast<std::size_t>(height) *
+                static_cast<std::size_t>(AssetPreview::CHANNELS)
+            );
+            source->blit(pixels.data(), width, height);
+
+            inPreview.image =
+                std::make_shared<Image>(pixels.data(), width, height, AssetPreview::CHANNELS, AssetPreview::CHANNELS);
         }
 
         static std::unique_ptr<AssetPreview> decodeTexturePreview(
@@ -114,6 +172,7 @@ namespace Chicane
                 {
                     preview->path = inFilePath;
                     preview->type = AssetType::Texture;
+                    orientTexturePreview(*preview);
 
                     return preview;
                 }
@@ -132,7 +191,94 @@ namespace Chicane
                 return nullptr;
             }
 
-            return AssetPreview::create(inFilePath, AssetType::Texture, *image);
+            std::unique_ptr<AssetPreview> preview = AssetPreview::create(inFilePath, AssetType::Texture, *image);
+            if (preview)
+            {
+                orientTexturePreview(*preview);
+            }
+
+            return preview;
+        }
+
+        static std::unique_ptr<AssetPreview> decodeMaterialPreview(
+            const FileSystem::Path& inFilePath, bool inShouldUseStored
+        )
+        {
+            if (!FileSystem::exists(inFilePath))
+            {
+                return nullptr;
+            }
+
+            if (inShouldUseStored)
+            {
+                if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                {
+                    preview->path = inFilePath;
+                    preview->type = AssetType::Material;
+
+                    return preview;
+                }
+            }
+
+            const Material  material(inFilePath);
+            Image::Instance image = nullptr;
+            if (material.hasTexture(TextureMaterial::Albedo))
+            {
+                image = loadTextureImage(material.getTexture(TextureMaterial::Albedo).getSource());
+            }
+
+            FileSystem::Path modelPath = "Assets/Editor/Models/Preview/ShaderBall.bmdl";
+            if (!FileSystem::exists(modelPath))
+            {
+                modelPath = Model::SPHERE_SOURCE;
+            }
+
+            if (FileSystem::exists(modelPath))
+            {
+                const Model             model(modelPath);
+                const ModelParsed::Map& models = model.getData();
+                if (!models.empty())
+                {
+                    Vertex::List    vertices = {};
+                    Vertex::Indices indices  = {};
+                    appendGeometry(models, vertices, indices);
+
+                    std::vector<Image::Instance> faces = {};
+                    if (FileSystem::exists(Sky::PREVIEW_SOURCE))
+                    {
+                        const Sky sky(Sky::PREVIEW_SOURCE);
+                        for (const AssetReference& texture : sky.getTextures())
+                        {
+                            if (Image::Instance face = loadTextureImage(texture.getSource()))
+                            {
+                                faces.push_back(face);
+                            }
+                        }
+                    }
+
+                    std::unique_ptr<AssetPreview> preview =
+                        AssetPreview::createFromGeometry(inFilePath, vertices, indices, image, faces);
+                    if (preview)
+                    {
+                        preview->type = AssetType::Material;
+                    }
+
+                    return preview;
+                }
+            }
+
+            if (!image)
+            {
+                return nullptr;
+            }
+
+            std::unique_ptr<AssetPreview> preview = AssetPreview::create(inFilePath, AssetType::Material, *image);
+            if (preview)
+            {
+                orientTexturePreview(*preview);
+            }
+
+            return preview;
         }
 
         std::unique_ptr<AssetPreview> decodePreview(const FileSystem::Path& inFilePath, bool inShouldUseStored)
@@ -141,6 +287,9 @@ namespace Chicane
             {
             case AssetType::Texture:
                 return decodeTexturePreview(inFilePath, inShouldUseStored);
+
+            case AssetType::Material:
+                return decodeMaterialPreview(inFilePath, inShouldUseStored);
 
             case AssetType::Mesh: {
                 if (!FileSystem::exists(inFilePath))
@@ -198,9 +347,9 @@ namespace Chicane
                         continue;
                     }
 
-                    if (group.hasTexture(TextureMap::Base))
+                    if (group.hasMaterial())
                     {
-                        batch.texture = loadTextureImage(group.getTexture(TextureMap::Base).getSource());
+                        batch.texture = loadMaterialBaseImage(group.getMaterial());
                     }
 
                     batches.push_back(std::move(batch));
@@ -579,6 +728,28 @@ namespace Chicane
             return getAsset<Animation>(inFilePath);
         }
 
+        static const Material* loadMaterial(const FileSystem::Path& inFilePath)
+        {
+            if (getTypeFromExtension(inFilePath) != AssetType::Material)
+            {
+                throw std::runtime_error(inFilePath.toString() + " is not a material");
+            }
+
+            if (!hasAsset(inFilePath))
+            {
+                const Material* asset = addAsset<Material>(inFilePath);
+                for (const auto& [map, texture] : asset->getTextures())
+                {
+                    (void)map;
+                    loadTexture(texture.getSource());
+                }
+
+                return asset;
+            }
+
+            return getAsset<Material>(inFilePath);
+        }
+
         static const Mesh* loadMesh(const FileSystem::Path& inFilePath)
         {
             if (getTypeFromExtension(inFilePath) != AssetType::Mesh)
@@ -602,10 +773,9 @@ namespace Chicane
 
                 for (const MeshGroup& group : asset->getGroups())
                 {
-                    for (const auto& [map, texture] : group.getTextures())
+                    if (group.hasMaterial())
                     {
-                        (void)map;
-                        loadTexture(texture.getSource());
+                        loadMaterial(group.getMaterial().getSource());
                     }
                     loadModel(group.getModel().getSource());
                 }
@@ -764,6 +934,9 @@ namespace Chicane
             case AssetType::Texture:
                 return loadTexture(inFilePath);
 
+            case AssetType::Material:
+                return loadMaterial(inFilePath);
+
             case AssetType::Effect:
                 return loadEffect(inFilePath);
 
@@ -791,6 +964,19 @@ namespace Chicane
 
             try
             {
+                const AssetType type = getTypeFromExtension(inFilePath);
+                if (type == AssetType::Texture)
+                {
+                    const Texture         texture(inFilePath);
+                    const Image::Instance image = texture.getData().lock();
+                    if (!image || image->getPixels() == nullptr)
+                    {
+                        return false;
+                    }
+
+                    return AssetPreview::bake(inFilePath, AssetType::Texture, *image);
+                }
+
                 std::unique_ptr<AssetPreview> preview = decodePreview(inFilePath, false);
                 if (!preview || !preview->image)
                 {

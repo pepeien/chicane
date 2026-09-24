@@ -25,7 +25,8 @@ namespace Chicane
                     std::uint32_t inWidth,
                     std::uint32_t inHeight,
                     bool          bHdr,
-                    std::uint32_t inFrameIndex
+                    std::uint32_t inFrameIndex,
+                    bool          bBloom = true
                 );
 
                 void destroyImages();

@@ -136,9 +136,6 @@ namespace Chicane
             virtual void refreshSize();
             virtual void refreshPosition();
 
-            // Drawables this component owns outside of the layout flow, such as glyphs or scroll bars
-            void setPeripherals(const std::vector<Component*>& inPeripherals);
-
         public:
             // Checkers
             bool isRoot() const;
@@ -396,6 +393,8 @@ namespace Chicane
             void paintRadius(const std::vector<const Component*>& inRoundedAncestors);
             void paintRoundClips(const std::vector<const Component*>& inRoundedAncestors);
 
+            void setPeripherals(const std::vector<Component*>& inPeripherals);
+
         protected:
             // Properties
             String                     m_tag;
@@ -445,7 +444,7 @@ namespace Chicane
 
             // Draw
             Primitive                  m_primitive;
-            mutable DrawCache          m_draw;
+            DrawCache                  m_draw;
 
             // For-loop
             std::vector<Component*>    m_forInstances;

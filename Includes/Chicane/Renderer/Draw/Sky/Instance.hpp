@@ -13,6 +13,7 @@ namespace Chicane
         public:
             DrawPoly model    = {};
             float    exposure = 1.0f;
+            bool     bVisible = true;
         };
     }
 }

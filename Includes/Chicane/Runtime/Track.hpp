@@ -17,7 +17,8 @@ namespace Chicane
     namespace Track
     {
         // File
-        static constexpr inline const char*   EXTENSION = ".track";
+        static constexpr inline const char*   EXTENSION         = ".track";
+        static constexpr inline const char*   PREVIEW_DIRECTORY = "Assets/Engine/Levels/Preview";
 
         // Tag
         static constexpr inline const char*   TAG_ID = "Track";

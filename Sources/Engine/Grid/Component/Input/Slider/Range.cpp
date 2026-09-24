@@ -89,11 +89,11 @@ namespace Chicane
 
                 if (m_drag == Drag::Span)
                 {
-                    Component*     track = SliderMath::findChildId(this, "rangeTrack");
-                    const Bounds2D box   = track ? track->getDrawBounds() : getDrawBounds();
-                    const float pointer  = SliderMath::fromLocation(event.location, box, min, max, 0.0f);
-                    m_spanWidth          = high - low;
-                    m_grabOffset         = pointer - low;
+                    Component*     track   = SliderMath::findChildId(this, "rangeTrack");
+                    const Bounds2D box     = track ? track->getDrawBounds() : getDrawBounds();
+                    const float    pointer = SliderMath::fromLocation(event.location, box, min, max, 0.0f);
+                    m_spanWidth            = high - low;
+                    m_grabOffset           = pointer - low;
                 }
                 else
                 {
@@ -221,9 +221,9 @@ namespace Chicane
                 std::swap(min, max);
             }
 
-            const String rawLow  = getAttribute(LOW_ATTRIBUTE_NAME);
-            const String rawHigh = getAttribute(HIGH_ATTRIBUTE_NAME);
-            float        nextLow = low;
+            const String rawLow   = getAttribute(LOW_ATTRIBUTE_NAME);
+            const String rawHigh  = getAttribute(HIGH_ATTRIBUTE_NAME);
+            float        nextLow  = low;
             float        nextHigh = high;
 
             if (!rawLow.isEmpty() && (isReference(rawLow) || !m_bIsEdited))
@@ -416,8 +416,8 @@ namespace Chicane
                 return Drag::None;
             }
 
-            const Bounds2D box   = track ? track->getDrawBounds() : getDrawBounds();
-            const float    next  = SliderMath::fromLocation(inLocation, box, min, max, 0.0f);
+            const Bounds2D box  = track ? track->getDrawBounds() : getDrawBounds();
+            const float    next = SliderMath::fromLocation(inLocation, box, min, max, 0.0f);
 
             return std::fabs(next - low) <= std::fabs(next - high) ? Drag::Low : Drag::High;
         }

@@ -5,6 +5,7 @@
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
@@ -25,6 +26,7 @@ namespace Chicane
             {AssetType::Sky,       Sky::TAG      },
             {AssetType::Sound,     Sound::TAG    },
             {AssetType::Texture,   Texture::TAG  },
+            {AssetType::Material,  Material::TAG },
             {AssetType::Effect,    Effect::TAG   }
         };
 
@@ -37,6 +39,7 @@ namespace Chicane
             {AssetType::Sky,       Sky::EXTENSION      },
             {AssetType::Sound,     Sound::EXTENSION    },
             {AssetType::Texture,   Texture::EXTENSION  },
+            {AssetType::Material,  Material::EXTENSION },
             {AssetType::Effect,    Effect::EXTENSION   }
         };
 
@@ -212,6 +215,9 @@ namespace Chicane
 
         case Box::AssetType::Texture:
             return "Texture";
+
+        case Box::AssetType::Material:
+            return "Material";
 
         case Box::AssetType::Sky:
             return "Sky";

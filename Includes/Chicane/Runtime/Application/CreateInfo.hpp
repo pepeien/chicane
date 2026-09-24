@@ -26,5 +26,6 @@ namespace Chicane
 
         // Callbacks
         std::function<void()>         onSetup = nullptr;
+        std::function<void()>         onFrame = nullptr;
     };
 }

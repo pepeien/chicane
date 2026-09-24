@@ -24,9 +24,9 @@
 
 namespace Editor
 {
-    static constexpr inline const char* CAMERA_HELPER_MESH  = "Assets/Editor/Meshes/Camera.bmsh";
-    static constexpr inline const char* LIGHT_HELPER_MESH   = "Assets/Editor/Meshes/Gizmo/Arrow.bmsh";
-    static constexpr inline float       LIGHT_HELPER_SCALE  = 0.125f;
+    static constexpr inline const char* CAMERA_HELPER_MESH = "Assets/Editor/Meshes/Camera.bmsh";
+    static constexpr inline const char* LIGHT_HELPER_MESH  = "Assets/Editor/Meshes/Gizmo/Arrow.bmsh";
+    static constexpr inline float       LIGHT_HELPER_SCALE = 0.125f;
 
     Scene::Scene()
         : Chicane::Scene(),
@@ -218,7 +218,7 @@ namespace Editor
             helper.mesh         = createHelper(inMesh);
             helper.subscription = inTarget->watchChanges([this, inTarget]() { poseHelper(inTarget); });
             poseHelper(helper.mesh, inTarget);
-            next[inTarget]      = std::move(helper);
+            next[inTarget] = std::move(helper);
         };
 
         for (Chicane::CCamera* camera : getComponents<Chicane::CCamera>())
@@ -256,7 +256,7 @@ namespace Editor
             delete helper.mesh;
         }
 
-        m_helpers = std::move(next);
+        m_helpers         = std::move(next);
         m_bSyncingHelpers = false;
     }
 
@@ -318,8 +318,7 @@ namespace Editor
                 const Chicane::Vec3 destination = origin + (forward / length) * std::max(light->getRange(), 1e-8f);
                 const float         angle       = std::max(light->getOuterAngle(), 0.0f) * Chicane::Math::DEG_TO_RAD;
 
-                const Chicane::SceneTraceRequest request =
-                    Chicane::SceneTraceRequest::Cone(origin, destination, angle);
+                const Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::Cone(origin, destination, angle);
                 const Chicane::SceneTraceShapeCone* cone =
                     dynamic_cast<const Chicane::SceneTraceShapeCone*>(request.shape.get());
                 if (!cone)

@@ -18,6 +18,9 @@ namespace Chicane
         case ImageVendor::Gif:
             return "Gif";
 
+        case ImageVendor::Hdr:
+            return "Hdr";
+
         default:
             return "";
         }

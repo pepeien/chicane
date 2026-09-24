@@ -10,7 +10,8 @@ namespace Chicane
         {
             Undefined, // N/A
             Wavefront, // .obj
-            Gltf       // .gltf / .glb
+            Gltf,      // .gltf / .glb
+            Cooked     // Unique geometry written by import
         };
     }
 

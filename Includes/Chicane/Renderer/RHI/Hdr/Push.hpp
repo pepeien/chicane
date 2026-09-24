@@ -14,6 +14,7 @@ namespace Chicane
             {
             public:
                 std::int32_t enabled = 0;
+                std::int32_t bloom   = 1;
             };
         }
     }

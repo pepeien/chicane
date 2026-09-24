@@ -18,11 +18,14 @@ namespace Chicane
           m_filepath(),
           m_cellSize(SceneTraceRequest::DEFAULT_CELL_SIZE),
           m_cells({}),
-          m_objectCells({})
+          m_objectCells({}),
+          m_objectMutex()
     {}
 
     Scene::~Scene()
     {
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
         deleteComponents();
         deleteActors();
     }
@@ -44,6 +47,22 @@ namespace Chicane
             for (Component* component : components)
             {
                 component->onLoad();
+            }
+        }
+
+        for (Actor* actor : getActors())
+        {
+            if (actor)
+            {
+                actor->applyLookTo();
+            }
+        }
+
+        for (Component* component : getComponents())
+        {
+            if (component)
+            {
+                component->applyLookTo();
             }
         }
 
@@ -75,6 +94,8 @@ namespace Chicane
 
     void Scene::tick(float inDeltaTime)
     {
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
         tickActors(inDeltaTime);
         tickComponents(inDeltaTime);
 
@@ -202,6 +223,8 @@ namespace Chicane
             return nullptr;
         }
 
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
         auto& typed = m_actors[std::type_index(typeid(*inActor))];
         typed.push_back(inActor);
         m_actorCount++;
@@ -211,6 +234,7 @@ namespace Chicane
         if (isLoaded())
         {
             inActor->onLoad();
+            inActor->applyLookTo();
         }
 
         if (!m_actorsObservable.isEmpty())
@@ -228,6 +252,8 @@ namespace Chicane
             return nullptr;
         }
 
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
         auto& typed = m_components[std::type_index(typeid(*inComponent))];
         typed.push_back(inComponent);
         m_componentCount++;
@@ -237,6 +263,7 @@ namespace Chicane
         if (isLoaded())
         {
             inComponent->onLoad();
+            inComponent->applyLookTo();
         }
 
         if (!m_componentsObservable.isEmpty())
@@ -297,6 +324,8 @@ namespace Chicane
         {
             return;
         }
+
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
 
         auto typed = m_actors.find(std::type_index(typeid(*inActor)));
         if (typed == m_actors.end())
@@ -378,6 +407,8 @@ namespace Chicane
         {
             return;
         }
+
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
 
         auto typed = m_components.find(std::type_index(typeid(*inComponent)));
         if (typed == m_components.end())
@@ -514,12 +545,23 @@ namespace Chicane
 
     void Scene::tickActors(float inDeltaTime)
     {
-        for (auto& [type, actors] : m_actors)
+        std::vector<Actor*> actors;
+        actors.reserve(m_actorCount);
+
+        for (const auto& [type, typed] : m_actors)
         {
-            for (Actor* actor : actors)
+            for (Actor* actor : typed)
             {
-                actor->tick(inDeltaTime);
+                if (actor)
+                {
+                    actors.push_back(actor);
+                }
             }
+        }
+
+        for (Actor* actor : actors)
+        {
+            actor->tick(inDeltaTime);
         }
     }
 
@@ -540,12 +582,23 @@ namespace Chicane
 
     void Scene::tickComponents(float inDeltaTime)
     {
-        for (auto& [type, components] : m_components)
+        std::vector<Component*> components;
+        components.reserve(m_componentCount);
+
+        for (const auto& [type, typed] : m_components)
         {
-            for (Component* component : components)
+            for (Component* component : typed)
             {
-                component->tick(inDeltaTime);
+                if (component)
+                {
+                    components.push_back(component);
+                }
             }
+        }
+
+        for (Component* component : components)
+        {
+            component->tick(inDeltaTime);
         }
     }
 

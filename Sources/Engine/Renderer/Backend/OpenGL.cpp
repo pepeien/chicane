@@ -10,6 +10,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Renderer/Instance.hpp"
@@ -1064,6 +1065,47 @@ namespace Chicane
             return m_screenTextureId;
         }
 
+        bool OpenGLBackend::captureScreen(
+            std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
+        )
+        {
+            outWidth  = 0;
+            outHeight = 0;
+            outRgba.clear();
+
+            const Vec<2, std::uint32_t> resolution =
+                getRenderer() ? getRenderer()->getResolution() : Vec<2, std::uint32_t>(0, 0);
+            if (resolution.x == 0 || resolution.y == 0)
+            {
+                return false;
+            }
+
+            glFinish();
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+            glReadBuffer(GL_FRONT);
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+            const std::size_t bytes =
+                static_cast<std::size_t>(resolution.x) * static_cast<std::size_t>(resolution.y) * 4;
+            outRgba.resize(bytes);
+            glReadPixels(
+                0,
+                0,
+                static_cast<GLsizei>(resolution.x),
+                static_cast<GLsizei>(resolution.y),
+                GL_RGBA,
+                GL_UNSIGNED_BYTE,
+                outRgba.data()
+            );
+
+            Image::flipY(outRgba.data(), static_cast<int>(resolution.x), static_cast<int>(resolution.y), 4);
+
+            outWidth  = resolution.x;
+            outHeight = resolution.y;
+
+            return true;
+        }
+
         void OpenGLBackend::presentTarget(const Frame& inFrame)
         {
             if (m_targetFramebuffer == 0)
@@ -1089,7 +1131,8 @@ namespace Chicane
                 m_rhiFrame.width,
                 m_rhiFrame.height,
                 inFrame.hasFeature(RendererFeature::HDR),
-                m_rhiFrame.frameIndex
+                m_rhiFrame.frameIndex,
+                inFrame.hasFeature(RendererFeature::Bloom)
             );
         }
 

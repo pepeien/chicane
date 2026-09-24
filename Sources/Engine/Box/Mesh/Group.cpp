@@ -3,11 +3,13 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Chicane/Box/Material.hpp"
+
 namespace Chicane
 {
     namespace Box
     {
-        const AssetReference g_invalidTexture = {};
+        const AssetReference g_invalidMaterial = {};
 
         static bool isNearlyEqual(float inLeft, float inRight)
         {
@@ -54,8 +56,8 @@ namespace Chicane
             {
                 XmlNode next = child.getNextSibling();
 
-                const TextureMap map = toTextureMap(child.getName());
-                if (map != TextureMap::Count)
+                const TextureMaterial type = toTextureMaterial(child.getName());
+                if (type != TextureMaterial::Count)
                 {
                     outNode.removeChild(child);
                 }
@@ -66,8 +68,7 @@ namespace Chicane
 
         bool MeshGroup::isValid() const
         {
-            return !m_id.isEmpty() && m_model.isValid() && hasTexture(TextureMap::Base) &&
-                   getTexture(TextureMap::Base).isValid();
+            return !m_id.isEmpty() && m_model.isValid() && hasMaterial();
         }
 
         const String& MeshGroup::getId() const
@@ -106,55 +107,38 @@ namespace Chicane
             m_model.setReference(inReference);
         }
 
-        const MeshGroup::TextureMaps& MeshGroup::getTextures() const
+        bool MeshGroup::hasMaterial() const
         {
-            return m_textures;
+            return m_material.isValid();
         }
 
-        bool MeshGroup::hasTexture(TextureMap inMap) const
+        const AssetReference& MeshGroup::getMaterial() const
         {
-            return m_textures.find(inMap) != m_textures.end();
-        }
-
-        const AssetReference& MeshGroup::getTexture(TextureMap inMap) const
-        {
-            auto found = m_textures.find(inMap);
-            if (found == m_textures.end())
+            if (!hasMaterial())
             {
-                return g_invalidTexture;
+                return g_invalidMaterial;
             }
 
-            return found->second;
+            return m_material;
         }
 
-        void MeshGroup::setTexture(TextureMap inMap, const XmlNode& inNode, const FileSystem::Path& inBase)
+        void MeshGroup::setMaterial(const AssetReference& inValue)
         {
-            AssetReference texture;
-            texture.setFrom(inNode, inBase);
-
-            m_textures[inMap] = texture;
+            m_material = inValue;
         }
 
-        void MeshGroup::setTexture(TextureMap inMap, const String& inSource, const String& inReference)
+        void MeshGroup::setMaterial(const XmlNode& inNode, const FileSystem::Path& inBase)
         {
-            AssetReference texture;
-            texture.setSource(inSource);
-            texture.setReference(inReference);
-
-            m_textures[inMap] = texture;
+            m_material.setFrom(inNode, inBase);
         }
 
-        void MeshGroup::setTexture(const XmlNode& inNode, const FileSystem::Path& inBase)
+        void MeshGroup::setMaterial(const String& inSource, const String& inReference)
         {
-            setTexture(TextureMap::Base, inNode, inBase);
+            m_material.setSource(inSource);
+            m_material.setReference(inReference);
         }
 
-        void MeshGroup::setTexture(const String& inSource, const String& inReference)
-        {
-            setTexture(TextureMap::Base, inSource, inReference);
-        }
-
-        void MeshGroup::saveTextures(XmlNode& outNode) const
+        void MeshGroup::saveMaterial(XmlNode& outNode) const
         {
             if (Xml::isEmpty(outNode))
             {
@@ -163,16 +147,23 @@ namespace Chicane
 
             clearTextureNodes(outNode);
 
-            for (const auto& [map, texture] : m_textures)
+            XmlNode materialNode = outNode.getChild(Material::TAG);
+            if (!m_material.isValid())
             {
-                if (!texture.isValid())
+                if (!Xml::isEmpty(materialNode))
                 {
-                    continue;
+                    outNode.removeChild(materialNode);
                 }
 
-                XmlNode textureNode = outNode.appendChild(toString(map).toChar());
-                texture.saveTo(textureNode);
+                return;
             }
+
+            if (Xml::isEmpty(materialNode))
+            {
+                materialNode = outNode.appendChild(Material::TAG);
+            }
+
+            m_material.saveTo(materialNode);
         }
 
         const Transform& MeshGroup::getTransform() const

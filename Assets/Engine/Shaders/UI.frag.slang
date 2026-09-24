@@ -66,16 +66,17 @@ float2 getUITextureUV(int textureIndex, float2 uv)
     return result;
 }
 
-float3 sampleUITexture(int textureIndex, float2 uv)
+float4 sampleUITexture(int textureIndex, float2 uv)
 {
     float2 texUV = getUITextureUV(textureIndex, uv);
     if (textureIndex == screen.data.x)
     {
-        float3 color = gScreenTarget.Sample(texUV).rgb;
-        return screen.data.y != 0 ? acesTonemap(color) : saturate(color);
+        float4 color = gScreenTarget.Sample(texUV);
+        float3 rgb   = screen.data.y != 0 ? acesTonemap(color.rgb) : saturate(color.rgb);
+        return float4(rgb, 1.0);
     }
 
-    return sampleTextureSlot(textureIndex, texUV).rgb;
+    return sampleTextureSlot(textureIndex, texUV);
 }
 
 [shader("fragment")]
@@ -121,19 +122,19 @@ float4 main(VSOut inData, float4 fragCoord : SV_Position) : SV_Target
     }
     else if (inData.textureIndex >= 0)
     {
-        float3 rgb = sampleUITexture(inData.textureIndex, inData.uv);
+        float4 texel = sampleUITexture(inData.textureIndex, inData.uv);
 
         if (inData.view.z >= 0.5)
         {
-            float2 texel = float2(inData.view.z, inData.view.z) / max(inData.box.zw - inData.box.xy, float2(1.0, 1.0));
-            float3 acc   = float3(0.0, 0.0, 0.0);
-            float wsum   = 0.0;
+            float2 texelSize = float2(inData.view.z, inData.view.z) / max(inData.box.zw - inData.box.xy, float2(1.0, 1.0));
+            float4 acc       = float4(0.0, 0.0, 0.0, 0.0);
+            float  wsum      = 0.0;
 
             for (int y = -1; y <= 1; y++)
             {
                 for (int x = -1; x <= 1; x++)
                 {
-                    float2 tap = inData.uv + (float2(float(x), float(y)) * texel);
+                    float2 tap = inData.uv + (float2(float(x), float(y)) * texelSize);
                     float w    = exp(-0.5 * float((x * x) + (y * y)) / 2.0);
 
                     acc  += sampleUITexture(inData.textureIndex, tap) * w;
@@ -141,10 +142,11 @@ float4 main(VSOut inData, float4 fragCoord : SV_Position) : SV_Target
                 }
             }
 
-            rgb = acc / max(wsum, 1e-4);
+            texel = acc / max(wsum, 1e-4);
         }
 
-        color.rgb = rgb;
+        color.rgb = texel.rgb;
+        color.a  *= texel.a;
     }
 
     float2 frag      = uiClipPosition(fragCoord.xy, inData.view.xy);

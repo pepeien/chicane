@@ -37,6 +37,9 @@ namespace Chicane
         float getExposure() const;
         void setExposure(float inValue);
 
+        bool isVisible() const;
+        void setVisible(bool inValue);
+
     public:
         CH_FIELD()
         FileSystem::Path sky;
@@ -46,6 +49,9 @@ namespace Chicane
 
         CH_FIELD()
         float exposure;
+
+        CH_FIELD()
+        bool visible;
 
     protected:
         const Box::Sky* m_asset;

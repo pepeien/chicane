@@ -148,7 +148,8 @@ namespace Chicane
                 std::uint32_t inWidth,
                 std::uint32_t inHeight,
                 bool          bHdr,
-                std::uint32_t inFrameIndex
+                std::uint32_t inFrameIndex,
+                bool          bBloom
             )
             {
                 auto writeGroup = [&](std::vector<BindGroup>&          outGroups,
@@ -185,47 +186,50 @@ namespace Chicane
                 }
                 );
 
-                PassCreateInfo extractPass;
-                extractPass.bHasColor   = true;
-                extractPass.color.image = m_bloom[0];
-                extractPass.color.load  = LoadOp::Clear;
-                extractPass.color.store = StoreOp::Store;
-                extractPass.width       = m_width;
-                extractPass.height      = m_height;
-                inCommands->beginPass(extractPass);
-                inCommands->bindPipeline(m_extract);
-                inCommands->bindGroup(0, m_extractGroups[inFrameIndex]);
-                inCommands->setViewport({Vec2(static_cast<float>(m_width), static_cast<float>(m_height))});
-                inCommands->setScissor({0, 0, m_width, m_height});
-                inCommands->draw(3, 1, 0, 0);
-                inCommands->endPass();
-
-                auto blur = [&](int src, int dst, float x, float y)
+                if (bBloom)
                 {
-                    PassCreateInfo pass;
-                    pass.bHasColor   = true;
-                    pass.color.image = m_bloom[dst];
-                    pass.color.load  = LoadOp::Clear;
-                    pass.color.store = StoreOp::Store;
-                    pass.width       = m_width;
-                    pass.height      = m_height;
-                    inCommands->beginPass(pass);
-                    inCommands->bindPipeline(m_blur);
-                    inCommands->bindGroup(0, m_blurGroup[src]);
-                    BlurPush push;
-                    push.direction[0] = x;
-                    push.direction[1] = y;
-                    inCommands->pushConstants(&push, sizeof(push));
+                    PassCreateInfo extractPass;
+                    extractPass.bHasColor   = true;
+                    extractPass.color.image = m_bloom[0];
+                    extractPass.color.load  = LoadOp::Clear;
+                    extractPass.color.store = StoreOp::Store;
+                    extractPass.width       = m_width;
+                    extractPass.height      = m_height;
+                    inCommands->beginPass(extractPass);
+                    inCommands->bindPipeline(m_extract);
+                    inCommands->bindGroup(0, m_extractGroups[inFrameIndex]);
                     inCommands->setViewport({Vec2(static_cast<float>(m_width), static_cast<float>(m_height))});
                     inCommands->setScissor({0, 0, m_width, m_height});
                     inCommands->draw(3, 1, 0, 0);
                     inCommands->endPass();
-                };
 
-                blur(0, 1, 1.0f, 0.0f);
-                blur(1, 0, 0.0f, 1.0f);
-                blur(0, 1, 1.0f, 0.0f);
-                blur(1, 0, 0.0f, 1.0f);
+                    auto blur = [&](int src, int dst, float x, float y)
+                    {
+                        PassCreateInfo pass;
+                        pass.bHasColor   = true;
+                        pass.color.image = m_bloom[dst];
+                        pass.color.load  = LoadOp::Clear;
+                        pass.color.store = StoreOp::Store;
+                        pass.width       = m_width;
+                        pass.height      = m_height;
+                        inCommands->beginPass(pass);
+                        inCommands->bindPipeline(m_blur);
+                        inCommands->bindGroup(0, m_blurGroup[src]);
+                        BlurPush push;
+                        push.direction[0] = x;
+                        push.direction[1] = y;
+                        inCommands->pushConstants(&push, sizeof(push));
+                        inCommands->setViewport({Vec2(static_cast<float>(m_width), static_cast<float>(m_height))});
+                        inCommands->setScissor({0, 0, m_width, m_height});
+                        inCommands->draw(3, 1, 0, 0);
+                        inCommands->endPass();
+                    };
+
+                    blur(0, 1, 1.0f, 0.0f);
+                    blur(1, 0, 0.0f, 1.0f);
+                    blur(0, 1, 1.0f, 0.0f);
+                    blur(1, 0, 0.0f, 1.0f);
+                }
 
                 PassCreateInfo compositePass;
                 compositePass.bHasColor   = true;
@@ -239,6 +243,7 @@ namespace Chicane
                 inCommands->bindGroup(0, m_compositeGroups[inFrameIndex]);
                 HdrPush hdr;
                 hdr.enabled = bHdr ? 1 : 0;
+                hdr.bloom   = bBloom ? 1 : 0;
                 inCommands->pushConstants(&hdr, sizeof(hdr));
                 inCommands->setViewport({Vec2(static_cast<float>(inWidth), static_cast<float>(inHeight))});
                 inCommands->setScissor({0, 0, inWidth, inHeight});

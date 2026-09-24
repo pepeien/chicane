@@ -2,7 +2,10 @@
 
 #include <algorithm>
 #include <atomic>
+#include <memory>
+#include <vector>
 
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 
@@ -42,6 +45,24 @@ namespace Chicane
             {
                 m_backend->onShutdown();
             }
+        }
+
+        std::unique_ptr<Image> Instance::captureScreen()
+        {
+            if (!hasBackend())
+            {
+                return nullptr;
+            }
+
+            std::uint32_t              width  = 0;
+            std::uint32_t              height = 0;
+            std::vector<unsigned char> rgba;
+            if (!m_backend->captureScreen(width, height, rgba) || width == 0 || height == 0 || rgba.empty())
+            {
+                return nullptr;
+            }
+
+            return std::make_unique<Image>(rgba.data(), static_cast<int>(width), static_cast<int>(height), 4, 4);
         }
 
         void Instance::render()
@@ -147,21 +168,30 @@ namespace Chicane
             return m_skyResource.findId(inReference);
         }
 
+        static bool hasSkySample(const Image::Instance& inImage)
+        {
+            return inImage && inImage->getWidth() > 0 && inImage->getHeight() > 0 &&
+                   (inImage->getPixels() != nullptr || inImage->getFloatPixels() != nullptr);
+        }
+
         Draw::Id Instance::loadSky(const DrawSkyData& inData)
         {
             m_skyResource.exposure = inData.exposure;
-
-            if (findSky(inData.reference) != Draw::InvalidId)
-            {
-                return m_skyResource.getDraw().id;
-            }
+            m_skyResource.bVisible = inData.bVisible;
 
             DrawSky sky;
             sky.reference = inData.reference;
+            sky.kind      = inData.kind;
 
             for (const Draw::Reference& texture : inData.textures)
             {
-                sky.textures.push_back(m_textureResources.getDraw(texture));
+                const DrawTexture& draw = m_textureResources.getDraw(texture);
+                if (!hasSkySample(draw.getSampleImage()))
+                {
+                    return Draw::InvalidId;
+                }
+
+                sky.textures.push_back(draw);
             }
 
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
@@ -169,6 +199,33 @@ namespace Chicane
             if (sky.model.id <= Draw::InvalidId)
             {
                 return Draw::InvalidId;
+            }
+
+            const Draw::Id existing = findSky(inData.reference);
+            if (existing != Draw::InvalidId)
+            {
+                const DrawSky& current = m_skyResource.getDraw();
+                bool           bSame   = current.kind == sky.kind && current.model.id == sky.model.id &&
+                             current.textures.size() == sky.textures.size();
+                if (bSame)
+                {
+                    for (std::size_t index = 0; index < current.textures.size(); index++)
+                    {
+                        if (!current.textures[index].reference.equals(sky.textures[index].reference) ||
+                            current.textures[index].width != sky.textures[index].width ||
+                            current.textures[index].height != sky.textures[index].height)
+                        {
+                            bSame = false;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (bSame)
+                {
+                    return existing;
+                }
             }
 
             m_skyResource.add(sky);

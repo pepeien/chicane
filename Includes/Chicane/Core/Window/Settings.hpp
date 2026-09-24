@@ -14,6 +14,8 @@ namespace Chicane
     struct CHICANE_CORE WindowSettings
     {
     public:
+        bool                  bIsHidden = false;
+
         String                title    = "";
         FileSystem::Path      icon     = "";
         Vec<2, std::uint32_t> size     = Vec<2, std::uint32_t>(0);

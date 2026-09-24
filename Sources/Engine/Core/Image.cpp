@@ -304,6 +304,7 @@ namespace Chicane
         {ImageVendor::Jpg,       "JPEG"},
         {ImageVendor::Png,       "PNG" },
         {ImageVendor::Gif,       "GIF" },
+        {ImageVendor::Hdr,       "HDR" },
     };
 
     ImageVendor Image::parseVendor(const String& inValue)
@@ -350,6 +351,23 @@ namespace Chicane
         {
             decodeGif(FileSystem::readUnsigned(inLocation));
 
+            return;
+        }
+
+        if (m_vendor == ImageVendor::Hdr)
+        {
+            if (!decodeHdrFile(inLocation))
+            {
+                throw std::runtime_error(
+                    "Failed to open [" + inLocation.toString() + "] image (" + String(stbi_failure_reason()) + ")"
+                );
+            }
+
+            return;
+        }
+
+        if (decodeHdrFile(inLocation))
+        {
             return;
         }
 
@@ -419,12 +437,19 @@ namespace Chicane
         : ImageInfo(),
           m_vendor(ImageVendor::Undefined),
           m_pixels(nullptr),
+          m_floats(nullptr),
           m_frameCount(0),
           m_delays({})
     {}
 
     Image::~Image()
     {
+        if (m_floats)
+        {
+            stbi_image_free(m_floats);
+            m_floats = nullptr;
+        }
+
         if (m_pixels == nullptr)
         {
             return;
@@ -437,6 +462,21 @@ namespace Chicane
 
     void Image::decode(const Raw& inData)
     {
+        if (m_vendor == ImageVendor::Hdr)
+        {
+            if (!decodeHdr(inData))
+            {
+                throw std::runtime_error("Failed to parse image data (" + String(stbi_failure_reason()) + ")");
+            }
+
+            return;
+        }
+
+        if (decodeHdr(inData))
+        {
+            return;
+        }
+
         m_pixels = stbi_load_from_memory(
             inData.data(),
             static_cast<int>(inData.size()),
@@ -506,6 +546,101 @@ namespace Chicane
         }
     }
 
+    bool Image::decodeHdrFile(const FileSystem::Path& inLocation)
+    {
+        const String path = inLocation.toString();
+        if (!stbi_is_hdr(path.toChar()))
+        {
+            return false;
+        }
+
+        m_floats = stbi_loadf(path.toChar(), &m_width, &m_height, &m_channel, STBI_rgb_alpha);
+        if (!m_floats)
+        {
+            return false;
+        }
+
+        m_vendor     = ImageVendor::Hdr;
+        m_format     = STBI_rgb_alpha;
+        m_channel    = STBI_rgb_alpha;
+        m_frameCount = 1;
+        m_delays     = {0};
+        rebuildLdrFromHdr();
+
+        return true;
+    }
+
+    bool Image::decodeHdr(const Raw& inData)
+    {
+        if (inData.empty() || !stbi_is_hdr_from_memory(inData.data(), static_cast<int>(inData.size())))
+        {
+            return false;
+        }
+
+        m_floats = stbi_loadf_from_memory(
+            inData.data(),
+            static_cast<int>(inData.size()),
+            &m_width,
+            &m_height,
+            &m_channel,
+            STBI_rgb_alpha
+        );
+        if (!m_floats)
+        {
+            return false;
+        }
+
+        m_vendor     = ImageVendor::Hdr;
+        m_format     = STBI_rgb_alpha;
+        m_channel    = STBI_rgb_alpha;
+        m_frameCount = 1;
+        m_delays     = {0};
+        rebuildLdrFromHdr();
+
+        return true;
+    }
+
+    void Image::rebuildLdrFromHdr()
+    {
+        if (!m_floats || m_width <= 0 || m_height <= 0)
+        {
+            return;
+        }
+
+        const int count = m_width * m_height * STBI_rgb_alpha;
+        if (m_pixels)
+        {
+            stbi_image_free(m_pixels);
+            m_pixels = nullptr;
+        }
+
+        m_pixels = static_cast<Pixels>(std::malloc(static_cast<std::size_t>(count)));
+        if (!m_pixels)
+        {
+            throw std::runtime_error("Failed to allocate HDR preview");
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            const bool bAlpha  = (i % 4) == 3;
+            float      channel = m_floats[i];
+            if (!bAlpha)
+            {
+                channel = channel / (1.0f + std::max(channel, 0.0f));
+                if (channel <= 0.0031308f)
+                {
+                    channel = channel * 12.92f;
+                }
+                else
+                {
+                    channel = 1.055f * std::pow(channel, 1.0f / 2.4f) - 0.055f;
+                }
+            }
+
+            m_pixels[i] = static_cast<Pixel>(std::clamp(channel, 0.0f, 1.0f) * 255.0f + 0.5f);
+        }
+    }
+
     int Image::getFrameStride() const
     {
         return m_width * m_height * m_channel;
@@ -514,6 +649,11 @@ namespace Chicane
     ImageVendor Image::getVendor() const
     {
         return m_vendor;
+    }
+
+    bool Image::isHdr() const
+    {
+        return m_floats != nullptr;
     }
 
     int Image::getFrameCount() const
@@ -562,6 +702,11 @@ namespace Chicane
         return m_pixels + index * getFrameStride();
     }
 
+    const Image::FloatPixels Image::getFloatPixels() const
+    {
+        return m_floats;
+    }
+
     void Image::blit(Pixels outPixels, int outWidth, int outHeight, int inFrame) const
     {
         if (!outPixels || outWidth <= 0 || outHeight <= 0)
@@ -593,6 +738,70 @@ namespace Chicane
                 d[1] = srcChannel > 1 ? s[1] : s[0];
                 d[2] = srcChannel > 2 ? s[2] : s[0];
                 d[3] = srcChannel > 3 ? s[3] : 255;
+            }
+        }
+    }
+
+    void Image::blitFloat(FloatPixels outPixels, int outWidth, int outHeight) const
+    {
+        if (!outPixels || outWidth <= 0 || outHeight <= 0)
+        {
+            return;
+        }
+
+        const std::size_t count = static_cast<std::size_t>(outWidth) * static_cast<std::size_t>(outHeight) * 4u;
+        if (!m_floats || m_width <= 0 || m_height <= 0)
+        {
+            if (const Pixels src = getPixels())
+            {
+                const int srcChannel = m_channel > 0 ? m_channel : 4;
+                for (int y = 0; y < outHeight; y++)
+                {
+                    const int srcY = (y * m_height) / outHeight;
+                    for (int x = 0; x < outWidth; x++)
+                    {
+                        const int            srcX     = (x * m_width) / outWidth;
+                        const unsigned char* s        = src + (srcY * m_width + srcX) * srcChannel;
+                        float*               d        = outPixels + (y * outWidth + x) * 4;
+                        auto                 toLinear = [](unsigned char inValue)
+                        {
+                            const float channel = static_cast<float>(inValue) / 255.0f;
+                            if (channel <= 0.04045f)
+                            {
+                                return channel / 12.92f;
+                            }
+
+                            return std::pow((channel + 0.055f) / 1.055f, 2.4f);
+                        };
+
+                        d[0] = toLinear(s[0]);
+                        d[1] = toLinear(srcChannel > 1 ? s[1] : s[0]);
+                        d[2] = toLinear(srcChannel > 2 ? s[2] : s[0]);
+                        d[3] = srcChannel > 3 ? static_cast<float>(s[3]) / 255.0f : 1.0f;
+                    }
+                }
+
+                return;
+            }
+
+            std::fill(outPixels, outPixels + count, 0.0f);
+
+            return;
+        }
+
+        const int srcChannel = 4;
+        for (int y = 0; y < outHeight; y++)
+        {
+            const int srcY = (y * m_height) / outHeight;
+            for (int x = 0; x < outWidth; x++)
+            {
+                const int    srcX = (x * m_width) / outWidth;
+                const float* s    = m_floats + (srcY * m_width + srcX) * srcChannel;
+                float*       d    = outPixels + (y * outWidth + x) * 4;
+                d[0]              = s[0];
+                d[1]              = s[1];
+                d[2]              = s[2];
+                d[3]              = s[3];
             }
         }
     }
@@ -645,6 +854,27 @@ namespace Chicane
         return sizeof(float) * getSize();
     }
 
+    void Image::flipY(Pixels inPixels, int inWidth, int inHeight, int inChannel)
+    {
+        if (!inPixels || inWidth <= 0 || inHeight <= 1 || inChannel <= 0)
+        {
+            return;
+        }
+
+        const int rowSize = inWidth * inChannel;
+
+        for (int y = 0; y < inHeight / 2; y++)
+        {
+            unsigned char* topRow    = inPixels + y * rowSize;
+            unsigned char* bottomRow = inPixels + (inHeight - 1 - y) * rowSize;
+
+            for (int x = 0; x < rowSize; x++)
+            {
+                std::swap(topRow[x], bottomRow[x]);
+            }
+        }
+    }
+
     void Image::flipHorizontally()
     {
         const int rowSize    = m_width * m_channel;
@@ -672,24 +902,12 @@ namespace Chicane
 
     void Image::flipVertically()
     {
-        const int rowSize    = m_width * m_channel;
         const int frameCount = std::max(1, getFrameCount());
         const int stride     = getFrameStride();
 
         for (int frame = 0; frame < frameCount; frame++)
         {
-            unsigned char* pixels = m_pixels + frame * stride;
-
-            for (int y = 0; y < m_height / 2; y++)
-            {
-                unsigned char* topRow    = pixels + y * rowSize;
-                unsigned char* bottomRow = pixels + (m_height - 1 - y) * rowSize;
-
-                for (int x = 0; x < rowSize; x++)
-                {
-                    std::swap(topRow[x], bottomRow[x]);
-                }
-            }
+            Image::flipY(m_pixels + frame * stride, m_width, m_height, m_channel);
         }
     }
 

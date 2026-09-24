@@ -2,11 +2,15 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdint>
 #include <utility>
+#include <vector>
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Backend/Vulkan/CommandBuffer.hpp"
 #include "Backend/Vulkan/CommandBuffer/Pool.hpp"
+#include "Backend/Vulkan/CommandBuffer/Worker.hpp"
+#include "Backend/Vulkan/Buffer.hpp"
 #include "Backend/Vulkan/Debug.hpp"
 #include "Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -30,6 +34,7 @@ namespace Chicane
               swapchain({}),
               frames({}),
               m_currentFrameIndex(0U),
+              m_lastImageIndex(~0u),
               m_screenTextureId(Draw::InvalidId),
               m_timestampQueryPool(nullptr),
               m_timestampPeriod(1.0f),
@@ -179,7 +184,8 @@ namespace Chicane
                         m_rhiFrame.width,
                         m_rhiFrame.height,
                         inFrame.hasFeature(RendererFeature::HDR),
-                        m_rhiFrame.frameIndex
+                        m_rhiFrame.frameIndex,
+                        inFrame.hasFeature(RendererFeature::Bloom)
                     );
                 }
                 renderLayers(
@@ -236,12 +242,156 @@ namespace Chicane
                 throw std::runtime_error("Present failed");
             }
 
+            m_lastImageIndex    = imageIndex;
             m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
         }
 
         Draw::Id VulkanBackend::getScreenTextureId() const
         {
             return m_screenTextureId;
+        }
+
+        bool VulkanBackend::captureScreen(
+            std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
+        )
+        {
+            outWidth  = 0;
+            outHeight = 0;
+            outRgba.clear();
+
+            if (m_lastImageIndex >= swapchain.images.size() || !mainCommandBuffer)
+            {
+                return false;
+            }
+
+            logicalDevice.waitIdle();
+
+            const VulkanSwapchainImage& image  = swapchain.images.at(m_lastImageIndex);
+            const std::uint32_t         width  = swapchain.extent.width;
+            const std::uint32_t         height = swapchain.extent.height;
+            if (width == 0 || height == 0 || !image.colorImage.instance)
+            {
+                return false;
+            }
+
+            const vk::DeviceSize byteCount =
+                static_cast<vk::DeviceSize>(width) * static_cast<vk::DeviceSize>(height) * 4;
+
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.size           = byteCount;
+            bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eTransferDst;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.allocator = &allocator;
+
+            VulkanBuffer staging;
+            staging.init(bufferCreateInfo);
+
+            VulkanCommandBufferWorker::startJob(mainCommandBuffer);
+
+            vk::ImageMemoryBarrier toTransfer;
+            toTransfer.oldLayout                       = vk::ImageLayout::ePresentSrcKHR;
+            toTransfer.newLayout                       = vk::ImageLayout::eTransferSrcOptimal;
+            toTransfer.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            toTransfer.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            toTransfer.image                           = image.colorImage.instance;
+            toTransfer.srcAccessMask                   = vk::AccessFlagBits::eMemoryRead;
+            toTransfer.dstAccessMask                   = vk::AccessFlagBits::eTransferRead;
+            toTransfer.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            toTransfer.subresourceRange.baseMipLevel   = 0;
+            toTransfer.subresourceRange.levelCount     = 1;
+            toTransfer.subresourceRange.baseArrayLayer = 0;
+            toTransfer.subresourceRange.layerCount     = 1;
+
+            mainCommandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                toTransfer
+            );
+
+            vk::BufferImageCopy region;
+            region.bufferOffset                    = 0;
+            region.bufferRowLength                 = 0;
+            region.bufferImageHeight               = 0;
+            region.imageSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            region.imageSubresource.mipLevel       = 0;
+            region.imageSubresource.baseArrayLayer = 0;
+            region.imageSubresource.layerCount     = 1;
+            region.imageOffset                     = vk::Offset3D{0, 0, 0};
+            region.imageExtent                     = vk::Extent3D{width, height, 1};
+
+            mainCommandBuffer.copyImageToBuffer(
+                image.colorImage.instance,
+                vk::ImageLayout::eTransferSrcOptimal,
+                staging.instance,
+                region
+            );
+
+            vk::ImageMemoryBarrier toPresent = toTransfer;
+            toPresent.oldLayout              = vk::ImageLayout::eTransferSrcOptimal;
+            toPresent.newLayout              = vk::ImageLayout::ePresentSrcKHR;
+            toPresent.srcAccessMask          = vk::AccessFlagBits::eTransferRead;
+            toPresent.dstAccessMask          = vk::AccessFlagBits::eMemoryRead;
+
+            mainCommandBuffer.pipelineBarrier(
+                vk::PipelineStageFlagBits::eTransfer,
+                vk::PipelineStageFlagBits::eBottomOfPipe,
+                vk::DependencyFlags(),
+                nullptr,
+                nullptr,
+                toPresent
+            );
+
+            VulkanCommandBufferWorker::endJob(mainCommandBuffer, graphicsQueue, "Capture Screen");
+
+            const unsigned char* source = static_cast<const unsigned char*>(staging.map());
+            if (!source)
+            {
+                staging.destroy();
+
+                return false;
+            }
+
+            outWidth  = width;
+            outHeight = height;
+            outRgba.resize(static_cast<std::size_t>(byteCount));
+
+            const bool bSwapRedBlue = swapchain.colorFormat == vk::Format::eB8G8R8A8Unorm ||
+                                      swapchain.colorFormat == vk::Format::eB8G8R8A8Srgb;
+            for (std::uint32_t y = 0; y < height; ++y)
+            {
+                const std::uint32_t srcRow = y * width * 4;
+                const std::uint32_t dstRow = y * width * 4;
+                for (std::uint32_t x = 0; x < width; ++x)
+                {
+                    const std::uint32_t src = srcRow + x * 4;
+                    const std::uint32_t dst = dstRow + x * 4;
+                    if (bSwapRedBlue)
+                    {
+                        outRgba[dst + 0] = source[src + 2];
+                        outRgba[dst + 1] = source[src + 1];
+                        outRgba[dst + 2] = source[src + 0];
+                        outRgba[dst + 3] = source[src + 3];
+                    }
+                    else
+                    {
+                        outRgba[dst + 0] = source[src + 0];
+                        outRgba[dst + 1] = source[src + 1];
+                        outRgba[dst + 2] = source[src + 2];
+                        outRgba[dst + 3] = source[src + 3];
+                    }
+                }
+            }
+
+            staging.unmap();
+            staging.destroy();
+
+            return true;
         }
 
         vk::DescriptorSet VulkanBackend::getTextureDescriptorSet() const

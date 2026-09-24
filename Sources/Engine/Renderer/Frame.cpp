@@ -79,6 +79,7 @@ namespace Chicane
         {
             m_skyInstance.model    = inResource.getDraw().model;
             m_skyInstance.exposure = inResource.exposure;
+            m_skyInstance.bVisible = inResource.bVisible;
         }
 
         const View& Frame::getCamera() const

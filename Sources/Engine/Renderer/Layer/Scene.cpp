@@ -24,11 +24,13 @@ namespace Chicane
             buildModelBuffers();
             buildShadowImage();
             buildSkyImage();
+            buildSkyPanoramaImage();
             buildLayers();
         }
 
         void LScene::onDestruction()
         {
+            destroySkyPanoramaImage();
             destroySkyImage();
             destroyShadowImage();
             destroyModelBuffers();
@@ -168,6 +170,44 @@ namespace Chicane
             device->destroyImage(skyImage);
             skySampler = {};
             skyImage   = {};
+        }
+
+        void LScene::buildSkyPanoramaImage()
+        {
+            RHI::Device* device = m_backend->getRHIDevice();
+
+            RHI::ImageCreateInfo desc;
+            desc.kind        = RHI::ImageKind::Color2D;
+            desc.format      = RHI::ImageFormat::RGBA16F;
+            desc.width       = SKY_PANORAMA_WIDTH;
+            desc.height      = SKY_PANORAMA_HEIGHT;
+            desc.layers      = 1;
+            desc.mipLevels   = 1;
+            desc.bIsSampled  = true;
+            desc.bHasColor   = true;
+            desc.bHasDepth   = false;
+            skyPanoramaImage = device->createImage(desc);
+
+            RHI::SamplerCreateInfo sampler;
+            sampler.minFilter  = RHI::SamplerFilter::Linear;
+            sampler.magFilter  = RHI::SamplerFilter::Linear;
+            sampler.address    = RHI::SamplerAddress::Repeat;
+            sampler.bHasMip    = false;
+            skyPanoramaSampler = device->createSampler(sampler);
+        }
+
+        void LScene::destroySkyPanoramaImage()
+        {
+            RHI::Device* device = m_backend->getRHIDevice();
+            if (!device)
+            {
+                return;
+            }
+
+            device->destroySampler(skyPanoramaSampler);
+            device->destroyImage(skyPanoramaImage);
+            skyPanoramaSampler = {};
+            skyPanoramaImage   = {};
         }
 
         void LScene::buildLayers()

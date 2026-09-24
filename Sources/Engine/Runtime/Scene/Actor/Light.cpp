@@ -11,8 +11,25 @@ namespace Chicane
 
     void ALight::onLoad()
     {
-        light = getScene()->createComponent<CLight>();
-        light->attachTo(this);
+        if (!light)
+        {
+            for (Component* attachment : getAttachments())
+            {
+                if (CLight* existing = dynamic_cast<CLight*>(attachment))
+                {
+                    light = existing;
+
+                    break;
+                }
+            }
+        }
+
+        if (!light)
+        {
+            light = getScene()->createComponent<CLight>();
+            light->attachTo(this);
+        }
+
         light->activate();
     }
 }

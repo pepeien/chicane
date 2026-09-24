@@ -12,10 +12,32 @@ namespace Chicane
     namespace Box
     {
         Sky::Sky(const FileSystem::Path& inFilepath)
-            : Asset(inFilepath)
+            : Asset(inFilepath),
+              m_kind(SkyKind::Cube),
+              m_textures({}),
+              m_model()
         {
             fetchTextures();
+            fetchKind();
             fetchModel();
+        }
+
+        SkyKind Sky::getKind() const
+        {
+            return m_kind;
+        }
+
+        void Sky::setKind(SkyKind inKind)
+        {
+            m_kind = inKind;
+
+            setAttribute(KIND_ATTRIBUTE_NAME, toString(m_kind));
+
+            XmlNode leftover = getXML().getChild("Kind");
+            if (!leftover.empty())
+            {
+                getXML().removeChild(leftover);
+            }
         }
 
         const AssetReference::List& Sky::getTextures() const
@@ -93,6 +115,38 @@ namespace Chicane
             m_model.saveTo(model);
         }
 
+        void Sky::fetchKind()
+        {
+            String value = String(getAttribute(KIND_ATTRIBUTE_NAME)).trim();
+            if (value.isEmpty())
+            {
+                const XmlNode node = getXML().getChild("Kind");
+                if (!node.empty())
+                {
+                    value = String(node.getText()).trim();
+                }
+            }
+
+            if (value.equals("Panorama"))
+            {
+                m_kind = SkyKind::Panorama;
+
+                return;
+            }
+
+            if (!value.isEmpty())
+            {
+                m_kind = SkyKind::Cube;
+
+                return;
+            }
+
+            if (m_textures.size() == 1)
+            {
+                m_kind = SkyKind::Panorama;
+            }
+        }
+
         void Sky::fetchTextures()
         {
             const XmlNode textures = getXML().getChild(TEXTURES_TAG);
@@ -114,13 +168,18 @@ namespace Chicane
         void Sky::fetchModel()
         {
             const XmlNode model = getXML().getChild(Model::TAG);
+            if (!model.empty())
+            {
+                m_model.setFrom(model, getFilepath());
+            }
 
-            if (model.empty())
+            if (!m_model.getSource().isEmpty())
             {
                 return;
             }
 
-            m_model.setFrom(model, getFilepath());
+            m_model.setSource(m_kind == SkyKind::Panorama ? DOME_SOURCE : BOX_SOURCE);
+            m_model.setReference(Model::DEFAULT_REFERENCE);
         }
     }
 }

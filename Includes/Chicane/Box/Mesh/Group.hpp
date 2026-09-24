@@ -1,14 +1,11 @@
 #pragma once
 
-#include <map>
-
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Reference.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/String.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
@@ -17,9 +14,6 @@ namespace Chicane
     {
         struct CHICANE_BOX MeshGroup
         {
-        public:
-            using TextureMaps = std::map<TextureMap, AssetReference>;
-
         public:
             // Tag
             static constexpr inline const char* TAG = "Group";
@@ -46,14 +40,12 @@ namespace Chicane
             void setModel(const XmlNode& inNode, const FileSystem::Path& inBase = {});
             void setModel(const String& inSource, const String& inReference);
 
-            const TextureMaps& getTextures() const;
-            bool hasTexture(TextureMap inMap) const;
-            const AssetReference& getTexture(TextureMap inMap = TextureMap::Base) const;
-            void setTexture(TextureMap inMap, const XmlNode& inNode, const FileSystem::Path& inBase = {});
-            void setTexture(TextureMap inMap, const String& inSource, const String& inReference);
-            void setTexture(const XmlNode& inNode, const FileSystem::Path& inBase = {});
-            void setTexture(const String& inSource, const String& inReference);
-            void saveTextures(XmlNode& outNode) const;
+            bool hasMaterial() const;
+            const AssetReference& getMaterial() const;
+            void setMaterial(const AssetReference& inValue);
+            void setMaterial(const XmlNode& inNode, const FileSystem::Path& inBase = {});
+            void setMaterial(const String& inSource, const String& inReference);
+            void saveMaterial(XmlNode& outNode) const;
 
             const Transform& getTransform() const;
             const Mat4& getModelMatrix() const;
@@ -71,7 +63,7 @@ namespace Chicane
             String         m_id               = "";
             String         m_bone             = "";
             AssetReference m_model            = {};
-            TextureMaps    m_textures         = {};
+            AssetReference m_material         = {};
             Transform      m_transform        = {};
             float          m_emissiveStrength = 1.0f;
             float          m_tileSize         = 0.0f;

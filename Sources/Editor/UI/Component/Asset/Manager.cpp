@@ -1,9 +1,16 @@
 #include "Editor/UI/Component/Asset/Manager.reflected.hpp"
 
+#include <exception>
+#include <iostream>
+#include <mutex>
+#include <vector>
+
 #include <Chicane/Box/Asset.hpp>
 #include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Box/Effect.hpp>
 #include <Chicane/Box/Font.hpp>
+#include <Chicane/Box/Import/Source.hpp>
+#include <Chicane/Box/Material.hpp>
 #include <Chicane/Box/Mesh.hpp>
 #include <Chicane/Box/Model.hpp>
 #include <Chicane/Box/Sky.hpp>
@@ -11,6 +18,7 @@
 #include <Chicane/Box/Texture.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
+#include <Chicane/Core/Worker/Pool.hpp>
 
 #include "Editor/Application.hpp"
 #include "Editor/UI/Component/Dock/Header.hpp"
@@ -19,33 +27,31 @@
 
 namespace Editor
 {
-    template <typename T>
-    static Chicane::FileSystem::Path bakeSource(
-        const Chicane::FileSystem::Path& inSource,
-        const Chicane::String&           inExtension
-    )
+    static std::mutex                             g_importMutex;
+    static std::vector<Chicane::FileSystem::Path> g_imported;
+    static std::vector<Chicane::String>           g_importErrors;
+
+    static void applyImported(AssetManager& outManager)
     {
-        const Chicane::FileSystem::Path output = inSource.withExtension(inExtension);
-
-        T asset(output);
-        asset.setId(output.stem().toString());
-        asset.setData(inSource);
-        asset.saveXML();
-
-        return output;
-    }
-
-    static bool hasRawExtension(Chicane::Box::AssetType inType, const Chicane::String& inExtension)
-    {
-        for (const Chicane::FileSystem::Path& extension : Chicane::Box::getTypeRawExtensions(inType))
+        std::vector<Chicane::FileSystem::Path> imported;
+        std::vector<Chicane::String>           errors;
         {
-            if (inExtension.equals(extension.toString()))
-            {
-                return true;
-            }
+            std::lock_guard<std::mutex> lock(g_importMutex);
+            imported.swap(g_imported);
+            errors.swap(g_importErrors);
         }
 
-        return false;
+        for (const Chicane::String& error : errors)
+        {
+            std::cerr << "Import failed: " << error.toStandard() << std::endl;
+        }
+
+        if (imported.empty())
+        {
+            return;
+        }
+
+        outManager.assetPath = imported.back().toString();
     }
 
     AssetManager::AssetManager(const Chicane::XmlNode& inNode)
@@ -53,13 +59,24 @@ namespace Editor
           bHasAsset(false),
           bIsAssetEmpty(true),
           bIsMeshAsset(false),
+          bHasStage(false),
+          bHasPreviewShape(false),
+          previewShape(ViewerScene::PREVIEW_SHAPE_SHADER_BALL),
+          previewShapes(
+              {ViewerScene::PREVIEW_SHAPE_SHADER_BALL,
+               ViewerScene::PREVIEW_SHAPE_SPHERE,
+               ViewerScene::PREVIEW_SHAPE_TORUS,
+               ViewerScene::PREVIEW_SHAPE_CUBE,
+               ViewerScene::PREVIEW_SHAPE_KNOB}
+          ),
           assetPath(Chicane::String::empty()),
           assetId(Chicane::String::empty()),
           assetSource(Chicane::String::empty()),
           assetType(Chicane::String::empty()),
           selectedFolderPath(Chicane::String::empty()),
           selectedAssetName(Chicane::String::empty()),
-          m_viewerAsset(Chicane::String::empty())
+          m_viewerAsset(Chicane::String::empty()),
+          m_bEditSource(false)
     {
         import <DockHeader>();
 
@@ -76,12 +93,21 @@ namespace Editor
         Prop::copy(this, SELECTED_FOLDER_ATTRIBUTE, selectedFolderPath);
         Prop::copy(this, SELECTED_ASSET_ATTRIBUTE, selectedAssetName);
 
+        applyImported(*this);
         refreshFromExplorer();
     }
 
     void AssetManager::onCreateTexture()
     {
         createAsset(Chicane::Box::AssetType::Texture, Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture));
+    }
+
+    void AssetManager::onCreateMaterial()
+    {
+        createAsset(
+            Chicane::Box::AssetType::Material,
+            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Material)
+        );
     }
 
     void AssetManager::onCreateMesh()
@@ -123,7 +149,7 @@ namespace Editor
             asset.setId(assetId);
         }
 
-        if (!assetSource.isEmpty())
+        if (m_bEditSource && !assetSource.isEmpty())
         {
             asset.setPayload(assetSource);
         }
@@ -176,45 +202,52 @@ namespace Editor
                         return;
                     }
 
-                    const Chicane::String     extension = item.path.extension().toString().toLower();
-                    Chicane::FileSystem::Path output;
-
-                    if (hasRawExtension(Chicane::Box::AssetType::Model, extension))
-                    {
-                        output = bakeSource<Chicane::Box::Model>(
-                            item.path,
-                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Model)
-                        );
-                    }
-                    else if (hasRawExtension(Chicane::Box::AssetType::Sound, extension))
-                    {
-                        output = bakeSource<Chicane::Box::Sound>(
-                            item.path,
-                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Sound)
-                        );
-                    }
-                    else if (hasRawExtension(Chicane::Box::AssetType::Font, extension))
-                    {
-                        output = bakeSource<Chicane::Box::Font>(
-                            item.path,
-                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Font)
-                        );
-                    }
-                    else
-                    {
-                        output = bakeSource<Chicane::Box::Texture>(
-                            item.path,
-                            Chicane::Box::getTypeExtension(Chicane::Box::AssetType::Texture)
-                        );
-                    }
-
-                    assetPath = output.toString();
-                    refreshFromExplorer();
+                    const Chicane::FileSystem::Path source = item.path;
+                    Chicane::WorkerPool::submit(
+                        [source]()
+                        {
+                            try
+                            {
+                                const Chicane::Box::ImportResult result = Chicane::Box::importSource(source);
+                                std::lock_guard<std::mutex>      lock(g_importMutex);
+                                g_imported.push_back(result.primary);
+                            }
+                            catch (const std::exception& exception)
+                            {
+                                std::lock_guard<std::mutex> lock(g_importMutex);
+                                g_importErrors.push_back(exception.what());
+                            }
+                            catch (...)
+                            {
+                                std::lock_guard<std::mutex> lock(g_importMutex);
+                                g_importErrors.push_back("Import failed");
+                            }
+                        }
+                    );
 
                     return;
                 }
             }
         );
+    }
+
+    void AssetManager::onPreviewShape(Chicane::String inValue)
+    {
+        if (inValue.isEmpty() || previewShape.equals(inValue))
+        {
+            return;
+        }
+
+        previewShape = inValue;
+        if (!bHasPreviewShape)
+        {
+            return;
+        }
+
+        if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+        {
+            viewer->setPreviewShape(previewShape);
+        }
     }
 
     void AssetManager::createAsset(Chicane::Box::AssetType inType, const Chicane::String& inExtension)
@@ -239,6 +272,14 @@ namespace Editor
                     {
                     case Chicane::Box::AssetType::Texture: {
                         Chicane::Box::Texture asset(path);
+                        asset.setId(path.stem().toString());
+                        asset.saveXML();
+
+                        break;
+                    }
+
+                    case Chicane::Box::AssetType::Material: {
+                        Chicane::Box::Material asset(path);
                         asset.setId(path.stem().toString());
                         asset.saveXML();
 
@@ -305,12 +346,15 @@ namespace Editor
         {
             if (assetPath.isEmpty())
             {
-                bHasAsset     = false;
-                bIsAssetEmpty = true;
-                bIsMeshAsset  = false;
-                assetId       = Chicane::String::empty();
-                assetSource   = Chicane::String::empty();
-                assetType     = Chicane::String::empty();
+                bHasAsset        = false;
+                bIsAssetEmpty    = true;
+                bIsMeshAsset     = false;
+                bHasStage        = false;
+                bHasPreviewShape = false;
+                assetId          = Chicane::String::empty();
+                assetSource      = Chicane::String::empty();
+                assetType        = Chicane::String::empty();
+                m_bEditSource    = false;
                 syncViewer();
             }
 
@@ -326,9 +370,25 @@ namespace Editor
         bHasAsset     = true;
         bIsAssetEmpty = false;
         bIsMeshAsset  = asset.getType() == Chicane::Box::AssetType::Mesh;
-        assetId       = asset.getId();
-        assetSource   = asset.getPayload();
-        assetType     = Chicane::toString(asset.getType());
+        bHasPreviewShape =
+            asset.getType() == Chicane::Box::AssetType::Material || asset.getType() == Chicane::Box::AssetType::Texture;
+        bHasStage = bIsMeshAsset || asset.getType() == Chicane::Box::AssetType::Model || bHasPreviewShape;
+        assetId   = asset.getId();
+        assetType = Chicane::toString(asset.getType());
+
+        const Chicane::String payload     = asset.getPayload();
+        constexpr std::size_t sourceLimit = 4096;
+        if (payload.size() > sourceLimit)
+        {
+            m_bEditSource          = false;
+            const double megabytes = static_cast<double>(payload.size()) / (1024.0 * 1024.0);
+            assetSource            = Chicane::String::sprint("%.1f MB", megabytes);
+        }
+        else
+        {
+            m_bEditSource = true;
+            assetSource   = payload;
+        }
 
         syncViewer();
     }
@@ -341,7 +401,7 @@ namespace Editor
             return;
         }
 
-        if (!bIsMeshAsset)
+        if (!bHasStage)
         {
             if (!m_viewerAsset.isEmpty())
             {
@@ -351,6 +411,8 @@ namespace Editor
 
             return;
         }
+
+        viewer->setPreviewShape(previewShape);
 
         if (m_viewerAsset.equals(assetPath))
         {

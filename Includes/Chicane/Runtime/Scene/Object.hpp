@@ -30,6 +30,7 @@ namespace Chicane
         static constexpr inline const char* ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME = "absoluteTranslation";
         static constexpr inline const char* ABSOLUTE_ROTATION_ATTRIBUTE_NAME    = "absoluteRotation";
         static constexpr inline const char* ABSOLUTE_SCALE_ATTRIBUTE_NAME       = "absoluteScale";
+        static constexpr inline const char* LOOK_TO_ATTRIBUTE_NAME              = "lookTo";
 
     public:
         Object();
@@ -72,7 +73,9 @@ namespace Chicane
         const std::vector<Component*>& getAttachments() const;
 
     protected:
-        void applyLookAt(const String& inTarget);
+        void applyLookTo();
+        void applyLookTo(const String& inTarget);
+
         void bindAttributes();
 
         template <typename T = Scene>
@@ -92,6 +95,10 @@ namespace Chicane
         bool consumeSpatialDirty();
         void addAttachment(Component* inComponent);
         void removeAttachment(Component* inComponent);
+
+    public:
+        CH_FIELD()
+        String lookTo;
 
     protected:
         bool                    m_bCanTick;

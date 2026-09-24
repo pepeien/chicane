@@ -35,11 +35,11 @@ namespace Editor
         bool shouldDraw(const Chicane::Component* inComponent) const;
         float iconSize(const Chicane::Object* inComponent) const;
         void drawIcon(
-            Chicane::Renderer::RHI::Frame*    inFrame,
-            const Chicane::Vec3&              inPosition,
-            float                             inSize,
-            const Chicane::Vec4&              inColor,
-            Chicane::Renderer::Draw::Id       inTexture
+            Chicane::Renderer::RHI::Frame* inFrame,
+            const Chicane::Vec3&           inPosition,
+            float                          inSize,
+            const Chicane::Vec4&           inColor,
+            Chicane::Renderer::Draw::Id    inTexture
         ) const;
 
     private:

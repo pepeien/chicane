@@ -210,13 +210,7 @@ namespace Editor
             }
 
             const Chicane::Vec3 tint = light->getColor().max(Chicane::Vec3(0.2f));
-            drawIcon(
-                rhi,
-                light->getTranslation(),
-                iconSize(light),
-                Chicane::Vec4(tint, 1.0f),
-                texture
-            );
+            drawIcon(rhi, light->getTranslation(), iconSize(light), Chicane::Vec4(tint, 1.0f), texture);
         }
 
         for (Chicane::CSound* component : scene->getComponents<Chicane::CSound>())

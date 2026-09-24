@@ -11,6 +11,7 @@ namespace Chicane
         Jpg,       // .jpg | .jpeg
         Png,       // .png
         Gif,       // .gif
+        Hdr,       // .hdr
     };
 
     CHICANE_CORE String toString(ImageVendor inValue);

@@ -1,10 +1,13 @@
 #include "Chicane/Box/Model/Gltf.hpp"
 
+#include "Chicane/Box/Model/Gltf/Primitive.hpp"
+
 #include "../Gltf/Parser.hpp"
 
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
 namespace Chicane
 {
@@ -12,7 +15,148 @@ namespace Chicane
     {
         namespace ModelGltf
         {
-            ModelParsed::Map parse(const ModelRaw& inData)
+            static bool readPrimitive(
+                const Document& inDocument, const tg3_primitive& inPrimitive, Primitive& outPrimitive
+            )
+            {
+                const std::int32_t positionAccessor = inDocument.findAttribute(inPrimitive, "POSITION");
+                if (positionAccessor < 0)
+                {
+                    return false;
+                }
+
+                if (!inDocument.readFloats(positionAccessor, outPrimitive.positions, outPrimitive.positionComponents) ||
+                    outPrimitive.positionComponents < 3)
+                {
+                    return false;
+                }
+
+                const std::size_t vertexCount =
+                    outPrimitive.positions.size() / static_cast<std::size_t>(outPrimitive.positionComponents);
+                if (vertexCount == 0)
+                {
+                    return false;
+                }
+
+                outPrimitive.bHasNormals = inDocument.findAttribute(inPrimitive, "NORMAL") >= 0 &&
+                                           inDocument.readFloats(
+                                               inDocument.findAttribute(inPrimitive, "NORMAL"),
+                                               outPrimitive.normals,
+                                               outPrimitive.normalComponents
+                                           ) &&
+                                           outPrimitive.normalComponents >= 3 &&
+                                           (outPrimitive.normals.size() /
+                                            static_cast<std::size_t>(outPrimitive.normalComponents)) >= vertexCount;
+
+                outPrimitive.bHasUvs =
+                    inDocument.findAttribute(inPrimitive, "TEXCOORD_0") >= 0 &&
+                    inDocument.readFloats(
+                        inDocument.findAttribute(inPrimitive, "TEXCOORD_0"),
+                        outPrimitive.uvs,
+                        outPrimitive.uvComponents
+                    ) &&
+                    outPrimitive.uvComponents >= 2 &&
+                    (outPrimitive.uvs.size() / static_cast<std::size_t>(outPrimitive.uvComponents)) >= vertexCount;
+
+                outPrimitive.bHasTangents = inDocument.findAttribute(inPrimitive, "TANGENT") >= 0 &&
+                                            inDocument.readFloats(
+                                                inDocument.findAttribute(inPrimitive, "TANGENT"),
+                                                outPrimitive.tangents,
+                                                outPrimitive.tangentComponents
+                                            ) &&
+                                            outPrimitive.tangentComponents >= 4 &&
+                                            (outPrimitive.tangents.size() /
+                                             static_cast<std::size_t>(outPrimitive.tangentComponents)) >= vertexCount;
+
+                std::vector<std::uint32_t> sourceIndices;
+                if (inPrimitive.indices >= 0)
+                {
+                    inDocument.readIndices(inPrimitive.indices, sourceIndices);
+                }
+                else
+                {
+                    sourceIndices.resize(vertexCount);
+                    for (std::size_t index = 0; index < vertexCount; index++)
+                    {
+                        sourceIndices[index] = static_cast<std::uint32_t>(index);
+                    }
+                }
+
+                std::vector<std::uint32_t> indices;
+                appendTriangles(indices, sourceIndices, inPrimitive.mode);
+                if (indices.size() < 3)
+                {
+                    return false;
+                }
+
+                outPrimitive.indices  = indices;
+                outPrimitive.material = inPrimitive.material;
+
+                return true;
+            }
+
+            static void fillPrimitive(const Primitive& inPrimitive, ModelParsed& outParsed)
+            {
+                const std::size_t vertexCount =
+                    inPrimitive.positions.size() / static_cast<std::size_t>(inPrimitive.positionComponents);
+
+                outParsed.indices  = inPrimitive.indices;
+                outParsed.material = inPrimitive.material;
+                outParsed.vertices.clear();
+                outParsed.vertices.reserve(vertexCount);
+
+                for (std::size_t index = 0; index < vertexCount; index++)
+                {
+                    const std::size_t offset = index * static_cast<std::size_t>(inPrimitive.positionComponents);
+
+                    glm::vec3 normal(0.0f, 0.0f, 1.0f);
+                    if (inPrimitive.bHasNormals)
+                    {
+                        const std::size_t normalOffset = index * static_cast<std::size_t>(inPrimitive.normalComponents);
+                        normal                         = glm::normalize(
+                            glm::vec3(
+                                inPrimitive.normals[normalOffset],
+                                inPrimitive.normals[normalOffset + 1],
+                                inPrimitive.normals[normalOffset + 2]
+                            )
+                        );
+                    }
+
+                    float u = 0.0f;
+                    float v = 0.0f;
+                    if (inPrimitive.bHasUvs)
+                    {
+                        const std::size_t uvOffset = index * static_cast<std::size_t>(inPrimitive.uvComponents);
+                        u                          = inPrimitive.uvs[uvOffset];
+                        v                          = inPrimitive.uvs[uvOffset + 1];
+                    }
+
+                    Vertex vertex;
+                    vertex.color    = Vec4(1.0f);
+                    vertex.position = convertVector(
+                        inPrimitive.positions[offset],
+                        inPrimitive.positions[offset + 1],
+                        inPrimitive.positions[offset + 2]
+                    );
+                    vertex.normal = convertVector(normal.x, normal.y, normal.z);
+                    vertex.uv     = Vec2(u, v);
+                    if (inPrimitive.bHasTangents)
+                    {
+                        const std::size_t tangentOffset =
+                            index * static_cast<std::size_t>(inPrimitive.tangentComponents);
+                        const Vec3 converted = convertVector(
+                            inPrimitive.tangents[tangentOffset],
+                            inPrimitive.tangents[tangentOffset + 1],
+                            inPrimitive.tangents[tangentOffset + 2]
+                        );
+                        vertex.tangent = Vec4(converted, inPrimitive.tangents[tangentOffset + 3]);
+                    }
+
+                    outParsed.vertices.push_back(vertex);
+                }
+            }
+
+            Scene parseScene(const ModelRaw& inData)
             {
                 if (inData.empty())
                 {
@@ -31,29 +175,29 @@ namespace Chicane
                 std::vector<glm::mat4>          worlds(model.nodes_count, glm::mat4(1.0f));
                 std::vector<char>               computed(model.nodes_count, 0);
 
-                for (std::uint32_t i = 0; i < model.nodes_count; i++)
+                for (std::uint32_t index = 0; index < model.nodes_count; index++)
                 {
-                    locals[i] = localGltfMatrix(model.nodes[i]);
+                    locals[index] = localGltfMatrix(model.nodes[index]);
                 }
 
-                bool progressed = true;
-                while (progressed)
+                bool bProgressed = true;
+                while (bProgressed)
                 {
-                    progressed = false;
+                    bProgressed = false;
 
-                    for (std::uint32_t i = 0; i < model.nodes_count; i++)
+                    for (std::uint32_t index = 0; index < model.nodes_count; index++)
                     {
-                        if (computed[i])
+                        if (computed[index])
                         {
                             continue;
                         }
 
-                        const std::int32_t parent = parents[i];
+                        const std::int32_t parent = parents[index];
                         if (parent < 0)
                         {
-                            worlds[i]   = locals[i];
-                            computed[i] = 1;
-                            progressed  = true;
+                            worlds[index]   = locals[index];
+                            computed[index] = 1;
+                            bProgressed     = true;
 
                             continue;
                         }
@@ -63,185 +207,96 @@ namespace Chicane
                             continue;
                         }
 
-                        worlds[i]   = worlds[static_cast<std::size_t>(parent)] * locals[i];
-                        computed[i] = 1;
-                        progressed  = true;
+                        worlds[index]   = worlds[static_cast<std::size_t>(parent)] * locals[index];
+                        computed[index] = 1;
+                        bProgressed     = true;
                     }
                 }
 
                 std::unordered_map<std::int32_t, std::vector<std::int32_t>> meshNodes;
-                for (std::uint32_t i = 0; i < model.nodes_count; i++)
+                for (std::uint32_t index = 0; index < model.nodes_count; index++)
                 {
-                    if (model.nodes[i].mesh < 0)
+                    if (model.nodes[index].mesh < 0)
                     {
                         continue;
                     }
 
-                    meshNodes[model.nodes[i].mesh].push_back(static_cast<std::int32_t>(i));
+                    meshNodes[model.nodes[index].mesh].push_back(static_cast<std::int32_t>(index));
                 }
 
-                ModelParsed::Map           result;
+                std::vector<Primitive>     primitives;
                 std::unordered_set<String> usedNames;
-
-                auto parsePrimitive = [&](const String&        inName,
-                                          const String&        inBone,
-                                          const tg3_primitive& inPrimitive,
-                                          const glm::mat4&     inWorld)
-                {
-                    const std::int32_t positionAccessor = document.findAttribute(inPrimitive, "POSITION");
-                    if (positionAccessor < 0)
-                    {
-                        return;
-                    }
-
-                    std::vector<float> positions;
-                    std::int32_t       positionComponents = 0;
-                    if (!document.readFloats(positionAccessor, positions, positionComponents) || positionComponents < 3)
-                    {
-                        return;
-                    }
-
-                    const std::size_t vertexCount = positions.size() / static_cast<std::size_t>(positionComponents);
-                    if (vertexCount == 0)
-                    {
-                        return;
-                    }
-
-                    std::vector<float> normals;
-                    std::int32_t       normalComponents = 0;
-                    const bool         hasNormals =
-                        document.findAttribute(inPrimitive, "NORMAL") >= 0 &&
-                        document.readFloats(document.findAttribute(inPrimitive, "NORMAL"), normals, normalComponents) &&
-                        normalComponents >= 3 &&
-                        (normals.size() / static_cast<std::size_t>(normalComponents)) >= vertexCount;
-
-                    std::vector<float> uvs;
-                    std::int32_t       uvComponents = 0;
-                    const bool         hasUvs =
-                        document.findAttribute(inPrimitive, "TEXCOORD_0") >= 0 &&
-                        document.readFloats(document.findAttribute(inPrimitive, "TEXCOORD_0"), uvs, uvComponents) &&
-                        uvComponents >= 2 && (uvs.size() / static_cast<std::size_t>(uvComponents)) >= vertexCount;
-
-                    std::vector<float> tangents;
-                    std::int32_t       tangentComponents = 0;
-                    const bool         hasTangents =
-                        document.findAttribute(inPrimitive, "TANGENT") >= 0 &&
-                        document
-                            .readFloats(document.findAttribute(inPrimitive, "TANGENT"), tangents, tangentComponents) &&
-                        tangentComponents >= 4 &&
-                        (tangents.size() / static_cast<std::size_t>(tangentComponents)) >= vertexCount;
-
-                    std::vector<std::uint32_t> sourceIndices;
-                    if (inPrimitive.indices >= 0)
-                    {
-                        document.readIndices(inPrimitive.indices, sourceIndices);
-                    }
-                    else
-                    {
-                        sourceIndices.resize(vertexCount);
-                        for (std::size_t i = 0; i < vertexCount; i++)
-                        {
-                            sourceIndices[i] = static_cast<std::uint32_t>(i);
-                        }
-                    }
-
-                    std::vector<std::uint32_t> indices;
-                    appendTriangles(indices, sourceIndices, inPrimitive.mode);
-                    if (indices.size() < 3)
-                    {
-                        return;
-                    }
-
-                    const glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(inWorld)));
-
-                    ModelParsed parsed;
-                    parsed.indices   = indices;
-                    parsed.material  = inPrimitive.material;
-                    parsed.bone      = inBone;
-                    parsed.transform = transformFromMatrix(BASIS4 * inWorld * BASIS4_INVERSE);
-                    parsed.vertices.reserve(vertexCount);
-
-                    for (std::size_t i = 0; i < vertexCount; i++)
-                    {
-                        const std::size_t offset = i * static_cast<std::size_t>(positionComponents);
-                        const glm::vec4   mapped =
-                            inWorld * glm::vec4(positions[offset], positions[offset + 1], positions[offset + 2], 1.0f);
-
-                        glm::vec3 normal(0.0f, 0.0f, 1.0f);
-                        if (hasNormals)
-                        {
-                            const std::size_t normalOffset = i * static_cast<std::size_t>(normalComponents);
-                            normal                         = glm::normalize(
-                                normalMatrix *
-                                glm::vec3(normals[normalOffset], normals[normalOffset + 1], normals[normalOffset + 2])
-                            );
-                        }
-
-                        float u = 0.0f;
-                        float v = 0.0f;
-                        if (hasUvs)
-                        {
-                            const std::size_t uvOffset = i * static_cast<std::size_t>(uvComponents);
-                            u                          = uvs[uvOffset];
-                            v                          = uvs[uvOffset + 1];
-                        }
-
-                        Vertex vertex;
-                        vertex.color    = Vec4(1.0f);
-                        vertex.position = convertVector(mapped.x, mapped.y, mapped.z);
-                        vertex.normal   = convertVector(normal.x, normal.y, normal.z);
-                        vertex.uv       = Vec2(u, v);
-                        if (hasTangents)
-                        {
-                            const std::size_t tangentOffset = i * static_cast<std::size_t>(tangentComponents);
-                            const glm::vec3   tangent       = glm::normalize(
-                                normalMatrix * glm::vec3(
-                                                   tangents[tangentOffset],
-                                                   tangents[tangentOffset + 1],
-                                                   tangents[tangentOffset + 2]
-                                               )
-                            );
-                            const Vec3 converted = convertVector(tangent.x, tangent.y, tangent.z);
-                            vertex.tangent       = Vec4(converted, tangents[tangentOffset + 3]);
-                        }
-                        parsed.vertices.push_back(vertex);
-                    }
-
-                    result.emplace(inName, std::move(parsed));
-                };
+                Scene                      scene;
 
                 for (std::uint32_t meshIndex = 0; meshIndex < model.meshes_count; meshIndex++)
                 {
-                    const tg3_mesh&                  mesh      = model.meshes[meshIndex];
-                    const std::vector<std::int32_t>& nodes     = meshNodes[static_cast<std::int32_t>(meshIndex)];
-                    const std::vector<std::int32_t>  instances = nodes.empty() ? std::vector<std::int32_t>{-1} : nodes;
+                    const tg3_mesh&                  mesh  = model.meshes[meshIndex];
+                    const std::vector<std::int32_t>& nodes = meshNodes[static_cast<std::int32_t>(meshIndex)];
+                    std::vector<String>              primitiveNames;
 
+                    for (std::uint32_t primitiveIndex = 0; primitiveIndex < mesh.primitives_count; primitiveIndex++)
+                    {
+                        Primitive primitive;
+                        if (!readPrimitive(document, mesh.primitives[primitiveIndex], primitive))
+                        {
+                            continue;
+                        }
+
+                        String name = toString(mesh.name);
+                        if (name.isEmpty())
+                        {
+                            name = String::sprint("Mesh_%u", meshIndex);
+                        }
+                        if (mesh.primitives_count > 1)
+                        {
+                            name = String::sprint("%s_%u", name.toChar(), primitiveIndex);
+                        }
+
+                        primitive.name = uniqueName(name, usedNames);
+                        primitiveNames.push_back(primitive.name);
+                        primitives.push_back(std::move(primitive));
+                    }
+
+                    if (primitiveNames.empty())
+                    {
+                        continue;
+                    }
+
+                    const std::vector<std::int32_t> instances = nodes.empty() ? std::vector<std::int32_t>{-1} : nodes;
                     for (const std::int32_t node : instances)
                     {
                         const glm::mat4 world = node >= 0 ? worlds[static_cast<std::size_t>(node)] : glm::mat4(1.0f);
-                        for (std::uint32_t primitiveIndex = 0; primitiveIndex < mesh.primitives_count; primitiveIndex++)
-                        {
-                            String name = toString(mesh.name);
-                            if (name.isEmpty())
-                            {
-                                name = String::sprint("Mesh_%u", meshIndex);
-                            }
-                            if (mesh.primitives_count > 1)
-                            {
-                                name = String::sprint("%s_%u", name.toChar(), primitiveIndex);
-                            }
-                            if (instances.size() > 1 && node >= 0)
-                            {
-                                name = String::sprint("%s_%s", name.toChar(), document.nodeName(node).toChar());
-                            }
+                        const Transform transform = transformFromMatrix(BASIS4 * world * BASIS4_INVERSE);
+                        const String    bone      = node >= 0 ? document.nodeName(node) : String();
 
-                            const String bone = node >= 0 ? document.nodeName(node) : String();
-                            parsePrimitive(uniqueName(name, usedNames), bone, mesh.primitives[primitiveIndex], world);
+                        for (const String& name : primitiveNames)
+                        {
+                            Instance instance;
+                            instance.id        = name;
+                            instance.bone      = bone;
+                            instance.transform = transform;
+                            scene.instances.push_back(std::move(instance));
                         }
                     }
                 }
 
-                return result;
+                std::vector<ModelParsed> parsed(primitives.size());
+                WorkerPool::parallel(
+                    primitives.size(),
+                    [&primitives, &parsed](std::size_t inIndex) { fillPrimitive(primitives[inIndex], parsed[inIndex]); }
+                );
+
+                for (std::size_t index = 0; index < primitives.size(); index++)
+                {
+                    scene.geometry.emplace(primitives[index].name, std::move(parsed[index]));
+                }
+
+                return scene;
+            }
+
+            ModelParsed::Map parse(const ModelRaw& inData)
+            {
+                return parseScene(inData).geometry;
             }
         }
     }

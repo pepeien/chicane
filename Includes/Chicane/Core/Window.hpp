@@ -96,6 +96,7 @@ namespace Chicane
         void restore();
 
         void close();
+        void hide();
 
         void setMoveHitTest(const std::function<bool(int, int)>& inHitTest);
 

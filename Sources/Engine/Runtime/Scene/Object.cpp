@@ -98,13 +98,15 @@ namespace Chicane
             Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
             Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
             Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
+            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME,
+            Object::LOOK_TO_ATTRIBUTE_NAME
         );
     }
 
     Object::Object()
         : Transformable(),
           Serializable(),
+          lookTo(),
           m_bCanTick(false),
           m_bCanCollide(false),
           m_bIsTransient(false),
@@ -209,6 +211,15 @@ namespace Chicane
                 }
             }
         );
+
+        watchAttribute(
+            LOOK_TO_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                lookTo = inValue;
+                applyLookTo(lookTo);
+            }
+        );
     }
 
     void Object::onRefresh()
@@ -300,6 +311,11 @@ namespace Chicane
 
     void Object::notifyPropertyEdited(const String& inName)
     {
+        if (inName.equals(LOOK_TO_ATTRIBUTE_NAME))
+        {
+            applyLookTo(lookTo);
+        }
+
         onPropertyEdited(inName);
     }
 
@@ -358,7 +374,12 @@ namespace Chicane
         return true;
     }
 
-    void Object::applyLookAt(const String& inTarget)
+    void Object::applyLookTo()
+    {
+        applyLookTo(lookTo);
+    }
+
+    void Object::applyLookTo(const String& inTarget)
     {
         const String value = inTarget.trim();
         if (value.isEmpty())

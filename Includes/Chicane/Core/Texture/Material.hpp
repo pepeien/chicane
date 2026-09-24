@@ -7,9 +7,9 @@
 
 namespace Chicane
 {
-    enum class TextureMap : std::uint8_t
+    enum class TextureMaterial : std::uint8_t
     {
-        Base = 0,
+        Albedo = 0,
         AmbientOcclusion,
         Normal,
         Roughness,
@@ -25,8 +25,8 @@ namespace Chicane
         Count
     };
 
-    static constexpr inline std::uint8_t TEXTURE_MAP_COUNT = static_cast<std::uint8_t>(TextureMap::Count);
+    static constexpr inline std::uint8_t TEXTURE_MATERIAL_COUNT = static_cast<std::uint8_t>(TextureMaterial::Count);
 
-    CHICANE_CORE String toString(TextureMap inValue);
-    CHICANE_CORE TextureMap toTextureMap(const String& inValue);
+    CHICANE_CORE String toString(TextureMaterial inValue);
+    CHICANE_CORE TextureMaterial toTextureMaterial(const String& inValue);
 }

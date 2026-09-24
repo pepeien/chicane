@@ -286,7 +286,7 @@ namespace Chicane
                     const Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
                     if (event.button == Input::MouseButton::Left)
                     {
-                        Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                        Component* hit     = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
                         bool       bInside = false;
                         for (Component* node = hit; node != nullptr; node = node->getParent())
                         {
@@ -423,10 +423,10 @@ namespace Chicane
 
         void InputColor::commitHex()
         {
-            const String trimmed = hex.trim();
-            const bool   bHasAlpha = trimmed.startsWith("#") && trimmed.size() == 9;
-            const Color::Rgba parsed = Color::toRgba(hex);
-            const float       a      = bHasAlpha ? parsed.a / 255.0f : alphaUnit;
+            const String      trimmed   = hex.trim();
+            const bool        bHasAlpha = trimmed.startsWith("#") && trimmed.size() == 9;
+            const Color::Rgba parsed    = Color::toRgba(hex);
+            const float       a         = bHasAlpha ? parsed.a / 255.0f : alphaUnit;
             syncFromRgb(parsed.r / 255.0f, parsed.g / 255.0f, parsed.b / 255.0f, a);
             applyToBinding();
             emitInput();
@@ -777,12 +777,7 @@ namespace Chicane
 
         Color::Rgba InputColor::currentRgba() const
         {
-            return Color::Rgba(
-                toByte(red / 255.0f),
-                toByte(green / 255.0f),
-                toByte(blue / 255.0f),
-                toByte(alphaUnit)
-            );
+            return Color::Rgba(toByte(red / 255.0f), toByte(green / 255.0f), toByte(blue / 255.0f), toByte(alphaUnit));
         }
 
         Component* InputColor::findChildId(const String& inId) const

@@ -322,10 +322,10 @@ namespace Chicane
             transform.setScale(jointRadius);
 
             Renderer::DrawPoly3DCommandMesh joint;
-            joint.model                                                 = inSphereReference;
-            joint.textures[static_cast<std::uint8_t>(TextureMap::Base)] = Box::Texture::GREY_REFERENCE;
-            joint.instance.model                                        = transform.getMatrix();
-            joint.instance.flags                                        = Renderer::DrawPoly3DFlag::Foreground;
+            joint.model                                                        = inSphereReference;
+            joint.textures[static_cast<std::uint8_t>(TextureMaterial::Albedo)] = Box::Texture::GRAY_REFERENCE;
+            joint.instance.model                                               = transform.getMatrix();
+            joint.instance.flags                                               = Renderer::DrawPoly3DFlag::Foreground;
             outMeshes.push_back(joint);
         }
     }

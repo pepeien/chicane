@@ -84,9 +84,14 @@ namespace Chicane
                 const float dz            = origin.z - camera.z;
                 const float dist          = std::max(std::sqrt(dx * dx + dy * dy + dz * dz), 0.01f);
                 const float distToSurface = std::max(dist - radius, 0.01f);
-                const float screen        = (radius / distToSurface) * static_cast<float>(std::max(1u, inScreenHeight));
+                float       screen        = (radius / distToSurface) * static_cast<float>(std::max(1u, inScreenHeight));
 
-                for (std::uint8_t map = 0; map < TEXTURE_MAP_COUNT; map++)
+                if (distToSurface < 80.0f)
+                {
+                    screen = std::max(screen, static_cast<float>(inScreenHeight) * 0.75f);
+                }
+
+                for (std::uint8_t map = 0; map < TEXTURE_MATERIAL_COUNT; map++)
                 {
                     consider(instance.textures[map], screen, false);
                 }

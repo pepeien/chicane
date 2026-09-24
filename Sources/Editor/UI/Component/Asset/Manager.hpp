@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <Chicane/Box/Asset/Type.hpp>
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/Reflection.hpp>
@@ -28,6 +30,9 @@ namespace Editor
         void onCreateTexture();
 
         CH_FUNCTION()
+        void onCreateMaterial();
+
+        CH_FUNCTION()
         void onCreateMesh();
 
         CH_FUNCTION()
@@ -48,6 +53,9 @@ namespace Editor
         CH_FUNCTION()
         void onImport();
 
+        CH_FUNCTION()
+        void onPreviewShape(Chicane::String inValue);
+
     private:
         void createAsset(Chicane::Box::AssetType inType, const Chicane::String& inExtension);
         void refreshFromExplorer();
@@ -61,6 +69,14 @@ namespace Editor
         bool bIsAssetEmpty;
         CH_FIELD()
         bool bIsMeshAsset;
+        CH_FIELD()
+        bool bHasStage;
+        CH_FIELD()
+        bool bHasPreviewShape;
+        CH_FIELD()
+        Chicane::String previewShape;
+        CH_FIELD()
+        std::vector<Chicane::String> previewShapes;
         CH_FIELD()
         Chicane::String assetPath;
         CH_FIELD()
@@ -77,5 +93,6 @@ namespace Editor
 
     private:
         Chicane::String m_viewerAsset;
+        bool            m_bEditSource;
     };
 }

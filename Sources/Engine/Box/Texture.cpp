@@ -89,7 +89,10 @@ namespace Chicane
             m_data.reset(new Image(inData, m_vendor));
             rebuildFrames();
             bakePreview();
-            bakeMips();
+            if (m_vendor != ImageVendor::Hdr && !(m_data && m_data->isHdr()))
+            {
+                bakeMips();
+            }
         }
 
         bool Texture::isNormal() const
@@ -115,6 +118,11 @@ namespace Chicane
 
         bool Texture::bakeMips()
         {
+            if (m_vendor == ImageVendor::Hdr || (m_data && m_data->isHdr()))
+            {
+                return false;
+            }
+
             if (isAnimated())
             {
                 if (m_chains.empty())
@@ -215,7 +223,7 @@ namespace Chicane
                 return;
             }
 
-            if (fetchMipsFromXML())
+            if (m_vendor != ImageVendor::Hdr && fetchMipsFromXML())
             {
                 rebuildFrames();
 
@@ -226,10 +234,16 @@ namespace Chicane
             if (!payload.isEmpty())
             {
                 m_data.reset(new Image(Base64::decodeToUnsigned(payload), m_vendor));
+                rebuildFrames();
+                rebuildMipChains();
+
+                return;
             }
 
-            rebuildFrames();
-            rebuildMipChains();
+            if (fetchMipsFromXML())
+            {
+                rebuildFrames();
+            }
         }
 
         void Texture::rebuildFrames()

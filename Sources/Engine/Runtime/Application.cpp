@@ -12,6 +12,7 @@
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Upload.hpp"
 #include "Chicane/Box/Font.hpp"
+#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -20,7 +21,7 @@
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Module.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
+#include "Chicane/Core/Texture/Material.hpp"
 #include "Chicane/Core/Time.hpp"
 
 #include "Chicane/Kerb.hpp"
@@ -43,6 +44,7 @@
 #include "Chicane/Renderer/Draw/Poly/Data.hpp"
 #include "Chicane/Renderer/Draw/Poly/Mode.hpp"
 #include "Chicane/Renderer/Draw/Poly/Topology.hpp"
+#include "Chicane/Renderer/Draw/Sky/Kind.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -306,6 +308,8 @@ namespace Chicane
         initSmoke();
         initModules(inCreateInfo.modules);
 
+        const std::function<void()> onFrame = inCreateInfo.onFrame;
+
         if (inCreateInfo.onSetup)
         {
             inCreateInfo.onSetup();
@@ -323,6 +327,11 @@ namespace Chicane
             }
 
             render();
+
+            if (onFrame)
+            {
+                onFrame();
+            }
 
             m_telemetry.renderer.frame.set(m_renderer ? m_renderer->getGpuDelta() : 0.0f);
         }
@@ -881,14 +890,20 @@ namespace Chicane
                 subcommand.instance.emissiveStrength = group.getEmissiveStrength();
                 subcommand.instance.tileSize         = group.getTileSize();
 
-                for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; slot++)
+                const Box::Material* material = nullptr;
+                if (group.hasMaterial())
                 {
-                    const TextureMap map = static_cast<TextureMap>(slot);
-                    if (group.hasTexture(map))
+                    material = Box::load<Box::Material>(group.getMaterial().getSource());
+                }
+
+                for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
+                {
+                    const TextureMaterial type = static_cast<TextureMaterial>(slot);
+                    if (material && material->hasTexture(type))
                     {
-                        subcommand.textures[slot] = group.getTexture(map).getReference();
+                        subcommand.textures[slot] = material->getTexture(type).getReference();
                     }
-                    else if (map == TextureMap::Base)
+                    else if (type == TextureMaterial::Albedo)
                     {
                         subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
                     }
@@ -924,11 +939,18 @@ namespace Chicane
         for (ASky* sky : inScene->getActors<ASky>())
         {
             const Box::Sky* asset = sky->getSky();
+            if (!asset)
+            {
+                continue;
+            }
 
             Renderer::DrawSkyData data;
             data.reference = asset->getFilepath();
             data.model     = resolveModelDrawId(asset->getModel());
+            data.kind      = asset->getKind() == Box::SkyKind::Panorama ? Renderer::DrawSkyKind::Panorama
+                                                                        : Renderer::DrawSkyKind::Cube;
             data.exposure  = sky->getExposure();
+            data.bVisible  = sky->isVisible();
 
             for (const Box::AssetReference& texture : asset->getTextures())
             {
@@ -1037,12 +1059,12 @@ namespace Chicane
             {
                 instance.flags &= ~Renderer::DrawPoly3DFlag::Lit;
             }
-            for (std::uint8_t slot = 0; slot < TEXTURE_MAP_COUNT; slot++)
+            for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
             {
                 instance.textures[slot] = resolveTextureId(
                     m_renderer.get(),
                     mesh.textures[slot],
-                    slot == static_cast<std::uint8_t>(TextureMap::Base)
+                    slot == static_cast<std::uint8_t>(TextureMaterial::Albedo)
                 );
             }
 
@@ -1384,7 +1406,7 @@ namespace Chicane
             subcommand.instance.borderColorBottom = borderColor(style.border.colorBottom);
             subcommand.instance.borderColorLeft   = borderColor(style.border.colorLeft);
 
-            const Grid::StyleGradient::List& gradients = style.background.gradients;
+            const Grid::StyleGradient::List&        gradients = style.background.gradients;
             std::vector<const Grid::StyleGradient*> layers;
             layers.reserve(gradients.size());
             for (const Grid::StyleGradient& layer : gradients)

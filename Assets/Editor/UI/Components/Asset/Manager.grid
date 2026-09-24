@@ -2,6 +2,7 @@
     <Editor::DockHeader id="assetManagerHeader" label="Asset Manager" />
     <Container class="asset-manager__toolbar">
         <Button class="asset-manager__action" onClick="{{ onCreateTexture() }}"><Text>Texture</Text></Button>
+        <Button class="asset-manager__action" onClick="{{ onCreateMaterial() }}"><Text>Material</Text></Button>
         <Button class="asset-manager__action" onClick="{{ onCreateMesh() }}"><Text>Mesh</Text></Button>
         <Button class="asset-manager__action" onClick="{{ onCreateSky() }}"><Text>Sky</Text></Button>
         <Button class="asset-manager__action" onClick="{{ onCreateModel() }}"><Text>Model</Text></Button>
@@ -9,9 +10,16 @@
         <Button class="asset-manager__action" onClick="{{ onCreateEffect() }}"><Text>Effect</Text></Button>
         <Button class="asset-manager__action" onClick="{{ onImport() }}"><Text>Import</Text></Button>
     </Container>
-    <Container dir:if="{{ bIsMeshAsset }}" class="asset-manager__stage">
+    <Container dir:if="{{ bHasStage }}" class="asset-manager__stage">
         <Container class="asset-manager__viewport">
             <Viewport />
+            <Container dir:if="{{ bHasPreviewShape }}" class="asset-manager__shape">
+                <Input::Select
+                    value="{{ previewShape }}"
+                    items="{{ previewShapes }}"
+                    onInput="{{ onPreviewShape(value) }}"
+                />
+            </Container>
         </Container>
     </Container>
     <Container dir:if="{{ bHasAsset }}" class="asset-manager__editor">

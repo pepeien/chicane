@@ -227,8 +227,7 @@ namespace Chicane
             {
                 if (inEvent.type == WindowEventType::MouseMotion && inEvent.data)
                 {
-                    const Input::MouseMotionEvent event =
-                        *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+                    const Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
                     syncHovered(resolveHit(getHitAt(event.location)));
                 }
 

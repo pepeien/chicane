@@ -7,7 +7,8 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Texture/Gltf/Entry.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
+
+#include "Chicane/Core/Texture/Material.hpp"
 
 namespace Chicane
 {
@@ -17,9 +18,9 @@ namespace Chicane
         {
             struct CHICANE_BOX Parsed
             {
-                std::vector<Entry>                                                   images            = {};
-                std::unordered_map<std::int32_t, std::map<TextureMap, std::int32_t>> materials         = {};
-                std::unordered_map<std::int32_t, float>                              emissiveStrengths = {};
+                std::vector<Entry>                                                        images            = {};
+                std::unordered_map<std::int32_t, std::map<TextureMaterial, std::int32_t>> materials         = {};
+                std::unordered_map<std::int32_t, float>                                   emissiveStrengths = {};
             };
         }
     }

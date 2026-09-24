@@ -62,7 +62,7 @@ float4 sampleMap(VSOut inData, int index, float2 uv)
 [shader("fragment")]
 float4 main(VSOut inData) : SV_Target
 {
-    int baseIndex             = inData.textureMaps0.x;
+    int albedoIndex           = inData.textureMaps0.x;
     int ambientOcclusionIndex = inData.textureMaps0.y;
     int normalIndex           = inData.textureMaps0.z;
     int roughnessIndex        = inData.textureMaps0.w;
@@ -70,15 +70,22 @@ float4 main(VSOut inData) : SV_Target
     int specularIndex         = inData.textureMaps1.z;
     int opacityIndex          = inData.textureMaps1.w;
     int selfIlluminationIndex = inData.textureMaps2.y;
+    int reflectionIndex       = inData.textureMaps2.w;
 
     float2 uv = inData.uv;
 
-    float4 baseSample      = sampleMap(inData, baseIndex, uv);
-    float3 color           = baseSample.rgb * inData.color.rgb;
+    float4 albedoSample    = sampleMap(inData, albedoIndex, uv);
+    float3 color           = albedoSample.rgb * inData.color.rgb;
     float ambientOcclusion = sampleMap(inData, ambientOcclusionIndex, uv).r;
     float roughness        = roughnessIndex < 0 ? 0.9 : sampleMap(inData, roughnessIndex, uv).g;
     float metalness        = metalnessIndex < 0 ? 0.0 : sampleMap(inData, metalnessIndex, uv).b;
-    float opacity          = inData.color.a * (opacityIndex < 0 ? baseSample.a : sampleMap(inData, opacityIndex, uv).r);
+    if (reflectionIndex >= 0 && roughnessIndex < 0 && metalnessIndex < 0)
+    {
+        float reflection = saturate(sampleMap(inData, reflectionIndex, uv).r);
+        roughness        = saturate(1.0 - reflection);
+        metalness        = reflection;
+    }
+    float opacity          = inData.color.a * (opacityIndex < 0 ? albedoSample.a : sampleMap(inData, opacityIndex, uv).r);
     float3 emissive        = selfIlluminationIndex < 0 ? float3(0.0, 0.0, 0.0) : sampleMap(inData, selfIlluminationIndex, uv).rgb;
     float3 specularColor   = specularIndex < 0 ? float3(1.0, 1.0, 1.0) : sampleMap(inData, specularIndex, uv).rgb;
 

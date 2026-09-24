@@ -58,6 +58,9 @@ namespace Chicane
             virtual void onEndRender();
 
             virtual Draw::Id getScreenTextureId() const;
+            virtual bool captureScreen(
+                std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
+            );
 
         public:
             // Renderer

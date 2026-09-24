@@ -16,6 +16,7 @@ namespace Editor
     public:
         void attach(Chicane::ACharacter* inCharacter, Chicane::CCamera* inCamera);
         void bind(Chicane::Controller* inController);
+        void frame(const Chicane::Vec3& inPosition, const Chicane::Vec3& inPivot);
         void apply();
 
     protected:

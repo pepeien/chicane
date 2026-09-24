@@ -15,6 +15,9 @@ namespace Chicane
         case Box::ModelVendor::Gltf:
             return "Gltf";
 
+        case Box::ModelVendor::Cooked:
+            return "Cooked";
+
         default:
             return "";
         }

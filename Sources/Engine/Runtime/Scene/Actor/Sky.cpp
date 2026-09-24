@@ -13,6 +13,7 @@ namespace Chicane
           sky(),
           intensity(0.35f),
           exposure(1.0f),
+          visible(true),
           m_asset(nullptr),
           m_environment(nullptr)
     {}
@@ -113,5 +114,15 @@ namespace Chicane
     void ASky::setExposure(float inValue)
     {
         exposure = std::max(inValue, 0.0f);
+    }
+
+    bool ASky::isVisible() const
+    {
+        return visible;
+    }
+
+    void ASky::setVisible(bool inValue)
+    {
+        visible = inValue;
     }
 }

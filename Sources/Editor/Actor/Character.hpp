@@ -13,6 +13,9 @@ namespace Editor
     public:
         Character();
 
+    public:
+        void frame(const Chicane::Vec3& inPosition, const Chicane::Vec3& inPivot);
+
     protected:
         void onLoad() override;
         void onControlAttachment() override;

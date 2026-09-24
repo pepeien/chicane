@@ -224,9 +224,7 @@ namespace Chicane
             const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
             if (!raw.isEmpty() && (isReference(raw) || !m_bIsEdited))
             {
-                value = SliderMath::snapValue(
-                    SliderMath::parseNumber(parseText(raw), value), min, max, step
-                );
+                value = SliderMath::snapValue(SliderMath::parseNumber(parseText(raw), value), min, max, step);
             }
             else
             {

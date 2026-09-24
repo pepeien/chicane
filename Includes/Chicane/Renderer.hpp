@@ -72,8 +72,10 @@ namespace Chicane
         static constexpr inline const std::uint32_t SHADOW_CASCADE_COUNT = 4;
         static constexpr inline const std::uint32_t MAX_LIGHTS           = 8;
 
-        static constexpr inline const std::uint32_t SKY_TEXTURE_SIZE = 512;
-        static constexpr inline const std::uint32_t SKY_MIP_LEVELS   = 10;
+        static constexpr inline const std::uint32_t SKY_TEXTURE_SIZE    = 512;
+        static constexpr inline const std::uint32_t SKY_MIP_LEVELS      = 10;
+        static constexpr inline const std::uint32_t SKY_PANORAMA_WIDTH  = 2048;
+        static constexpr inline const std::uint32_t SKY_PANORAMA_HEIGHT = 1024;
 
         static inline const Color::Rgba             OUTLINE_COLOR = Color::toRgba("#0b997d");
     }

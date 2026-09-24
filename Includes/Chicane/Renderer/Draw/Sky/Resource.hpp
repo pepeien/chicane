@@ -23,6 +23,7 @@ namespace Chicane
 
         public:
             float exposure = 1.0f;
+            bool  bVisible = true;
 
         private:
             DrawSky m_draw = {};

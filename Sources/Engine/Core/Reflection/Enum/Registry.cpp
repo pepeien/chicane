@@ -53,7 +53,7 @@ namespace Chicane
             return inName.substr(split + 1);
         };
 
-        const String nameTail = tail(name);
+        const String nameTail  = tail(name);
         const auto   foundTail = m_names.find(nameTail);
         if (foundTail != m_names.end())
         {

@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <cstring>
 #include <unordered_map>
 #include <vector>
 
@@ -17,9 +19,10 @@ namespace Chicane
     namespace Box
     {
         static const std::unordered_map<ModelVendor, String> EXTENSIONS = {
-            {ModelVendor::Undefined, "N/A" },
-            {ModelVendor::Wavefront, "OBJ" },
-            {ModelVendor::Gltf,      "GLTF"},
+            {ModelVendor::Undefined, "N/A"   },
+            {ModelVendor::Wavefront, "OBJ"   },
+            {ModelVendor::Gltf,      "GLTF"  },
+            {ModelVendor::Cooked,    "COOKED"},
         };
 
         ModelVendor Model::parseVendor(const String& inValue)
@@ -115,6 +118,188 @@ namespace Chicane
             }
 
             m_data = parseData(inData);
+            bakePreview();
+        }
+
+        static void appendU32(ModelRaw& outRaw, std::uint32_t inValue)
+        {
+            const unsigned char bytes[4] = {
+                static_cast<unsigned char>(inValue),
+                static_cast<unsigned char>(inValue >> 8),
+                static_cast<unsigned char>(inValue >> 16),
+                static_cast<unsigned char>(inValue >> 24),
+            };
+            outRaw.insert(outRaw.end(), bytes, bytes + 4);
+        }
+
+        static void appendF32(ModelRaw& outRaw, float inValue)
+        {
+            std::uint32_t bits = 0;
+            std::memcpy(&bits, &inValue, sizeof(bits));
+            appendU32(outRaw, bits);
+        }
+
+        static bool readU32(const ModelRaw& inRaw, std::size_t& ioCursor, std::uint32_t& outValue)
+        {
+            if (ioCursor + 4 > inRaw.size())
+            {
+                return false;
+            }
+
+            outValue = static_cast<std::uint32_t>(inRaw[ioCursor]) |
+                       (static_cast<std::uint32_t>(inRaw[ioCursor + 1]) << 8) |
+                       (static_cast<std::uint32_t>(inRaw[ioCursor + 2]) << 16) |
+                       (static_cast<std::uint32_t>(inRaw[ioCursor + 3]) << 24);
+            ioCursor += 4;
+
+            return true;
+        }
+
+        static bool readF32(const ModelRaw& inRaw, std::size_t& ioCursor, float& outValue)
+        {
+            std::uint32_t bits = 0;
+            if (!readU32(inRaw, ioCursor, bits))
+            {
+                return false;
+            }
+
+            std::memcpy(&outValue, &bits, sizeof(outValue));
+
+            return true;
+        }
+
+        static ModelRaw encodeCooked(const ModelParsed::Map& inData)
+        {
+            ModelRaw raw;
+            raw.push_back('B');
+            raw.push_back('M');
+            raw.push_back('D');
+            raw.push_back('1');
+            appendU32(raw, static_cast<std::uint32_t>(inData.size()));
+
+            for (const auto& [name, model] : inData)
+            {
+                const std::string bytes = name.toStandard();
+                appendU32(raw, static_cast<std::uint32_t>(bytes.size()));
+                raw.insert(raw.end(), bytes.begin(), bytes.end());
+                appendU32(raw, static_cast<std::uint32_t>(model.material));
+                appendU32(raw, static_cast<std::uint32_t>(model.vertices.size()));
+
+                for (const Vertex& vertex : model.vertices)
+                {
+                    appendF32(raw, vertex.position.x);
+                    appendF32(raw, vertex.position.y);
+                    appendF32(raw, vertex.position.z);
+                    appendF32(raw, vertex.color.x);
+                    appendF32(raw, vertex.color.y);
+                    appendF32(raw, vertex.color.z);
+                    appendF32(raw, vertex.color.w);
+                    appendF32(raw, vertex.uv.x);
+                    appendF32(raw, vertex.uv.y);
+                    appendF32(raw, vertex.normal.x);
+                    appendF32(raw, vertex.normal.y);
+                    appendF32(raw, vertex.normal.z);
+                    appendF32(raw, vertex.tangent.x);
+                    appendF32(raw, vertex.tangent.y);
+                    appendF32(raw, vertex.tangent.z);
+                    appendF32(raw, vertex.tangent.w);
+                }
+
+                appendU32(raw, static_cast<std::uint32_t>(model.indices.size()));
+                for (const Vertex::Index index : model.indices)
+                {
+                    appendU32(raw, index);
+                }
+            }
+
+            return raw;
+        }
+
+        static ModelParsed::Map decodeCooked(const ModelRaw& inRaw)
+        {
+            if (inRaw.size() < 8 || inRaw[0] != 'B' || inRaw[1] != 'M' || inRaw[2] != 'D' || inRaw[3] != '1')
+            {
+                throw std::runtime_error("Cooked model data is invalid");
+            }
+
+            std::size_t   cursor = 4;
+            std::uint32_t count  = 0;
+            if (!readU32(inRaw, cursor, count))
+            {
+                throw std::runtime_error("Cooked model data is invalid");
+            }
+
+            ModelParsed::Map result;
+            for (std::uint32_t group = 0; group < count; group++)
+            {
+                std::uint32_t nameSize = 0;
+                if (!readU32(inRaw, cursor, nameSize) || cursor + nameSize > inRaw.size())
+                {
+                    throw std::runtime_error("Cooked model data is invalid");
+                }
+
+                const String name(std::string(reinterpret_cast<const char*>(inRaw.data() + cursor), nameSize));
+                cursor += nameSize;
+
+                std::uint32_t material    = 0;
+                std::uint32_t vertexCount = 0;
+                if (!readU32(inRaw, cursor, material) || !readU32(inRaw, cursor, vertexCount))
+                {
+                    throw std::runtime_error("Cooked model data is invalid");
+                }
+
+                ModelParsed parsed;
+                parsed.material = static_cast<std::int32_t>(material);
+                parsed.vertices.resize(vertexCount);
+                for (Vertex& vertex : parsed.vertices)
+                {
+                    if (!readF32(inRaw, cursor, vertex.position.x) || !readF32(inRaw, cursor, vertex.position.y) ||
+                        !readF32(inRaw, cursor, vertex.position.z) || !readF32(inRaw, cursor, vertex.color.x) ||
+                        !readF32(inRaw, cursor, vertex.color.y) || !readF32(inRaw, cursor, vertex.color.z) ||
+                        !readF32(inRaw, cursor, vertex.color.w) || !readF32(inRaw, cursor, vertex.uv.x) ||
+                        !readF32(inRaw, cursor, vertex.uv.y) || !readF32(inRaw, cursor, vertex.normal.x) ||
+                        !readF32(inRaw, cursor, vertex.normal.y) || !readF32(inRaw, cursor, vertex.normal.z) ||
+                        !readF32(inRaw, cursor, vertex.tangent.x) || !readF32(inRaw, cursor, vertex.tangent.y) ||
+                        !readF32(inRaw, cursor, vertex.tangent.z) || !readF32(inRaw, cursor, vertex.tangent.w))
+                    {
+                        throw std::runtime_error("Cooked model data is invalid");
+                    }
+                }
+
+                std::uint32_t indexCount = 0;
+                if (!readU32(inRaw, cursor, indexCount))
+                {
+                    throw std::runtime_error("Cooked model data is invalid");
+                }
+
+                parsed.indices.resize(indexCount);
+                for (Vertex::Index& index : parsed.indices)
+                {
+                    std::uint32_t value = 0;
+                    if (!readU32(inRaw, cursor, value))
+                    {
+                        throw std::runtime_error("Cooked model data is invalid");
+                    }
+
+                    index = value;
+                }
+
+                result.emplace(name, std::move(parsed));
+            }
+
+            return result;
+        }
+
+        void Model::setCooked(const ModelParsed::Map& inData)
+        {
+            setVendor(ModelVendor::Cooked);
+            m_data = normalizeData(inData);
+
+            if (!setPayload(Base64::encode(encodeCooked(m_data))))
+            {
+                throw std::runtime_error("Failed to save the model [" + m_header.filepath.toString() + "] data");
+            }
+
             bakePreview();
         }
 
@@ -255,6 +440,11 @@ namespace Chicane
 
                 break;
 
+            case ModelVendor::Cooked:
+                result = decodeCooked(inValue);
+
+                break;
+
             default:
                 throw std::runtime_error("Failed to parse Model due to invalid vendor");
             }
@@ -316,7 +506,7 @@ namespace Chicane
             outBitangents[inThird] += bitangent;
         }
 
-        static void generateTangents(ModelParsed& outModel)
+        void Model::generateTangents(ModelParsed& outModel)
         {
             if (outModel.vertices.empty() || hasVertexTangents(outModel.vertices))
             {
@@ -372,7 +562,7 @@ namespace Chicane
             for (const auto& [name, model] : inValue)
             {
                 result[name] = model;
-                generateTangents(result[name]);
+                Model::generateTangents(result[name]);
             }
 
             return result;

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
-#include "Chicane/Core/Texture/Map.hpp"
+#include "Chicane/Core/Texture/Material.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
@@ -20,9 +20,9 @@ namespace Chicane
             using List = std::vector<DrawPoly3DCommandMesh>;
 
         public:
-            Draw::Reference                                model    = Draw::InvalidReference;
-            std::array<Draw::Reference, TEXTURE_MAP_COUNT> textures = {};
-            DrawPoly3DInstance                             instance = {};
+            Draw::Reference                                     model    = Draw::InvalidReference;
+            std::array<Draw::Reference, TEXTURE_MATERIAL_COUNT> textures = {};
+            DrawPoly3DInstance                                  instance = {};
         };
     }
 }

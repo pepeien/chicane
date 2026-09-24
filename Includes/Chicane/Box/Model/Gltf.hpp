@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box.hpp"
+#include "Chicane/Box/Model/Gltf/Scene.hpp"
 #include "Chicane/Box/Model/Parsed.hpp"
 #include "Chicane/Box/Model/Raw.hpp"
 
@@ -10,6 +11,7 @@ namespace Chicane
     {
         namespace ModelGltf
         {
+            CHICANE_BOX Scene parseScene(const ModelRaw& inData);
             CHICANE_BOX ModelParsed::Map parse(const ModelRaw& inData);
         }
     }

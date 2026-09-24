@@ -21,9 +21,10 @@ namespace Chicane
             HDR       = 1 << 6,
             Light     = 1 << 7,
             Outline   = 1 << 8,
+            Bloom     = 1 << 9,
 
             Default = Fill | Light | Outline,
-            All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light | Outline
+            All     = Fill | Wireframe | Bounds | Traces | Colliders | Skeletons | HDR | Light | Outline | Bloom
         };
 
         inline RendererFeature operator|(RendererFeature inLeft, RendererFeature inRight)

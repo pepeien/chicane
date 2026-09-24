@@ -86,13 +86,13 @@ namespace Chicane
         }
 
         static float measureWord(
-            const Box::FontFamily&      inFamily,
+            const Box::FontFamily&       inFamily,
             const std::vector<char32_t>& inCodes,
-            std::size_t                 inStart,
-            char32_t                    inPrevious,
-            bool                        bHasPrevious,
-            float                       inFontSize,
-            float                       inLetterSpacing
+            std::size_t                  inStart,
+            char32_t                     inPrevious,
+            bool                         bHasPrevious,
+            float                        inFontSize,
+            float                        inLetterSpacing
         )
         {
             float    width       = 0.0f;
@@ -107,8 +107,7 @@ namespace Chicane
                     break;
                 }
 
-                const float advance =
-                    glyphAdvance(inFamily, code, previous, hasPrevious, inFontSize, inLetterSpacing);
+                const float advance = glyphAdvance(inFamily, code, previous, hasPrevious, inFontSize, inLetterSpacing);
                 if (advance <= 0.0f)
                 {
                     continue;
@@ -439,12 +438,12 @@ namespace Chicane
                 return;
             }
 
-            const String      value         = parseText(m_text);
-            const float       fontSize      = m_style.font.size.get();
-            const float       letterSpacing = m_style.letterSpacing.get();
-            const Color::Rgba color         = m_style.foregroundColor.get();
-            const float          innerWidth = std::max(0.0f, m_size.x - m_style.insetHorizontal());
-            const StyleWordBreak wordBreak  = m_style.wordBreak.get();
+            const String         value         = parseText(m_text);
+            const float          fontSize      = m_style.font.size.get();
+            const float          letterSpacing = m_style.letterSpacing.get();
+            const Color::Rgba    color         = m_style.foregroundColor.get();
+            const float          innerWidth    = std::max(0.0f, m_size.x - m_style.insetHorizontal());
+            const StyleWordBreak wordBreak     = m_style.wordBreak.get();
 
             float wrapWidth = 0.0f;
             auto  tighten   = [&wrapWidth](float inWidth)
@@ -552,8 +551,7 @@ namespace Chicane
                     continue;
                 }
 
-                const float kerning =
-                    hasPrevious ? fontFamily.getKerning(previousCode, codepoint) * fontSize : 0.0f;
+                const float kerning = hasPrevious ? fontFamily.getKerning(previousCode, codepoint) * fontSize : 0.0f;
                 const float advance = (glyph.advance + letterSpacing) * fontSize;
                 const float nextX   = cursor.x + kerning + advance;
 
@@ -566,8 +564,8 @@ namespace Chicane
                     }
                     else
                     {
-                        const bool bWordStart = !isBreakableSpace(codepoint) &&
-                                                (!hasPrevious || isBreakableSpace(previousCode));
+                        const bool bWordStart =
+                            !isBreakableSpace(codepoint) && (!hasPrevious || isBreakableSpace(previousCode));
 
                         if (bWordStart)
                         {
@@ -599,7 +597,7 @@ namespace Chicane
 
                     flushLine();
 
-                    cursor.x    = 0.0f;
+                    cursor.x = 0.0f;
                     lineCount++;
                     hasPrevious = false;
 

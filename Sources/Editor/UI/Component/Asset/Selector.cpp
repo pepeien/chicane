@@ -211,6 +211,7 @@ namespace Editor
             Chicane::Box::AssetType::Model,
             Chicane::Box::AssetType::Skeleton,
             Chicane::Box::AssetType::Texture,
+            Chicane::Box::AssetType::Material,
             Chicane::Box::AssetType::Sky,
             Chicane::Box::AssetType::Sound,
             Chicane::Box::AssetType::Effect

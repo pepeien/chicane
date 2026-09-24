@@ -190,8 +190,7 @@ namespace Chicane
 
                 const String raw = inComponent->getAttribute(inAttribute);
                 if (raw.firstOf(REFERENCE_VALUE_OPENING) == String::npos ||
-                    raw.lastOf(REFERENCE_VALUE_CLOSING) == String::npos ||
-                    !inComponent->hasParent())
+                    raw.lastOf(REFERENCE_VALUE_CLOSING) == String::npos || !inComponent->hasParent())
                 {
                     return;
                 }

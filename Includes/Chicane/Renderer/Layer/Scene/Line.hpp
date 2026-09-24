@@ -46,20 +46,18 @@ namespace Chicane
             bool shouldDrawMeshWireframe(const Frame& inFrame) const;
             bool shouldDrawLineList(const Frame& inFrame) const;
             bool shouldDrawOutline(const Frame& inFrame) const;
-            ImmediateGeometry& ensureImmediate(
-                RHI::Device* inDevice, const Frame& inFrame, std::uint32_t inFrameIndex
-            );
+            ImmediateGeometry& ensureImmediate(RHI::Device* inDevice, const Frame& inFrame, std::uint32_t inFrameIndex);
             void drawOutline(RHI::CommandList* inCommands, const Frame& inFrame, float inOffsetX, float inOffsetY);
 
         private:
-            RHI::Pipeline                   m_meshPipeline;
-            RHI::Pipeline                   m_linePipeline;
-            RHI::Pipeline                   m_lineForegroundPipeline;
-            RHI::Pipeline                   m_outlineMaskPipeline;
-            RHI::Pipeline                   m_outlinePipeline;
-            RHI::BindGroupLayout            m_layout;
-            std::vector<RHI::BindGroup>     m_groups;
-            std::vector<ImmediateGeometry>  m_immediate;
+            RHI::Pipeline                  m_meshPipeline;
+            RHI::Pipeline                  m_linePipeline;
+            RHI::Pipeline                  m_lineForegroundPipeline;
+            RHI::Pipeline                  m_outlineMaskPipeline;
+            RHI::Pipeline                  m_outlinePipeline;
+            RHI::BindGroupLayout           m_layout;
+            std::vector<RHI::BindGroup>    m_groups;
+            std::vector<ImmediateGeometry> m_immediate;
         };
     }
 }

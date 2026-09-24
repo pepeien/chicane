@@ -1,0 +1,9 @@
+<Track version="1" id="Font">
+    <ASky id="Sky" sky="Assets/Engine/Skies/Preview.bsky" intensity="1.0" exposure="1.4" visible="false">
+        <CLight id="Environment" type="Environment" intensity="1.0" color="1,1,1" castShadows="false"/>
+    </ASky>
+    <ACamera id="Camera" absoluteTranslation="7.2,-10.8,8.8" lookTo="0,0,0.2"/>
+    <ALight id="Key" absoluteTranslation="9.0,-12.0,12.0" lookTo="0,0,0.2">
+        <CLight id="KeyLight" type="Directional" intensity="2.4" color="1,1,1" castShadows="false"/>
+    </ALight>
+</Track>

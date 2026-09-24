@@ -29,6 +29,8 @@ namespace Chicane
             RHI::Sampler                                 shadowSampler;
             RHI::Image                                   skyImage;
             RHI::Sampler                                 skySampler;
+            RHI::Image                                   skyPanoramaImage;
+            RHI::Sampler                                 skyPanoramaSampler;
 
         private:
             void buildModelBuffers();
@@ -37,6 +39,8 @@ namespace Chicane
             void destroyShadowImage();
             void buildSkyImage();
             void destroySkyImage();
+            void buildSkyPanoramaImage();
+            void destroySkyPanoramaImage();
             void buildLayers();
         };
     }
