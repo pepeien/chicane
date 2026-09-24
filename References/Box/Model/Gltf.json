@@ -15,6 +15,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Scene",
+                    "suffix": "",
+                    "path": "Box/Model/Gltf/Scene",
+                    "templates": []
+                },
+                "name": "parseScene",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelRaw",
+                            "suffix": "&",
+                            "path": "Box/Model/Raw",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODELGLTF_PARSESCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ModelParsed::Map",
                     "suffix": "",
                     "path": "Box/Model/Parsed",

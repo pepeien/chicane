@@ -573,6 +573,38 @@
             {
                 "accessor": "public",
                 "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SKY_PANORAMA_WIDTH",
+                "description": "CHICANE_RENDERER_SKY_PANORAMA_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SKY_PANORAMA_HEIGHT",
+                "description": "CHICANE_RENDERER_SKY_PANORAMA_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
                     "static"
                 ],
                 "type": {

@@ -78,6 +78,27 @@
                 },
                 "name": "onSetup",
                 "description": "CHICANE_APPLICATIONCREATEINFO_ONSETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "onFrame",
+                "description": "CHICANE_APPLICATIONCREATEINFO_ONFRAME_DESCRIPTION"
             }
         ],
         "description": "CHICANE_APPLICATIONCREATEINFO_DESCRIPTION"

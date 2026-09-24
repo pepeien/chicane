@@ -1,0 +1,295 @@
+{
+    "title": "Pool",
+    "filename": "Pool",
+    "path": "Core/Worker/Pool",
+    "source": {
+        "header": "Includes/Chicane/Core/Worker/Pool.hpp",
+        "namespace": "Chicane::WorkerPool",
+        "types": [
+            {
+                "name": "Job",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_WORKERPOOL_JOB_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WorkerPool",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKERPOOL_WORKERPOOL_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~WorkerPool",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKERPOOL_~WORKERPOOL_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "WorkerPool",
+                    "suffix": "&",
+                    "path": "Core/Worker/Pool",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_WORKERPOOL_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "submit",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker/Pool",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WORKERPOOL_SUBMIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parallel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WorkerPoolParallel::Job",
+                            "suffix": "&",
+                            "path": "Core/Worker/Pool/Parallel",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WORKERPOOL_PARALLEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enqueue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker/Pool",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WORKERPOOL_ENQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "coordinator",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WORKERPOOL_COORDINATOR_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_WORKERPOOL_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::condition_variable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_signal",
+                "description": "CHICANE_WORKERPOOL_M_SIGNAL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker/Pool",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_jobs",
+                "description": "CHICANE_WORKERPOOL_M_JOBS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_coordinator",
+                "description": "CHICANE_WORKERPOOL_M_COORDINATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bCoordinator",
+                "description": "CHICANE_WORKERPOOL_M_BCOORDINATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bShutdown",
+                "description": "CHICANE_WORKERPOOL_M_BSHUTDOWN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "WorkerPoolParallel",
+                    "suffix": "",
+                    "path": "Core/Worker/Pool/Parallel",
+                    "templates": []
+                },
+                "name": "m_parallel",
+                "description": "CHICANE_WORKERPOOL_M_PARALLEL_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_WORKERPOOL_DESCRIPTION"
+    },
+    "children": []
+}

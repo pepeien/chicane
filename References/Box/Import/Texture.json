@@ -1,10 +1,10 @@
 {
-    "title": "Sky",
-    "filename": "Sky",
-    "path": "Renderer/Draw/Sky",
+    "title": "Texture",
+    "filename": "Texture",
+    "path": "Box/Import/Texture",
     "source": {
-        "header": "Includes/Chicane/Renderer/Draw/Sky.hpp",
-        "namespace": "Chicane::Renderer::DrawSky",
+        "header": "Includes/Chicane/Box/Import/Texture.hpp",
+        "namespace": "Chicane::Box::ImportTexture",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,42 +16,42 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawPoly",
+                    "name": "FileSystem::Path",
                     "suffix": "",
-                    "path": "Renderer/Draw/Poly",
+                    "path": "Core/FileSystem/Path",
                     "templates": []
                 },
-                "name": "model",
-                "description": "CHICANE_RENDERER_DRAWSKY_MODEL_DESCRIPTION"
+                "name": "path",
+                "description": "CHICANE_BOX_IMPORTTEXTURE_PATH_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawTexture::List",
+                    "name": "String",
                     "suffix": "",
-                    "path": "Renderer/Draw/Texture",
+                    "path": "Core/String",
                     "templates": []
                 },
-                "name": "textures",
-                "description": "CHICANE_RENDERER_DRAWSKY_TEXTURES_DESCRIPTION"
+                "name": "id",
+                "description": "CHICANE_BOX_IMPORTTEXTURE_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "DrawSkyKind",
+                    "name": "Image::Instance",
                     "suffix": "",
-                    "path": "Renderer/Draw/Sky/Kind",
+                    "path": "Core/Image",
                     "templates": []
                 },
-                "name": "kind",
-                "description": "CHICANE_RENDERER_DRAWSKY_KIND_DESCRIPTION"
+                "name": "image",
+                "description": "CHICANE_BOX_IMPORTTEXTURE_IMAGE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_DRAWSKY_DESCRIPTION"
+        "description": "CHICANE_BOX_IMPORTTEXTURE_DESCRIPTION"
     },
     "children": []
 }

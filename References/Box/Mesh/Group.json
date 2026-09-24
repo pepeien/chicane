@@ -5,34 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Box/Mesh/Group.hpp",
         "namespace": "Chicane::Box::MeshGroup",
-        "types": [
-            {
-                "name": "TextureMaps",
-                "type": {
-                    "prefix": "",
-                    "name": "std::map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "TextureMap",
-                            "suffix": "",
-                            "path": "Core/Texture/Map",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "AssetReference",
-                            "suffix": "",
-                            "path": "Box/Asset/Reference",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_MESHGROUP_TEXTUREMAPS_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -233,46 +206,18 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "TextureMaps",
-                    "suffix": "&",
-                    "path": "Box/Mesh/Group",
-                    "templates": []
-                },
-                "name": "getTextures",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MESHGROUP_GETTEXTURES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
                     "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "hasTexture",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "TextureMap",
-                            "suffix": "",
-                            "path": "Core/Texture/Map",
-                            "templates": []
-                        },
-                        "name": "inMap"
-                    }
-                ],
+                "name": "hasMaterial",
+                "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESHGROUP_HASTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_HASMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -284,23 +229,12 @@
                     "path": "Box/Asset/Reference",
                     "templates": []
                 },
-                "name": "getTexture",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "TextureMap",
-                            "suffix": "",
-                            "path": "Core/Texture/Map",
-                            "templates": []
-                        },
-                        "name": "inMap"
-                    }
-                ],
+                "name": "getMaterial",
+                "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESHGROUP_GETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_GETMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -312,41 +246,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setTexture",
+                "name": "setMaterial",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "TextureMap",
-                            "suffix": "",
-                            "path": "Core/Texture/Map",
-                            "templates": []
-                        },
-                        "name": "inMap"
-                    },
-                    {
-                        "type": {
                             "prefix": "const ",
-                            "name": "XmlNode",
+                            "name": "AssetReference",
                             "suffix": "&",
-                            "path": "Core/Xml/Node",
+                            "path": "Box/Asset/Reference",
                             "templates": []
                         },
-                        "name": "inNode"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem/Path",
-                            "templates": []
-                        },
-                        "name": "inBase"
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -358,53 +272,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setTexture",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "TextureMap",
-                            "suffix": "",
-                            "path": "Core/Texture/Map",
-                            "templates": []
-                        },
-                        "name": "inMap"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inSource"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inReference"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setTexture",
+                "name": "setMaterial",
                 "parameters": [
                     {
                         "type": {
@@ -428,7 +296,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -440,7 +308,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setTexture",
+                "name": "setMaterial",
                 "parameters": [
                     {
                         "type": {
@@ -464,7 +332,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -476,7 +344,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "saveTextures",
+                "name": "saveMaterial",
                 "parameters": [
                     {
                         "type": {
@@ -492,7 +360,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESHGROUP_SAVETEXTURES_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SAVEMATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -868,13 +736,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "TextureMaps",
+                    "name": "AssetReference",
                     "suffix": "",
-                    "path": "Box/Mesh/Group",
+                    "path": "Box/Asset/Reference",
                     "templates": []
                 },
-                "name": "m_textures",
-                "description": "CHICANE_BOX_MESHGROUP_M_TEXTURES_DESCRIPTION"
+                "name": "m_material",
+                "description": "CHICANE_BOX_MESHGROUP_M_MATERIAL_DESCRIPTION"
             },
             {
                 "accessor": "private",

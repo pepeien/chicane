@@ -1,0 +1,52 @@
+{
+    "title": "Scene",
+    "filename": "Scene",
+    "path": "Box/Model/Gltf/Scene",
+    "source": {
+        "header": "Includes/Chicane/Box/Model/Gltf/Scene.hpp",
+        "namespace": "Chicane::Box::ModelGltf::Scene",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ModelParsed::Map",
+                    "suffix": "",
+                    "path": "Box/Model/Parsed",
+                    "templates": []
+                },
+                "name": "geometry",
+                "description": "CHICANE_BOX_MODELGLTF_SCENE_GEOMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Instance",
+                            "suffix": "",
+                            "path": "Box/Model/Gltf/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "instances",
+                "description": "CHICANE_BOX_MODELGLTF_SCENE_INSTANCES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_MODELGLTF_SCENE_DESCRIPTION"
+    },
+    "children": []
+}

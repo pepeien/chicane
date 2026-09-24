@@ -303,6 +303,22 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "PREVIEW_DIRECTORY",
+                "description": "CHICANE_TRACK_PREVIEW_DIRECTORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TAG_ID",
                 "description": "CHICANE_TRACK_TAG_ID_DESCRIPTION"
             },

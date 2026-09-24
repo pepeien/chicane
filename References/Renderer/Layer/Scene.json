@@ -192,6 +192,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildSkyPanoramaImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENE_BUILDSKYPANORAMAIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySkyPanoramaImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_LSCENE_DESTROYSKYPANORAMAIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "buildLayers",
                 "parameters": [],
                 "modifiers": [],
@@ -304,6 +334,32 @@
                 },
                 "name": "skySampler",
                 "description": "CHICANE_RENDERER_LSCENE_SKYSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "skyPanoramaImage",
+                "description": "CHICANE_RENDERER_LSCENE_SKYPANORAMAIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Sampler",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Sampler",
+                    "templates": []
+                },
+                "name": "skyPanoramaSampler",
+                "description": "CHICANE_RENDERER_LSCENE_SKYPANORAMASAMPLER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LSCENE_DESCRIPTION"

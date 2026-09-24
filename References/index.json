@@ -430,6 +430,92 @@
                 ]
             },
             {
+                "title": "Import",
+                "filename": "Import",
+                "path": "Box/Import",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Result",
+                        "filename": "Result",
+                        "path": "Box/Import/Result",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Import/Result.hpp",
+                            "namespace": "Chicane::Box::ImportResult",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Source",
+                        "filename": "Source",
+                        "path": "Box/Import/Source",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Import/Source.hpp",
+                            "namespace": "Chicane::Box",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Texture",
+                        "filename": "Texture",
+                        "path": "Box/Import/Texture",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Import/Texture.hpp",
+                            "namespace": "Chicane::Box::ImportTexture",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Material",
+                "filename": "Material",
+                "path": "Box/Material",
+                "source": {
+                    "header": "Includes/Chicane/Box/Material.hpp",
+                    "namespace": "Chicane::Box::Material",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": []
+            },
+            {
                 "title": "Mesh",
                 "filename": "Mesh",
                 "path": "Box/Mesh",
@@ -512,7 +598,59 @@
                             "members": [],
                             "description": null
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "Instance",
+                                "filename": "Instance",
+                                "path": "Box/Model/Gltf/Instance",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Model/Gltf/Instance.hpp",
+                                    "namespace": "Chicane::Box::ModelGltf::Instance",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Primitive",
+                                "filename": "Primitive",
+                                "path": "Box/Model/Gltf/Primitive",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Model/Gltf/Primitive.hpp",
+                                    "namespace": "Chicane::Box::ModelGltf::Primitive",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Scene",
+                                "filename": "Scene",
+                                "path": "Box/Model/Gltf/Scene",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Model/Gltf/Scene.hpp",
+                                    "namespace": "Chicane::Box::ModelGltf::Scene",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "ModelVendor",
@@ -694,6 +832,23 @@
                         "source": {
                             "header": "Includes/Chicane/Box/Sky/Raw.hpp",
                             "namespace": "Chicane::Box",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "SkyKind",
+                        "filename": "Kind",
+                        "path": "Box/Sky/Kind",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Sky/Kind.hpp",
+                            "namespace": "Chicane::Box::SkyKind",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -2725,12 +2880,12 @@
                 },
                 "children": [
                     {
-                        "title": "Map",
-                        "filename": "Map",
-                        "path": "Core/Texture/Map",
+                        "title": "Material",
+                        "filename": "Material",
+                        "path": "Core/Texture/Material",
                         "source": {
-                            "header": "Includes/Chicane/Core/Texture/Map.hpp",
-                            "namespace": "Chicane::TextureMap",
+                            "header": "Includes/Chicane/Core/Texture/Material.hpp",
+                            "namespace": "Chicane::TextureMaterial",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -3052,7 +3207,43 @@
                     "members": [],
                     "description": null
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "Pool",
+                        "filename": "Pool",
+                        "path": "Core/Worker/Pool",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Worker/Pool.hpp",
+                            "namespace": "Chicane::WorkerPool",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Parallel",
+                                "filename": "Parallel",
+                                "path": "Core/Worker/Pool/Parallel",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Worker/Pool/Parallel.hpp",
+                                    "namespace": "Chicane::WorkerPoolParallel",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "title": "Xml",
@@ -5966,6 +6157,23 @@
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Draw/Sky/Data.hpp",
                                     "namespace": "Chicane::Renderer::DrawSkyData",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "DrawSkyKind",
+                                "filename": "Kind",
+                                "path": "Renderer/Draw/Sky/Kind",
+                                "source": {
+                                    "header": "Includes/Chicane/Renderer/Draw/Sky/Kind.hpp",
+                                    "namespace": "Chicane::Renderer::DrawSkyKind",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],

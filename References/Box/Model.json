@@ -131,6 +131,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "generateTangents",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ModelParsed",
+                            "suffix": "&",
+                            "path": "Box/Model/Parsed",
+                            "templates": []
+                        },
+                        "name": "outModel"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_MODEL_GENERATETANGENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ModelVendor",
                     "suffix": "",
                     "path": "Box/Model/Vendor",
@@ -263,6 +291,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_MODEL_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCooked",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelParsed::Map",
+                            "suffix": "&",
+                            "path": "Box/Model/Parsed",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_SETCOOKED_DESCRIPTION"
             },
             {
                 "accessor": "public",

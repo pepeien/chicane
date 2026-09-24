@@ -48,6 +48,28 @@
                 "description": "CHICANE_IMAGE_PIXELS_DESCRIPTION"
             },
             {
+                "name": "FloatPixel",
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_IMAGE_FLOATPIXEL_DESCRIPTION"
+            },
+            {
+                "name": "FloatPixels",
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_IMAGE_FLOATPIXELS_DESCRIPTION"
+            },
+            {
                 "name": "Instance",
                 "type": {
                     "prefix": "",
@@ -646,6 +668,64 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flipY",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Pixels",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inPixels"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inChannel"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_IMAGE_FLIPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ImageVendor",
                     "suffix": "",
                     "path": "Core/Image/Vendor",
@@ -657,6 +737,23 @@
                     "const"
                 ],
                 "description": "CHICANE_IMAGE_GETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isHdr",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_IMAGE_ISHDR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -752,6 +849,23 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "FloatPixels",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "getFloatPixels",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_IMAGE_GETFLOATPIXELS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -805,6 +919,54 @@
                     "const"
                 ],
                 "description": "CHICANE_IMAGE_BLIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "blitFloat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "FloatPixels",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "outPixels"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outHeight"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_IMAGE_BLITFLOAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -953,6 +1115,73 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "decodeHdr",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Raw",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_DECODEHDR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "decodeHdrFile",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_DECODEHDRFILE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildLdrFromHdr",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_REBUILDLDRFROMHDR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -1024,6 +1253,19 @@
                 },
                 "name": "m_pixels",
                 "description": "CHICANE_IMAGE_M_PIXELS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FloatPixels",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "m_floats",
+                "description": "CHICANE_IMAGE_M_FLOATS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

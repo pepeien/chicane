@@ -2142,6 +2142,19 @@
                 },
                 "name": "m_objectCells",
                 "description": "CHICANE_SCENE_M_OBJECTCELLS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::recursive_mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_objectMutex",
+                "description": "CHICANE_SCENE_M_OBJECTMUTEX_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENE_DESCRIPTION"

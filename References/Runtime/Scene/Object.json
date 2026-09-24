@@ -452,7 +452,22 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "applyLookAt",
+                "name": "applyLookTo",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_APPLYLOOKTO_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyLookTo",
                 "parameters": [
                     {
                         "type": {
@@ -466,7 +481,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_OBJECT_APPLYLOOKAT_DESCRIPTION"
+                "description": "CHICANE_OBJECT_APPLYLOOKTO_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -782,6 +797,35 @@
                 },
                 "name": "ABSOLUTE_SCALE_ATTRIBUTE_NAME",
                 "description": "CHICANE_OBJECT_ABSOLUTE_SCALE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LOOK_TO_ATTRIBUTE_NAME",
+                "description": "CHICANE_OBJECT_LOOK_TO_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "lookTo",
+                "description": "CHICANE_OBJECT_LOOKTO_DESCRIPTION"
             },
             {
                 "accessor": "protected",

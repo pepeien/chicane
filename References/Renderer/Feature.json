@@ -125,6 +125,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Bloom",
+                "description": "CHICANE_RENDERER_RENDERERFEATURE_BLOOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Default",
                 "description": "CHICANE_RENDERER_RENDERERFEATURE_DEFAULT_DESCRIPTION"
             },

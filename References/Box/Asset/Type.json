@@ -92,6 +92,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Material",
+                "description": "CHICANE_BOX_ASSETTYPE_MATERIAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Sky",
                 "description": "CHICANE_BOX_ASSETTYPE_SKY_DESCRIPTION"
             },

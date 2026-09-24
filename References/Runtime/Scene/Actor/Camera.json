@@ -70,64 +70,9 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_ACAMERA_ONLOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onPropertyEdited",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_ACAMERA_ONPROPERTYEDITED_DESCRIPTION"
             }
         ],
         "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "LOOK_AT_ATTRIBUTE_NAME",
-                "description": "CHICANE_ACAMERA_LOOK_AT_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "lookAt",
-                "description": "CHICANE_ACAMERA_LOOKAT_DESCRIPTION"
-            },
             {
                 "accessor": "protected",
                 "modifiers": [],

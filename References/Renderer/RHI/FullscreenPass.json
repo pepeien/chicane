@@ -178,6 +178,16 @@
                             "templates": []
                         },
                         "name": "inFrameIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bBloom"
                     }
                 ],
                 "modifiers": [],

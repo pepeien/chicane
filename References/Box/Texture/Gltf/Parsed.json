@@ -56,7 +56,7 @@
                             "templates": [
                                 {
                                     "prefix": "",
-                                    "name": "TextureMap",
+                                    "name": "TextureMaterial",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []

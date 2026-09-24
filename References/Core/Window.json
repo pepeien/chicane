@@ -1034,6 +1034,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "hide",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_HIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "setMoveHitTest",
                 "parameters": [
                     {

@@ -1,0 +1,52 @@
+{
+    "title": "Result",
+    "filename": "Result",
+    "path": "Box/Import/Result",
+    "source": {
+        "header": "Includes/Chicane/Box/Import/Result.hpp",
+        "namespace": "Chicane::Box::ImportResult",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "primary",
+                "description": "CHICANE_BOX_IMPORTRESULT_PRIMARY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "written",
+                "description": "CHICANE_BOX_IMPORTRESULT_WRITTEN_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_IMPORTRESULT_DESCRIPTION"
+    },
+    "children": []
+}

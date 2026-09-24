@@ -3779,40 +3779,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setPeripherals",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Component",
-                                    "suffix": "*",
-                                    "path": "Grid/Component",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inPeripherals"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETPERIPHERALS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "import",
                 "parameters": [],
                 "modifiers": [
@@ -4501,6 +4467,40 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_PAINTROUNDCLIPS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setPeripherals",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inPeripherals"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETPERIPHERALS_DESCRIPTION"
             }
         ],
         "members": [

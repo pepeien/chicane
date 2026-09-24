@@ -1,11 +1,38 @@
 {
-    "title": "Sky",
-    "filename": "Sky",
-    "path": "Box/Sky",
+    "title": "Material",
+    "filename": "Material",
+    "path": "Box/Material",
     "source": {
-        "header": "Includes/Chicane/Box/Sky.hpp",
-        "namespace": "Chicane::Box::Sky",
-        "types": [],
+        "header": "Includes/Chicane/Box/Material.hpp",
+        "namespace": "Chicane::Box::Material",
+        "types": [
+            {
+                "name": "TextureMaps",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "TextureMaterial",
+                            "suffix": "",
+                            "path": "Core/Texture/Material",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "AssetReference",
+                            "suffix": "",
+                            "path": "Box/Asset/Reference",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MATERIAL_TEXTUREMAPS_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [
             {
@@ -18,7 +45,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Sky",
+                "name": "Material",
                 "parameters": [
                     {
                         "type": {
@@ -32,7 +59,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_SKY_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_MATERIAL_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -46,10 +73,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~Sky",
+                "name": "~Material",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_~SKY_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_~MATERIAL_DESCRIPTION"
             }
         ],
         "functions": [
@@ -57,53 +84,44 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "SkyKind",
-                    "suffix": "",
-                    "path": "Box/Sky/Kind",
+                    "prefix": "const ",
+                    "name": "Material",
+                    "suffix": "*",
+                    "path": "Box/Material",
                     "templates": []
                 },
-                "name": "getKind",
+                "name": "getDefault",
                 "parameters": [],
                 "modifiers": [
-                    "const"
+                    "static"
                 ],
-                "description": "CHICANE_BOX_SKY_GETKIND_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_GETDEFAULT_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "setKind",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "SkyKind",
-                            "suffix": "",
-                            "path": "Box/Sky/Kind",
-                            "templates": []
-                        },
-                        "name": "inKind"
-                    }
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKY_SETKIND_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_ISVALID_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "AssetReference::List",
+                    "name": "TextureMaps",
                     "suffix": "&",
-                    "path": "Box/Asset/Reference",
+                    "path": "Box/Material",
                     "templates": []
                 },
                 "name": "getTextures",
@@ -111,103 +129,35 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_SKY_GETTEXTURES_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_GETTEXTURES_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "addTexture",
+                "name": "hasTexture",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "FileSystem::Path",
-                                    "suffix": "",
-                                    "path": "Core/FileSystem/Path",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inFilepaths"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKY_ADDTEXTURE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addTexture",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem/Path",
+                            "prefix": "",
+                            "name": "TextureMaterial",
+                            "suffix": "",
+                            "path": "Core/Texture/Material",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inType"
                     }
                 ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKY_ADDTEXTURE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addTexture",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inSource"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inReference"
-                    }
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKY_ADDTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_HASTEXTURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -219,12 +169,23 @@
                     "path": "Box/Asset/Reference",
                     "templates": []
                 },
-                "name": "getModel",
-                "parameters": [],
+                "name": "getTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TextureMaterial",
+                            "suffix": "",
+                            "path": "Core/Texture/Material",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_SKY_GETMODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_GETTEXTURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -236,8 +197,28 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setModel",
+                "name": "setTexture",
                 "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TextureMaterial",
+                            "suffix": "",
+                            "path": "Core/Texture/Material",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
                     {
                         "type": {
                             "prefix": "const ",
@@ -246,11 +227,11 @@
                             "path": "Core/FileSystem/Path",
                             "templates": []
                         },
-                        "name": "inFilepath"
+                        "name": "inBase"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_SETMODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_SETTEXTURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -262,7 +243,53 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setModel",
+                "name": "setTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TextureMaterial",
+                            "suffix": "",
+                            "path": "Core/Texture/Material",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MATERIAL_SETTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTexture",
                 "parameters": [
                     {
                         "type": {
@@ -286,22 +313,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_SETMODEL_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "fetchKind",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SKY_FETCHKIND_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_SETTEXTURE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -316,7 +328,7 @@
                 "name": "fetchTextures",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_FETCHTEXTURES_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_FETCHTEXTURES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -328,10 +340,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fetchModel",
+                "name": "saveTextures",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SKY_FETCHMODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_SAVETEXTURES_DESCRIPTION"
             }
         ],
         "members": [
@@ -349,7 +361,7 @@
                     "templates": []
                 },
                 "name": "EXTENSION",
-                "description": "CHICANE_BOX_SKY_EXTENSION_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_EXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -365,7 +377,7 @@
                     "templates": []
                 },
                 "name": "TAG",
-                "description": "CHICANE_BOX_SKY_TAG_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_TAG_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -380,8 +392,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURES_TAG",
-                "description": "CHICANE_BOX_SKY_TEXTURES_TAG_DESCRIPTION"
+                "name": "DEFAULT_SOURCE",
+                "description": "CHICANE_BOX_MATERIAL_DEFAULT_SOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -396,8 +408,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "KIND_ATTRIBUTE_NAME",
-                "description": "CHICANE_BOX_SKY_KIND_ATTRIBUTE_NAME_DESCRIPTION"
+                "name": "DEFAULT_REFERENCE",
+                "description": "CHICANE_BOX_MATERIAL_DEFAULT_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -412,8 +424,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "PREVIEW_SOURCE",
-                "description": "CHICANE_BOX_SKY_PREVIEW_SOURCE_DESCRIPTION"
+                "name": "GRAY_SOURCE",
+                "description": "CHICANE_BOX_MATERIAL_GRAY_SOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -428,66 +440,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "BOX_SOURCE",
-                "description": "CHICANE_BOX_SKY_BOX_SOURCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "DOME_SOURCE",
-                "description": "CHICANE_BOX_SKY_DOME_SOURCE_DESCRIPTION"
+                "name": "GRAY_REFERENCE",
+                "description": "CHICANE_BOX_MATERIAL_GRAY_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "SkyKind",
+                    "name": "TextureMaps",
                     "suffix": "",
-                    "path": "Box/Sky/Kind",
-                    "templates": []
-                },
-                "name": "m_kind",
-                "description": "CHICANE_BOX_SKY_M_KIND_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "AssetReference::List",
-                    "suffix": "",
-                    "path": "Box/Asset/Reference",
+                    "path": "Box/Material",
                     "templates": []
                 },
                 "name": "m_textures",
-                "description": "CHICANE_BOX_SKY_M_TEXTURES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "AssetReference",
-                    "suffix": "",
-                    "path": "Box/Asset/Reference",
-                    "templates": []
-                },
-                "name": "m_model",
-                "description": "CHICANE_BOX_SKY_M_MODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_M_TEXTURES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_SKY_DESCRIPTION"
+        "description": "CHICANE_BOX_MATERIAL_DESCRIPTION"
     },
     "children": []
 }

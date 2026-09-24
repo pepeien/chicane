@@ -793,8 +793,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "GREY_SOURCE",
-                "description": "CHICANE_BOX_TEXTURE_GREY_SOURCE_DESCRIPTION"
+                "name": "GRAY_SOURCE",
+                "description": "CHICANE_BOX_TEXTURE_GRAY_SOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -809,8 +809,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "GREY_REFERENCE",
-                "description": "CHICANE_BOX_TEXTURE_GREY_REFERENCE_DESCRIPTION"
+                "name": "GRAY_REFERENCE",
+                "description": "CHICANE_BOX_TEXTURE_GRAY_REFERENCE_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -36,6 +36,19 @@
                 },
                 "name": "exposure",
                 "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_EXPOSURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bVisible",
+                "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_BVISIBLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWSKYINSTANCE_DESCRIPTION"

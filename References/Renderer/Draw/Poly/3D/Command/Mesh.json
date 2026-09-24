@@ -62,9 +62,9 @@
                         },
                         {
                             "prefix": "",
-                            "name": "TEXTURE_MAP_COUNT",
+                            "name": "TEXTURE_MATERIAL_COUNT",
                             "suffix": "",
-                            "path": "d0/d54/namespaceChicane_1ac0a28824177ebbe38d18b66dcbd2de00",
+                            "path": "d0/d54/namespaceChicane_1a323d45ec01475ee5255000587e3a1708",
                             "templates": []
                         }
                     ]

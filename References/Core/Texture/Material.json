@@ -1,10 +1,10 @@
 {
-    "title": "Map",
-    "filename": "Map",
-    "path": "Core/Texture/Map",
+    "title": "Material",
+    "filename": "Material",
+    "path": "Core/Texture/Material",
     "source": {
-        "header": "Includes/Chicane/Core/Texture/Map.hpp",
-        "namespace": "Chicane::TextureMap",
+        "header": "Includes/Chicane/Core/Texture/Material.hpp",
+        "namespace": "Chicane::TextureMaterial",
         "types": [],
         "enums": [
             {
@@ -15,8 +15,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Base",
-                "description": "CHICANE_TEXTUREMAP_BASE_DESCRIPTION"
+                "name": "Albedo",
+                "description": "CHICANE_TEXTUREMATERIAL_ALBEDO_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "AmbientOcclusion",
-                "description": "CHICANE_TEXTUREMAP_AMBIENTOCCLUSION_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_AMBIENTOCCLUSION_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "Normal",
-                "description": "CHICANE_TEXTUREMAP_NORMAL_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_NORMAL_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,7 +49,7 @@
                     "templates": []
                 },
                 "name": "Roughness",
-                "description": "CHICANE_TEXTUREMAP_ROUGHNESS_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_ROUGHNESS_DESCRIPTION"
             },
             {
                 "type": {
@@ -60,7 +60,7 @@
                     "templates": []
                 },
                 "name": "Metalness",
-                "description": "CHICANE_TEXTUREMAP_METALNESS_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_METALNESS_DESCRIPTION"
             },
             {
                 "type": {
@@ -71,7 +71,7 @@
                     "templates": []
                 },
                 "name": "Height",
-                "description": "CHICANE_TEXTUREMAP_HEIGHT_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_HEIGHT_DESCRIPTION"
             },
             {
                 "type": {
@@ -82,7 +82,7 @@
                     "templates": []
                 },
                 "name": "Specular",
-                "description": "CHICANE_TEXTUREMAP_SPECULAR_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_SPECULAR_DESCRIPTION"
             },
             {
                 "type": {
@@ -93,7 +93,7 @@
                     "templates": []
                 },
                 "name": "Opacity",
-                "description": "CHICANE_TEXTUREMAP_OPACITY_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_OPACITY_DESCRIPTION"
             },
             {
                 "type": {
@@ -104,7 +104,7 @@
                     "templates": []
                 },
                 "name": "Refraction",
-                "description": "CHICANE_TEXTUREMAP_REFRACTION_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_REFRACTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -115,7 +115,7 @@
                     "templates": []
                 },
                 "name": "SelfIllumination",
-                "description": "CHICANE_TEXTUREMAP_SELFILLUMINATION_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_SELFILLUMINATION_DESCRIPTION"
             },
             {
                 "type": {
@@ -126,7 +126,7 @@
                     "templates": []
                 },
                 "name": "Bump",
-                "description": "CHICANE_TEXTUREMAP_BUMP_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_BUMP_DESCRIPTION"
             },
             {
                 "type": {
@@ -137,7 +137,7 @@
                     "templates": []
                 },
                 "name": "Reflection",
-                "description": "CHICANE_TEXTUREMAP_REFLECTION_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_REFLECTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -148,7 +148,7 @@
                     "templates": []
                 },
                 "name": "Count",
-                "description": "CHICANE_TEXTUREMAP_COUNT_DESCRIPTION"
+                "description": "CHICANE_TEXTUREMATERIAL_COUNT_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -169,9 +169,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "TextureMap",
+                            "name": "TextureMaterial",
                             "suffix": "",
-                            "path": "Core/Texture/Map",
+                            "path": "Core/Texture/Material",
                             "templates": []
                         },
                         "name": "inValue"
@@ -185,12 +185,12 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "TextureMap",
+                    "name": "TextureMaterial",
                     "suffix": "",
-                    "path": "Core/Texture/Map",
+                    "path": "Core/Texture/Material",
                     "templates": []
                 },
-                "name": "toTextureMap",
+                "name": "toTextureMaterial",
                 "parameters": [
                     {
                         "type": {
@@ -204,7 +204,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TOTEXTUREMAP_DESCRIPTION"
+                "description": "CHICANE_TOTEXTUREMATERIAL_DESCRIPTION"
             }
         ],
         "members": [
@@ -221,8 +221,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TEXTURE_MAP_COUNT",
-                "description": "CHICANE_TEXTURE_MAP_COUNT_DESCRIPTION"
+                "name": "TEXTURE_MATERIAL_COUNT",
+                "description": "CHICANE_TEXTURE_MATERIAL_COUNT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_DESCRIPTION"

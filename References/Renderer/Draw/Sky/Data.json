@@ -42,6 +42,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "DrawSkyKind",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Sky/Kind",
+                    "templates": []
+                },
+                "name": "kind",
+                "description": "CHICANE_RENDERER_DRAWSKYDATA_KIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -49,6 +62,19 @@
                 },
                 "name": "exposure",
                 "description": "CHICANE_RENDERER_DRAWSKYDATA_EXPOSURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bVisible",
+                "description": "CHICANE_RENDERER_DRAWSKYDATA_BVISIBLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWSKYDATA_DESCRIPTION"

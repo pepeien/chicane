@@ -151,6 +151,32 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasSky",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_BHASSKY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsPanorama",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_BISPANORAMA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "RHI::Pipeline",
                     "suffix": "",
                     "path": "Renderer/RHI/Pipeline",
@@ -158,6 +184,19 @@
                 },
                 "name": "m_pipeline",
                 "description": "CHICANE_RENDERER_LSCENESKY_M_PIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Pipeline",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Pipeline",
+                    "templates": []
+                },
+                "name": "m_panoramaPipeline",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_PANORAMAPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -224,13 +263,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "RHI::BindGroup",
                     "suffix": "",
-                    "path": "",
+                    "path": "Renderer/RHI/BindGroup",
                     "templates": []
                 },
-                "name": "m_bHasSky",
-                "description": "CHICANE_RENDERER_LSCENESKY_M_BHASSKY_DESCRIPTION"
+                "name": "m_panoramaGroup",
+                "description": "CHICANE_RENDERER_LSCENESKY_M_PANORAMAGROUP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LSCENESKY_DESCRIPTION"

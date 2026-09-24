@@ -23,6 +23,19 @@
                 },
                 "name": "enabled",
                 "description": "CHICANE_RENDERER_RHI_HDRPUSH_ENABLED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bloom",
+                "description": "CHICANE_RENDERER_RHI_HDRPUSH_BLOOM_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_RHI_HDRPUSH_DESCRIPTION"

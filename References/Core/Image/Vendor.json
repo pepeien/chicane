@@ -50,6 +50,17 @@
                 },
                 "name": "Gif",
                 "description": "CHICANE_IMAGEVENDOR_GIF_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Hdr",
+                "description": "CHICANE_IMAGEVENDOR_HDR_DESCRIPTION"
             }
         ],
         "constructors": [],
