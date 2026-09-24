@@ -17,8 +17,8 @@ Input::Color {
         border-radius: 3px;
         cursor: pointer;
         overflow: hidden;
-        background-color: $--white;
-        border: 1px solid $--lighter-grey;
+        background-color: white;
+        border: 1px solid grey;
     }
 
     &__swatch__fill {
@@ -33,8 +33,8 @@ Input::Color {
         width: 16.5em;
         margin-top: 1.7em;
         z-index: 130;
-        background-color: #323232;
-        border: 1px solid #524e4e;
+        background-color: black;
+        border: 1px solid grey;
         border-radius: 4px;
     }
 
@@ -44,7 +44,7 @@ Input::Color {
         display: flex;
         flex-direction: column;
         gap: 0.45em;
-        background-color: #323232;
+        background-color: black;
     }
 
     &__picker {
@@ -123,7 +123,7 @@ Input::Color {
         flex-direction: row;
         overflow: hidden;
         border-radius: 3px;
-        background-color: $--white;
+        background-color: white;
     }
 
     &__tab {

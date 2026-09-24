@@ -1469,7 +1469,33 @@ namespace Chicane
             refreshBounds();
             markPaintDirtySubtree();
 
-            setFlag(ComponentDirty::Layout, false);
+            if (hasFlag(ComponentDirty::Layout))
+            {
+                std::function<void(Component*)> relayout;
+                relayout = [&](Component* node)
+                {
+                    if (!node || !node->hasFlag(ComponentDirty::Layout))
+                    {
+                        return;
+                    }
+
+                    node->refresh();
+
+                    const std::vector<Component*> children = node->getChildren();
+                    for (Component* child : children)
+                    {
+                        const std::vector<Component*>& live = node->getChildren();
+                        if (std::find(live.begin(), live.end(), child) == live.end())
+                        {
+                            continue;
+                        }
+
+                        relayout(child);
+                    }
+                };
+
+                relayout(this);
+            }
         }
 
         void Component::refresh()
@@ -2655,15 +2681,26 @@ namespace Chicane
             }
 
             const bool bShouldShow = parseText(attribute).equals("true", "1");
+            const bool bWasHidden  = m_style.isDisplay(StyleDisplay::None);
             if (bShouldShow)
             {
-                if (m_style.isDisplay(StyleDisplay::None))
+                if (bWasHidden)
                 {
                     markStyleDirty();
                     markLayoutDirty();
+
+                    if (m_parent)
+                    {
+                        m_parent->markLayoutDirty();
+                    }
                 }
 
                 return false;
+            }
+
+            if (!bWasHidden && m_parent)
+            {
+                m_parent->markLayoutDirty();
             }
 
             m_style.display.set(StyleDisplay::None);

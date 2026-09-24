@@ -20,6 +20,16 @@ namespace Editor
         load("Assets/Editor/UI/Components/Header/Menu.grid", "Assets/Editor/UI/Components/Header/Menu.decal");
     }
 
+    void HeaderMenu::refresh()
+    {
+        Chicane::Grid::Container::refresh();
+
+        if (m_bHasSubmenuList)
+        {
+            bindSubmenu();
+        }
+    }
+
     void HeaderMenu::onTick(float inDeltaTime)
     {
         Chicane::Grid::Container::onTick(inDeltaTime);

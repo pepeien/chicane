@@ -217,6 +217,7 @@ namespace Chicane
             [this](const String& inValue)
             {
                 lookTo = inValue;
+
                 applyLookTo(lookTo);
             }
         );

@@ -22,12 +22,48 @@
         {
             "name": "release",
             "displayName": "Release",
-            "description": "Building directly on your host machine",
+            "description": "Optimized build with debug symbols",
             "binaryDir": "${sourceDir}/build-release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
 
                 "CHICANE_BUILD_DIR": "Binaries/Release",
+
+                "CHICANE_OPENGL_MAJOR_VERSION": "4",
+                "CHICANE_OPENGL_MINOR_VERSION": "6",
+
+                "CHICANE_VULKAN_MAJOR_VERSION": "1",
+                "CHICANE_VULKAN_MINOR_VERSION": "3",
+                "CHICANE_VULKAN_PATCH_VERSION": "296"
+            }
+        },
+        {
+            "name": "relwithdebinfo",
+            "displayName": "RelWithDebInfo",
+            "description": "Optimized build with debug symbols",
+            "binaryDir": "${sourceDir}/build-relwithdebinfo",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+
+                "CHICANE_BUILD_DIR": "Binaries/RelWithDebInfo",
+
+                "CHICANE_OPENGL_MAJOR_VERSION": "4",
+                "CHICANE_OPENGL_MINOR_VERSION": "6",
+
+                "CHICANE_VULKAN_MAJOR_VERSION": "1",
+                "CHICANE_VULKAN_MINOR_VERSION": "3",
+                "CHICANE_VULKAN_PATCH_VERSION": "296"
+            }
+        },
+        {
+            "name": "minsizerel",
+            "displayName": "MinSizeRel",
+            "description": "Size-optimized release build",
+            "binaryDir": "${sourceDir}/build-minsizerel",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel",
+
+                "CHICANE_BUILD_DIR": "Binaries/MinSizeRel",
 
                 "CHICANE_OPENGL_MAJOR_VERSION": "4",
                 "CHICANE_OPENGL_MINOR_VERSION": "6",
@@ -48,6 +84,16 @@
             "name": "release",
             "configurePreset": "release",
             "configuration": "Release"
+        },
+        {
+            "name": "relwithdebinfo",
+            "configurePreset": "relwithdebinfo",
+            "configuration": "RelWithDebInfo"
+        },
+        {
+            "name": "minsizerel",
+            "configurePreset": "minsizerel",
+            "configuration": "MinSizeRel"
         }
     ]
 }

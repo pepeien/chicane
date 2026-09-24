@@ -27,8 +27,8 @@ Input::Select {
         z-index: 200;
         display: flex;
         flex-direction: column;
-        background-color: #ffffff;
-        border: 1px solid #d8d8d8;
+        background-color: white;
+        border: 1px solid grey;
         border-radius: 0.3em;
     }
 }

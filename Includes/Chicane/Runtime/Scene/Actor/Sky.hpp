@@ -15,7 +15,13 @@ namespace Chicane
     class CHICANE_RUNTIME ASky : public Actor
     {
     public:
+        // Tag
         static constexpr inline const char* TAG_ID = "ASky";
+
+        // Attributes
+        static constexpr inline const char* SKY_ATTRIBUTE_NAME       = "sky";
+        static constexpr inline const char* INTENSITY_ATTRIBUTE_NAME = "intensity";
+        static constexpr inline const char* EXPOSURE_ATTRIBUTE_NAME  = "exposure";
 
     public:
         CH_CONSTRUCTOR()
@@ -29,8 +35,6 @@ namespace Chicane
         const Box::Sky* getSky() const;
         void setSky(const Box::Sky* inSky);
 
-        CLight* getEnvironmentLight() const;
-
         float getIntensity() const;
         void setIntensity(float inValue);
 
@@ -39,6 +43,9 @@ namespace Chicane
 
         bool isVisible() const;
         void setVisible(bool inValue);
+
+    protected:
+        void placeEnvironmentLightAtSun();
 
     public:
         CH_FIELD()
@@ -51,10 +58,10 @@ namespace Chicane
         float exposure;
 
         CH_FIELD()
-        bool visible;
+        bool bIsVisible;
 
     protected:
         const Box::Sky* m_asset;
-        CLight*         m_environment;
+        CLight*         m_sun;
     };
 }

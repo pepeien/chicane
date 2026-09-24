@@ -13,6 +13,7 @@
 #include <Chicane/Core/Math/Transform.hpp>
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
+#include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 #include <Chicane/Runtime/Scene/Component.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 #include <Chicane/Runtime/Scene/Component/View.hpp>
@@ -492,7 +493,14 @@ namespace Editor
             return;
         }
 
-        const Chicane::FileSystem::Path path = writeTempMesh(previewId, {group});
+        Chicane::String meshId = previewId;
+        if (!m_previewShape.isEmpty())
+        {
+            meshId.append('_');
+            meshId.append(m_previewShape);
+        }
+
+        const Chicane::FileSystem::Path path = writeTempMesh(meshId, {group});
         if (path.isEmpty())
         {
             return;
@@ -601,6 +609,19 @@ namespace Editor
             }
         }
 
+        if (inType == Chicane::Box::AssetType::Material)
+        {
+            for (Chicane::ASky* sky : getActors<Chicane::ASky>())
+            {
+                if (!sky)
+                {
+                    continue;
+                }
+
+                sky->setVisible(true);
+            }
+        }
+
         frameFromTrack();
     }
 
@@ -639,6 +660,7 @@ namespace Editor
 
         Chicane::Vec3 pivot  = parseLookTo(stage->lookTo, this);
         float         radius = 0.0f;
+
         Chicane::Vec3 center;
         if (previewFocus(m_groups, center, radius))
         {

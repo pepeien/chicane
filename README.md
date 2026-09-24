@@ -17,6 +17,9 @@
     - Animation:
         - gLTF (.glb).
     - Audio:
+        - Free Lossless Audio Codec (.flac);
+        - MP3 (.mp3);
+        - OGG (.ogg);
         - Waves Audio (.wav).
     - Effects:
         - gLTF (.glb).
@@ -29,10 +32,13 @@
     - Skeleton:
         - gLTF (.glb).
     - Textures:
+        - BMP  (.bmp);
         - GIF  (.gif);
+        - HDR  (.hdr);
         - JPG  (.jpg);
         - JPEG (.jpeg);
-        - PNG  (.png).
+        - PNG  (.png);
+        - TGA  (.tga).
 - Animation system (`Chicane::Drift`):
     - 2D animations;
     - 3D animations.

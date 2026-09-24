@@ -8,14 +8,14 @@ Window::Header {
     display: flex;
     flex-direction: row;
     padding: 0.35em 0.6em;
-    background-color: #f4f4f4;
-    border-bottom: 1px solid #e4e4e4;
+    background-color: white;
+    border-bottom: 1px solid grey;
     border-radius: 0.75em 0.75em 0 0;
     cursor: grab;
 
     &__label {
         margin: auto 0;
-        color: #333333;
+        color: black;
         font-size: 0.75em;
     }
 
@@ -28,7 +28,7 @@ Window::Header {
 
         Text {
             margin: auto;
-            color: #666666;
+            color: grey;
             font-size: 0.75em;
         }
     }

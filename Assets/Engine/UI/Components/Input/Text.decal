@@ -14,7 +14,7 @@ Input::Text {
         margin-top: ref(selection.y);
         width: ref(selectionWidth);
         height: 1em;
-        background-color: #3d8bfd;
+        background-color: blue;
         overflow: hidden;
     }
 

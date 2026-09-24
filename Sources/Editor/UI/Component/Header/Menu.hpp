@@ -23,6 +23,7 @@ namespace Editor
         HeaderMenu(const Chicane::XmlNode& inNode);
 
     protected:
+        void refresh() override;
         void onTick(float inDeltaTime) override;
         void onHover() override;
 

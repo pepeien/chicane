@@ -51,9 +51,18 @@ $assetManagerHeaderHeight: 1.65em;
         Input::Select {
             width: 100%;
             height: 100%;
-            background-color: $--light-grey;
-            color: $--black;
+            background-color: $--dark-grey;
+            color: $--white;
             border-radius: 4px;
+            margin: 0.5em 0 0 0.5em;
+
+            .input-select {
+                &__list {
+                    margin-top: 2em;
+                    background-color: $--dark-grey;
+                    color: $--lighter-grey;
+                }
+            }
         }
     }
 

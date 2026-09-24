@@ -233,7 +233,7 @@ namespace Editor
 
     void AssetManager::onPreviewShape(Chicane::String inValue)
     {
-        if (inValue.isEmpty() || previewShape.equals(inValue))
+        if (inValue.isEmpty())
         {
             return;
         }
