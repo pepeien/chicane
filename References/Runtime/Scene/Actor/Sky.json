@@ -74,23 +74,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "CLight",
-                    "suffix": "*",
-                    "path": "Runtime/Scene/Component/Light",
-                    "templates": []
-                },
-                "name": "getEnvironmentLight",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_ASKY_GETENVIRONMENTLIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -255,6 +238,21 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_ASKY_ONPROPERTYEDITED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "placeEnvironmentLightAtSun",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_PLACEENVIRONMENTLIGHTATSUN_DESCRIPTION"
             }
         ],
         "members": [
@@ -273,6 +271,54 @@
                 },
                 "name": "TAG_ID",
                 "description": "CHICANE_ASKY_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SKY_ATTRIBUTE_NAME",
+                "description": "CHICANE_ASKY_SKY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "INTENSITY_ATTRIBUTE_NAME",
+                "description": "CHICANE_ASKY_INTENSITY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXPOSURE_ATTRIBUTE_NAME",
+                "description": "CHICANE_ASKY_EXPOSURE_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -323,8 +369,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "visible",
-                "description": "CHICANE_ASKY_VISIBLE_DESCRIPTION"
+                "name": "bIsVisible",
+                "description": "CHICANE_ASKY_BISVISIBLE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -349,8 +395,8 @@
                     "path": "Runtime/Scene/Component/Light",
                     "templates": []
                 },
-                "name": "m_environment",
-                "description": "CHICANE_ASKY_M_ENVIRONMENT_DESCRIPTION"
+                "name": "m_sun",
+                "description": "CHICANE_ASKY_M_SUN_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ASKY_DESCRIPTION"
