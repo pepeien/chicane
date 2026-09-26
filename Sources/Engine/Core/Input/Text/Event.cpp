@@ -15,7 +15,7 @@ namespace Chicane
         }
 
         TextEvent::TextEvent()
-            : text(String::empty())
+            : text(String::sEmpty())
         {}
     }
 }

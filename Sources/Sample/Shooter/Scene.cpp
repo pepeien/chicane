@@ -2,7 +2,7 @@
 
 #include <Chicane/Kerb/Engine.hpp>
 #include <Chicane/Kerb/Gravity.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 
 #include "Actor/Apple.hpp"
@@ -21,8 +21,8 @@ Scene::Scene()
 
 void Scene::onLoad()
 {
-    Chicane::Kerb::Engine::setGravity(
-        Chicane::Kerb::Gravity::down(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
+    Chicane::Kerb::Engine::sSetGravity(
+        Chicane::Kerb::Gravity::sDown(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
     );
 
     open(DEFAULT_TRACK);

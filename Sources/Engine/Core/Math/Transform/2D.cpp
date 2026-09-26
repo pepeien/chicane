@@ -6,9 +6,9 @@ namespace Chicane
 {
     Transform2D::Transform2D()
         : Changeable(),
-          translation(Vec2::Zero()),
+          translation(Vec2::sZero()),
           rotation(0.0f),
-          scale(Vec2::One()),
+          scale(Vec2::sOne()),
           m_matrix(Mat3::One)
     {}
 

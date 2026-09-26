@@ -62,7 +62,7 @@ namespace Chicane
         {
             if (m_variables.find(inName) == m_variables.end())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             return m_variables.at(inName);
@@ -97,7 +97,7 @@ namespace Chicane
 
         void StyleFile::addRuleset(const String& inValue)
         {
-            addRuleset(extractRulesets(StyleRuleset::normalizeData(inValue)));
+            addRuleset(extractRulesets(StyleRuleset::sNormalizeData(inValue)));
         }
 
         void StyleFile::addRuleset(const StyleRuleset::List& inValue)

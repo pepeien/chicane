@@ -10,6 +10,11 @@ namespace Editor
           m_camera(nullptr)
     {}
 
+    void Character::frame(const Chicane::Vec3& inPosition, const Chicane::Vec3& inPivot)
+    {
+        m_navigation.frame(inPosition, inPivot);
+    }
+
     void Character::onLoad()
     {
         Chicane::ACharacter::onLoad();
@@ -22,11 +27,6 @@ namespace Editor
         m_camera->activate();
 
         m_navigation.attach(this, m_camera);
-    }
-
-    void Character::frame(const Chicane::Vec3& inPosition, const Chicane::Vec3& inPivot)
-    {
-        m_navigation.frame(inPosition, inPivot);
     }
 
     void Character::onControlAttachment()

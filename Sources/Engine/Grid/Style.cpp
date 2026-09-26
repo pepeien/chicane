@@ -44,10 +44,10 @@ namespace Chicane
               filter({}),
               backdrop({}),
               transform({}),
-              translate(Vec2::Zero()),
+              translate(Vec2::sZero()),
               rotate(0.0f),
-              scale(Vec2::One()),
-              transformOrigin(Vec2::Zero()),
+              scale(Vec2::sOne()),
+              transformOrigin(Vec2::sZero()),
               font({}),
               letterSpacing(0.0f),
               wordBreak(StyleWordBreak::Normal),
@@ -243,7 +243,7 @@ namespace Chicane
             radius.parseWith(
                 [this](const String& inValue, SizeDirection inDirection)
                 {
-                    Vec2 box = hasParent() ? m_parent->getSize() : Vec2::Zero();
+                    Vec2 box = hasParent() ? m_parent->getSize() : Vec2::sZero();
 
                     return parseSize(inValue, inDirection, &box);
                 }
@@ -613,7 +613,7 @@ namespace Chicane
             {
                 const StylePropertyId id = static_cast<StylePropertyId>(i);
 
-                if (readAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id)))
+                if (readAnimated(id, m_snapshot.data() + StylePropertyTable::sOffset(id)))
                 {
                     m_snapshotMask.set(i);
                 }
@@ -637,7 +637,7 @@ namespace Chicane
                     continue;
                 }
 
-                writeAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id));
+                writeAnimated(id, m_snapshot.data() + StylePropertyTable::sOffset(id));
             }
         }
 
@@ -731,7 +731,7 @@ namespace Chicane
 
         bool Style::readAnimated(StylePropertyId inId, float* outValues) const
         {
-            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+            const StylePropertyEntry& entry = StylePropertyTable::sGet(inId);
 
             if (!entry.read)
             {
@@ -743,7 +743,7 @@ namespace Chicane
 
         void Style::writeAnimated(StylePropertyId inId, const float* inValues)
         {
-            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+            const StylePropertyEntry& entry = StylePropertyTable::sGet(inId);
 
             if (!entry.write)
             {
@@ -759,7 +759,7 @@ namespace Chicane
 
             for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
             {
-                const String target = StylePropertyTable::get(static_cast<StylePropertyId>(i)).name;
+                const String target = StylePropertyTable::sGet(static_cast<StylePropertyId>(i)).name;
 
                 const StyleTransition* all       = nullptr;
                 const StyleTransition* shorthand = nullptr;
@@ -776,7 +776,7 @@ namespace Chicane
                     {
                         specific = &transition;
                     }
-                    else if (coversProperty(transition.property, target))
+                    else if (sCoversProperty(transition.property, target))
                     {
                         shorthand = &transition;
                     }
@@ -791,7 +791,7 @@ namespace Chicane
             return m_transitionLookup.at(static_cast<std::size_t>(inId));
         }
 
-        bool Style::coversProperty(const String& inProperty, const String& inTarget)
+        bool Style::sCoversProperty(const String& inProperty, const String& inTarget)
         {
             auto contains = [](const String& inProperty, const String& inTarget) -> bool
             {
@@ -1042,11 +1042,11 @@ namespace Chicane
             const String colorRaw = parseText(background.color.getRaw());
             const String imageRaw = parseText(background.image.getRaw());
 
-            if (StyleGradient::isDeclaration(imageRaw))
+            if (StyleGradient::sIsDeclaration(imageRaw))
             {
                 background.gradients = parseGradients(imageRaw);
             }
-            else if (StyleGradient::isDeclaration(colorRaw))
+            else if (StyleGradient::sIsDeclaration(colorRaw))
             {
                 background.gradients = parseGradients(colorRaw);
             }
@@ -1098,7 +1098,7 @@ namespace Chicane
 
         Vec2 Style::getTransformOrigin() const
         {
-            return getTransformOrigin(hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
+            return getTransformOrigin(hasParent() ? m_parent->getBorderSize() : Vec2::sZero());
         }
 
         Vec2 Style::getTransformOrigin(const Vec2& inBox) const
@@ -1156,7 +1156,7 @@ namespace Chicane
                 return result;
             }
 
-            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::sZero();
 
             for (const String& block : splitOneliner(value))
             {
@@ -1245,7 +1245,7 @@ namespace Chicane
 
             if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             std::vector<String> tokens = value.split(METHOD_PARAMS_SEPARATOR);
@@ -1257,10 +1257,10 @@ namespace Chicane
 
             if (tokens.empty())
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
-            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::sZero();
 
             const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal, &selfBox);
             const float y =
@@ -1302,7 +1302,7 @@ namespace Chicane
 
             if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
             {
-                return Vec2::One();
+                return Vec2::sOne();
             }
 
             auto parseFactor = [this](const String& inFactor, SizeDirection inDirection) -> float
@@ -1351,12 +1351,12 @@ namespace Chicane
                 return {factor, factor};
             }
 
-            return Vec2::One();
+            return Vec2::sOne();
         }
 
         Vec2 Style::parseTransformOrigin(const String& inValue) const
         {
-            return parseTransformOrigin(inValue, hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
+            return parseTransformOrigin(inValue, hasParent() ? m_parent->getBorderSize() : Vec2::sZero());
         }
 
         Vec2 Style::parseTransformOrigin(const String& inValue, const Vec2& inBox) const
@@ -1593,7 +1593,7 @@ namespace Chicane
 
         StyleGradient::List Style::parseGradients(const String& inValue) const
         {
-            return StyleGradient::parseList(
+            return StyleGradient::sParseList(
                 parseText(inValue),
                 [this](const String& inColor) { return parseColor(inColor); }
             );
@@ -1603,7 +1603,7 @@ namespace Chicane
         {
             if (!inBox)
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             Vec2 size = inBox->getInnerLayoutSize();

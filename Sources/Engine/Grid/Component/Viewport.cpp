@@ -10,7 +10,7 @@ namespace Chicane
     {
         Viewport::Viewport(const XmlNode& inNode)
             : Container(inNode),
-              target(String::empty())
+              target(String::sEmpty())
         {}
 
         void Viewport::onRefresh()

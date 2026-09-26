@@ -15,7 +15,7 @@ namespace Chicane
                 return;
             }
 
-            Engine::getInstance();
+            Engine::sInstance();
 
             g_bWasInitialized = true;
         }
@@ -27,7 +27,7 @@ namespace Chicane
                 return;
             }
 
-            Engine::getInstance().clear();
+            Engine::sInstance().clear();
 
             g_bWasInitialized = false;
         }
@@ -39,7 +39,7 @@ namespace Chicane
                 return;
             }
 
-            Engine::getInstance().tick(inDeltaTime);
+            Engine::sInstance().tick(inDeltaTime);
         }
     }
 }

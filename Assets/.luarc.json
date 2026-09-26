@@ -1,0 +1,12 @@
+{
+    "runtime": {
+        "version": "Lua 5.4"
+    },
+    "workspace": {
+        "library": [
+            "../Includes/Chicane/Core/Script/Types",
+            "../Includes/Chicane/Grid/Script/Types",
+            "../Includes/Chicane/Runtime/Script/Types"
+        ]
+    }
+}

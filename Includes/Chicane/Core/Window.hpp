@@ -26,14 +26,14 @@ namespace Chicane
 
     using WindowCursors = std::array<void*, static_cast<std::size_t>(WindowCursor::Count)>;
 
-    class Application;
+    class Instance;
 
     class CHICANE_CORE Window
     {
-        friend Application;
+        friend class ::Chicane::Instance;
 
     public:
-        static Window* getCurrent();
+        static Window* sGetCurrent();
 
     public:
         Window();

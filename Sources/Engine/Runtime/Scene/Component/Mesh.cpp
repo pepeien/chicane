@@ -135,8 +135,8 @@ namespace Chicane
                 converted.addKeyframe(
                     keyframe.time,
                     packed,
-                    keyframe.easing.isEmpty() ? Drift::EasingCurve::linear()
-                                              : Drift::EasingCurve::fromString(keyframe.easing)
+                    keyframe.easing.isEmpty() ? Drift::EasingCurve::sLinear()
+                                              : Drift::EasingCurve::sFromString(keyframe.easing)
                 );
             }
 
@@ -712,7 +712,7 @@ namespace Chicane
 
                 if (!model)
                 {
-                    model = Box::Model::getDefault();
+                    model = Box::Model::sGetDefault();
                 }
 
                 if (!model)

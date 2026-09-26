@@ -15,8 +15,8 @@ namespace Chicane
             static constexpr inline float DEFAULT_HEIGHT = 150.0f;
 
         public:
-            Vec2 origin = Vec2::Zero();
-            Vec2 size   = Vec2::Zero();
+            Vec2 origin = Vec2::sZero();
+            Vec2 size   = Vec2::sZero();
         };
     }
 }

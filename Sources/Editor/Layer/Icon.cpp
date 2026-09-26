@@ -12,7 +12,7 @@
 #include <Chicane/Renderer/Layer/Util.hpp>
 #include <Chicane/Renderer/Light/Type.hpp>
 #include <Chicane/Renderer/Shader/Bindings.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 #include <Chicane/Runtime/Scene/Component/Sound.hpp>
@@ -44,7 +44,7 @@ namespace Editor
             return;
         }
 
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
         if (!renderer)
         {
             return;
@@ -133,14 +133,14 @@ namespace Editor
     {
         (void)inFrame;
 
-        return dynamic_cast<ViewerScene*>(Chicane::Application::getInstance().getScene().get()) == nullptr;
+        return dynamic_cast<ViewerScene*>(Chicane::Instance::sInstance().getScene().get()) == nullptr;
     }
 
     void LIcon::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
         (void)inFrame;
 
-        Chicane::Scene* scene = Chicane::Application::getInstance().getScene().get();
+        Chicane::Scene* scene = Chicane::Instance::sInstance().getScene().get();
         if (!scene)
         {
             return;
@@ -237,7 +237,7 @@ namespace Editor
 
     Chicane::Renderer::Draw::Id LIcon::findIcon(const Chicane::String& inReference) const
     {
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
         if (!renderer)
         {
             return Chicane::Renderer::Draw::InvalidId;
@@ -263,7 +263,7 @@ namespace Editor
 
     float LIcon::iconSize(const Chicane::Object* inComponent) const
     {
-        Chicane::Scene* scene = Chicane::Application::getInstance().getScene().get();
+        Chicane::Scene* scene = Chicane::Instance::sInstance().getScene().get();
         if (!scene || !inComponent)
         {
             return ICON_SIZE_MIN;

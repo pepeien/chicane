@@ -201,9 +201,9 @@ namespace Chicane
                     target = want;
                 }
 
-                const std::size_t nextBytes = Image::mipChainBytes(
-                    Image::mipDimension(texture->width, target),
-                    Image::mipDimension(texture->height, target)
+                const std::size_t nextBytes = Image::sMipChainBytes(
+                    Image::sMipDimension(texture->width, target),
+                    Image::sMipDimension(texture->height, target)
                 );
                 const std::size_t currentBytes = texture->getResidentBytes();
                 if (inBudgetBytes > 0 && promotions > 0 && used - currentBytes + nextBytes > inBudgetBytes)
@@ -315,7 +315,7 @@ namespace Chicane
             const std::shared_ptr<TextureStreamerMailbox> mailbox = m_mailbox;
             m_inFlight.insert(key);
 
-            Worker::submit(
+            Worker::sSubmit(
                 [mailbox, mips, id, inMip]()
                 {
                     if (!mailbox || !mips || inMip >= mips->levels.size())

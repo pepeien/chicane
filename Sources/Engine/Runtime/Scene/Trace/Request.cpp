@@ -11,7 +11,7 @@
 
 namespace Chicane
 {
-    SceneTraceRequest SceneTraceRequest::Line(float inCellSize)
+    SceneTraceRequest SceneTraceRequest::sLine(float inCellSize)
     {
         SceneTraceRequest request;
         request.shape    = std::make_shared<SceneTraceShapeLine>();
@@ -20,16 +20,16 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Line(const Vec3& inOrigin, const Vec3& inDestination, float inCellSize)
+    SceneTraceRequest SceneTraceRequest::sLine(const Vec3& inOrigin, const Vec3& inDestination, float inCellSize)
     {
-        SceneTraceRequest request = Line(inCellSize);
+        SceneTraceRequest request = sLine(inCellSize);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Rectangle(const Vec2& inHalfExtents, float inCellSize)
+    SceneTraceRequest SceneTraceRequest::sRectangle(const Vec2& inHalfExtents, float inCellSize)
     {
         SceneTraceRequest request;
         request.shape    = std::make_shared<SceneTraceShapeRectangle>(inHalfExtents);
@@ -38,18 +38,18 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Rectangle(
+    SceneTraceRequest SceneTraceRequest::sRectangle(
         const Vec3& inOrigin, const Vec3& inDestination, const Vec2& inHalfExtents, float inCellSize
     )
     {
-        SceneTraceRequest request = Rectangle(inHalfExtents, inCellSize);
+        SceneTraceRequest request = sRectangle(inHalfExtents, inCellSize);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cone(float inAngle, float inCellSize, std::uint32_t inSegmentCount)
+    SceneTraceRequest SceneTraceRequest::sCone(float inAngle, float inCellSize, std::uint32_t inSegmentCount)
     {
         SceneTraceRequest request;
         request.shape    = std::make_shared<SceneTraceShapeCone>(inAngle, 0.0f, inSegmentCount);
@@ -58,18 +58,18 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cone(
+    SceneTraceRequest SceneTraceRequest::sCone(
         const Vec3& inOrigin, const Vec3& inDestination, float inAngle, float inCellSize, std::uint32_t inSegmentCount
     )
     {
-        SceneTraceRequest request = Cone(inAngle, inCellSize, inSegmentCount);
+        SceneTraceRequest request = sCone(inAngle, inCellSize, inSegmentCount);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cylinder(float inRadius, float inCellSize, std::uint32_t inSegmentCount)
+    SceneTraceRequest SceneTraceRequest::sCylinder(float inRadius, float inCellSize, std::uint32_t inSegmentCount)
     {
         SceneTraceRequest request;
         request.shape    = std::make_shared<SceneTraceShapeCylinder>(inRadius, inSegmentCount);
@@ -78,11 +78,11 @@ namespace Chicane
         return request;
     }
 
-    SceneTraceRequest SceneTraceRequest::Cylinder(
+    SceneTraceRequest SceneTraceRequest::sCylinder(
         const Vec3& inOrigin, const Vec3& inDestination, float inRadius, float inCellSize, std::uint32_t inSegmentCount
     )
     {
-        SceneTraceRequest request = Cylinder(inRadius, inCellSize, inSegmentCount);
+        SceneTraceRequest request = sCylinder(inRadius, inCellSize, inSegmentCount);
         request.origin            = inOrigin;
         request.destination       = inDestination;
 
@@ -107,7 +107,7 @@ namespace Chicane
         const float length = std::sqrt(delta.dot(delta));
         if (length <= FLT_EPSILON)
         {
-            return Vec3::Zero();
+            return Vec3::sZero();
         }
 
         return delta / length;

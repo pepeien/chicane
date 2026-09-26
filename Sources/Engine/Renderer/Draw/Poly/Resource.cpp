@@ -60,7 +60,7 @@ namespace Chicane
         {
             if (findId(inReference) <= Draw::InvalidId)
             {
-                return DrawPoly::empty();
+                return DrawPoly::sEmpty();
             }
 
             return m_draws.at(inReference);
@@ -78,7 +78,7 @@ namespace Chicane
                 return draw;
             }
 
-            return DrawPoly::empty();
+            return DrawPoly::sEmpty();
         }
 
         Draw::Id DrawPolyResource::add(DrawPolyType inType, const DrawPolyData& inData)

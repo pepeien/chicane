@@ -9,7 +9,7 @@
 #include <Chicane/Renderer/Feature.hpp>
 #include <Chicane/Renderer/Instance.hpp>
 #include <Chicane/Renderer/Light/Type.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 #include <Chicane/Runtime/Scene/Component/Light.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
@@ -166,7 +166,7 @@ namespace Editor
         Character* character = createActor<Character>();
         character->setIsTransient(true);
 
-        Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
         if (!controller || controller->isAttached())
         {
             return;
@@ -196,7 +196,8 @@ namespace Editor
 
         m_bSyncingHelpers = true;
 
-        std::unordered_map<Chicane::Object*, Helper> next;
+        std::unordered_map<Chicane::Object*, SceneHelper> next;
+
         auto keep = [this, &next](Chicane::Object* inTarget, const Chicane::FileSystem::Path& inMesh)
         {
             auto found = m_helpers.find(inTarget);
@@ -214,7 +215,7 @@ namespace Editor
                 return;
             }
 
-            Helper helper;
+            SceneHelper helper;
             helper.mesh         = createHelper(inMesh);
             helper.subscription = inTarget->watchChanges([this, inTarget]() { poseHelper(inTarget); });
             poseHelper(helper.mesh, inTarget);
@@ -289,10 +290,10 @@ namespace Editor
     {
         Chicane::Vertex::List vertices;
 
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
         if (renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces))
         {
-            const Chicane::Vec4 color = ViewportOverlay::getInstance().tracerColor;
+            const Chicane::Vec4 color = ViewportOverlay::sInstance().tracerColor;
 
             for (Chicane::CLight* light : getComponents<Chicane::CLight>())
             {
@@ -318,7 +319,8 @@ namespace Editor
                 const Chicane::Vec3 destination = origin + (forward / length) * std::max(light->getRange(), 1e-8f);
                 const float         angle       = std::max(light->getOuterAngle(), 0.0f) * Chicane::Math::DEG_TO_RAD;
 
-                const Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::Cone(origin, destination, angle);
+                const Chicane::SceneTraceRequest request =
+                    Chicane::SceneTraceRequest::sCone(origin, destination, angle);
                 const Chicane::SceneTraceShapeCone* cone =
                     dynamic_cast<const Chicane::SceneTraceShapeCone*>(request.shape.get());
                 if (!cone)

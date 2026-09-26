@@ -23,15 +23,15 @@ namespace Chicane
             : Container(inNode),
               orientation(ORIENTATION_LANDSCAPE),
               m_side(DockSide::Fill),
-              m_size(String::empty()),
-              m_minSize(String::empty()),
-              m_maxSize(String::empty()),
-              m_handleId(String::empty()),
+              m_size(String::sEmpty()),
+              m_minSize(String::sEmpty()),
+              m_maxSize(String::sEmpty()),
+              m_handleId(String::sEmpty()),
               m_bIsResizable(true),
               m_bIsGrabbable(true),
               m_extent(-1.0f),
-              m_floatPosition(Vec2::Zero()),
-              m_floatSize(Vec2::Zero()),
+              m_floatPosition(Vec2::sZero()),
+              m_floatSize(Vec2::sZero()),
               m_handle(new DockHandle())
         {
             refreshAttributes();
@@ -241,7 +241,7 @@ namespace Chicane
             return inComponent->getId().equals(m_handleId);
         }
 
-        DockPanel* DockPanel::findFrom(Component* inComponent)
+        DockPanel* DockPanel::sFindFrom(Component* inComponent)
         {
             Component* node = inComponent;
             while (node)

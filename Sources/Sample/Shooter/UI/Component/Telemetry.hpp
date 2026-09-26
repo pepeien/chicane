@@ -3,7 +3,7 @@
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/Xml.hpp>
 #include <Chicane/Grid/Component/Container.hpp>
-#include <Chicane/Runtime/Application/Telemetry.hpp>
+#include <Chicane/Runtime/Instance/Telemetry.hpp>
 
 CH_TYPE(Type = (Manual), Alias = (Sample::Telemetry))
 class Telemetry : public Chicane::Grid::Container
@@ -14,5 +14,5 @@ public:
 
 public:
     CH_FIELD()
-    const Chicane::ApplicationTelemetry* telemetry;
+    const Chicane::InstanceTelemetry* telemetry;
 };

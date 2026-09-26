@@ -13,7 +13,7 @@ void Sun::onLoad()
     Chicane::ALight::onLoad();
 
     setAbsoluteTranslation(0.0f, 0.0f, m_distance);
-    lookAt(Chicane::Vec3::Zero());
+    lookAt(Chicane::Vec3::sZero());
 
     const float distanceToFocus = std::sqrt(2.0f) * m_distance;
     light->setNearClip(1.0f);

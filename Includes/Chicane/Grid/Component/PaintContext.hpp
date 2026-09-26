@@ -18,8 +18,8 @@ namespace Chicane
         {
         public:
             Mat3                           world      = Mat3(1.0f);
-            Bounds2D                       clip       = Bounds2D::unconstrained();
-            Vec2                           scroll     = Vec2::Zero();
+            Bounds2D                       clip       = Bounds2D::sUnconstrained();
+            Vec2                           scroll     = Vec2::sZero();
             float                          opacity    = 1.0f;
             float                          filterBlur = 0.0f;
             float                          depth      = 0.0f;

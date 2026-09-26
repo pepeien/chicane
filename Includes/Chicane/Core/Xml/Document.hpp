@@ -32,7 +32,7 @@ namespace Chicane
         XmlNode appendChild(const String& inName);
         XmlNode appendCopy(const XmlNode& inNode);
 
-        static XmlDocument load(const FileSystem::Path& inFilepath);
+        static XmlDocument sLoad(const FileSystem::Path& inFilepath);
         bool loadBuffer(const void* inData, std::size_t inSize);
         void save(const FileSystem::Path& inFilepath) const;
 

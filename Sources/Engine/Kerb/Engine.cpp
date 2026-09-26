@@ -177,7 +177,7 @@ namespace Chicane
                   broadLayer(OBJECT_LAYER_COUNT, BroadPhaseLayer::Count),
                   objectLayer(OBJECT_LAYER_COUNT),
                   groupFilter(new JPH::GroupFilterTable(MAX_COLLISION_SUB_GROUPS)),
-                  gravity(getEarthGravity()),
+                  gravity(sGetEarthGravity()),
                   accumulator(0.0f)
             {
                 threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, -1);
@@ -353,140 +353,140 @@ namespace Chicane
             return makeBox(inCreateInfo.bounds.getSize());
         }
 
-        Engine& Engine::getInstance()
+        Engine& Engine::sInstance()
         {
             static Engine instance;
 
             return instance;
         }
 
-        const Vec3& Engine::getZeroGravity()
+        const Vec3& Engine::sGetZeroGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Zero);
+            static const Vec3 value = Gravity::sDown(Gravity::Zero);
 
             return value;
         }
 
-        const Vec3& Engine::getMercuryGravity()
+        const Vec3& Engine::sGetMercuryGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Mercury);
+            static const Vec3 value = Gravity::sDown(Gravity::Mercury);
 
             return value;
         }
 
-        const Vec3& Engine::getVenusGravity()
+        const Vec3& Engine::sGetVenusGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Venus);
+            static const Vec3 value = Gravity::sDown(Gravity::Venus);
 
             return value;
         }
 
-        const Vec3& Engine::getEarthGravity()
+        const Vec3& Engine::sGetEarthGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Earth);
+            static const Vec3 value = Gravity::sDown(Gravity::Earth);
 
             return value;
         }
 
-        const Vec3& Engine::getMoonGravity()
+        const Vec3& Engine::sGetMoonGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Moon);
+            static const Vec3 value = Gravity::sDown(Gravity::Moon);
 
             return value;
         }
 
-        const Vec3& Engine::getMarsGravity()
+        const Vec3& Engine::sGetMarsGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Mars);
+            static const Vec3 value = Gravity::sDown(Gravity::Mars);
 
             return value;
         }
 
-        const Vec3& Engine::getJupiterGravity()
+        const Vec3& Engine::sGetJupiterGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Jupiter);
+            static const Vec3 value = Gravity::sDown(Gravity::Jupiter);
 
             return value;
         }
 
-        const Vec3& Engine::getSaturnGravity()
+        const Vec3& Engine::sGetSaturnGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Saturn);
+            static const Vec3 value = Gravity::sDown(Gravity::Saturn);
 
             return value;
         }
 
-        const Vec3& Engine::getUranusGravity()
+        const Vec3& Engine::sGetUranusGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Uranus);
+            static const Vec3 value = Gravity::sDown(Gravity::Uranus);
 
             return value;
         }
 
-        const Vec3& Engine::getNeptuneGravity()
+        const Vec3& Engine::sGetNeptuneGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Neptune);
+            static const Vec3 value = Gravity::sDown(Gravity::Neptune);
 
             return value;
         }
 
-        const Vec3& Engine::getPlutoGravity()
+        const Vec3& Engine::sGetPlutoGravity()
         {
-            static const Vec3 value = Gravity::down(Gravity::Pluto);
+            static const Vec3 value = Gravity::sDown(Gravity::Pluto);
 
             return value;
         }
 
-        const Vec3& Engine::getPlanetGravity(Planet inPlanet)
+        const Vec3& Engine::sGetPlanetGravity(Planet inPlanet)
         {
             switch (inPlanet)
             {
             case Planet::Mercury:
-                return getMercuryGravity();
+                return sGetMercuryGravity();
 
             case Planet::Venus:
-                return getVenusGravity();
+                return sGetVenusGravity();
 
             case Planet::Moon:
-                return getMoonGravity();
+                return sGetMoonGravity();
 
             case Planet::Mars:
-                return getMarsGravity();
+                return sGetMarsGravity();
 
             case Planet::Jupiter:
-                return getJupiterGravity();
+                return sGetJupiterGravity();
 
             case Planet::Saturn:
-                return getSaturnGravity();
+                return sGetSaturnGravity();
 
             case Planet::Uranus:
-                return getUranusGravity();
+                return sGetUranusGravity();
 
             case Planet::Neptune:
-                return getNeptuneGravity();
+                return sGetNeptuneGravity();
 
             case Planet::Pluto:
-                return getPlutoGravity();
+                return sGetPlutoGravity();
 
             case Planet::Earth:
             default:
-                return getEarthGravity();
+                return sGetEarthGravity();
             }
         }
 
-        void Engine::setZeroGravity()
+        void Engine::sSetZeroGravity()
         {
-            setGravity(getZeroGravity());
+            sSetGravity(sGetZeroGravity());
         }
 
-        void Engine::setGravity(Planet inPlanet)
+        void Engine::sSetGravity(Planet inPlanet)
         {
-            setGravity(getPlanetGravity(inPlanet));
+            sSetGravity(sGetPlanetGravity(inPlanet));
         }
 
-        void Engine::setGravity(const Vec3& inValue)
+        void Engine::sSetGravity(const Vec3& inValue)
         {
-            Engine& engine = getInstance();
+            Engine& engine = sInstance();
             if (!engine.m_implementation)
             {
                 return;
@@ -530,7 +530,7 @@ namespace Chicane
         {
             if (!m_implementation)
             {
-                return getEarthGravity();
+                return sGetEarthGravity();
             }
 
             return m_implementation->gravity;
@@ -638,13 +638,13 @@ namespace Chicane
         {
             if (!m_implementation)
             {
-                return Body::invalid();
+                return Body::sInvalid();
             }
 
             const JPH::RefConst<JPH::Shape> shape = m_implementation->createShape(inCreateInfo);
             if (shape == nullptr)
             {
-                return Body::invalid();
+                return Body::sInvalid();
             }
 
             const bool        bIsStatic = inCreateInfo.motion == MotionType::Static;
@@ -692,7 +692,7 @@ namespace Chicane
             JPH::Body* created = m_implementation->bodies().CreateBody(settings);
             if (!created)
             {
-                return Body::invalid();
+                return Body::sInvalid();
             }
 
             const JPH::BodyID id = created->GetID();
@@ -855,7 +855,7 @@ namespace Chicane
             const JPH::BodyID id = toId(inBody);
             if (id.IsInvalid() || !m_implementation || !m_implementation->bodies().IsAdded(id))
             {
-                return Vec3::Zero();
+                return Vec3::sZero();
             }
 
             return Convert::toEnginePosition(m_implementation->bodies().GetLinearVelocity(id));

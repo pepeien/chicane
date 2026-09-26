@@ -57,8 +57,8 @@ namespace Chicane
             static constexpr inline const char* STYLE_ATTRIBUTE_NAME     = "style";
 
         public:
-            static SvgLineCap parseLineCap(const String& inValue);
-            static SvgLineJoin parseLineJoin(const String& inValue);
+            static SvgLineCap sParseLineCap(const String& inValue);
+            static SvgLineJoin sParseLineJoin(const String& inValue);
 
         public:
             SvgPaint();

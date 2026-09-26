@@ -17,7 +17,7 @@
         <CMesh id="Body" mesh="Assets/Sample/Shooter/Meshes/Character/Body.bmsh"/>
         <CSound id="Victory" sound="Assets/Sample/Shooter/Sounds/Victory.bsnd"/>
     </Character>
-    <ACamera id="Left" absoluteTranslation="-300,-300,100" lookTo="0,0,0"/>
-    <ACamera id="Center" absoluteTranslation="0,-300,100" lookTo="0,0,0"/>
-    <ACamera id="Right" absoluteTranslation="300,-300,100" lookTo="0,0,0"/>
+    <ACamera id="Left" absoluteTranslation="-300,-300,100"/>
+    <ACamera id="Center" absoluteTranslation="0,-300,100"/>
+    <ACamera id="Right" absoluteTranslation="300,-300,100"/>
 </Track>

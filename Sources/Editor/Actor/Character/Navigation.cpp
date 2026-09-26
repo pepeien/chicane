@@ -8,7 +8,7 @@
 #include <Chicane/Core/Math.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 namespace Editor
 {
@@ -357,7 +357,7 @@ namespace Editor
 
     bool Navigation::isViewportHovered() const
     {
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
         if (!view)
         {
             return true;

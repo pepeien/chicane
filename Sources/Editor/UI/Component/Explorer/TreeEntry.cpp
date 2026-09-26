@@ -3,8 +3,8 @@
 namespace Editor
 {
     ExplorerTreeEntry::ExplorerTreeEntry()
-        : name(Chicane::String::empty()),
-          path(Chicane::String::empty()),
+        : name(Chicane::String::sEmpty()),
+          path(Chicane::String::sEmpty()),
           indent("0em"),
           expandState("leaf"),
           selectedState("idle")

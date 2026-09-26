@@ -307,7 +307,7 @@ namespace Chicane
         {ImageVendor::Hdr,       "HDR" },
     };
 
-    ImageVendor Image::parseVendor(const String& inValue)
+    ImageVendor Image::sParseVendor(const String& inValue)
     {
         if (inValue.isEmpty())
         {
@@ -329,7 +329,7 @@ namespace Chicane
         return ImageVendor::Undefined;
     }
 
-    const String& Image::getVendorExtension(ImageVendor inValue)
+    const String& Image::sGetVendorExtension(ImageVendor inValue)
     {
         const auto& found = EXTENSIONS.find(inValue);
 
@@ -344,7 +344,7 @@ namespace Chicane
     Image::Image(const FileSystem::Path& inLocation)
         : Image()
     {
-        m_vendor = parseVendor(inLocation.extension().toString());
+        m_vendor = sParseVendor(inLocation.extension().toString());
         m_format = STBI_rgb_alpha;
 
         if (m_vendor == ImageVendor::Gif)
@@ -854,7 +854,7 @@ namespace Chicane
         return sizeof(float) * getSize();
     }
 
-    void Image::flipY(Pixels inPixels, int inWidth, int inHeight, int inChannel)
+    void Image::sFlipY(Pixels inPixels, int inWidth, int inHeight, int inChannel)
     {
         if (!inPixels || inWidth <= 0 || inHeight <= 1 || inChannel <= 0)
         {
@@ -907,7 +907,7 @@ namespace Chicane
 
         for (int frame = 0; frame < frameCount; frame++)
         {
-            Image::flipY(m_pixels + frame * stride, m_width, m_height, m_channel);
+            Image::sFlipY(m_pixels + frame * stride, m_width, m_height, m_channel);
         }
     }
 

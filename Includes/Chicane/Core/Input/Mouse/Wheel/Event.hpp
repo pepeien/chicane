@@ -17,8 +17,8 @@ namespace Chicane
             MouseWheelEvent();
 
         public:
-            Vec2 delta    = Vec2::Zero();
-            Vec2 location = Vec2::Zero();
+            Vec2 delta    = Vec2::sZero();
+            Vec2 location = Vec2::sZero();
         };
 
         using MouseWheelEventCallback = std::function<void(const MouseWheelEvent&)>;

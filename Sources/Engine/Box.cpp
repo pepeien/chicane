@@ -1,7 +1,9 @@
 #include "Chicane/Box.hpp"
 
 #include <cmath>
+#include <filesystem>
 #include <list>
+#include <system_error>
 #include <unordered_map>
 #include <vector>
 
@@ -31,13 +33,43 @@ namespace Chicane
         static PreviewObservable                                                  g_previewObservable = {};
         static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache             = {};
 
-        static std::unordered_map<FileSystem::Path, std::unique_ptr<AssetPreview>>         g_previewCache   = {};
+        struct PreviewCacheEntry
+        {
+            std::unique_ptr<AssetPreview>   preview;
+            std::filesystem::file_time_type writeTime{};
+        };
+
+        static std::unordered_map<FileSystem::Path, PreviewCacheEntry>                     g_previewCache   = {};
         static std::list<FileSystem::Path>                                                 g_previewOrder   = {};
         static std::unordered_map<FileSystem::Path, std::list<FileSystem::Path>::iterator> g_previewOrderIt = {};
 
         static FileSystem::Path normalizePreviewPath(const FileSystem::Path& inFilePath)
         {
             return inFilePath.lexicallyNormal();
+        }
+
+        static std::filesystem::file_time_type previewWriteTime(const FileSystem::Path& inFilePath)
+        {
+            std::error_code                       error;
+            const std::filesystem::file_time_type time =
+                std::filesystem::last_write_time(inFilePath.toStandard(), error);
+            if (error)
+            {
+                return {};
+            }
+
+            return time;
+        }
+
+        static void erasePreview(const FileSystem::Path& inFilePath)
+        {
+            if (const auto order = g_previewOrderIt.find(inFilePath); order != g_previewOrderIt.end())
+            {
+                g_previewOrder.erase(order->second);
+                g_previewOrderIt.erase(order);
+            }
+
+            g_previewCache.erase(inFilePath);
         }
 
         static void appendGeometry(
@@ -168,7 +200,7 @@ namespace Chicane
 
             if (inShouldUseStored)
             {
-                if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                 {
                     preview->path = inFilePath;
                     preview->type = AssetType::Texture;
@@ -191,7 +223,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            std::unique_ptr<AssetPreview> preview = AssetPreview::create(inFilePath, AssetType::Texture, *image);
+            std::unique_ptr<AssetPreview> preview = AssetPreview::sCreate(inFilePath, AssetType::Texture, *image);
             if (preview)
             {
                 orientTexturePreview(*preview);
@@ -211,7 +243,7 @@ namespace Chicane
 
             if (inShouldUseStored)
             {
-                if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                 {
                     preview->path = inFilePath;
                     preview->type = AssetType::Material;
@@ -227,7 +259,7 @@ namespace Chicane
                 image = loadTextureImage(material.getTexture(TextureMaterial::Albedo).getSource());
             }
 
-            FileSystem::Path modelPath = "Assets/Editor/Models/Preview/ShaderBall.bmdl";
+            FileSystem::Path modelPath = "Assets/Engine/Models/ShaderBall.bmdl";
             if (!FileSystem::exists(modelPath))
             {
                 modelPath = Model::SPHERE_SOURCE;
@@ -257,7 +289,7 @@ namespace Chicane
                     }
 
                     std::unique_ptr<AssetPreview> preview =
-                        AssetPreview::createFromGeometry(inFilePath, vertices, indices, image, faces);
+                        AssetPreview::sCreateFromGeometry(inFilePath, vertices, indices, image, faces);
                     if (preview)
                     {
                         preview->type = AssetType::Material;
@@ -272,7 +304,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            std::unique_ptr<AssetPreview> preview = AssetPreview::create(inFilePath, AssetType::Material, *image);
+            std::unique_ptr<AssetPreview> preview = AssetPreview::sCreate(inFilePath, AssetType::Material, *image);
             if (preview)
             {
                 orientTexturePreview(*preview);
@@ -299,7 +331,7 @@ namespace Chicane
 
                 if (inShouldUseStored)
                 {
-                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                     {
                         preview->path = inFilePath;
                         preview->type = AssetType::Mesh;
@@ -355,7 +387,7 @@ namespace Chicane
                     batches.push_back(std::move(batch));
                 }
 
-                return AssetPreview::createFromGeometry(inFilePath, batches);
+                return AssetPreview::sCreateFromGeometry(inFilePath, batches);
             }
 
             case AssetType::Model: {
@@ -366,7 +398,7 @@ namespace Chicane
 
                 if (inShouldUseStored)
                 {
-                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                     {
                         preview->path = inFilePath;
                         preview->type = AssetType::Model;
@@ -380,7 +412,8 @@ namespace Chicane
                 Vertex::Indices indices  = {};
                 appendGeometry(model.getData(), vertices, indices);
 
-                std::unique_ptr<AssetPreview> preview = AssetPreview::createFromGeometry(inFilePath, vertices, indices);
+                std::unique_ptr<AssetPreview> preview =
+                    AssetPreview::sCreateFromGeometry(inFilePath, vertices, indices);
                 if (preview)
                 {
                     preview->type = AssetType::Model;
@@ -397,7 +430,7 @@ namespace Chicane
 
                 if (inShouldUseStored)
                 {
-                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                     {
                         preview->path = inFilePath;
                         preview->type = AssetType::Sound;
@@ -408,7 +441,7 @@ namespace Chicane
 
                 const Sound sound(inFilePath);
 
-                return AssetPreview::createFromSound(inFilePath, sound.getData());
+                return AssetPreview::sCreateFromSound(inFilePath, sound.getData());
             }
 
             case AssetType::Font: {
@@ -419,7 +452,7 @@ namespace Chicane
 
                 if (inShouldUseStored)
                 {
-                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                     {
                         preview->path = inFilePath;
                         preview->type = AssetType::Font;
@@ -440,7 +473,7 @@ namespace Chicane
                     label = font.getId();
                 }
 
-                return AssetPreview::createFromFont(inFilePath, family, label);
+                return AssetPreview::sCreateFromFont(inFilePath, family, label);
             }
 
             case AssetType::Sky: {
@@ -451,7 +484,7 @@ namespace Chicane
 
                 if (inShouldUseStored)
                 {
-                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::read(inFilePath))
+                    if (std::unique_ptr<AssetPreview> preview = AssetPreview::sRead(inFilePath))
                     {
                         preview->path = inFilePath;
                         preview->type = AssetType::Sky;
@@ -462,9 +495,13 @@ namespace Chicane
 
                 const Sky sky(inFilePath);
 
-                Vertex::List           vertices  = {};
-                Vertex::Indices        indices   = {};
-                const FileSystem::Path modelPath = sky.getModel().getSource();
+                Vertex::List     vertices  = {};
+                Vertex::Indices  indices   = {};
+                FileSystem::Path modelPath = sky.getModel().getSource();
+                if (modelPath.isEmpty() || !FileSystem::exists(modelPath))
+                {
+                    modelPath = sky.getKind() == SkyKind::Panorama ? Sky::DOME_SOURCE : Sky::BOX_SOURCE;
+                }
                 if (FileSystem::exists(modelPath))
                 {
                     const Model             model(modelPath);
@@ -493,7 +530,7 @@ namespace Chicane
                 }
 
                 std::unique_ptr<AssetPreview> preview =
-                    AssetPreview::createFromSky(inFilePath, vertices, indices, faces);
+                    AssetPreview::sCreateFromSky(inFilePath, vertices, indices, faces);
                 if (preview)
                 {
                     preview->type = AssetType::Sky;
@@ -510,8 +547,15 @@ namespace Chicane
         static const AssetPreview* touchPreview(const FileSystem::Path& inFilePath)
         {
             const auto found = g_previewCache.find(inFilePath);
-            if (found == g_previewCache.end())
+            if (found == g_previewCache.end() || !found->second.preview)
             {
+                return nullptr;
+            }
+
+            if (!FileSystem::exists(inFilePath) || found->second.writeTime != previewWriteTime(inFilePath))
+            {
+                erasePreview(inFilePath);
+
                 return nullptr;
             }
 
@@ -522,7 +566,7 @@ namespace Chicane
                 order->second = std::prev(g_previewOrder.end());
             }
 
-            return found->second.get();
+            return found->second.preview.get();
         }
 
         static const AssetPreview* insertPreview(std::unique_ptr<AssetPreview> inPreview)
@@ -552,11 +596,14 @@ namespace Chicane
                 g_previewOrderIt.erase(order);
             }
 
-            g_previewCache[key] = std::move(inPreview);
+            PreviewCacheEntry entry;
+            entry.writeTime     = previewWriteTime(key);
+            entry.preview       = std::move(inPreview);
+            g_previewCache[key] = std::move(entry);
             g_previewOrder.push_back(key);
             g_previewOrderIt[key] = std::prev(g_previewOrder.end());
 
-            const AssetPreview* preview = g_previewCache.at(key).get();
+            const AssetPreview* preview = g_previewCache.at(key).preview.get();
             g_previewObservable.next(preview);
 
             return preview;
@@ -967,14 +1014,13 @@ namespace Chicane
                 const AssetType type = getTypeFromExtension(inFilePath);
                 if (type == AssetType::Texture)
                 {
-                    const Texture         texture(inFilePath);
-                    const Image::Instance image = texture.getData().lock();
+                    const Image::Instance image = loadTextureImage(inFilePath);
                     if (!image || image->getPixels() == nullptr)
                     {
                         return false;
                     }
 
-                    return AssetPreview::bake(inFilePath, AssetType::Texture, *image);
+                    return AssetPreview::sBake(inFilePath, AssetType::Texture, *image);
                 }
 
                 std::unique_ptr<AssetPreview> preview = decodePreview(inFilePath, false);
@@ -983,10 +1029,18 @@ namespace Chicane
                     return false;
                 }
 
-                return AssetPreview::bake(inFilePath, preview->type, *preview->image);
+                return AssetPreview::sBake(inFilePath, preview->type, *preview->image);
+            }
+            catch (const std::exception& exception)
+            {
+                Log::warning("Failed to embed preview for [%s]: %s", inFilePath.toChar(), exception.what());
+
+                return false;
             }
             catch (...)
             {
+                Log::warning("Failed to embed preview for [%s]", inFilePath.toChar());
+
                 return false;
             }
         }
@@ -1030,13 +1084,13 @@ namespace Chicane
                 return;
             }
 
-            PreviewService::getInstance().enqueue(path);
+            PreviewService::sInstance().enqueue(path);
         }
 
         void pumpPreview()
         {
             std::vector<std::unique_ptr<AssetPreview>> ready;
-            PreviewService::getInstance().drain(ready);
+            PreviewService::sInstance().drain(ready);
 
             for (std::unique_ptr<AssetPreview>& preview : ready)
             {

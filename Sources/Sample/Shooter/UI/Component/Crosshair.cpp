@@ -6,7 +6,10 @@ Crosshair::Crosshair(const Chicane::XmlNode& inNode)
     : Chicane::Grid::Container(inNode),
       settings()
 {
-    load("Assets/Sample/Shooter/UI/Components/Crosshair.grid", "Assets/Sample/Shooter/UI/Components/Crosshair.decal");
+    load(
+        "Assets/Sample/Shooter/UI/Components/Crosshair/Index.grid",
+        "Assets/Sample/Shooter/UI/Components/Crosshair/Index.decal"
+    );
     refreshSettings();
 }
 

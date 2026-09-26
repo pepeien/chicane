@@ -29,7 +29,7 @@ namespace Chicane
                 return glyphs.begin()->second;
             }
 
-            return Box::FontGlyph::empty();
+            return Box::FontGlyph::sEmpty();
         }
 
         static void getFontMetrics(const Box::FontFamily& inFamily, float& outAscender, float& outDescender)
@@ -127,7 +127,7 @@ namespace Chicane
               m_parsedText(""),
               m_layoutSignature(""),
               m_font(nullptr),
-              m_contentSize(Vec2::Zero()),
+              m_contentSize(Vec2::sZero()),
               m_glyphs({})
         {
             setText(inNode.getText());
@@ -222,7 +222,7 @@ namespace Chicane
             }
 
             m_text            = inValue;
-            m_layoutSignature = String::empty();
+            m_layoutSignature = String::sEmpty();
             markLayoutDirty();
         }
 
@@ -431,7 +431,7 @@ namespace Chicane
         {
             if (!hasFont())
             {
-                m_contentSize = Vec2::Zero();
+                m_contentSize = Vec2::sZero();
 
                 applyContentSize();
 
@@ -510,7 +510,7 @@ namespace Chicane
             const float                 lineHeight = (ascender - descender) * fontSize;
             const std::vector<char32_t> codepoints = value.toUnicode();
 
-            Vec2        cursor       = Vec2::Zero();
+            Vec2        cursor       = Vec2::sZero();
             float       maxWidth     = 0.0f;
             std::size_t lineCount    = 1;
             std::size_t glyphIndex   = 0;

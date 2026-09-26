@@ -1,0 +1,113 @@
+.toolbar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    &__items {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        padding: 0.5em 0.7em;
+        gap: 0.35em;
+    }
+
+    &__item {
+        width: 3.2em;
+        height: 3.2em;
+        display: flex;
+        flex-direction: column;
+        padding: 0.45em;
+        border-radius: 2px;
+        background-color: transparent;
+        transition: background-color 200ms ease-in-out;
+
+        Icon {
+            width: 1.1em;
+            height: 1.1em;
+            margin: auto;
+            color: $--black;
+            transition: color 200ms ease-in-out;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: $--dark-gray;
+
+            Icon {
+                color: $--gray;
+            }
+        }
+
+        &.--active {
+            background-color: $--light-gray;
+
+            Icon {
+                color: $--green;
+            }
+
+            Icon.--regular {
+                display: none;
+            }
+        }
+        
+
+        &.--idle {
+            Icon.--fill {
+                display: none;
+            }
+        }
+    }
+
+    &__separator {
+        width: 1px;
+        height: 90%;
+        margin: auto 0.15em;
+        background-color: $--green;
+    }
+
+    &__add {
+        position: relative;
+    }
+
+    &__add-list {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+        margin: calc(100% + 0.2em) 0 0 0;
+        padding: 0.5em;
+        width: 14em;
+        border-radius: 5px;
+        background-color: $--dark-gray;
+        z-index: 99;
+    }
+
+    &.--portrait {
+        .toolbar {
+            &__items {
+                flex-direction: column;
+                padding: 0.7em 0.5em;
+            }
+
+            &__item {
+                width: 100%;
+            }
+
+            &__separator {
+                width: 90%;
+                height: 1px;
+                margin: 0.15em auto;
+            }
+
+            &__add {
+                width: 100%;
+            }
+
+            &__add-list {
+                margin: 0 0 0 calc(100% + 0.2em);
+            }
+        }
+    }
+}

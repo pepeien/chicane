@@ -1,0 +1,82 @@
+Instance.onLoad(function()
+end)
+
+function onWorkspaceViewport()
+    Instance.send("onWorkspaceViewport")
+end
+
+function onWorkspaceAssets()
+    Instance.send("onWorkspaceAssets")
+end
+
+function onTrackNew()
+    Instance.send("onTrackNew")
+end
+
+function onTrackOpen()
+    Instance.send("onTrackOpen")
+end
+
+function onTrackSave()
+    Instance.send("onTrackSave")
+end
+
+function onTrackSaveAs()
+    Instance.send("onTrackSaveAs")
+end
+
+function onGizmoTranslate()
+    Instance.send("onGizmoTranslate")
+end
+
+function onGizmoRotate()
+    Instance.send("onGizmoRotate")
+end
+
+function onGizmoScale()
+    Instance.send("onGizmoScale")
+end
+
+function onItemEdit()
+    Instance.send("onItemEdit")
+end
+
+function onItemDelete()
+    Instance.send("onItemDelete")
+end
+
+function onItemIdCommit()
+    Instance.send("onItemIdCommit")
+end
+
+function onAssetImport()
+    Instance.send("onAssetImport")
+end
+
+function onSpawnActor()
+    Instance.send("onSpawnActor")
+end
+
+function onSpawnMesh()
+    Instance.send("onSpawnMesh")
+end
+
+function onThemeSwitch(value)
+    Instance.send("onThemeSwitch", value or "")
+end
+
+function onSpawn(typeName)
+    Instance.send("onSpawn", typeName or "")
+end
+
+function onExplorerFolder(path)
+    Instance.send("onExplorerFolder", path or "")
+end
+
+function onExplorerAsset(name)
+    Instance.send("onExplorerAsset", name or "")
+end
+
+function onExplorerAssetDrop(path)
+    Instance.send("onExplorerAssetDrop", path or "")
+end

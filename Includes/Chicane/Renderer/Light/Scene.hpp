@@ -11,10 +11,10 @@ namespace Chicane
         struct CHICANE_RENDERER SceneLight
         {
         public:
-            Vec4 translation = Vec4::Zero();
-            Vec4 direction   = Vec4::Zero();
+            Vec4 translation = Vec4::sZero();
+            Vec4 direction   = Vec4::sZero();
             Vec4 color       = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            Vec4 cone        = Vec4::Zero();
+            Vec4 cone        = Vec4::sZero();
         };
     }
 }

@@ -33,13 +33,13 @@ namespace Chicane
             const std::shared_ptr<const std::vector<Vec2>>& getSharedOutline() const;
 
         public:
-            String            reference  = String::empty();
+            String            reference  = String::sEmpty();
             Vertex::List      vertices   = {};
             Vertex::Indices   indices    = {};
-            String            glyph      = String::empty();
+            String            glyph      = String::sEmpty();
             float             dilation   = 0.0f;
-            Vec2              outlineMin = Vec2::Zero();
-            Vec2              outlineMax = Vec2::Zero();
+            Vec2              outlineMin = Vec2::sZero();
+            Vec2              outlineMax = Vec2::sZero();
             std::vector<Vec2> outline    = {};
 
         private:

@@ -32,14 +32,14 @@
 
 namespace Chicane
 {
-    class Application;
+    class Instance;
 
     namespace Renderer
     {
         class CHICANE_RENDERER Instance
         {
         public:
-            friend Application;
+            friend class ::Chicane::Instance;
 
         public:
             Instance();

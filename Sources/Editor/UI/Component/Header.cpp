@@ -9,7 +9,7 @@
 #include <Chicane/Grid/Component/Button.hpp>
 #include <Chicane/Grid/Component/Input/Select.hpp>
 #include <Chicane/Grid/Component/Input/Select/Option.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/UI/Component/Header/Menu.hpp"
 #include "Editor/UI/Component/Logo.hpp"
@@ -21,9 +21,9 @@ namespace Editor
         : Chicane::Grid::Container(inNode),
           maximizeState("restored"),
           menus({}),
-          theme(Chicane::String::empty()),
-          viewportTabState(Chicane::String::empty()),
-          assetsTabState(Chicane::String::empty()),
+          theme(Chicane::String::sEmpty()),
+          viewportTabState(Chicane::String::sEmpty()),
+          assetsTabState(Chicane::String::sEmpty()),
           m_moveWindow(nullptr),
           m_moveHitMutex(),
           m_moveBounds({}),
@@ -32,7 +32,7 @@ namespace Editor
         import <Logo>();
         import <HeaderMenu>();
 
-        load("Assets/Editor/UI/Components/Header.grid", "Assets/Editor/UI/Components/Header.decal");
+        load("Assets/Editor/UI/Components/Header/Index.grid", "Assets/Editor/UI/Components/Header/Index.decal");
 
         initFileMenu();
         initSettingsMenu();
@@ -101,7 +101,7 @@ namespace Editor
     {
         Chicane::Grid::Container::onTick(inDeltaTime);
 
-        Chicane::Window* window = Chicane::Application::getInstance().getWindow();
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
         maximizeState           = window && window->isMaximized() ? "maximized" : "restored";
 
         Prop::copy(this, THEME_ATTRIBUTE, theme);
@@ -119,7 +119,7 @@ namespace Editor
 
     void Header::onMinimize()
     {
-        if (Chicane::Window* window = Chicane::Application::getInstance().getWindow())
+        if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
         {
             window->minimize();
         }
@@ -127,7 +127,7 @@ namespace Editor
 
     void Header::onMaximize()
     {
-        if (Chicane::Window* window = Chicane::Application::getInstance().getWindow())
+        if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
         {
             window->maximize();
         }
@@ -135,7 +135,7 @@ namespace Editor
 
     void Header::onClose()
     {
-        if (Chicane::Window* window = Chicane::Application::getInstance().getWindow())
+        if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
         {
             window->close();
         }
@@ -254,7 +254,7 @@ namespace Editor
 
     void Header::bindMoveHitTest()
     {
-        Chicane::Window* window = Chicane::Application::getInstance().getWindow();
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
         if (!window || window->getInstance() == m_moveWindow)
         {
             return;
@@ -267,7 +267,7 @@ namespace Editor
 
     void Header::unbindMoveHitTest()
     {
-        Chicane::Window* window = Chicane::Application::getInstance().getWindow();
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
 
         if (window && window->getInstance() == m_moveWindow)
         {

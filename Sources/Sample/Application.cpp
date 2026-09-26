@@ -1,13 +1,16 @@
 #include "Sample/Application.hpp"
 
-#include <Chicane/Runtime/Application.hpp>
-#include <Chicane/Runtime/Application/CreateInfo.hpp>
+#include <Chicane/Core/Window/Backend.hpp>
+#include <Chicane/Core/Window/Type.hpp>
+#include <Chicane/Runtime/Instance.hpp>
+#include <Chicane/Runtime/Instance/CreateInfo.hpp>
 
 #include "Sample/Shooter/Game.hpp"
 
-Application::Application()
+Application::Application(int inArgCount, char* inArgValues[])
+    : Chicane::Application(inArgCount, inArgValues)
 {
-    Chicane::ApplicationCreateInfo createInfo;
+    Chicane::InstanceCreateInfo createInfo;
 
     // Window
     createInfo.window.title   = "Chicane Sample";
@@ -22,14 +25,14 @@ Application::Application()
         initScene();
     };
 
-    Chicane::Application::getInstance().run(createInfo);
+    Chicane::Instance::sInstance().run(createInfo);
 }
 
 void Application::initController()
 {
     m_controller = std::make_unique<Chicane::Controller>();
 
-    Chicane::Application::getInstance().setController(m_controller.get());
+    Chicane::Instance::sInstance().setController(m_controller.get());
 }
 
 void Application::initScene()

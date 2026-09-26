@@ -1,0 +1,117 @@
+Editor::HeaderMenu {
+    position: relative;
+    height: 90%;
+}
+
+.header-menu {
+    height: 100%;
+    display: flex;
+
+    &__control {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.45em;
+        padding: 0 0.4em;
+        overflow: hidden;
+        background-color: transparent;
+        transition: background-color 200ms ease-in-out;
+        border-radius: 5px;
+
+        Text, Icon {
+            transition: color 200ms ease-in-out;
+        }
+
+        &__label {
+            margin: auto 0;
+            color: $--black;
+            font-size: 0.75em;
+        }
+
+        &__check, &__shortcut {
+            display: none;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: $--black;
+
+            &__label {
+                color: $--white;
+            }
+        }
+    }
+
+    &__list {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+        margin: calc(100% + 0.2em) 0 0 0;
+        padding: 0.5em;
+        width: 14em;
+        border-radius: 5px;
+        background-color: $--dark-gray;
+        z-index: 99;
+
+        Editor::HeaderMenu {
+            width: 100%;
+            height: auto;
+        }
+
+        .header-menu {
+            width: 100%;
+            height: auto;
+
+            &__control {
+                width: 100%;
+                height: auto;
+                padding: 0.35em 0.6em;
+                border-radius: 7px;
+                transition: padding-left 200ms ease-in-out, background-color 250ms ease-in-out;
+
+                Text, Icon {
+                    color: $--gray;
+                }
+
+                &__check {
+                    display: block;
+                    width: 0.8em;
+                    height: 0.8em;
+                    margin: auto 0;
+                    opacity: 0;
+
+                    &.--checked {
+                        opacity: 1;
+                    }
+                }
+
+                &__shortcut {
+                    display: block;
+                    margin: auto 1em auto auto;
+                    font-size: 0.6em;
+                }
+
+                &__chevron {
+                    width: 1em;
+                    height: 1em;
+                    margin: auto 0 auto auto;
+                }
+
+                &:hover {
+                    padding-left: 0.9em;
+                    background-color: $--white;
+
+                    Text, Icon {
+                        color: $--black;
+                    }
+                }
+            }
+
+            &__list {
+                margin-top: -0.45em;
+                margin-left: calc(100% + 0.6em);
+            }
+        }
+    }
+}

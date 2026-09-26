@@ -30,7 +30,7 @@ namespace Chicane
             static constexpr float Pluto   = 0.62f;
 
         public:
-            static constexpr float of(Planet inPlanet)
+            static constexpr float sOf(Planet inPlanet)
             {
                 switch (inPlanet)
                 {
@@ -67,7 +67,7 @@ namespace Chicane
                 }
             }
 
-            static Vec3 down(float inAcceleration) { return Vec3::Up() * -inAcceleration; }
+            static Vec3 sDown(float inAcceleration) { return Vec3::sUp() * -inAcceleration; }
         };
     }
 }

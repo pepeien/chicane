@@ -724,7 +724,7 @@ namespace Chicane
         void OpenGLBackend::createClassArray(OpenGLTextureSizeClass& inClass, std::uint32_t inLayers)
         {
             const std::uint32_t layers    = std::max(1u, std::min(inLayers, m_maxArrayLayers));
-            const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
+            const std::uint32_t mipLevels = Image::sMipCount(inClass.size, inClass.size);
 
             std::uint32_t texture = 0;
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &texture);
@@ -759,10 +759,10 @@ namespace Chicane
                 return;
             }
 
-            const std::uint32_t mipLevels = Image::mipCount(inClass.size, inClass.size);
+            const std::uint32_t mipLevels = Image::sMipCount(inClass.size, inClass.size);
             for (std::uint32_t level = 0; level < mipLevels; level++)
             {
-                const std::uint32_t        width = Image::mipDimension(inClass.size, level);
+                const std::uint32_t        width = Image::sMipDimension(inClass.size, level);
                 std::vector<unsigned char> pixels(static_cast<std::size_t>(width) * width * 4, 255);
                 glTextureSubImage3D(
                     inClass.texture,
@@ -791,14 +791,14 @@ namespace Chicane
 
             const std::uint32_t previous  = sizeClass.texture;
             const std::uint32_t oldCount  = sizeClass.allocated;
-            const std::uint32_t mipLevels = Image::mipCount(sizeClass.size, sizeClass.size);
+            const std::uint32_t mipLevels = Image::sMipCount(sizeClass.size, sizeClass.size);
             createClassArray(sizeClass, layers);
 
             if (previous != 0 && oldCount > 0)
             {
                 for (std::uint32_t level = 0; level < mipLevels; level++)
                 {
-                    const std::uint32_t width = Image::mipDimension(sizeClass.size, level);
+                    const std::uint32_t width = Image::sMipDimension(sizeClass.size, level);
                     glCopyImageSubData(
                         previous,
                         GL_TEXTURE_2D_ARRAY,
@@ -875,9 +875,9 @@ namespace Chicane
             }
 
             const std::uint32_t residentWidth =
-                std::max(1u, Image::mipDimension(inTexture.width, inTexture.residentMinMip));
+                std::max(1u, Image::sMipDimension(inTexture.width, inTexture.residentMinMip));
             const std::uint32_t residentHeight =
-                std::max(1u, Image::mipDimension(inTexture.height, inTexture.residentMinMip));
+                std::max(1u, Image::sMipDimension(inTexture.height, inTexture.residentMinMip));
             const std::uint32_t classIndex = classFromResident(residentWidth, residentHeight);
 
             OpenGLTextureSlot& slot = m_textures[static_cast<std::size_t>(inTexture.id)];
@@ -898,7 +898,7 @@ namespace Chicane
                 return;
             }
 
-            const std::uint32_t mipLevels = Image::mipCount(residentWidth, residentHeight);
+            const std::uint32_t mipLevels = Image::sMipCount(residentWidth, residentHeight);
 
             Image::Instance lastImage;
             for (std::uint32_t gpuLevel = 0; gpuLevel < mipLevels; gpuLevel++)
@@ -918,8 +918,8 @@ namespace Chicane
                     image = lastImage;
                 }
 
-                const std::uint32_t       levelWidth  = std::max(1u, Image::mipDimension(residentWidth, gpuLevel));
-                const std::uint32_t       levelHeight = std::max(1u, Image::mipDimension(residentHeight, gpuLevel));
+                const std::uint32_t       levelWidth  = std::max(1u, Image::sMipDimension(residentWidth, gpuLevel));
+                const std::uint32_t       levelHeight = std::max(1u, Image::sMipDimension(residentHeight, gpuLevel));
                 std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelHeight * 4, 255);
                 if (image && image->getPixels())
                 {
@@ -1098,7 +1098,7 @@ namespace Chicane
                 outRgba.data()
             );
 
-            Image::flipY(outRgba.data(), static_cast<int>(resolution.x), static_cast<int>(resolution.y), 4);
+            Image::sFlipY(outRgba.data(), static_cast<int>(resolution.x), static_cast<int>(resolution.y), 4);
 
             outWidth  = resolution.x;
             outHeight = resolution.y;

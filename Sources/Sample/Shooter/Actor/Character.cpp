@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Sample/Shooter/Actor/Apple.hpp"
 #include "Sample/Shooter/Game.hpp"
@@ -44,7 +44,7 @@ void Character::onLoad()
         }
     );
 
-    Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+    Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
     if (!controller || controller->isAttached())
     {
         return;
@@ -211,7 +211,7 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
 
 void Character::onLeftClick()
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    if (!Chicane::Instance::sInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -221,7 +221,7 @@ void Character::onLeftClick()
 
 void Character::onRightClick()
 {
-    Chicane::Application::getInstance().getWindow()->switchFocus();
+    Chicane::Instance::sInstance().getWindow()->switchFocus();
 }
 
 void Character::onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld)
@@ -257,7 +257,7 @@ void Character::onMoveKey(Chicane::Input::KeyboardButton inButton, bool inHeld)
 
 void Character::refreshMoveInput()
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    if (!Chicane::Instance::sInstance().getWindow()->isFocused())
     {
         setMoveInput(0.0f, 0.0f);
 
@@ -272,14 +272,14 @@ void Character::refreshMoveInput()
 
 void Character::onShoot()
 {
-    Chicane::Application& application = Chicane::Application::getInstance();
+    Chicane::Instance& application = Chicane::Instance::sInstance();
 
     if (!application.getWindow()->isFocused() || !m_camera)
     {
         return;
     }
 
-    Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::Line();
+    Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::sLine();
     request.origin                     = m_camera->getTranslation();
     request.destination                = request.origin + (m_camera->getForward() * m_camera->getFarClip());
 
@@ -300,7 +300,7 @@ void Character::onShoot()
 
 void Character::onLook(float inX, float inY)
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused() || !m_camera)
+    if (!Chicane::Instance::sInstance().getWindow()->isFocused() || !m_camera)
     {
         return;
     }
@@ -312,7 +312,7 @@ void Character::onLook(float inX, float inY)
 
 void Character::onJump()
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
+    if (!Chicane::Instance::sInstance().getWindow()->isFocused())
     {
         return;
     }

@@ -30,7 +30,7 @@ namespace Chicane
                 m_inFlight.insert(dir);
             }
 
-            Worker::submit(
+            Worker::sSubmit(
                 [dir]()
                 {
                     Item::List children;
@@ -43,7 +43,7 @@ namespace Chicane
                         children.clear();
                     }
 
-                    ListingService::getInstance().finish(dir, std::move(children));
+                    ListingService::sInstance().finish(dir, std::move(children));
                 }
             );
         }

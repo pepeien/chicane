@@ -20,14 +20,14 @@ namespace Chicane
         const int channel = std::max(inImage.getChannel(), 1);
         if (width <= 0 || height <= 0)
         {
-            return Vec3::Zero();
+            return Vec3::sZero();
         }
 
         const float*         floats = inImage.getFloatPixels();
         const unsigned char* bytes  = inImage.getPixels();
         if (!floats && !bytes)
         {
-            return Vec3::Zero();
+            return Vec3::sZero();
         }
 
         double    sum   = 0.0;
@@ -71,7 +71,7 @@ namespace Chicane
         const double average = sum / static_cast<double>(count);
         if (peak <= 0.0f || peak < average * 2.0)
         {
-            return Vec3::Zero();
+            return Vec3::sZero();
         }
 
         const float u        = (static_cast<float>(peakX) + 0.5f) / static_cast<float>(width);
@@ -214,17 +214,17 @@ namespace Chicane
 
         const Box::Texture*   texture   = Box::load<Box::Texture>(textures.front().getSource());
         const Image::Instance image     = texture ? texture->getData().lock() : Image::Instance();
-        const Vec3            direction = image ? brightestPanoramaDirection(*image) : Vec3::Zero();
+        const Vec3            direction = image ? brightestPanoramaDirection(*image) : Vec3::sZero();
         if (direction.dot(direction) <= 1e-8f)
         {
-            m_sun->setRelativeTranslation(Vec3::Zero());
+            m_sun->setRelativeTranslation(Vec3::sZero());
 
             return;
         }
 
         const Vec3 position = direction.normalize() * SUN_DISTANCE;
         Rotator    facing;
-        facing.lookAt(position, Vec3::Zero());
+        facing.lookAt(position, Vec3::sZero());
         m_sun->setRelativeTranslation(position);
         m_sun->setRelativeRotation(facing);
         m_sun->setAbsolute(*this);

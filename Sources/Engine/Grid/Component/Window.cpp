@@ -16,14 +16,14 @@ namespace Chicane
             : Container(inNode),
               bIsVisible(true),
               hasTitle(false),
-              title(String::empty()),
-              m_handleId(String::empty()),
+              title(String::sEmpty()),
+              m_handleId(String::sEmpty()),
               m_bIsGrabbable(true),
               m_bIsMoving(false),
-              m_move(Vec2::Zero()),
-              m_moveCursor(Vec2::Zero())
+              m_move(Vec2::sZero()),
+              m_moveCursor(Vec2::sZero())
         {
-            load("Assets/Engine/UI/Components/Window.grid", "Assets/Engine/UI/Components/Window.decal");
+            load("Assets/Engine/UI/Components/Window/Index.grid", "Assets/Engine/UI/Components/Window/Index.decal");
 
             watchAttribute(
                 IS_OPEN_ATTRIBUTE_NAME,
@@ -64,7 +64,7 @@ namespace Chicane
             );
         }
 
-        Window* Window::findFrom(Component* inComponent)
+        Window* Window::sFindFrom(Component* inComponent)
         {
             Component* node = inComponent;
             while (node)

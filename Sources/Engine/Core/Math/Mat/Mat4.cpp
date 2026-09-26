@@ -8,7 +8,7 @@
 namespace Chicane
 {
 
-    bool Mat4::toPosition(
+    bool Mat4::sToPosition(
         const Vec3& inWorldPosition,
         const Mat4& inView,
         const Mat4& inProjection,
@@ -20,7 +20,7 @@ namespace Chicane
 
         if (std::fabs(clip.w) < FLT_EPSILON)
         {
-            outPosition = Vec2::Zero();
+            outPosition = Vec2::sZero();
 
             return false;
         }
@@ -34,12 +34,12 @@ namespace Chicane
         return clip.w > 0.0f;
     }
 
-    Vec2 Mat4::toPosition(
+    Vec2 Mat4::sToPosition(
         const Vec3& inWorldPosition, const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport
     )
     {
-        Vec2 result = Vec2::Zero();
-        toPosition(inWorldPosition, inView, inProjection, inViewport, result);
+        Vec2 result = Vec2::sZero();
+        sToPosition(inWorldPosition, inView, inProjection, inViewport, result);
 
         return result;
     }
@@ -56,15 +56,15 @@ namespace Chicane
 
     bool Mat4::toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition) const
     {
-        return toPosition(getTranslation(), inView, inProjection, inViewport, outPosition);
+        return sToPosition(getTranslation(), inView, inProjection, inViewport, outPosition);
     }
 
     Vec2 Mat4::toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const
     {
-        return toPosition(getTranslation(), inView, inProjection, inViewport);
+        return sToPosition(getTranslation(), inView, inProjection, inViewport);
     }
 
-    bool Mat4::fromPosition(
+    bool Mat4::sFromPosition(
         const Vec2& inPosition,
         const Mat4& inView,
         const Mat4& inProjection,
@@ -73,8 +73,8 @@ namespace Chicane
         Vec3&       outFar
     )
     {
-        outNear = Vec3::Zero();
-        outFar  = Vec3::Zero();
+        outNear = Vec3::sZero();
+        outFar  = Vec3::sZero();
 
         if (inViewport.x <= 0.0f || inViewport.y <= 0.0f)
         {

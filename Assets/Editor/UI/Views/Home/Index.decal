@@ -1,0 +1,91 @@
+$contentPadding: 0.5em;
+$contentPaddingDouble: calc($contentPadding * 2);
+
+.--light {
+    $--green: #0b997d;
+    $--orange: #d4a017;
+
+    $--gray: #aaaaaa;
+    $--lighter-gray: #877c7c;
+    $--lighter-gray: #524e4e;
+    $--light-gray: #423e3e;
+    $--dark-gray: #323232;
+
+    $--black: #252525;
+    $--white: #f7f7f7;
+}
+
+.--dark {
+    $--green: #0b997d;
+    $--orange: #d4a017;
+
+    $--gray: #aaaaaa;
+    $--lighter-gray: #524e4e;
+    $--light-gray: #423e3e;
+    $--dark-gray: #323232;
+
+    $--black: #f7f7f7;
+    $--white: #252525;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    transition: background-color 200ms ease-in-out;
+    background-color: $--white;
+
+    &__content {
+        width: 100%;
+        height: 100%;
+        padding: $contentPadding;
+        gap: 0.5em;
+        background-color: $--light-gray;
+
+        Text {
+            color: $--black;
+        }
+
+        DockPanel {
+            background-color: $--white;
+            border: 1px solid $--lighter-gray;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        Editor::Telemetry {
+            position: absolute;
+            padding: 0.2em;
+        }
+
+        Viewport {
+            width: 100%;
+            height: 100%;
+        }
+
+        Editor::Outliner {
+            width: 100%;
+            height: 100%;
+        }
+
+        Editor::Attributes {
+            width: 100%;
+            height: 100%;
+        }
+
+        Editor::Explorer {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        Editor::AssetManager {
+            width: 100%;
+            height: 100%;
+        }
+
+        Editor::Toolbar {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

@@ -29,7 +29,7 @@ namespace Chicane
 
         XmlDocument load(const FileSystem::Path& inFilepath)
         {
-            return XmlDocument::load(inFilepath);
+            return XmlDocument::sLoad(inFilepath);
         }
 
         Attributes getAttributes(const XmlNode& inNode)

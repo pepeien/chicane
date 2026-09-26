@@ -11,7 +11,10 @@ namespace Chicane
             : Container(inNode),
               percentage(0.0f)
         {
-            load("Assets/Engine/UI/Components/Progress/Bar.grid", "Assets/Engine/UI/Components/Progress/Bar.decal");
+            load(
+                "Assets/Engine/UI/Components/Progress/Bar/Index.grid",
+                "Assets/Engine/UI/Components/Progress/Bar/Index.decal"
+            );
         }
 
         void ProgressBar::onTick(float inDeltaTime)

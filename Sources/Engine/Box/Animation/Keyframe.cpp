@@ -5,7 +5,7 @@ namespace Chicane
     namespace Box
     {
         AnimationKeyframe::AnimationKeyframe()
-            : time(Time::Zero()),
+            : time(Time::sZero()),
               transform({}),
               easing("")
         {}

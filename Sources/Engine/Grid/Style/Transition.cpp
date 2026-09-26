@@ -13,7 +13,7 @@ namespace Chicane
             : property(Style::TRANSITION_PROPERTY_ALL),
               duration(0.0f),
               delay(0.0f),
-              easing(Drift::EasingCurve::ease())
+              easing(Drift::EasingCurve::sEase())
         {}
 
         bool isTime(const String& inValue)
@@ -84,7 +84,7 @@ namespace Chicane
 
         Drift::EasingCurve parseEasing(const String& inValue)
         {
-            return Drift::EasingCurve::fromString(inValue);
+            return Drift::EasingCurve::sFromString(inValue);
         }
 
         std::vector<String> splitStyleList(const String& inValue)

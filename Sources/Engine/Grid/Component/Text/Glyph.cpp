@@ -9,7 +9,7 @@ namespace Chicane
               m_glyph(nullptr),
               m_advance(0.0f),
               m_dilation(0.0f),
-              m_relative(Vec2::Zero())
+              m_relative(Vec2::sZero())
         {}
 
         bool TextGlyph::isDrawable() const
@@ -132,7 +132,7 @@ namespace Chicane
             m_glyph    = nullptr;
             m_advance  = 0.0f;
             m_dilation = 0.0f;
-            m_relative = Vec2::Zero();
+            m_relative = Vec2::sZero();
 
             clearPrimitive();
 

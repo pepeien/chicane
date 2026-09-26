@@ -1,0 +1,152 @@
+$attributesHeaderHeight: 1.65em;
+
+.attributes {
+    width: 100%;
+    height: 100%;
+
+    &__content {
+        width: 100%;
+        height: calc(100% - $attributesHeaderHeight);
+        padding: 0.5em;
+        overflow: auto;
+        overflow-x: visible;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35em;
+    }
+
+    &__field {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.4em;
+
+        &__label {
+            width: 40%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.3em;
+
+            Text {
+                flex-grow: 1;
+            }
+
+            ToolTip {
+                max-width: 12em;
+            }
+        }
+
+        Input::Text, Input::Select, Input::Color, Editor::Vec3, Editor::AssetSelector {
+            width: 100%;
+            min-height: 1.2em;
+        }
+
+        Input::Select {
+            .input-select__control, .input-select__list {
+                background-color: $--light-gray;
+                border-radius: 0.15em;
+            }
+
+            .input-select__label {
+                color: $--black;
+                margin: auto 0.4em;
+            }
+
+            .input-select__list {
+                background-color: $--dark-gray;
+                border: 1px solid $--lighter-gray;
+            }
+
+            Input::Select::Option:hover, Input::Select::Option.--active, Input::Select::Option.--selected {
+                background-color: $--light-gray;
+            }
+        }
+
+        Editor::AssetSelector, Input::Color {
+            padding: 0.15em;
+        }
+
+        .input-color {
+            overflow-x: visible;
+            overflow-y: visible;
+            font-size: 1em;
+            padding: 0.1em;
+            border: none;
+
+            Input::Text, Input::Select {
+                background-color: transparent;
+                border: none;
+                padding: 0;
+                color: $--black;
+                font-size: 0.85em;
+                overflow-x: visible;
+                overflow-y: visible;
+                min-height: 1.4em;
+            }
+
+            &__popup {
+                border-radius: 8px;
+                background-color: $--dark-gray;
+                overflow: hidden;
+
+                .window {
+                    border-radius: 8px;
+                }
+
+                .window-header {
+                    background-color: $--dark-gray;
+                    border-bottom: 1px solid $--light-gray;
+                    border-radius: 8px 8px 0 0;
+
+                    Text {
+                        color: $--gray;
+                    }
+                }
+            }
+
+            &__body {
+                padding: 0.8em 1.6em;
+            }
+
+            &__hex {
+                width: 30%;
+                background-color: $--gray;
+            }
+
+            &__model {
+                .input-select__list {
+                    padding: 0.5em;
+                    width: 8em;
+                    border-radius: 4px;
+                    background-color: $--light-gray;
+                    margin: 1.25em 0 0 50%;
+                }
+            }
+
+            &__slider {
+                .input-slider {
+                    &__track {
+                        border-radius: 12px;
+                        height: 1.25em;
+                        padding: 0 0.1em;
+                    }
+
+                    &__thumb {
+                        border: 2.5px solid white;
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            Input::Text, .input-select__label, &__hex, &__model, &__readout, &__palette__label, &__chip__plus {
+                color: $--gray;
+            }
+
+            &__swatch {
+                border: 1px solid $--lighter-gray;
+                background-color: $--white;
+            }
+        }
+    }
+}

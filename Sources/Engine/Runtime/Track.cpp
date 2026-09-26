@@ -35,20 +35,20 @@ namespace Chicane
 
         static bool isRelativeIdentity(const Object& inObject)
         {
-            return inObject.getRelativeTranslation() == Vec3::Zero() &&
-                   inObject.getRelativeRotation().getAngles() == Vec3::Zero() &&
-                   inObject.getRelativeScale() == Vec3::One();
+            return inObject.getRelativeTranslation() == Vec3::sZero() &&
+                   inObject.getRelativeRotation().getAngles() == Vec3::sZero() &&
+                   inObject.getRelativeScale() == Vec3::sOne();
         }
 
         static bool isAbsoluteIdentity(const Object& inObject)
         {
-            return inObject.getTranslation() == Vec3::Zero() && inObject.getRotation().getAngles() == Vec3::Zero() &&
-                   inObject.getScale() == Vec3::One();
+            return inObject.getTranslation() == Vec3::sZero() && inObject.getRotation().getAngles() == Vec3::sZero() &&
+                   inObject.getScale() == Vec3::sOne();
         }
 
         static String formatVec3(const Vec3& inValue)
         {
-            return String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
+            return String::sSprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
         }
 
         static String typeTail(const String& inName)
@@ -64,7 +64,7 @@ namespace Chicane
 
         static const ReflectionEnumInfo* findEnum(const String& inTypeName)
         {
-            ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
+            ReflectionEnumRegistry& registry = ReflectionEnumRegistry::sInstance();
             if (const ReflectionEnumInfo* found = registry.find(inTypeName))
             {
                 return found;
@@ -135,7 +135,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            return ReflectionTypeRegistry::getInstance().find(inField.typeIndex.value());
+            return ReflectionTypeRegistry::sInstance().find(inField.typeIndex.value());
         }
 
         static void writeFields(
@@ -184,12 +184,12 @@ namespace Chicane
                 else if (accessor.isType<FileSystem::Path>())
                 {
                     const FileSystem::Path* filePath = accessor.getValue<FileSystem::Path>(&inObject);
-                    value                            = filePath ? filePath->toString() : String::empty();
+                    value                            = filePath ? filePath->toString() : String::sEmpty();
                 }
                 else if (accessor.isType<Vec3>())
                 {
                     const Vec3* vector = accessor.getValue<Vec3>(&inObject);
-                    value              = vector ? formatVec3(*vector) : String::empty();
+                    value              = vector ? formatVec3(*vector) : String::sEmpty();
                 }
                 else
                 {
@@ -207,7 +207,7 @@ namespace Chicane
 
         static void writeFields(XmlNode& outNode, const Object& inObject)
         {
-            const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(inObject));
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(inObject));
             if (!type)
             {
                 return;
@@ -283,7 +283,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            ReflectionTypeRegistry&   registry = ReflectionTypeRegistry::getInstance();
+            ReflectionTypeRegistry&   registry = ReflectionTypeRegistry::sInstance();
             const ReflectionTypeInfo* type     = registry.find(String("Chicane::") + inTag);
             if (!type)
             {
@@ -412,7 +412,7 @@ namespace Chicane
 
             XmlDocument document;
             XmlNode     root = document.appendChild(TAG_ID);
-            Xml::addAttribute(root, VERSION_ATTRIBUTE_NAME, String::sprint("%u", CURRENT_VERSION));
+            Xml::addAttribute(root, VERSION_ATTRIBUTE_NAME, String::sSprint("%u", CURRENT_VERSION));
 
             const String id = inFilepath.stem().toString();
             if (!id.isEmpty())

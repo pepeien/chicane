@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    ReflectionEnumRegistry& ReflectionEnumRegistry::getInstance()
+    ReflectionEnumRegistry& ReflectionEnumRegistry::sInstance()
     {
         static ReflectionEnumRegistry result;
 

@@ -3,7 +3,7 @@
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/Xml.hpp>
 #include <Chicane/Grid/Component/Container.hpp>
-#include <Chicane/Runtime/Application/Telemetry.hpp>
+#include <Chicane/Runtime/Instance/Telemetry.hpp>
 
 namespace Editor
 {
@@ -16,6 +16,6 @@ namespace Editor
 
     public:
         CH_FIELD()
-        const Chicane::ApplicationTelemetry* telemetry;
+        const Chicane::InstanceTelemetry* telemetry;
     };
 }

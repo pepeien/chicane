@@ -245,11 +245,11 @@ namespace Chicane
                         String name = toString(mesh.name);
                         if (name.isEmpty())
                         {
-                            name = String::sprint("Mesh_%u", meshIndex);
+                            name = String::sSprint("Mesh_%u", meshIndex);
                         }
                         if (mesh.primitives_count > 1)
                         {
-                            name = String::sprint("%s_%u", name.toChar(), primitiveIndex);
+                            name = String::sSprint("%s_%u", name.toChar(), primitiveIndex);
                         }
 
                         primitive.name = uniqueName(name, usedNames);
@@ -281,7 +281,7 @@ namespace Chicane
                 }
 
                 std::vector<ModelParsed> parsed(primitives.size());
-                WorkerPool::parallel(
+                WorkerPool::sParallel(
                     primitives.size(),
                     [&primitives, &parsed](std::size_t inIndex) { fillPrimitive(primitives[inIndex], parsed[inIndex]); }
                 );

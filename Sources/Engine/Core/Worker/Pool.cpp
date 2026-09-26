@@ -2,14 +2,14 @@
 
 namespace Chicane
 {
-    void WorkerPool::submit(Job inJob)
+    void WorkerPool::sSubmit(Job inJob)
     {
-        getInstance().enqueue(std::move(inJob));
+        sInstance().enqueue(std::move(inJob));
     }
 
-    void WorkerPool::parallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob)
+    void WorkerPool::sParallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob)
     {
-        getInstance().m_parallel.run(inCount, inJob);
+        sInstance().m_parallel.run(inCount, inJob);
     }
 
     WorkerPool::WorkerPool() = default;

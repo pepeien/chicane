@@ -13,7 +13,10 @@ namespace Chicane
               checkState(STATE_IDLE),
               m_bIsEdited(false)
         {
-            load("Assets/Engine/UI/Components/Button/Check.grid", "Assets/Engine/UI/Components/Button/Check.decal");
+            load(
+                "Assets/Engine/UI/Components/Button/Check/Index.grid",
+                "Assets/Engine/UI/Components/Button/Check/Index.decal"
+            );
         }
 
         bool ButtonCheck::isFocusable() const

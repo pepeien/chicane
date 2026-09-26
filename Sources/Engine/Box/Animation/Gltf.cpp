@@ -24,7 +24,7 @@ namespace Chicane
                     return name;
                 }
 
-                return String::sprint("Animation_%u", inIndex);
+                return String::sSprint("Animation_%u", inIndex);
             }
 
             static AnimationClip parseAnimation(
@@ -105,7 +105,7 @@ namespace Chicane
                     for (const float time : times)
                     {
                         AnimationKeyframe keyframe;
-                        keyframe.time   = Time::fromSeconds(time);
+                        keyframe.time   = Time::sFromSeconds(time);
                         keyframe.easing = step ? "Step" : "";
                         keyframe.transform.setTranslation(
                             sampleVector(nodeCurves.translation, rest.getTranslation(), time)

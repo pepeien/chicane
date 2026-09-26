@@ -15,7 +15,7 @@
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
 #include <Chicane/Core/Reflection/Type/Info.hpp>
 #include <Chicane/Core/Reflection/Type/Registry.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 #include <Chicane/Runtime/Scene/Actor/Light.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn.hpp>
@@ -92,7 +92,7 @@ namespace Editor
 
     static const Chicane::ReflectionEnumInfo* findEnum(const Chicane::String& inTypeName)
     {
-        Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::getInstance();
+        Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::sInstance();
         if (const Chicane::ReflectionEnumInfo* found = registry.find(inTypeName))
         {
             return found;
@@ -103,7 +103,7 @@ namespace Editor
 
     static Chicane::String formatVec3(const Chicane::Vec3& inValue)
     {
-        return Chicane::String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
+        return Chicane::String::sSprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
     }
 
     static Chicane::Vec3 parseVec3(const Chicane::String& inValue, const Chicane::Vec3& inFallback)
@@ -155,17 +155,17 @@ namespace Editor
 
     static std::shared_ptr<Scene> editorScene()
     {
-        return Application::getInstance().getHomeScene();
+        return Application::sInstance().getHomeScene();
     }
 
     static std::shared_ptr<Scene> workspaceScene(bool bIsAssetsWorkspace)
     {
         if (bIsAssetsWorkspace)
         {
-            return Application::getInstance().getViewerScene();
+            return Application::sInstance().getViewerScene();
         }
 
-        return Application::getInstance().getHomeScene();
+        return Application::sInstance().getHomeScene();
     }
 
     static Chicane::String outlinerIcon(const Chicane::Object* inObject)
@@ -455,7 +455,7 @@ namespace Editor
         if (accessor.isType<Chicane::FileSystem::Path>())
         {
             const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-            ioField.text                          = path ? path->toString() : Chicane::String::empty();
+            ioField.text                          = path ? path->toString() : Chicane::String::sEmpty();
 
             return;
         }
@@ -487,11 +487,11 @@ namespace Editor
           translateState(STATE_ACTIVE),
           rotateState(STATE_IDLE),
           scaleState(STATE_IDLE),
-          selectedFolderPath(Chicane::String::empty()),
-          selectedAssetName(Chicane::String::empty()),
+          selectedFolderPath(Chicane::String::sEmpty()),
+          selectedAssetName(Chicane::String::sEmpty()),
           m_collapsedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
-          m_outlinerEditId(Chicane::String::empty()),
+          m_outlinerEditId(Chicane::String::sEmpty()),
           m_coordinateSpace(CoordinateSpace::Absolute),
           m_bOutlinerDirty(false),
           m_bAttributesDirty(false)
@@ -504,9 +504,10 @@ namespace Editor
         import <Telemetry>();
         import <Toolbar>();
 
-        load("Assets/Editor/UI/Views/Home.grid", "Assets/Editor/UI/Views/Home.decal");
+        load("Assets/Editor/UI/Views/Home/Index.grid", "Assets/Editor/UI/Views/Home/Index.decal");
 
         bindScene();
+        bindScriptEvents();
     }
 
     void HomeView::tick(float inDeltaTime)
@@ -546,8 +547,32 @@ namespace Editor
             scene->watchComponents([this](std::vector<Chicane::Component*>) { requestOutlinerRebuild(); });
         };
 
-        bind(Application::getInstance().getHomeScene());
-        bind(Application::getInstance().getViewerScene());
+        bind(Application::sInstance().getHomeScene());
+        bind(Application::sInstance().getViewerScene());
+    }
+
+    void HomeView::bindScriptEvents()
+    {
+        subscribe("onWorkspaceViewport", [this](const Chicane::String&) { onWorkspaceViewport(); });
+        subscribe("onWorkspaceAssets", [this](const Chicane::String&) { onWorkspaceAssets(); });
+        subscribe("onTrackNew", [this](const Chicane::String&) { onTrackNew(); });
+        subscribe("onTrackOpen", [this](const Chicane::String&) { onTrackOpen(); });
+        subscribe("onTrackSave", [this](const Chicane::String&) { onTrackSave(); });
+        subscribe("onTrackSaveAs", [this](const Chicane::String&) { onTrackSaveAs(); });
+        subscribe("onGizmoTranslate", [this](const Chicane::String&) { onGizmoTranslate(); });
+        subscribe("onGizmoRotate", [this](const Chicane::String&) { onGizmoRotate(); });
+        subscribe("onGizmoScale", [this](const Chicane::String&) { onGizmoScale(); });
+        subscribe("onItemEdit", [this](const Chicane::String&) { onItemEdit(); });
+        subscribe("onItemDelete", [this](const Chicane::String&) { onItemDelete(); });
+        subscribe("onItemIdCommit", [this](const Chicane::String&) { onItemIdCommit(); });
+        subscribe("onAssetImport", [this](const Chicane::String&) { onAssetImport(); });
+        subscribe("onSpawnActor", [this](const Chicane::String&) { onSpawnActor(); });
+        subscribe("onSpawnMesh", [this](const Chicane::String&) { onSpawnMesh(); });
+        subscribe("onThemeSwitch", [this](const Chicane::String& inValue) { onThemeSwitch(inValue); });
+        subscribe("onSpawn", [this](const Chicane::String& inValue) { onSpawn(inValue); });
+        subscribe("onExplorerFolder", [this](const Chicane::String& inValue) { onExplorerFolder(inValue); });
+        subscribe("onExplorerAsset", [this](const Chicane::String& inValue) { onExplorerAsset(inValue); });
+        subscribe("onExplorerAssetDrop", [this](const Chicane::String& inValue) { onExplorerAssetDrop(inValue); });
     }
 
     void HomeView::onAssetImport()
@@ -713,12 +738,12 @@ namespace Editor
         viewportTabState     = bIsViewportWorkspace ? STATE_ACTIVE : STATE_IDLE;
         assetsTabState       = bIsAssetsWorkspace ? STATE_ACTIVE : STATE_IDLE;
 
-        if (std::shared_ptr<Scene> home = Application::getInstance().getHomeScene())
+        if (std::shared_ptr<Scene> home = Application::sInstance().getHomeScene())
         {
             home->setSelection(nullptr);
         }
 
-        if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+        if (std::shared_ptr<ViewerScene> viewer = Application::sInstance().getViewerScene())
         {
             viewer->setSelection(nullptr);
         }
@@ -728,11 +753,11 @@ namespace Editor
 
         if (bIsAssetsWorkspace)
         {
-            Application::getInstance().activateViewerScene();
+            Application::sInstance().activateViewerScene();
         }
         else
         {
-            Application::getInstance().activateHomeScene();
+            Application::sInstance().activateHomeScene();
         }
 
         requestOutlinerRebuild();
@@ -747,7 +772,7 @@ namespace Editor
 
             onItemSelection(nullptr);
 
-            Application::getInstance().possess(scene);
+            Application::sInstance().possess(scene);
         }
     }
 
@@ -778,7 +803,7 @@ namespace Editor
 
                     onItemSelection(nullptr);
 
-                    Application::getInstance().possess(scene);
+                    Application::sInstance().possess(scene);
 
                     return;
                 }
@@ -1039,7 +1064,7 @@ namespace Editor
     void HomeView::onExplorerFolder(Chicane::String inPath)
     {
         selectedFolderPath = inPath;
-        selectedAssetName  = Chicane::String::empty();
+        selectedAssetName  = Chicane::String::sEmpty();
     }
 
     void HomeView::onExplorerAsset(Chicane::String inName)
@@ -1091,7 +1116,7 @@ namespace Editor
         {
             m_collapsedOutlinerItems.clear();
             m_editingOutlinerItem = nullptr;
-            m_outlinerEditId      = Chicane::String::empty();
+            m_outlinerEditId      = Chicane::String::sEmpty();
 
             return;
         }
@@ -1132,7 +1157,7 @@ namespace Editor
         if (m_editingOutlinerItem && live.find(m_editingOutlinerItem) == live.end())
         {
             m_editingOutlinerItem = nullptr;
-            m_outlinerEditId      = Chicane::String::empty();
+            m_outlinerEditId      = Chicane::String::sEmpty();
         }
     }
 
@@ -1156,7 +1181,7 @@ namespace Editor
             node.item          = inObject;
             node.label         = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
             node.icon          = outlinerIcon(inObject);
-            node.indent        = Chicane::String::sprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
+            node.indent        = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
             node.expandState   = !bHasChildren  ? OUTLINER_EXPAND_LEAF
                                  : bIsCollapsed ? OUTLINER_EXPAND_COLLAPSED
                                                 : OUTLINER_EXPAND_EXPANDED;
@@ -1209,7 +1234,7 @@ namespace Editor
 
         const Chicane::String id = m_outlinerEditId.trim();
         m_editingOutlinerItem    = nullptr;
-        m_outlinerEditId         = Chicane::String::empty();
+        m_outlinerEditId         = Chicane::String::sEmpty();
 
         if (!id.isEmpty() && !id.equals(item->getId()))
         {
@@ -1281,7 +1306,7 @@ namespace Editor
             return nullptr;
         }
 
-        return Chicane::ReflectionTypeRegistry::getInstance().find(inInfo.typeIndex.value());
+        return Chicane::ReflectionTypeRegistry::sInstance().find(inInfo.typeIndex.value());
     }
 
     static void pushAttributeField(AttributeGroup::List& ioGroups, AttributeField inField)
@@ -1445,7 +1470,7 @@ namespace Editor
                 if (accessor.isType<Chicane::FileSystem::Path>())
                 {
                     const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-                    field.text                            = path ? path->toString() : Chicane::String::empty();
+                    field.text                            = path ? path->toString() : Chicane::String::sEmpty();
                     field.type                            = AttributeFieldType::Asset;
                     field.kind                            = name;
                 }
@@ -1474,7 +1499,7 @@ namespace Editor
         }
 
         const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
+            Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
         if (!type)
         {
             return;
@@ -1492,7 +1517,7 @@ namespace Editor
         }
 
         const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
+            Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
         if (!type)
         {
             return;

@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        String StyleRuleset::normalizeData(const String& inValue)
+        String StyleRuleset::sNormalizeData(const String& inValue)
         {
             String result = inValue;
             // Remove online comments

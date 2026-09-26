@@ -332,7 +332,7 @@ namespace Chicane
                 }
                 if (!data->bViewOnly)
                 {
-                    VulkanAllocator::destroyImage(data->info);
+                    VulkanAllocator::sDestroyImage(data->info);
                     if (data->info.sampler)
                     {
                         m_backend->logicalDevice.destroySampler(data->info.sampler);
@@ -739,8 +739,8 @@ namespace Chicane
 
             vk::PipelineColorBlendAttachmentState blend =
                 inCreateInfo.blend == RHI::BlendMode::Additive
-                    ? VulkanGraphicsPipeline::createAdditiveBlendAttachmentState()
-                    : VulkanGraphicsPipeline::createBlendAttachmentState(inCreateInfo.blend == RHI::BlendMode::Alpha);
+                    ? VulkanGraphicsPipeline::sCreateAdditiveBlendAttachmentState()
+                    : VulkanGraphicsPipeline::sCreateBlendAttachmentState(inCreateInfo.blend == RHI::BlendMode::Alpha);
             if (!inCreateInfo.bHasColorWrite)
             {
                 blend.colorWriteMask = {};
@@ -765,7 +765,7 @@ namespace Chicane
                 }
             }
 
-            vk::PipelineInputAssemblyStateCreateInfo assembly = VulkanGraphicsPipeline::createInputAssemblyState();
+            vk::PipelineInputAssemblyStateCreateInfo assembly = VulkanGraphicsPipeline::sCreateInputAssemblyState();
             if (inCreateInfo.topology == RHI::PrimitiveTopology::TriangleStrip)
             {
                 assembly.topology = vk::PrimitiveTopology::eTriangleStrip;

@@ -70,10 +70,10 @@ namespace Chicane
                 std::array<Vec3, 8> fullFrustumCorners    = {};
                 getFrustumCorners(inverseViewProjection, fullFrustumCorners);
 
-                Vec3 up = Vec3::Up();
+                Vec3 up = Vec3::sUp();
                 if (std::abs(inLightDirection.dot(up)) > 0.999f)
                 {
-                    up = Vec3::Right();
+                    up = Vec3::sRight();
                 }
 
                 const float cameraRange = cameraFar - nearClip;
@@ -91,7 +91,7 @@ namespace Chicane
                         corners[corner + 4] = fullFrustumCorners[corner] + edge * split;
                     }
 
-                    Vec3 center = Vec3::Zero();
+                    Vec3 center = Vec3::sZero();
                     for (const Vec3& corner : corners)
                     {
                         center += corner;
@@ -267,7 +267,7 @@ namespace Chicane
             {
                 if (inLight.type != LightType::Spot)
                 {
-                    return Vec4::Zero();
+                    return Vec4::sZero();
                 }
 
                 const float outer = std::clamp(inLight.outerAngle, 0.0f, 89.9f);

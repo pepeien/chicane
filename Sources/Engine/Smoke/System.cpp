@@ -27,7 +27,7 @@ namespace Chicane
                     continue;
                 }
 
-                if (Module* module = Module::create(child))
+                if (Module* module = Module::sCreate(child))
                 {
                     m_modules.emplace_back(module);
                 }

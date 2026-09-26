@@ -11,7 +11,7 @@ namespace Chicane
     {
         explicit ReflectionEnumAutoRegister(const ReflectionEnumInfo& inValue)
         {
-            ReflectionEnumRegistry::getInstance().add(std::move(inValue));
+            ReflectionEnumRegistry::sInstance().add(std::move(inValue));
         }
     };
 }

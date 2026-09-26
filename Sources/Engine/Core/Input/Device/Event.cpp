@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Input
     {
-        DeviceEvent DeviceEvent::fromMouse(void* inData)
+        DeviceEvent DeviceEvent::sFromMouse(void* inData)
         {
             SDL_MouseDeviceEvent event = *static_cast<SDL_MouseDeviceEvent*>(inData);
 
@@ -18,7 +18,7 @@ namespace Chicane
             return result;
         }
 
-        DeviceEvent DeviceEvent::fromKeyboard(void* inData)
+        DeviceEvent DeviceEvent::sFromKeyboard(void* inData)
         {
             SDL_KeyboardDeviceEvent event = *static_cast<SDL_KeyboardDeviceEvent*>(inData);
 
@@ -28,7 +28,7 @@ namespace Chicane
             return result;
         }
 
-        DeviceEvent DeviceEvent::fromGamepad(void* inData)
+        DeviceEvent DeviceEvent::sFromGamepad(void* inData)
         {
             SDL_GamepadDeviceEvent event = *static_cast<SDL_GamepadDeviceEvent*>(inData);
 

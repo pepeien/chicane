@@ -129,10 +129,10 @@ namespace Chicane
             {
                 if (inStep >= 1.0f && std::fabs(inStep - std::round(inStep)) <= 0.0001f)
                 {
-                    return String::sprint("%d", static_cast<int>(std::round(inValue)));
+                    return String::sSprint("%d", static_cast<int>(std::round(inValue)));
                 }
 
-                return String::sprint("%.*f", inPrecision, inValue);
+                return String::sSprint("%.*f", inPrecision, inValue);
             }
 
             inline Component* findChildId(const Component* inRoot, const String& inId)

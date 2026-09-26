@@ -9,7 +9,7 @@
 #include <Chicane/Core/Math/Vec/Vec2.hpp>
 #include <Chicane/Core/Window/Event/Type.hpp>
 #include <Chicane/Core/Xml.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/UI/Prop.hpp"
 #include "Editor/Viewport/Overlay.hpp"
@@ -18,12 +18,12 @@ namespace Editor
 {
     static Chicane::String formatFloat(float inValue)
     {
-        return Chicane::String::sprint("%.3f", inValue);
+        return Chicane::String::sSprint("%.3f", inValue);
     }
 
     static Chicane::String formatUint(float inValue)
     {
-        return Chicane::String::sprint("%u", static_cast<unsigned int>(std::max(inValue, 1.0f)));
+        return Chicane::String::sSprint("%u", static_cast<unsigned int>(std::max(inValue, 1.0f)));
     }
 
     ViewportSettings::ViewportSettings(const Chicane::XmlNode& inNode)
@@ -39,24 +39,24 @@ namespace Editor
           axisXState("on"),
           axisYState("on"),
           axisZState("on"),
-          gridColor(Chicane::Vec3::Zero()),
+          gridColor(Chicane::Vec3::sZero()),
           gridScale(0.5f),
           gridDivisions(10.0f),
-          gridScaleText(Chicane::String::empty()),
-          gridDivisionsText(Chicane::String::empty()),
+          gridScaleText(Chicane::String::sEmpty()),
+          gridDivisionsText(Chicane::String::sEmpty()),
           bShowWireframe(false),
           bShowBounds(false),
-          geometryColor(Chicane::Vec4::Zero()),
+          geometryColor(Chicane::Vec4::sZero()),
           bShowOutline(true),
-          outlinerColor(Chicane::Vec3::Zero()),
+          outlinerColor(Chicane::Vec3::sZero()),
           bShowCollider(false),
-          physicsColor(Chicane::Vec4::Zero()),
+          physicsColor(Chicane::Vec4::sZero()),
           bShowBones(false),
-          boneColor(Chicane::Vec3::Zero()),
+          boneColor(Chicane::Vec3::sZero()),
           bShowTracer(false),
-          tracerColor(Chicane::Vec4::Zero())
+          tracerColor(Chicane::Vec4::sZero())
     {
-        const ViewportOverlay& overlay = ViewportOverlay::getInstance();
+        const ViewportOverlay& overlay = ViewportOverlay::sInstance();
         bGridEnabled                   = overlay.bGridEnabled;
         bGridAxisX                     = overlay.bGridAxisX;
         bGridAxisY                     = overlay.bGridAxisY;
@@ -70,7 +70,10 @@ namespace Editor
         boneColor                      = overlay.boneColor;
         tracerColor                    = overlay.tracerColor;
 
-        load("Assets/Editor/UI/Components/ViewportSettings.grid", "Assets/Editor/UI/Components/ViewportSettings.decal");
+        load(
+            "Assets/Editor/UI/Components/ViewportSettings/Index.grid",
+            "Assets/Editor/UI/Components/ViewportSettings/Index.decal"
+        );
 
         Prop::bind(this, IS_OPEN_ATTRIBUTE, isVisible);
         refreshFieldText();
@@ -287,7 +290,7 @@ namespace Editor
 
     Chicane::Renderer::Instance* ViewportSettings::getRenderer() const
     {
-        return Chicane::Application::getInstance().getRenderer();
+        return Chicane::Instance::sInstance().getRenderer();
     }
 
     void ViewportSettings::syncFlags()
@@ -307,7 +310,7 @@ namespace Editor
 
     void ViewportSettings::applyOverlay()
     {
-        ViewportOverlay& overlay = ViewportOverlay::getInstance();
+        ViewportOverlay& overlay = ViewportOverlay::sInstance();
         overlay.bGridEnabled     = bGridEnabled;
         overlay.bGridAxisX       = bGridAxisX;
         overlay.bGridAxisY       = bGridAxisY;

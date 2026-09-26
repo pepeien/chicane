@@ -6,8 +6,8 @@
 
 #include <Chicane/Renderer.hpp>
 
-#include <Chicane/Runtime/Application.hpp>
-#include <Chicane/Runtime/Application/CreateInfo.hpp>
+#include <Chicane/Runtime/Instance.hpp>
+#include <Chicane/Runtime/Instance/CreateInfo.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
 #include "Editor/Actor/Character.hpp"
@@ -20,19 +20,31 @@ namespace Editor
 {
     Application* Application::s_instance = nullptr;
 
-    Application& Application::getInstance()
+    Application& Application::sInstance()
     {
         return *s_instance;
     }
 
-    Application::Application(const std::vector<Chicane::FileSystem::Path>& inModules)
-        : m_controller(nullptr),
+    Application::Application(int inArgCount, char* inArgValues[])
+        : Chicane::Application(inArgCount, inArgValues),
+          m_controller(nullptr),
           m_homeScene(nullptr),
           m_viewerScene(nullptr)
     {
         s_instance = this;
 
-        Chicane::ApplicationCreateInfo createInfo;
+        std::vector<Chicane::FileSystem::Path> modules;
+        for (const Chicane::String& path : getArgValues("module"))
+        {
+            if (path.isEmpty())
+            {
+                continue;
+            }
+
+            modules.emplace_back(path);
+        }
+
+        Chicane::InstanceCreateInfo createInfo;
 
         // Window
         createInfo.window.title   = "Chicane Editor";
@@ -41,7 +53,7 @@ namespace Editor
         createInfo.window.type    = Chicane::WindowType::WindowedBorderless;
         createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 
-        createInfo.modules = inModules;
+        createInfo.modules = modules;
 
         // Setup
         createInfo.onSetup = [this]()
@@ -52,7 +64,7 @@ namespace Editor
             initLayers();
         };
 
-        Chicane::Application::getInstance().run(createInfo);
+        Chicane::Instance::sInstance().run(createInfo);
 
         s_instance = nullptr;
     }
@@ -69,13 +81,13 @@ namespace Editor
 
     void Application::activateHomeScene()
     {
-        Chicane::Application::getInstance().setScene(m_homeScene);
+        Chicane::Instance::sInstance().setScene(m_homeScene);
         possess(m_homeScene);
     }
 
     void Application::activateViewerScene()
     {
-        Chicane::Application::getInstance().setScene(m_viewerScene);
+        Chicane::Instance::sInstance().setScene(m_viewerScene);
         possess(m_viewerScene);
     }
 
@@ -83,7 +95,7 @@ namespace Editor
     {
         m_controller = std::make_unique<Chicane::Controller>();
 
-        Chicane::Application::getInstance().setController(m_controller.get());
+        Chicane::Instance::sInstance().setController(m_controller.get());
     }
 
     void Application::initScene()
@@ -99,15 +111,15 @@ namespace Editor
 
     void Application::initView()
     {
-        Chicane::Application::getInstance().setView<HomeView>();
+        Chicane::Instance::sInstance().setView<HomeView>();
     }
 
     void Application::initLayers()
     {
-        Chicane::Application::getInstance().getWindow()->watchBackend(
+        Chicane::Instance::sInstance().getWindow()->watchBackend(
             [](Chicane::WindowBackend inValue)
             {
-                Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+                Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
 
                 Chicane::ListPush<Chicane::Renderer::Layer*> grid;
                 grid.strategy  = Chicane::ListPushStrategy::After;
@@ -132,7 +144,7 @@ namespace Editor
 
     void Application::possess(const std::shared_ptr<Chicane::Scene>& inScene)
     {
-        Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
         if (!controller)
         {
             return;

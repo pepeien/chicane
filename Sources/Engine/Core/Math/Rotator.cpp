@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    static const QuatFloat CORRECTION = QuatFloat::fromEuler(Vec3(-90.0f, 0.0f, 0.0f));
+    static const QuatFloat CORRECTION = QuatFloat::sFromEuler(Vec3(-90.0f, 0.0f, 0.0f));
 
     Rotator::Rotator(float inAngle)
         : Rotator(inAngle, inAngle, inAngle)
@@ -26,10 +26,10 @@ namespace Chicane
 
     Rotator::Rotator()
         : m_orientation(QuatFloat(1, 0, 0, 0)),
-          angles(Vec3::Zero()),
-          right(Vec3::Right()),
-          forward(Vec3::Forward()),
-          up(Vec3::Up())
+          angles(Vec3::sZero()),
+          right(Vec3::sRight()),
+          forward(Vec3::sForward()),
+          up(Vec3::sUp())
     {}
 
     const QuatFloat& Rotator::get() const
@@ -122,7 +122,7 @@ namespace Chicane
     {
         const Vec3 direction = (inTarget - inOrigin).normalize();
 
-        m_orientation = (QuatFloat::lookAt(direction, Vec3::Up()) * CORRECTION).normalize();
+        m_orientation = (QuatFloat::sLookAt(direction, Vec3::sUp()) * CORRECTION).normalize();
 
         refresh();
     }
@@ -134,7 +134,7 @@ namespace Chicane
 
     void Rotator::setAngles(const Vec3& inAngles)
     {
-        m_orientation = QuatFloat::fromEuler(inAngles);
+        m_orientation = QuatFloat::sFromEuler(inAngles);
 
         refresh();
     }
@@ -158,8 +158,8 @@ namespace Chicane
     {
         angles = m_orientation.toEuler();
 
-        right   = m_orientation * Vec3::Right();
-        forward = m_orientation * Vec3::Forward();
-        up      = m_orientation * Vec3::Up();
+        right   = m_orientation * Vec3::sRight();
+        forward = m_orientation * Vec3::sForward();
+        up      = m_orientation * Vec3::sUp();
     }
 }

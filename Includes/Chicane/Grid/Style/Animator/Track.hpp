@@ -13,7 +13,7 @@ namespace Chicane
         {
         public:
             StylePropertyId id   = StylePropertyId::Count;
-            String          name = String::empty();
+            String          name = String::sEmpty();
         };
     }
 }

@@ -18,9 +18,9 @@ namespace Chicane
             using List = std::vector<Particle>;
 
         public:
-            Vec3  position   = Vec3::Zero();
-            Vec3  velocity   = Vec3::Zero();
-            Vec3  axis       = Vec3::Zero();
+            Vec3  position   = Vec3::sZero();
+            Vec3  velocity   = Vec3::sZero();
+            Vec3  axis       = Vec3::sZero();
             Vec2  size       = Vec2(1.0f);
             Vec2  sizeStart  = Vec2(1.0f);
             Vec2  sizeEnd    = Vec2(1.0f);

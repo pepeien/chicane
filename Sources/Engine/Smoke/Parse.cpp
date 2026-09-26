@@ -12,9 +12,9 @@ namespace Chicane
     {
         static std::mt19937& rng()
         {
-            static thread_local std::mt19937 instance(std::random_device{}());
+            static thread_local std::mt19937 result(std::random_device{}());
 
-            return instance;
+            return result;
         }
 
         float randomFloat(float inFrom, float inTo)

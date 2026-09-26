@@ -22,7 +22,7 @@ namespace Chicane
             using Builder = std::function<Primitive()>;
 
         public:
-            static inline SvgTessellation& getInstance()
+            static inline SvgTessellation& sInstance()
             {
                 static SvgTessellation result;
 

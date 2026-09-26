@@ -8,63 +8,63 @@ namespace Chicane
 {
     namespace Drift
     {
-        EasingCurve EasingCurve::linear()
+        EasingCurve EasingCurve::sLinear()
         {
             return EasingCurve(Easing::Linear);
         }
 
-        EasingCurve EasingCurve::ease()
+        EasingCurve EasingCurve::sEase()
         {
             return EasingCurve(EASE_X1, EASE_Y1, EASE_X2, EASE_Y2);
         }
 
-        EasingCurve EasingCurve::easeIn()
+        EasingCurve EasingCurve::sEaseIn()
         {
             return EasingCurve(EASE_IN_X1, EASE_IN_Y1, EASE_IN_X2, EASE_IN_Y2);
         }
 
-        EasingCurve EasingCurve::easeOut()
+        EasingCurve EasingCurve::sEaseOut()
         {
             return EasingCurve(EASE_OUT_X1, EASE_OUT_Y1, EASE_OUT_X2, EASE_OUT_Y2);
         }
 
-        EasingCurve EasingCurve::easeInOut()
+        EasingCurve EasingCurve::sEaseInOut()
         {
             return EasingCurve(EASE_IN_OUT_X1, EASE_IN_OUT_Y1, EASE_IN_OUT_X2, EASE_IN_OUT_Y2);
         }
 
-        EasingCurve EasingCurve::cubicBezier(float inX1, float inY1, float inX2, float inY2)
+        EasingCurve EasingCurve::sCubicBezier(float inX1, float inY1, float inX2, float inY2)
         {
             return EasingCurve(inX1, inY1, inX2, inY2);
         }
 
-        EasingCurve EasingCurve::fromString(const String& inValue)
+        EasingCurve EasingCurve::sFromString(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
             if (value.equals(TYPE_LINEAR))
             {
-                return linear();
+                return sLinear();
             }
 
             if (value.equals(TYPE_EASE))
             {
-                return ease();
+                return sEase();
             }
 
             if (value.equals(TYPE_EASE_IN))
             {
-                return easeIn();
+                return sEaseIn();
             }
 
             if (value.equals(TYPE_EASE_OUT))
             {
-                return easeOut();
+                return sEaseOut();
             }
 
             if (value.equals(TYPE_EASE_IN_OUT))
             {
-                return easeInOut();
+                return sEaseInOut();
             }
 
             if (value.startsWith(CUBIC_BEZIER_KEYWORD))
@@ -86,7 +86,7 @@ namespace Chicane
                         return static_cast<float>(std::strtod(token.toChar(), nullptr));
                     };
 
-                    return cubicBezier(
+                    return sCubicBezier(
                         number(parts.at(0)),
                         number(parts.at(1)),
                         number(parts.at(2)),
@@ -95,7 +95,7 @@ namespace Chicane
                 }
             }
 
-            return ease();
+            return sEase();
         }
 
         EasingCurve::EasingCurve()
@@ -119,19 +119,19 @@ namespace Chicane
                 break;
 
             case Easing::Ease:
-                *this = ease();
+                *this = sEase();
                 break;
 
             case Easing::EaseIn:
-                *this = easeIn();
+                *this = sEaseIn();
                 break;
 
             case Easing::EaseOut:
-                *this = easeOut();
+                *this = sEaseOut();
                 break;
 
             case Easing::EaseInOut:
-                *this = easeInOut();
+                *this = sEaseInOut();
                 break;
 
             default:

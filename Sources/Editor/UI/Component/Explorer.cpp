@@ -14,7 +14,7 @@
 #include <Chicane/Grid/Component/Scrollable.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Grid/Style/Display.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/UI/Component/Dock/Header.hpp"
 #include "Editor/UI/Component/Explorer/Item.hpp"
@@ -63,7 +63,7 @@ namespace Editor
           explorerFolder({}),
           gridItems({}),
           treeEntries({}),
-          searchQuery(Chicane::String::empty()),
+          searchQuery(Chicane::String::sEmpty()),
           isSearchEmpty(true),
           filterLabel("All Resources"),
           layout(LAYOUT_HORIZONTAL),
@@ -74,30 +74,30 @@ namespace Editor
           sortNameState(STATE_IDLE),
           iconSize(ICON_DEFAULT_SIZE),
           iconSizePercent(ICON_DEFAULT_SIZE_PERCENTAGE),
-          selectedFolderPath(Chicane::String::empty()),
-          selectedAssetName(Chicane::String::empty()),
-          orientation(Chicane::String::empty()),
+          selectedFolderPath(Chicane::String::sEmpty()),
+          selectedAssetName(Chicane::String::sEmpty()),
+          orientation(Chicane::String::sEmpty()),
           m_rootFolder({}),
           m_expandedPaths({}),
           m_listedPaths({}),
           m_filter(ExplorerFilter::All),
           m_iconSizeFactor(ICON_DEFAULT_SIZE_FACTOR),
-          m_pointer(Chicane::Vec2::Zero()),
+          m_pointer(Chicane::Vec2::sZero()),
           m_tiles({}),
           m_gridContent(nullptr),
-          m_gridLayout(Chicane::String::empty()),
+          m_gridLayout(Chicane::String::sEmpty()),
           m_gridIconEm(-1.0f),
           m_dragGhost(nullptr),
           m_dragSource(nullptr),
           m_dragItem({}),
-          m_dragOrigin(Chicane::Vec2::Zero()),
+          m_dragOrigin(Chicane::Vec2::sZero()),
           m_bDragArmed(false),
           m_bDragGhostVisible(false)
     {
         import <DockHeader>();
         import <ExplorerItem>();
 
-        load("Assets/Editor/UI/Components/Explorer.grid", "Assets/Editor/UI/Components/Explorer.decal");
+        load("Assets/Editor/UI/Components/Explorer/Index.grid", "Assets/Editor/UI/Components/Explorer/Index.decal");
 
         Chicane::XmlNode tile = m_tileDocument.appendChild(ExplorerItem::TAG_ID);
         tile.setAttribute("class", "--{{ layout }}");
@@ -144,7 +144,7 @@ namespace Editor
                     }
 
                     expandAncestors(tile->itemPath);
-                    m_expandedPaths.insert(toPathKey(explorerFolder.path).toStandard());
+                    m_expandedPaths.insert(sToPathKey(explorerFolder.path).toStandard());
                     onSelectFolder(tile->itemPath);
 
                     return true;
@@ -253,7 +253,7 @@ namespace Editor
             return;
         }
 
-        inPath = toPathKey(Chicane::FileSystem::Path(inPath));
+        inPath = sToPathKey(Chicane::FileSystem::Path(inPath));
 
         Chicane::FileSystem::Item* found = findFolder(m_rootFolder, inPath);
         if (!found)
@@ -264,8 +264,8 @@ namespace Editor
         ensureListed(*found);
 
         explorerFolder     = *found;
-        selectedFolderPath = toPathKey(found->path);
-        selectedAssetName  = Chicane::String::empty();
+        selectedFolderPath = sToPathKey(found->path);
+        selectedAssetName  = Chicane::String::sEmpty();
 
         const std::string key = inPath.toStandard();
         if (m_expandedPaths.erase(key) == 0)
@@ -356,7 +356,7 @@ namespace Editor
         m_dragSource        = nullptr;
         m_bDragArmed        = false;
         m_bDragGhostVisible = false;
-        m_dragOrigin        = Chicane::Vec2::Zero();
+        m_dragOrigin        = Chicane::Vec2::sZero();
     }
 
     void Explorer::ensureDragGhost()
@@ -404,12 +404,12 @@ namespace Editor
         m_dragItem          = {};
     }
 
-    bool Explorer::isListedFolder(const Chicane::FileSystem::Item& inItem)
+    bool Explorer::sIsListedFolder(const Chicane::FileSystem::Item& inItem)
     {
-        return inItem.type == Chicane::FileSystem::ItemType::Folder && isListedItem(inItem);
+        return inItem.type == Chicane::FileSystem::ItemType::Folder && sIsListedItem(inItem);
     }
 
-    bool Explorer::isListedItem(const Chicane::FileSystem::Item& inItem)
+    bool Explorer::sIsListedItem(const Chicane::FileSystem::Item& inItem)
     {
         if (inItem.name.isEmpty() || inItem.name.equals(".", ".."))
         {
@@ -419,16 +419,16 @@ namespace Editor
         return !inItem.name.startsWith('.');
     }
 
-    Chicane::String Explorer::toPathKey(const Chicane::FileSystem::Path& inPath)
+    Chicane::String Explorer::sToPathKey(const Chicane::FileSystem::Path& inPath)
     {
         return inPath.lexicallyNormal().toString();
     }
 
-    bool Explorer::hasChildFolders(const Chicane::FileSystem::Item& inItem)
+    bool Explorer::sHasChildFolders(const Chicane::FileSystem::Item& inItem)
     {
         for (const Chicane::FileSystem::Item& child : inItem.children)
         {
-            if (isListedFolder(child))
+            if (sIsListedFolder(child))
             {
                 return true;
             }
@@ -451,7 +451,7 @@ namespace Editor
 
         for (std::size_t i = 0; i < inItems.size(); i++)
         {
-            if (isListedFolder(inItems.at(i)))
+            if (sIsListedFolder(inItems.at(i)))
             {
                 folders.push_back(i);
             }
@@ -471,11 +471,11 @@ namespace Editor
 
             ExplorerTreeEntry entry;
             entry.name          = folder.name;
-            entry.path          = toPathKey(folder.path);
-            entry.indent        = Chicane::String::sprint("%fem", static_cast<float>(inDepth) * TREE_INDENT_EM);
+            entry.path          = sToPathKey(folder.path);
+            entry.indent        = Chicane::String::sSprint("%fem", static_cast<float>(inDepth) * TREE_INDENT_EM);
             entry.selectedState = entry.path.equals(selectedFolderPath) ? SELECTED : STATE_IDLE;
 
-            const bool bHasChildren = hasChildFolders(folder);
+            const bool bHasChildren = sHasChildFolders(folder);
             const bool bIsExpanded  = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
 
             if (!bHasChildren)
@@ -504,7 +504,7 @@ namespace Editor
 
         for (const Chicane::FileSystem::Item& child : explorerFolder.children)
         {
-            if (!isListedItem(child))
+            if (!sIsListedItem(child))
             {
                 continue;
             }
@@ -582,7 +582,7 @@ namespace Editor
     {
         m_iconSizeFactor = std::clamp(inFactor, 0.0f, 1.0f);
         iconSizePercent  = m_iconSizeFactor * 100.0f;
-        iconSize         = Chicane::String::sprint(
+        iconSize         = Chicane::String::sSprint(
             "%.2fem",
             ICON_SIZE_MIN_EM + m_iconSizeFactor * (ICON_SIZE_MAX_EM - ICON_SIZE_MIN_EM)
         );
@@ -665,13 +665,13 @@ namespace Editor
 
     bool Explorer::isOverViewport(const Chicane::Vec2& inLocation) const
     {
-        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        const Chicane::Bounds2D viewport = Chicane::Instance::sInstance().getScreenViewportRect();
         if (viewport.isEmpty() || !viewport.contains(inLocation))
         {
             return false;
         }
 
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
         if (!view)
         {
             return true;
@@ -763,7 +763,7 @@ namespace Editor
         if (scrollable)
         {
             scrollable->setVirtualContentSize(Chicane::Vec2(std::max(contentSize.x, view.x), contentSize.y));
-            scrollable->setScroll(bHasLayoutChanged ? Chicane::Vec2::Zero() : scrollable->getScroll());
+            scrollable->setScroll(bHasLayoutChanged ? Chicane::Vec2::sZero() : scrollable->getScroll());
         }
 
         const float scrollY  = scrollable ? scrollable->getScroll().y : 0.0f;
@@ -845,7 +845,7 @@ namespace Editor
             return;
         }
 
-        const std::string key = toPathKey(inFolder.path).toStandard();
+        const std::string key = sToPathKey(inFolder.path).toStandard();
         if (m_listedPaths.find(key) != m_listedPaths.end())
         {
             return;
@@ -866,7 +866,7 @@ namespace Editor
         bool bDidApply = false;
         for (Chicane::FileSystem::Listing& listing : ready)
         {
-            const Chicane::String      key    = toPathKey(listing.path);
+            const Chicane::String      key    = sToPathKey(listing.path);
             Chicane::FileSystem::Item* folder = findFolder(m_rootFolder, key);
             if (!folder)
             {
@@ -883,7 +883,7 @@ namespace Editor
             return;
         }
 
-        if (Chicane::FileSystem::Item* displayed = findFolder(m_rootFolder, toPathKey(explorerFolder.path)))
+        if (Chicane::FileSystem::Item* displayed = findFolder(m_rootFolder, sToPathKey(explorerFolder.path)))
         {
             explorerFolder = *displayed;
         }
@@ -900,7 +900,7 @@ namespace Editor
         const Chicane::FileSystem::Item& inRoot, const Chicane::String& inPath
     ) const
     {
-        if (toPathKey(inRoot.path).equals(inPath))
+        if (sToPathKey(inRoot.path).equals(inPath))
         {
             return &inRoot;
         }
@@ -936,7 +936,7 @@ namespace Editor
 
     bool Explorer::expandAncestorsFrom(const Chicane::FileSystem::Item& inItem, const Chicane::String& inPath)
     {
-        if (toPathKey(inItem.path).equals(inPath))
+        if (sToPathKey(inItem.path).equals(inPath))
         {
             return true;
         }
@@ -948,7 +948,7 @@ namespace Editor
                 continue;
             }
 
-            m_expandedPaths.insert(toPathKey(inItem.path).toStandard());
+            m_expandedPaths.insert(sToPathKey(inItem.path).toStandard());
 
             return true;
         }

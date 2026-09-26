@@ -13,8 +13,8 @@ namespace Chicane
             struct CHICANE_RENDERER Viewport
             {
             public:
-                Vec2 size     = Vec2::Zero();
-                Vec2 position = Vec2::Zero();
+                Vec2 size     = Vec2::sZero();
+                Vec2 position = Vec2::sZero();
                 Vec2 depth    = Vec2(0.0f, 1.0f);
             };
         }

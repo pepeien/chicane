@@ -23,7 +23,7 @@ namespace Chicane
               transform(1.0f)
         {}
 
-        SvgLineCap SvgPaint::parseLineCap(const String& inValue)
+        SvgLineCap SvgPaint::sParseLineCap(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -40,7 +40,7 @@ namespace Chicane
             return SvgLineCap::Butt;
         }
 
-        SvgLineJoin SvgPaint::parseLineJoin(const String& inValue)
+        SvgLineJoin SvgPaint::sParseLineJoin(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 

@@ -44,8 +44,9 @@ namespace Chicane
                 vertex.normal.y = inMesh->normals[index.n * 3 + 1];
                 vertex.normal.z = inMesh->normals[index.n * 3 + 2];
 
+                // OBJ/Blender: V=0 at bottom. Engine/Vulkan samples V=0 at top of the image.
                 vertex.uv.x = inMesh->texcoords[index.t * 2 + 0];
-                vertex.uv.y = inMesh->texcoords[index.t * 2 + 1];
+                vertex.uv.y = 1.0f - inMesh->texcoords[index.t * 2 + 1];
 
                 std::uint32_t currentIndex = static_cast<std::uint32_t>(outResult.vertices.size());
 

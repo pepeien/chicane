@@ -19,7 +19,7 @@ namespace Chicane
             using List = std::vector<DrawTexture>;
 
         public:
-            static const DrawTexture& empty()
+            static const DrawTexture& sEmpty()
             {
                 static const DrawTexture result;
 
@@ -57,7 +57,7 @@ namespace Chicane
                     return mips->streamTailMinMip(TEXTURE_STREAM_TAIL);
                 }
 
-                return Image::streamTailMinMip(width, height, TEXTURE_STREAM_TAIL);
+                return Image::sStreamTailMinMip(width, height, TEXTURE_STREAM_TAIL);
             }
 
             Image::Instance getSampleImage() const
@@ -88,10 +88,10 @@ namespace Chicane
 
             std::size_t getResidentBytes() const
             {
-                const std::uint32_t mipWidth  = Image::mipDimension(width, residentMinMip);
-                const std::uint32_t mipHeight = Image::mipDimension(height, residentMinMip);
+                const std::uint32_t mipWidth  = Image::sMipDimension(width, residentMinMip);
+                const std::uint32_t mipHeight = Image::sMipDimension(height, residentMinMip);
 
-                return Image::mipChainBytes(mipWidth, mipHeight);
+                return Image::sMipChainBytes(mipWidth, mipHeight);
             }
         };
     }

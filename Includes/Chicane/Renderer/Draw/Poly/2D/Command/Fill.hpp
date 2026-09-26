@@ -32,8 +32,8 @@ namespace Chicane
             // Glyph
             Draw::Reference                          glyph        = Draw::InvalidReference;
             std::shared_ptr<const std::vector<Vec2>> glyphOutline = nullptr;
-            Vec2                                     glyphMin     = Vec2::Zero();
-            Vec2                                     glyphMax     = Vec2::Zero();
+            Vec2                                     glyphMin     = Vec2::sZero();
+            Vec2                                     glyphMax     = Vec2::sZero();
 
             // Instance
             DrawPoly2DInstance                       instance = {};

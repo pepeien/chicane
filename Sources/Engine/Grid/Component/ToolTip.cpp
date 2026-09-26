@@ -13,8 +13,8 @@ namespace Chicane
     {
         ToolTip::ToolTip(const XmlNode& inNode)
             : Container(inNode),
-              anchorId(String::empty()),
-              title(String::empty()),
+              anchorId(String::sEmpty()),
+              title(String::sEmpty()),
               hasTitle(false),
               hasContent(false),
               isVisible(false),
@@ -32,7 +32,7 @@ namespace Chicane
 
             panelState = hasContent ? "panel" : "hint";
 
-            load("Assets/Engine/UI/Components/ToolTip.grid", "Assets/Engine/UI/Components/ToolTip.decal");
+            load("Assets/Engine/UI/Components/ToolTip/Index.grid", "Assets/Engine/UI/Components/ToolTip/Index.decal");
 
             watchAttribute(
                 ANCHOR_ID_ATTRIBUTE_NAME,

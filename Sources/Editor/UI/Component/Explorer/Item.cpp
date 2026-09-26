@@ -10,7 +10,7 @@
 #include <Chicane/Core/Window/Event/Type.hpp>
 #include <Chicane/Grid/Style.hpp>
 #include <Chicane/Renderer/Draw.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/UI/Component/Explorer.hpp"
 
@@ -23,17 +23,20 @@ namespace Editor
           dragClass("static"),
           ghostClass("solid"),
           selectionState("idle"),
-          itemName(Chicane::String::empty()),
-          itemPath(Chicane::String::empty()),
+          itemName(Chicane::String::sEmpty()),
+          itemPath(Chicane::String::sEmpty()),
           m_item(nullptr),
           m_boundIndex(-1),
-          m_slot(Chicane::Vec2::Zero()),
-          m_pointer(Chicane::Vec2::Zero()),
-          m_grab(Chicane::Vec2::Zero()),
-          m_ghostSize(Chicane::Vec2::Zero()),
+          m_slot(Chicane::Vec2::sZero()),
+          m_pointer(Chicane::Vec2::sZero()),
+          m_grab(Chicane::Vec2::sZero()),
+          m_ghostSize(Chicane::Vec2::sZero()),
           m_bIsGhost(false)
     {
-        load("Assets/Editor/UI/Components/Explorer/Item.grid", "Assets/Editor/UI/Components/Explorer/Item.decal");
+        load(
+            "Assets/Editor/UI/Components/Explorer/Item/Index.grid",
+            "Assets/Editor/UI/Components/Explorer/Item/Index.decal"
+        );
     }
 
     bool ExplorerItem::onEvent(const Chicane::WindowEvent& inEvent)
@@ -91,7 +94,7 @@ namespace Editor
             return;
         }
 
-        const Chicane::String nextPath = inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::empty();
+        const Chicane::String nextPath = inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::sEmpty();
 
         if (!inShouldRestyle && itemPath.equals(nextPath) && m_boundIndex == inIndex && m_slot.x == inSlot.x &&
             m_slot.y == inSlot.y)
@@ -106,7 +109,7 @@ namespace Editor
         m_boundIndex = inIndex;
         m_slot       = inSlot;
         ghostClass   = "solid";
-        itemName     = inItem ? inItem->name : Chicane::String::empty();
+        itemName     = inItem ? inItem->name : Chicane::String::sEmpty();
         itemPath     = nextPath;
         kind         = (inItem && inItem->type == Chicane::FileSystem::ItemType::Folder) ? ExplorerItemKind::Folder
                                                                                          : ExplorerItemKind::File;
@@ -137,9 +140,9 @@ namespace Editor
 
         m_item       = nullptr;
         m_boundIndex = -1;
-        m_slot       = Chicane::Vec2::Zero();
-        itemName     = Chicane::String::empty();
-        itemPath     = Chicane::String::empty();
+        m_slot       = Chicane::Vec2::sZero();
+        itemName     = Chicane::String::sEmpty();
+        itemPath     = Chicane::String::sEmpty();
         kind         = ExplorerItemKind::File;
         m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
 
@@ -172,7 +175,7 @@ namespace Editor
         m_bIsGhost   = true;
         m_item       = &ioStorage;
         m_boundIndex = -2;
-        m_slot       = Chicane::Vec2::Zero();
+        m_slot       = Chicane::Vec2::sZero();
         m_pointer    = inPointer;
         m_grab       = inPointer - inSource.getPosition();
         m_ghostSize  = inSource.getSize();
@@ -208,8 +211,8 @@ namespace Editor
         m_bIsGhost   = false;
         m_item       = nullptr;
         m_boundIndex = -1;
-        m_grab       = Chicane::Vec2::Zero();
-        m_ghostSize  = Chicane::Vec2::Zero();
+        m_grab       = Chicane::Vec2::sZero();
+        m_ghostSize  = Chicane::Vec2::sZero();
         ghostClass   = Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN;
 
         applyGhostHidden();
@@ -403,7 +406,7 @@ namespace Editor
 
                 if (const Chicane::Box::AssetPreview* preview = Chicane::Box::findPreview(filePath))
                 {
-                    Chicane::Application& application = Chicane::Application::getInstance();
+                    Chicane::Instance& application = Chicane::Instance::sInstance();
                     if (application.hasRenderer() && application.getRenderer()->findTexture(preview->textureId()) >
                                                          Chicane::Renderer::Draw::InvalidId)
                     {

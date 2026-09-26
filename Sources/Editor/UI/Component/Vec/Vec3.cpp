@@ -40,9 +40,9 @@ namespace Editor
 
     Vec3::Vec3(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          value(Chicane::Vec3::Zero())
+          value(Chicane::Vec3::sZero())
     {
-        load("Assets/Editor/UI/Components/Vec/Vec3.grid", "Assets/Editor/UI/Components/Vec/Vec3.decal");
+        load("Assets/Editor/UI/Components/Vec/Vec3/Index.grid", "Assets/Editor/UI/Components/Vec/Vec3/Index.decal");
     }
 
     void Vec3::onTick(float inDeltaTime)

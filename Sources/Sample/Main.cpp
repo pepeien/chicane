@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
     try
     {
-        Application();
+        Application(argc, argv);
     }
     catch (const std::exception& e)
     {

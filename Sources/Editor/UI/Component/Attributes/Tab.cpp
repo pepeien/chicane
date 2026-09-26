@@ -5,9 +5,12 @@ namespace Editor
     AttributesTab::AttributesTab(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Component(inNode),
           contentVisibility("hidden"),
-          label(Chicane::String::empty())
+          label(Chicane::String::sEmpty())
     {
-        load("Assets/Editor/UI/Components/Attributes/Tab.grid", "Assets/Editor/UI/Components/Attributes/Tab.decal");
+        load(
+            "Assets/Editor/UI/Components/Attributes/Tab/Index.grid",
+            "Assets/Editor/UI/Components/Attributes/Tab/Index.decal"
+        );
     }
 
     void AttributesTab::onTick(float inDeltaTime)

@@ -108,6 +108,7 @@ namespace Editor
 
     private:
         void bindScene();
+        void bindScriptEvents();
         void requestOutlinerRebuild();
         void requestAttributesRebuild();
         void flushPendingRebuilds();

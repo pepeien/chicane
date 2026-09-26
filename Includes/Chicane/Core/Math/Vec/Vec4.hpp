@@ -13,17 +13,17 @@ namespace Chicane
     struct CHICANE_CORE Vec4
     {
     public:
-        inline static constexpr Vec4 Zero() { return Vec4(0.0f); }
+        inline static constexpr Vec4 sZero() { return Vec4(0.0f); }
 
-        inline static constexpr Vec4 One() { return Vec4(1.0f); }
+        inline static constexpr Vec4 sOne() { return Vec4(1.0f); }
 
-        inline static constexpr Vec4 Right() { return Vec4(Vec3::Right(), 0.0f); }
+        inline static constexpr Vec4 sRight() { return Vec4(Vec3::sRight(), 0.0f); }
 
-        inline static constexpr Vec4 Forward() { return Vec4(Vec3::Forward(), 0.0f); }
+        inline static constexpr Vec4 sForward() { return Vec4(Vec3::sForward(), 0.0f); }
 
-        inline static constexpr Vec4 Up() { return Vec4(Vec3::Up(), 0.0f); }
+        inline static constexpr Vec4 sUp() { return Vec4(Vec3::sUp(), 0.0f); }
 
-        inline static constexpr Vec4 Sentinel() { return Vec4(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f); }
+        inline static constexpr Vec4 sSentinel() { return Vec4(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f); }
 
     public:
         constexpr Vec4(const Vec2& inValue)

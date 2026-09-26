@@ -27,10 +27,10 @@ namespace Chicane
         }
 
     public:
-        Vec3 position = Vec3::Zero();
-        Vec4 color    = Vec4::Zero();
-        Vec2 uv       = Vec2::Zero();
-        Vec3 normal   = Vec3::Zero();
-        Vec4 tangent  = Vec4::Zero();
+        Vec3 position = Vec3::sZero();
+        Vec4 color    = Vec4::sZero();
+        Vec2 uv       = Vec2::sZero();
+        Vec3 normal   = Vec3::sZero();
+        Vec4 tangent  = Vec4::sZero();
     };
 }

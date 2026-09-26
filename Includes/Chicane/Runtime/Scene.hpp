@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <functional>
+#include <memory>
 #include <mutex>
 #include <typeindex>
 #include <unordered_map>
@@ -9,6 +11,7 @@
 #include <vector>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Script/Bus.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -21,6 +24,8 @@
 
 namespace Chicane
 {
+    class SceneScript;
+
     class CHICANE_RUNTIME Scene
     {
         friend Object;
@@ -48,6 +53,13 @@ namespace Chicane
         void unload();
 
         void tick(float inDeltaTime);
+
+        std::uint64_t subscribe(const String& inName, std::function<void(const String&)> inCallback);
+        void unsubscribe(std::uint64_t inToken);
+        void send(const String& inName, const String& inData = {});
+        void receive(const String& inName, const String& inData);
+        void pumpEvents();
+        void loadSceneScript(const FileSystem::Path& inTrack);
 
         void open(const FileSystem::Path& inFilepath);
         void save(const FileSystem::Path& inFilepath) const;
@@ -433,5 +445,8 @@ namespace Chicane
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
 
         std::recursive_mutex                                         m_objectMutex;
+
+        Script::Bus                                                  m_bus;
+        std::unique_ptr<SceneScript>                                 m_sceneScript;
     };
 }

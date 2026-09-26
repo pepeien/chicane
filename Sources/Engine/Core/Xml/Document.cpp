@@ -102,7 +102,7 @@ namespace Chicane
         return XmlNode(asHandle(m_impl->document.append_copy(asPugi(inNode.handle()))));
     }
 
-    XmlDocument XmlDocument::load(const FileSystem::Path& inFilepath)
+    XmlDocument XmlDocument::sLoad(const FileSystem::Path& inFilepath)
     {
         if (inFilepath.isEmpty())
         {

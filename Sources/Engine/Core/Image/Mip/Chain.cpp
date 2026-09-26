@@ -142,14 +142,14 @@ namespace Chicane
 
     std::uint32_t ImageMipChain::streamTailMinMip(std::uint32_t inTail) const
     {
-        return Image::streamTailMinMip(getWidth(), getHeight(), inTail);
+        return Image::sStreamTailMinMip(getWidth(), getHeight(), inTail);
     }
 
     std::size_t ImageMipChain::residentBytes(std::uint32_t inMinMip) const
     {
-        return Image::mipChainBytes(
-            Image::mipDimension(getWidth(), inMinMip),
-            Image::mipDimension(getHeight(), inMinMip)
+        return Image::sMipChainBytes(
+            Image::sMipDimension(getWidth(), inMinMip),
+            Image::sMipDimension(getHeight(), inMinMip)
         );
     }
 
@@ -214,9 +214,9 @@ namespace Chicane
         }
     }
 
-    ImageMipChain Image::makeMipChain(const Image& inSource, std::uint32_t inMaxSize, bool inIsNormal)
+    ImageMipChain Image::sMakeMipChain(const Image& inSource, std::uint32_t inMaxSize, bool inIsNormal)
     {
-        return makeMipChain(
+        return sMakeMipChain(
             inSource.getPixels(),
             inSource.getWidth(),
             inSource.getHeight(),
@@ -226,7 +226,7 @@ namespace Chicane
         );
     }
 
-    ImageMipChain Image::makeMipChain(
+    ImageMipChain Image::sMakeMipChain(
         const Pixel* inPixels, int inWidth, int inHeight, int inChannel, std::uint32_t inMaxSize, bool inIsNormal
     )
     {
@@ -239,8 +239,8 @@ namespace Chicane
         }
 
         const std::uint32_t maxSize = std::max(1u, inMaxSize);
-        const int width  = static_cast<int>(std::min(maxSize, floorPowerOfTwo(static_cast<std::uint32_t>(inWidth))));
-        const int height = static_cast<int>(std::min(maxSize, floorPowerOfTwo(static_cast<std::uint32_t>(inHeight))));
+        const int width  = static_cast<int>(std::min(maxSize, sFloorPowerOfTwo(static_cast<std::uint32_t>(inWidth))));
+        const int height = static_cast<int>(std::min(maxSize, sFloorPowerOfTwo(static_cast<std::uint32_t>(inHeight))));
 
         Instance current;
         if (width == inWidth && height == inHeight && inChannel == 4 && !inIsNormal)
@@ -263,14 +263,14 @@ namespace Chicane
             return chain;
         }
 
-        const std::uint32_t count = mipCount(static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height));
+        const std::uint32_t count = sMipCount(static_cast<std::uint32_t>(width), static_cast<std::uint32_t>(height));
         chain.levels.resize(count);
 
         for (std::uint32_t level = 0; level < count; level++)
         {
             ImageMip& mip = chain.levels[level];
-            mip.width     = static_cast<int>(mipDimension(static_cast<std::uint32_t>(width), level));
-            mip.height    = static_cast<int>(mipDimension(static_cast<std::uint32_t>(height), level));
+            mip.width     = static_cast<int>(sMipDimension(static_cast<std::uint32_t>(width), level));
+            mip.height    = static_cast<int>(sMipDimension(static_cast<std::uint32_t>(height), level));
 
             if (level > 0)
             {

@@ -521,7 +521,7 @@ namespace Chicane
 
         void VulkanBackend::updateResourceBudget()
         {
-            setVRAM(VulkanAllocator::queryDedicatedHeapSize(physicalDevice));
+            setVRAM(VulkanAllocator::sQueryDedicatedHeapSize(physicalDevice));
         }
 
         void VulkanBackend::destroyDevices()

@@ -315,7 +315,7 @@ namespace Chicane
             std::uint32_t index = 1;
             while (true)
             {
-                const String candidate = String::sprint("%s_%u", name.toChar(), index);
+                const String candidate = String::sSprint("%s_%u", name.toChar(), index);
                 if (outUsed.insert(candidate).second)
                 {
                     return candidate;

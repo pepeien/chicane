@@ -5,9 +5,9 @@
 namespace Editor
 {
     HeaderMenuItem::HeaderMenuItem()
-        : label(Chicane::String::empty()),
-          shortcut(Chicane::String::empty()),
-          action(Chicane::String::empty()),
+        : label(Chicane::String::sEmpty()),
+          shortcut(Chicane::String::sEmpty()),
+          action(Chicane::String::sEmpty()),
           isChecked(false),
           children({})
     {}

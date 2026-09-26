@@ -30,10 +30,10 @@ namespace Editor
         static constexpr inline const char* ON_ASSET_DROP_ATTRIBUTE = "onAssetDrop";
 
     private:
-        static bool isListedFolder(const Chicane::FileSystem::Item& inItem);
-        static bool isListedItem(const Chicane::FileSystem::Item& inItem);
-        static Chicane::String toPathKey(const Chicane::FileSystem::Path& inPath);
-        static bool hasChildFolders(const Chicane::FileSystem::Item& inItem);
+        static bool sIsListedFolder(const Chicane::FileSystem::Item& inItem);
+        static bool sIsListedItem(const Chicane::FileSystem::Item& inItem);
+        static Chicane::String sToPathKey(const Chicane::FileSystem::Path& inPath);
+        static bool sHasChildFolders(const Chicane::FileSystem::Item& inItem);
 
     public:
         CH_CONSTRUCTOR()

@@ -19,7 +19,7 @@ namespace Editor
     {
         import <DockHeader>();
 
-        load("Assets/Editor/UI/Components/Outliner.grid", "Assets/Editor/UI/Components/Outliner.decal");
+        load("Assets/Editor/UI/Components/Outliner/Index.grid", "Assets/Editor/UI/Components/Outliner/Index.decal");
 
         Prop::bind(this, NODES_ATTRIBUTE, outlinerNodes);
     }

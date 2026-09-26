@@ -24,7 +24,7 @@ namespace Chicane
             }
         }
 
-        const Material* Material::getDefault()
+        const Material* Material::sGetDefault()
         {
             return Box::load<Material>(DEFAULT_SOURCE);
         }

@@ -78,14 +78,16 @@ namespace Chicane
                 m_logicalDevice.destroySampler(sampler);
                 sampler = nullptr;
             }
+
             if (view)
             {
                 m_logicalDevice.destroyImageView(view);
                 view = nullptr;
             }
+
             if (m_allocator)
             {
-                m_allocator->destroyImage(*this);
+                VulkanAllocator::sDestroyImage(*this);
             }
         }
 

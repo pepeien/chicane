@@ -78,7 +78,7 @@ namespace Chicane
             {
                 groupNode.setAttribute(
                     MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME,
-                    String::sprint("%g", inGroup.getEmissiveStrength())
+                    String::sSprint("%g", inGroup.getEmissiveStrength())
                 );
             }
 
@@ -86,7 +86,7 @@ namespace Chicane
             {
                 groupNode.setAttribute(
                     MeshGroup::TILE_SIZE_ATTRIBUTE_NAME,
-                    String::sprint("%g", inGroup.getTileSize())
+                    String::sSprint("%g", inGroup.getTileSize())
                 );
             }
 
@@ -150,7 +150,7 @@ namespace Chicane
             {
                 foundGroupNode.setAttribute(
                     MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME,
-                    String::sprint("%g", inGroup.getEmissiveStrength())
+                    String::sSprint("%g", inGroup.getEmissiveStrength())
                 );
             }
 
@@ -162,7 +162,7 @@ namespace Chicane
             {
                 foundGroupNode.setAttribute(
                     MeshGroup::TILE_SIZE_ATTRIBUTE_NAME,
-                    String::sprint("%g", inGroup.getTileSize())
+                    String::sSprint("%g", inGroup.getTileSize())
                 );
             }
 

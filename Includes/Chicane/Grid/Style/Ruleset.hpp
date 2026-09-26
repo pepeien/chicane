@@ -21,7 +21,7 @@ namespace Chicane
             using List       = std::vector<StyleRuleset>;
 
         public:
-            static String normalizeData(const String& inValue);
+            static String sNormalizeData(const String& inValue);
 
         public:
             StyleRuleset();

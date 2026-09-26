@@ -4,7 +4,7 @@ namespace Editor
 {
     OutlinerNode::OutlinerNode()
         : item(nullptr),
-          label(Chicane::String::empty()),
+          label(Chicane::String::sEmpty()),
           icon("Person"),
           indent("0em"),
           expandState("leaf"),

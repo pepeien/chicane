@@ -13,7 +13,7 @@
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Renderer/Feature.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
@@ -131,10 +131,10 @@ namespace Editor
 
     static float angleOnPlane(const Chicane::Vec3& inPoint, const Chicane::Vec3& inOrigin, const Chicane::Vec3& inAxis)
     {
-        Chicane::Vec3 tangent = inAxis.cross(Chicane::Vec3::Up());
+        Chicane::Vec3 tangent = inAxis.cross(Chicane::Vec3::sUp());
         if (tangent.dot(tangent) < 0.0001f)
         {
-            tangent = inAxis.cross(Chicane::Vec3::Right());
+            tangent = inAxis.cross(Chicane::Vec3::sRight());
         }
 
         tangent                       = tangent.normalize();
@@ -182,11 +182,11 @@ namespace Editor
           m_dragAxis(GizmoAxis::None),
           m_dragStartT(0.0f),
           m_dragStartAngle(0.0f),
-          m_dragOrigin(Chicane::Vec3::Zero()),
-          m_dragAxisDir(Chicane::Vec3::Right()),
-          m_dragStartHit(Chicane::Vec3::Zero()),
-          m_dragStartTranslation(Chicane::Vec3::Zero()),
-          m_dragStartScale(Chicane::Vec3::One()),
+          m_dragOrigin(Chicane::Vec3::sZero()),
+          m_dragAxisDir(Chicane::Vec3::sRight()),
+          m_dragStartHit(Chicane::Vec3::sZero()),
+          m_dragStartTranslation(Chicane::Vec3::sZero()),
+          m_dragStartScale(Chicane::Vec3::sOne()),
           m_dragStartRotation({}),
           m_bIsListening(nullptr),
           m_windowSubscription({})
@@ -271,7 +271,7 @@ namespace Editor
         float         best     = (m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS) * scale;
         float         startT   = 0.0f;
         float         startAng = 0.0f;
-        Chicane::Vec3 hitAxis  = Chicane::Vec3::Right();
+        Chicane::Vec3 hitAxis  = Chicane::Vec3::sRight();
         Chicane::Vec3 startHit = origin;
 
         if (m_type == GizmoType::Translation)
@@ -280,7 +280,7 @@ namespace Editor
             if (camera)
             {
                 const Chicane::Vec3 view  = camera->getForward().normalize();
-                Chicane::Vec3       point = Chicane::Vec3::Zero();
+                Chicane::Vec3       point = Chicane::Vec3::sZero();
                 if (intersectPlane(inOrigin, inDirection, origin, view, point))
                 {
                     const float dist = length(point - origin) / scale;
@@ -313,7 +313,7 @@ namespace Editor
 
             for (const PlaneHandle& plane : planes)
             {
-                Chicane::Vec3 point = Chicane::Vec3::Zero();
+                Chicane::Vec3 point = Chicane::Vec3::sZero();
                 if (!intersectPlane(inOrigin, inDirection, origin, plane.n, point))
                 {
                     continue;
@@ -363,7 +363,7 @@ namespace Editor
                 hit     = GizmoAxis::Center;
                 best    = distance;
                 startT  = std::max(distance, MIN_SCALE);
-                hitAxis = Chicane::Vec3::One();
+                hitAxis = Chicane::Vec3::sOne();
             }
         }
 
@@ -373,7 +373,7 @@ namespace Editor
 
             if (m_type == GizmoType::Rotation)
             {
-                Chicane::Vec3 point = Chicane::Vec3::Zero();
+                Chicane::Vec3 point = Chicane::Vec3::sZero();
                 if (!intersectPlane(inOrigin, inDirection, origin, direction, point))
                 {
                     continue;
@@ -450,7 +450,7 @@ namespace Editor
 
         if (m_type == GizmoType::Rotation)
         {
-            Chicane::Vec3 point = Chicane::Vec3::Zero();
+            Chicane::Vec3 point = Chicane::Vec3::sZero();
             if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
@@ -477,7 +477,7 @@ namespace Editor
                 return;
             }
 
-            Chicane::Vec3 point = Chicane::Vec3::Zero();
+            Chicane::Vec3 point = Chicane::Vec3::sZero();
             if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
@@ -491,7 +491,7 @@ namespace Editor
 
         if (isPlaneAxis(m_dragAxis))
         {
-            Chicane::Vec3 point = Chicane::Vec3::Zero();
+            Chicane::Vec3 point = Chicane::Vec3::sZero();
             if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
@@ -724,12 +724,12 @@ namespace Editor
             return;
         }
 
-        const Chicane::QuatFloat delta = Chicane::QuatFloat::fromAxis(m_dragAxisDir, inDelta);
+        const Chicane::QuatFloat delta = Chicane::QuatFloat::sFromAxis(m_dragAxisDir, inDelta);
         if (isRelativeSpace())
         {
             m_target->setRelativeRotation(m_dragStartRotation);
             const Chicane::Vec3 localAxis = inverseQuat(m_target->getRotation().get()) * m_dragAxisDir;
-            m_target->addRelativeRotation(Chicane::QuatFloat::fromAxis(localAxis, inDelta));
+            m_target->addRelativeRotation(Chicane::QuatFloat::sFromAxis(localAxis, inDelta));
 
             return;
         }
@@ -757,7 +757,7 @@ namespace Editor
 
     CoordinateSpace Gizmo::coordinateSpace() const
     {
-        if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
+        if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
         {
             return home->getCoordinateSpace();
         }
@@ -854,7 +854,7 @@ namespace Editor
     {
         unbindWindow();
 
-        Chicane::Window* window = Chicane::Application::getInstance().getWindow();
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
         if (!window)
         {
             return;
@@ -888,7 +888,7 @@ namespace Editor
 
     void Gizmo::onWindowEvent(const Chicane::WindowEvent& inEvent)
     {
-        if (getScene() != Chicane::Application::getInstance().getScene().get())
+        if (getScene() != Chicane::Instance::sInstance().getScene().get())
         {
             if (isDragging())
             {
@@ -898,7 +898,7 @@ namespace Editor
             return;
         }
 
-        Chicane::Window* window = Chicane::Application::getInstance().getWindow();
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
         if (!window || window->isFocused() || window->isTextInputActive())
         {
             if (isDragging())
@@ -989,7 +989,7 @@ namespace Editor
                     endDrag();
                 }
 
-                if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
+                if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
                 {
                     home->onItemDelete();
                 }
@@ -1011,7 +1011,7 @@ namespace Editor
 
     bool Gizmo::makeRay(const Chicane::Vec2& inLocation, Chicane::Vec3& outOrigin, Chicane::Vec3& outDirection) const
     {
-        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        const Chicane::Bounds2D viewport = Chicane::Instance::sInstance().getScreenViewportRect();
         if (viewport.isEmpty())
         {
             return false;
@@ -1036,7 +1036,7 @@ namespace Editor
         const Chicane::View& data   = camera->getData();
         Chicane::Vec3        nearPoint;
         Chicane::Vec3        farPoint;
-        if (!Chicane::Mat4::fromPosition(local, data.view, data.projection, size, nearPoint, farPoint))
+        if (!Chicane::Mat4::sFromPosition(local, data.view, data.projection, size, nearPoint, farPoint))
         {
             return false;
         }
@@ -1056,13 +1056,13 @@ namespace Editor
 
     bool Gizmo::isOverViewport(const Chicane::Vec2& inLocation) const
     {
-        const Chicane::Bounds2D viewport = Chicane::Application::getInstance().getScreenViewportRect();
+        const Chicane::Bounds2D viewport = Chicane::Instance::sInstance().getScreenViewportRect();
         if (viewport.isEmpty() || !viewport.contains(inLocation))
         {
             return false;
         }
 
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
         if (!view)
         {
             return true;
@@ -1116,14 +1116,14 @@ namespace Editor
         }
 
         const Chicane::Vec3        destination = origin + direction * 1000.0f;
-        Chicane::SceneTraceRequest request     = Chicane::SceneTraceRequest::Line(origin, destination);
+        Chicane::SceneTraceRequest request     = Chicane::SceneTraceRequest::sLine(origin, destination);
         Chicane::Object*           target      = nullptr;
         float                      best        = 1.0e9f;
 
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
         if (renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces))
         {
-            Chicane::Application::getInstance().pushTrace(request, ViewportOverlay::getInstance().tracerColor);
+            Chicane::Instance::sInstance().pushTrace(request, ViewportOverlay::sInstance().tracerColor);
         }
 
         for (Chicane::Actor* actor : scene->getActors())
@@ -1143,7 +1143,7 @@ namespace Editor
             target = actor;
         }
 
-        if (std::shared_ptr<HomeView> home = Chicane::Application::getInstance().getView<HomeView>())
+        if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
         {
             home->onItemSelection(target);
 

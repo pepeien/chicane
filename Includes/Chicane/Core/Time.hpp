@@ -13,17 +13,17 @@ namespace Chicane
         using Point = std::chrono::time_point<Clock>;
 
     public:
-        static inline Time Zero() { return Time(Clock::duration::zero()); }
+        static inline Time sZero() { return Time(Clock::duration::zero()); }
 
-        static float miliseconds(Clock::duration inDuration);
-        static float seconds(Clock::duration inTime);
-        static float minutes(Clock::duration inTime);
-        static float hours(Clock::duration inTime);
+        static float sMiliseconds(Clock::duration inDuration);
+        static float sSeconds(Clock::duration inTime);
+        static float sMinutes(Clock::duration inTime);
+        static float sHours(Clock::duration inTime);
 
-        static Time fromMilliseconds(float inValue);
-        static Time fromSeconds(float inValue);
-        static Time fromMinutes(float inValue);
-        static Time fromHours(float inValue);
+        static Time sFromMilliseconds(float inValue);
+        static Time sFromSeconds(float inValue);
+        static Time sFromMinutes(float inValue);
+        static Time sFromHours(float inValue);
 
     public:
         Time(const Clock::duration& inDuration);
@@ -55,7 +55,7 @@ namespace Chicane
 
         friend inline Time operator*(const Time& inTime, float inScale)
         {
-            return Time::fromMilliseconds(inTime.miliseconds() * inScale);
+            return Time::sFromMilliseconds(inTime.miliseconds() * inScale);
         }
 
         friend inline Time operator*(float inScale, const Time& inTime) { return inTime * inScale; }

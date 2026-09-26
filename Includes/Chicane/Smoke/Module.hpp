@@ -22,7 +22,7 @@ namespace Chicane
             using List = std::vector<std::unique_ptr<Module>>;
 
         public:
-            static Module* create(const XmlNode& inNode);
+            static Module* sCreate(const XmlNode& inNode);
 
         public:
             Module();

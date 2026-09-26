@@ -263,7 +263,7 @@ namespace Chicane
                     continue;
                 }
 
-                if (isTypeToken(value))
+                if (sIsTypeToken(value))
                 {
                     typeValue = value;
                     bHasType  = true;
@@ -271,9 +271,9 @@ namespace Chicane
                     continue;
                 }
 
-                if (isColorToken(value))
+                if (sIsColorToken(value))
                 {
-                    colorValue = value.equals("currentcolor") ? String::empty() : value;
+                    colorValue = value.equals("currentcolor") ? String::sEmpty() : value;
                     bHasColor  = true;
 
                     continue;
@@ -306,7 +306,7 @@ namespace Chicane
             assignOneliner(splitOneliner(inValue), colorTop, colorRight, colorBottom, colorLeft);
         }
 
-        bool StyleBorder::isTypeToken(const String& inValue)
+        bool StyleBorder::sIsTypeToken(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
@@ -317,7 +317,7 @@ namespace Chicane
                    value.equals(Style::BORDER_STYLE_TYPE_INSET) || value.equals(Style::BORDER_STYLE_TYPE_OUTSET);
         }
 
-        bool StyleBorder::isColorToken(const String& inValue)
+        bool StyleBorder::sIsColorToken(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 

@@ -19,8 +19,8 @@ namespace Chicane
 
         Scrollable::Scrollable(const XmlNode& inNode)
             : Component(inNode),
-              m_currentPosition(Vec2::Zero()),
-              m_virtualContentSize(Vec2::Zero()),
+              m_currentPosition(Vec2::sZero()),
+              m_virtualContentSize(Vec2::sZero()),
               m_bHasVirtualContent(false),
               m_bReserveHorizontalBar(false),
               m_bReserveVerticalBar(false),
@@ -30,8 +30,8 @@ namespace Chicane
 
         Scrollable::Scrollable(const String& inTag)
             : Component(inTag),
-              m_currentPosition(Vec2::Zero()),
-              m_virtualContentSize(Vec2::Zero()),
+              m_currentPosition(Vec2::sZero()),
+              m_virtualContentSize(Vec2::sZero()),
               m_bHasVirtualContent(false),
               m_bReserveHorizontalBar(false),
               m_bReserveVerticalBar(false),
@@ -129,7 +129,7 @@ namespace Chicane
         {
             const float step = std::max(16.0f, m_style.font.size.get() * 3.0f);
 
-            Vec2 delta = Vec2::Zero();
+            Vec2 delta = Vec2::sZero();
 
             if (canScrollX())
             {
@@ -201,7 +201,7 @@ namespace Chicane
 
         void Scrollable::clearVirtualContentSize()
         {
-            m_virtualContentSize = Vec2::Zero();
+            m_virtualContentSize = Vec2::sZero();
             m_bHasVirtualContent = false;
         }
 

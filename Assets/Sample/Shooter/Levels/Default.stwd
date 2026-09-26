@@ -1,0 +1,22 @@
+Instance.onLoad(function()
+    local target = Vec3(0, 0, 0)
+    for _, id in ipairs({ "Left", "Center", "Right" }) do
+        local camera = Instance.findActor(id)
+        if camera then
+            camera:lookAt(target)
+        end
+    end
+
+    Instance.send("ui:ready", "")
+end)
+
+Instance.onTick(function(delta)
+end)
+
+Instance.subscribe("hud:fire", function()
+    local pawn = Instance.findActor("Player")
+    if pawn then
+        local p = pawn:getTranslation()
+        pawn:setTranslation(p.x, p.y, p.z + 0.1)
+    end
+end)

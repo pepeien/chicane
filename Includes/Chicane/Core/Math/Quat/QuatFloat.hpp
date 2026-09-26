@@ -9,9 +9,9 @@ namespace Chicane
     struct CHICANE_CORE QuatFloat : public Quat<float>
     {
     public:
-        static QuatFloat fromAxis(const Vec3& inAxis, float inAngle);
-        static QuatFloat fromEuler(const Vec3& inAngles);
-        static QuatFloat lookAt(const Vec3& inDirection, const Vec3& inUp);
+        static QuatFloat sFromAxis(const Vec3& inAxis, float inAngle);
+        static QuatFloat sFromEuler(const Vec3& inAngles);
+        static QuatFloat sLookAt(const Vec3& inDirection, const Vec3& inUp);
 
     public:
         template <typename... A>

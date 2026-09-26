@@ -72,10 +72,10 @@ namespace Editor
 
     Toolbar::Toolbar(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          orientation(Chicane::String::empty()),
-          translateState(Chicane::String::empty()),
-          rotateState(Chicane::String::empty()),
-          scaleState(Chicane::String::empty()),
+          orientation(Chicane::String::sEmpty()),
+          translateState(Chicane::String::sEmpty()),
+          rotateState(Chicane::String::sEmpty()),
+          scaleState(Chicane::String::sEmpty()),
           isSettingsOpen(false),
           showSettingsHint(true),
           settingsState("idle"),
@@ -87,7 +87,7 @@ namespace Editor
         import <ViewportSettings>();
         import <HeaderMenu>();
 
-        load("Assets/Editor/UI/Components/Toolbar.grid", "Assets/Editor/UI/Components/Toolbar.decal");
+        load("Assets/Editor/UI/Components/Toolbar/Index.grid", "Assets/Editor/UI/Components/Toolbar/Index.decal");
 
         initAddMenu();
 
@@ -230,7 +230,7 @@ namespace Editor
 
         std::unordered_set<std::type_index> seen;
 
-        for (const auto& [name, type] : Chicane::ReflectionTypeRegistry::getInstance().getAll())
+        for (const auto& [name, type] : Chicane::ReflectionTypeRegistry::sInstance().getAll())
         {
             if (type.group.isEmpty() || type.constructors.empty())
             {

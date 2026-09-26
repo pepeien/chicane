@@ -416,19 +416,14 @@ namespace Chicane
             }
         }
 
-        bool StyleGradient::isDeclaration(const String& inValue)
+        bool StyleGradient::sIsDeclaration(const String& inValue)
         {
             const String value = inValue.trim().toLower();
 
             return value.startsWith(Style::LINEAR_GRADIENT_KEYWORD) || value.startsWith(Style::RADIAL_GRADIENT_KEYWORD);
         }
 
-        bool StyleGradient::isActive() const
-        {
-            return type != StyleGradientType::None && !stops.empty();
-        }
-
-        bool StyleGradient::isActive(const List& inLayers)
+        bool StyleGradient::sIsActive(const List& inLayers)
         {
             for (const StyleGradient& layer : inLayers)
             {
@@ -441,18 +436,18 @@ namespace Chicane
             return false;
         }
 
-        StyleGradient::List StyleGradient::parseList(const String& inValue, const ColorParser& inParseColor)
+        StyleGradient::List StyleGradient::sParseList(const String& inValue, const ColorParser& inParseColor)
         {
             List result;
 
             for (const String& layer : splitStyleList(inValue))
             {
-                if (!isDeclaration(layer))
+                if (!sIsDeclaration(layer))
                 {
                     continue;
                 }
 
-                StyleGradient parsed = parse(layer, inParseColor);
+                StyleGradient parsed = sParse(layer, inParseColor);
                 if (parsed.isActive())
                 {
                     result.push_back(std::move(parsed));
@@ -462,7 +457,7 @@ namespace Chicane
             return result;
         }
 
-        StyleGradient StyleGradient::parse(const String& inValue, const ColorParser& inParseColor)
+        StyleGradient StyleGradient::sParse(const String& inValue, const ColorParser& inParseColor)
         {
             StyleGradient result;
 
@@ -568,6 +563,11 @@ namespace Chicane
             normalizeStops(result.stops);
 
             return result;
+        }
+
+        bool StyleGradient::isActive() const
+        {
+            return type != StyleGradientType::None && !stops.empty();
         }
     }
 }

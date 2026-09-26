@@ -6,7 +6,7 @@ namespace Chicane
     {
         AnimationClip::AnimationClip()
             : name(""),
-              duration(Time::Zero()),
+              duration(Time::sZero()),
               loop(AnimationLoop::Once),
               iterations(1),
               tracks({})

@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Box
     {
-        const Texture* Texture::getDefault()
+        const Texture* Texture::sGetDefault()
         {
             return Box::load<Texture>(DEFAULT_SOURCE);
         }
@@ -53,14 +53,14 @@ namespace Chicane
 
         void Texture::setVendor(const String& inValue)
         {
-            setVendor(Image::parseVendor(inValue));
+            setVendor(Image::sParseVendor(inValue));
         }
 
         void Texture::setVendor(ImageVendor inValue)
         {
             m_vendor = inValue;
 
-            setAttribute(VENDOR_ATTRIBUTE_NAME, Image::getVendorExtension(m_vendor));
+            setAttribute(VENDOR_ATTRIBUTE_NAME, Image::sGetVendorExtension(m_vendor));
         }
 
         Image::Reference Texture::getData() const
@@ -149,7 +149,7 @@ namespace Chicane
             }
 
             auto chain = std::make_shared<ImageMipChain>(
-                Image::makeMipChain(*source, Image::MAX_SIZE, m_bNormal || looksLikeNormal())
+                Image::sMakeMipChain(*source, Image::MAX_SIZE, m_bNormal || looksLikeNormal())
             );
             if (chain->isEmpty())
             {
@@ -212,7 +212,7 @@ namespace Chicane
                 return;
             }
 
-            m_vendor  = Image::parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
+            m_vendor  = Image::sParseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
             m_bNormal = String(getAttribute(NORMAL_ATTRIBUTE_NAME)).toLower().equals("true") || looksLikeNormal();
         }
 
@@ -290,7 +290,7 @@ namespace Chicane
             if (m_frames.empty() && m_data)
             {
                 m_chains.push_back(
-                    std::make_shared<ImageMipChain>(Image::makeMipChain(*m_data, Image::MAX_SIZE, bNormal))
+                    std::make_shared<ImageMipChain>(Image::sMakeMipChain(*m_data, Image::MAX_SIZE, bNormal))
                 );
                 m_chains.back()->ensureDecoded(m_chains.back()->streamTailMinMip());
 
@@ -306,7 +306,7 @@ namespace Chicane
                     continue;
                 }
 
-                auto chain = std::make_shared<ImageMipChain>(Image::makeMipChain(*frame, Image::MAX_SIZE, bNormal));
+                auto chain = std::make_shared<ImageMipChain>(Image::sMakeMipChain(*frame, Image::MAX_SIZE, bNormal));
                 chain->ensureDecoded(chain->streamTailMinMip());
                 m_chains.push_back(std::move(chain));
             }
@@ -319,7 +319,7 @@ namespace Chicane
                 return;
             }
 
-            AssetPreview::write(getXML(), AssetType::Texture, *m_data);
+            AssetPreview::sWrite(getXML(), AssetType::Texture, *m_data);
         }
 
         void Texture::writeMipsToXML(const ImageMipChain& inChain)
@@ -423,8 +423,8 @@ namespace Chicane
                         continue;
                     }
 
-                    width  = Image::mipDimension(static_cast<std::uint32_t>(decoded->getWidth()), 0) << level;
-                    height = Image::mipDimension(static_cast<std::uint32_t>(decoded->getHeight()), 0) << level;
+                    width  = Image::sMipDimension(static_cast<std::uint32_t>(decoded->getWidth()), 0) << level;
+                    height = Image::sMipDimension(static_cast<std::uint32_t>(decoded->getHeight()), 0) << level;
 
                     break;
                 }
@@ -438,8 +438,8 @@ namespace Chicane
             for (std::uint32_t level = 0; level < chain->levels.size(); level++)
             {
                 ImageMip& mip = chain->levels[level];
-                mip.width     = static_cast<int>(Image::mipDimension(width, level));
-                mip.height    = static_cast<int>(Image::mipDimension(height, level));
+                mip.width     = static_cast<int>(Image::sMipDimension(width, level));
+                mip.height    = static_cast<int>(Image::sMipDimension(height, level));
             }
 
             chain->ensureDecoded(chain->streamTailMinMip());

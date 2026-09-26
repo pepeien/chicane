@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <Chicane/Core/FileSystem/Path.hpp>
+#include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 
@@ -12,13 +13,13 @@
 
 namespace Editor
 {
-    class Application
+    class Application : public Chicane::Application
     {
     public:
-        static Application& getInstance();
+        static Application& sInstance();
 
     public:
-        Application(const std::vector<Chicane::FileSystem::Path>& inModules = {});
+        Application(int inArgCount, char* inArgValues[]);
 
     public:
         std::shared_ptr<Scene> getHomeScene() const;

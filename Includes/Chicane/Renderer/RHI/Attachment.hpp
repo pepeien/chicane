@@ -21,7 +21,7 @@ namespace Chicane
                 Image         image = {};
                 LoadOp        load  = LoadOp::Load;
                 StoreOp       store = StoreOp::Store;
-                Vec4          clear = Vec4::Zero();
+                Vec4          clear = Vec4::sZero();
                 std::uint32_t layer = 0;
             };
         }

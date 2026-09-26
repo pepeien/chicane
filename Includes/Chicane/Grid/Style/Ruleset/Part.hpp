@@ -20,8 +20,8 @@ namespace Chicane
             bool                bCanHover = false;
             bool                bCanFocus = false;
             bool                bCanDrag  = false;
-            String              tag       = String::empty();
-            String              id        = String::empty();
+            String              tag       = String::sEmpty();
+            String              id        = String::sEmpty();
             std::vector<String> classes   = {};
         };
     }

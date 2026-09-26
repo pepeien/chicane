@@ -21,7 +21,7 @@ namespace Chicane
             using Map  = std::map<DrawPolyType, List>;
 
         public:
-            static inline const DrawPoly& empty()
+            static inline const DrawPoly& sEmpty()
             {
                 static const DrawPoly result;
 

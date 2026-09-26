@@ -18,7 +18,7 @@ namespace Editor
         import <DockHeader>();
         import <Vec3>();
 
-        load("Assets/Editor/UI/Components/Attributes.grid", "Assets/Editor/UI/Components/Attributes.decal");
+        load("Assets/Editor/UI/Components/Attributes/Index.grid", "Assets/Editor/UI/Components/Attributes/Index.decal");
 
         Prop::bind(this, ITEM_SELECTED_ATTRIBUTE, bIsItemSelected);
         Prop::bind(this, GROUPS_ATTRIBUTE, attributeGroups);
@@ -50,6 +50,6 @@ namespace Editor
             }
         }
 
-        return Chicane::String::empty();
+        return Chicane::String::sEmpty();
     }
 }

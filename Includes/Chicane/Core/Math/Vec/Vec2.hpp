@@ -11,13 +11,13 @@ namespace Chicane
     struct CHICANE_CORE Vec2
     {
     public:
-        inline static constexpr Vec2 Zero() { return Vec2(0.0f); }
+        inline static constexpr Vec2 sZero() { return Vec2(0.0f); }
 
-        inline static constexpr Vec2 One() { return Vec2(1.0f); }
+        inline static constexpr Vec2 sOne() { return Vec2(1.0f); }
 
-        inline static constexpr Vec2 Right() { return Vec2(1.0f, 0.0f); }
+        inline static constexpr Vec2 sRight() { return Vec2(1.0f, 0.0f); }
 
-        inline static constexpr Vec2 Up() { return Vec2(0.0f, 1.0f); }
+        inline static constexpr Vec2 sUp() { return Vec2(0.0f, 1.0f); }
 
     public:
         template <typename... A>

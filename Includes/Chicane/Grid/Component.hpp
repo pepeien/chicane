@@ -72,9 +72,9 @@ namespace Chicane
             static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME = "onDragEnd";
 
         public:
-            static Component* create(const XmlNode& inNode);
+            static Component* sCreate(const XmlNode& inNode);
 
-            static bool isContentSlot(const XmlNode& inNode);
+            static bool sIsContentSlot(const XmlNode& inNode);
 
         public:
             CH_CONSTRUCTOR()
@@ -141,6 +141,7 @@ namespace Chicane
             bool isRoot() const;
             bool isDisplayable() const;
             bool isVisible() const;
+            void setVisible(bool inValue);
             bool isSolid() const;
             bool isHovered() const;
             bool isFocused() const;
@@ -335,7 +336,7 @@ namespace Chicane
             {
                 static_assert(std::is_base_of<Component, T>::value, "import requires a Grid::Component subclass");
 
-                const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(T));
+                const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(T));
                 if (!type)
                 {
                     throw std::runtime_error("Grid component is not reflected");

@@ -37,8 +37,8 @@ namespace Chicane
             );
 
         private:
-            static void destroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer);
-            static vk::Framebuffer makeFramebuffer(
+            static void sDestroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer);
+            static vk::Framebuffer sMakeFramebuffer(
                 vk::Device inLogicalDevice, vk::RenderPass inPass, vk::ImageView inView, vk::Extent2D inExtent
             );
 

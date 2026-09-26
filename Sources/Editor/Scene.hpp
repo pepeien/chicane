@@ -11,6 +11,7 @@
 #include <Chicane/Runtime/Scene/Object.hpp>
 
 #include "Editor/Component/Gizmo.hpp"
+#include "Editor/Scene/Helper.hpp"
 
 namespace Editor
 {
@@ -53,16 +54,9 @@ namespace Editor
         Chicane::CMesh* createHelper(const Chicane::FileSystem::Path& inMesh);
 
     private:
-        struct Helper
-        {
-            Chicane::CMesh*              mesh = nullptr;
-            Chicane::EventSubscription<> subscription;
-        };
-
-    private:
-        Gizmo*                                       m_gizmo;
-        ComponentsSubscription                       m_helperSubscription;
-        std::unordered_map<Chicane::Object*, Helper> m_helpers;
-        bool                                         m_bSyncingHelpers;
+        Gizmo*                                            m_gizmo;
+        ComponentsSubscription                            m_helperSubscription;
+        std::unordered_map<Chicane::Object*, SceneHelper> m_helpers;
+        bool                                              m_bSyncingHelpers;
     };
 }

@@ -18,7 +18,7 @@ namespace Chicane
               m_speed(1.0f),
               m_loop(Loop::Once),
               m_status(Status::Stopped),
-              m_easing(EasingCurve::ease()),
+              m_easing(EasingCurve::sEase()),
               m_bIsFinished(false),
               m_onComplete()
         {}

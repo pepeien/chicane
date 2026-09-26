@@ -32,7 +32,7 @@ namespace Chicane
 
     static const ReflectionEnumInfo* findEnum(const String& inTypeName)
     {
-        ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
+        ReflectionEnumRegistry& registry = ReflectionEnumRegistry::sInstance();
         if (const ReflectionEnumInfo* found = registry.find(inTypeName))
         {
             return found;
@@ -98,15 +98,13 @@ namespace Chicane
             Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
             Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
             Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME,
-            Object::LOOK_TO_ATTRIBUTE_NAME
+            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
         );
     }
 
     Object::Object()
         : Transformable(),
           Serializable(),
-          lookTo(),
           m_bCanTick(false),
           m_bCanCollide(false),
           m_bIsTransient(false),
@@ -152,7 +150,7 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setRelativeTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
+                    setRelativeTranslation(Xml::parseVec3(inValue, Vec3::sZero()));
                 }
             }
         );
@@ -163,7 +161,7 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setRelativeRotation(Xml::parseVec3(inValue, Vec3::Zero()));
+                    setRelativeRotation(Xml::parseVec3(inValue, Vec3::sZero()));
                 }
             }
         );
@@ -174,7 +172,7 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setRelativeScale(Xml::parseVec3(inValue, Vec3::One()));
+                    setRelativeScale(Xml::parseVec3(inValue, Vec3::sOne()));
                 }
             }
         );
@@ -185,7 +183,7 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setAbsoluteTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
+                    setAbsoluteTranslation(Xml::parseVec3(inValue, Vec3::sZero()));
                 }
             }
         );
@@ -196,7 +194,7 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setAbsoluteRotation(Xml::parseVec3(inValue, Vec3::Zero()));
+                    setAbsoluteRotation(Xml::parseVec3(inValue, Vec3::sZero()));
                 }
             }
         );
@@ -207,18 +205,8 @@ namespace Chicane
             {
                 if (!inValue.isEmpty())
                 {
-                    setAbsoluteScale(Xml::parseVec3(inValue, Vec3::One()));
+                    setAbsoluteScale(Xml::parseVec3(inValue, Vec3::sOne()));
                 }
-            }
-        );
-
-        watchAttribute(
-            LOOK_TO_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                lookTo = inValue;
-
-                applyLookTo(lookTo);
             }
         );
     }
@@ -279,10 +267,10 @@ namespace Chicane
 
     String Object::getTypeName() const
     {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
         if (!type)
         {
-            return String::empty();
+            return String::sEmpty();
         }
 
         const String&     name  = type->getName();
@@ -312,17 +300,12 @@ namespace Chicane
 
     void Object::notifyPropertyEdited(const String& inName)
     {
-        if (inName.equals(LOOK_TO_ATTRIBUTE_NAME))
-        {
-            applyLookTo(lookTo);
-        }
-
         onPropertyEdited(inName);
     }
 
     bool Object::applySerializedField(const String& inName, const String& inValue)
     {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
         if (!type)
         {
             return false;
@@ -359,7 +342,7 @@ namespace Chicane
         }
         else if (accessor.isType<Vec3>())
         {
-            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::Zero()));
+            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
         }
         else if (accessor.isType<int>())
         {
@@ -373,62 +356,6 @@ namespace Chicane
         notifyPropertyEdited(inName);
 
         return true;
-    }
-
-    void Object::applyLookTo()
-    {
-        applyLookTo(lookTo);
-    }
-
-    void Object::applyLookTo(const String& inTarget)
-    {
-        const String value = inTarget.trim();
-        if (value.isEmpty())
-        {
-            return;
-        }
-
-        String raw = value;
-        if (raw.startsWith("["))
-        {
-            raw = raw.substr(1);
-        }
-
-        if (raw.endsWith("]"))
-        {
-            raw = raw.substr(0, raw.size() - 1);
-        }
-
-        const std::vector<String> parts = raw.split(',');
-        if (parts.size() >= 3)
-        {
-            try
-            {
-                lookAt(Vec3(
-                    std::stof(parts.at(0).trim().toStandard()),
-                    std::stof(parts.at(1).trim().toStandard()),
-                    std::stof(parts.at(2).trim().toStandard())
-                ));
-
-                return;
-            }
-            catch (const std::exception&)
-            {}
-        }
-
-        Scene* scene = getScene();
-        if (!scene)
-        {
-            return;
-        }
-
-        Object* target = scene->getObject(value);
-        if (!target || target == this)
-        {
-            return;
-        }
-
-        lookAt(target->getTranslation());
     }
 
     void Object::addAttachment(Component* inComponent)

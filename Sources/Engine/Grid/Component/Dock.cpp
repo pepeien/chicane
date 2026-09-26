@@ -29,7 +29,7 @@ namespace Chicane
               m_resize({}),
               m_drag({})
         {
-            importStyleFile("Assets/Engine/UI/Components/Dock.decal");
+            importStyleFile("Assets/Engine/UI/Components/Dock/Index.decal");
 
             m_drop->setParent(this);
 
@@ -451,7 +451,7 @@ namespace Chicane
             Component* node = getHitAt(inLocation);
             if (node && node->getTag().equals(Button::TAG_ID))
             {
-                DockPanel* panel = DockPanel::findFrom(node);
+                DockPanel* panel = DockPanel::sFindFrom(node);
                 if (!panel || !panel->isAssignedHandle(node))
                 {
                     return false;
@@ -460,7 +460,7 @@ namespace Chicane
 
             while (node && node != this)
             {
-                DockPanel* panel       = DockPanel::findFrom(node);
+                DockPanel* panel       = DockPanel::sFindFrom(node);
                 const bool bIsAssigned = panel && panel->isAssignedHandle(node);
                 const bool bIsOverlay  = node->getTag().equals(DockHandle::TAG_ID);
                 if (bIsAssigned || bIsOverlay)
@@ -775,7 +775,7 @@ namespace Chicane
                 else
                 {
                     m_drag.panel->clearExtent();
-                    m_drag.panel->setFloatSize(Vec2::Zero());
+                    m_drag.panel->setFloatSize(Vec2::sZero());
                     m_drag.panel->setSide(m_drag.drop);
                 }
 

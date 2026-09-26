@@ -13,8 +13,8 @@ namespace Chicane
         {
         public:
             Transform transform   = {};
-            Vec3      origin      = Vec3::Zero();
-            Vec3      destination = Vec3::Zero();
+            Vec3      origin      = Vec3::sZero();
+            Vec3      destination = Vec3::sZero();
             bool      bHasBeam    = false;
         };
     }

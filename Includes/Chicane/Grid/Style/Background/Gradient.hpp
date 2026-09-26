@@ -25,10 +25,10 @@ namespace Chicane
             static constexpr inline std::uint32_t MAX_STOPS = 8;
 
         public:
-            static bool isDeclaration(const String& inValue);
-            static bool isActive(const List& inLayers);
-            static StyleGradient parse(const String& inValue, const ColorParser& inParseColor);
-            static List parseList(const String& inValue, const ColorParser& inParseColor);
+            static bool sIsDeclaration(const String& inValue);
+            static bool sIsActive(const List& inLayers);
+            static StyleGradient sParse(const String& inValue, const ColorParser& inParseColor);
+            static List sParseList(const String& inValue, const ColorParser& inParseColor);
 
         public:
             bool isActive() const;

@@ -77,6 +77,51 @@ namespace Chicane
                 return found;
             }
 
+            const String pathText      = inPath.toString();
+            const bool   bRootRelative = pathText.startsWith("Assets/") || pathText.startsWith("Assets\\");
+
+            const auto searchAncestors = [&](Path inStart) -> Path
+            {
+                Path probe = inStart;
+                for (int depth = 0; depth < 8; ++depth)
+                {
+                    if (probe.isEmpty())
+                    {
+                        break;
+                    }
+
+                    if (const Path found = existing(probe / inPath); !found.isEmpty())
+                    {
+                        return found;
+                    }
+
+                    const Path parent = probe.parent();
+                    if (parent.isEmpty() || parent == probe)
+                    {
+                        break;
+                    }
+
+                    probe = parent;
+                }
+
+                return {};
+            };
+
+            if (bRootRelative)
+            {
+                if (const Path found = searchAncestors(Path(std::filesystem::current_path())); !found.isEmpty())
+                {
+                    return found;
+                }
+
+                if (const Path found = searchAncestors(executableDirectory()); !found.isEmpty())
+                {
+                    return found;
+                }
+
+                return inPath.lexicallyNormal();
+            }
+
             Path            base = inBase;
             std::error_code fileError;
             if (!base.isEmpty() &&
@@ -206,12 +251,12 @@ namespace Chicane
                 return;
             }
 
-            ListingService::getInstance().enqueue(inDir);
+            ListingService::sInstance().enqueue(inDir);
         }
 
         void pumpLs(std::vector<Listing>& outReady)
         {
-            ListingService::getInstance().drain(outReady);
+            ListingService::sInstance().drain(outReady);
         }
 
         String readStringUnsigned(const Path& inFilepath)
@@ -281,12 +326,70 @@ namespace Chicane
             return result;
         }
 
+        static void writeBytes(const char* inData, std::size_t inSize, const Path& inFilepath)
+        {
+            if (inData == nullptr || inSize == 0)
+            {
+                return;
+            }
+
+            const Path target = inFilepath.isAbsolute() ? inFilepath : resolve(inFilepath);
+            if (target.isEmpty())
+            {
+                throw std::runtime_error("Failed to write the file [" + inFilepath.toString() + "]");
+            }
+
+            const Path tempPath(target.toString() + ".tmp");
+
+            {
+                std::ofstream file(tempPath.toStandard(), std::ios::binary | std::ios::trunc);
+                if (!file)
+                {
+                    throw std::runtime_error("Failed to write the file [" + target.toString() + "]");
+                }
+
+                file.write(inData, static_cast<std::streamsize>(inSize));
+                file.flush();
+                if (!file)
+                {
+                    file.close();
+                    std::error_code removeError;
+                    std::filesystem::remove(tempPath.toStandard(), removeError);
+
+                    throw std::runtime_error("Failed to write the file [" + target.toString() + "]");
+                }
+            }
+
+            std::error_code error;
+            std::filesystem::remove(target.toStandard(), error);
+            error.clear();
+            std::filesystem::rename(tempPath.toStandard(), target.toStandard(), error);
+            if (error)
+            {
+                std::filesystem::copy_file(
+                    tempPath.toStandard(),
+                    target.toStandard(),
+                    std::filesystem::copy_options::overwrite_existing,
+                    error
+                );
+                std::error_code removeError;
+                std::filesystem::remove(tempPath.toStandard(), removeError);
+                if (error)
+                {
+                    throw std::runtime_error("Failed to write the file [" + target.toString() + "]");
+                }
+            }
+        }
+
         void write(const String& inData, const Path& inFilepath)
         {
-            std::vector<unsigned char> data;
-            std::copy(inData.begin(), inData.end(), std::back_inserter(data));
+            if (inData.isEmpty())
+            {
+                return;
+            }
 
-            write(data, inFilepath);
+            const std::string& bytes = inData.toStandard();
+            writeBytes(bytes.data(), bytes.size(), inFilepath);
         }
 
         void write(const std::vector<unsigned char>& inData, const Path& inFilepath)
@@ -296,16 +399,7 @@ namespace Chicane
                 return;
             }
 
-            std::ofstream file(inFilepath.toString(), std::ios::binary);
-
-            if (!file)
-            {
-                throw std::runtime_error("Failed to write the file [" + inFilepath.toString() + "]");
-            }
-
-            file.write((const char*)inData.data(), sizeof(unsigned char) * inData.size());
-            file.flush();
-            file.close();
+            writeBytes(reinterpret_cast<const char*>(inData.data()), inData.size(), inFilepath);
         }
 
         void write(const std::vector<char>& inData, const Path& inFilepath)
@@ -315,16 +409,7 @@ namespace Chicane
                 return;
             }
 
-            std::ofstream file(inFilepath.toString(), std::ios::binary);
-
-            if (!file)
-            {
-                throw std::runtime_error("Failed to write the file [" + inFilepath.toString() + "]");
-            }
-
-            file.write(inData.data(), sizeof(char) * inData.size());
-            file.flush();
-            file.close();
+            writeBytes(inData.data(), inData.size(), inFilepath);
         }
     }
 }

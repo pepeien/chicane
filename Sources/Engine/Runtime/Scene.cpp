@@ -2,7 +2,11 @@
 
 #include <stdexcept>
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Core/Script/Channel.hpp"
+
+#include "Chicane/Runtime/Scene/Script.hpp"
 #include "Chicane/Runtime/Track.hpp"
 
 namespace Chicane
@@ -19,7 +23,9 @@ namespace Chicane
           m_cellSize(SceneTraceRequest::DEFAULT_CELL_SIZE),
           m_cells({}),
           m_objectCells({}),
-          m_objectMutex()
+          m_objectMutex(),
+          m_bus(),
+          m_sceneScript()
     {}
 
     Scene::~Scene()
@@ -50,22 +56,6 @@ namespace Chicane
             }
         }
 
-        for (Actor* actor : getActors())
-        {
-            if (actor)
-            {
-                actor->applyLookTo();
-            }
-        }
-
-        for (Component* component : getComponents())
-        {
-            if (component)
-            {
-                component->applyLookTo();
-            }
-        }
-
         m_bIsLoaded = true;
     }
 
@@ -90,11 +80,20 @@ namespace Chicane
         }
 
         onUnload();
+
+        m_sceneScript.reset();
     }
 
     void Scene::tick(float inDeltaTime)
     {
         std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
+        pumpEvents();
+
+        if (m_sceneScript)
+        {
+            m_sceneScript->tick(inDeltaTime);
+        }
 
         tickActors(inDeltaTime);
         tickComponents(inDeltaTime);
@@ -106,7 +105,59 @@ namespace Chicane
 
     void Scene::open(const FileSystem::Path& inFilepath)
     {
+        m_sceneScript.reset();
+
         Track::open(*this, inFilepath);
+
+        loadSceneScript(inFilepath);
+    }
+
+    std::uint64_t Scene::subscribe(const String& inName, std::function<void(const String&)> inCallback)
+    {
+        return m_bus.subscribe(inName, std::move(inCallback));
+    }
+
+    void Scene::unsubscribe(std::uint64_t inToken)
+    {
+        m_bus.unsubscribe(inToken);
+    }
+
+    void Scene::send(const String& inName, const String& inData)
+    {
+        receive(inName, inData);
+        Script::Channel::sToView().push({inName, inData});
+    }
+
+    void Scene::receive(const String& inName, const String& inData)
+    {
+        m_bus.send(inName, inData);
+    }
+
+    void Scene::pumpEvents()
+    {
+        for (const Script::Event& event : Script::Channel::sToScene().drain())
+        {
+            receive(event.name, event.data);
+        }
+    }
+
+    void Scene::loadSceneScript(const FileSystem::Path& inTrack)
+    {
+        m_sceneScript.reset();
+
+        if (inTrack.isEmpty())
+        {
+            return;
+        }
+
+        const FileSystem::Path script = inTrack.withExtension(SceneScript::EXTENSION);
+        if (!FileSystem::exists(script))
+        {
+            return;
+        }
+
+        m_sceneScript = std::make_unique<SceneScript>(this);
+        m_sceneScript->load(script);
     }
 
     void Scene::save(const FileSystem::Path& inFilepath) const
@@ -234,7 +285,6 @@ namespace Chicane
         if (isLoaded())
         {
             inActor->onLoad();
-            inActor->applyLookTo();
         }
 
         if (!m_actorsObservable.isEmpty())
@@ -263,7 +313,6 @@ namespace Chicane
         if (isLoaded())
         {
             inComponent->onLoad();
-            inComponent->applyLookTo();
         }
 
         if (!m_componentsObservable.isEmpty())
@@ -530,7 +579,7 @@ namespace Chicane
 
         do
         {
-            candidate = String::sprint("%s%d", inBase.toChar(), index);
+            candidate = String::sSprint("%s%d", inBase.toChar(), index);
 
             index++;
         } while (hasObject(candidate));

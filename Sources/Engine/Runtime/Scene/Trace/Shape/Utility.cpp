@@ -70,7 +70,7 @@ namespace Chicane
             }
 
             const Vec3 axis = inDirection / length;
-            const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::Up() : Vec3::Right();
+            const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::sUp() : Vec3::sRight();
 
             outRight                = hint.cross(axis);
             const float rightLength = std::sqrt(lengthSquared(outRight));

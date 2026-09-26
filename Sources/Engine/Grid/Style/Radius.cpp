@@ -43,7 +43,7 @@ namespace Chicane
             }
 
             outHorizontal = inValue.trim();
-            outVertical   = String::empty();
+            outVertical   = String::sEmpty();
 
             return false;
         }
@@ -165,8 +165,8 @@ namespace Chicane
 
         void StyleRadius::setOnelinerAttribute(const String& inValue)
         {
-            String horizontalSide = String::empty();
-            String verticalSide   = String::empty();
+            String horizontalSide = String::sEmpty();
+            String verticalSide   = String::sEmpty();
             splitRadiusSides(inValue, horizontalSide, verticalSide);
 
             x.setOnelinerAttribute(horizontalSide);

@@ -22,7 +22,7 @@ namespace Chicane
         static constexpr inline std::size_t npos = std::string::npos;
 
     public:
-        static inline const String& empty()
+        static inline const String& sEmpty()
         {
             static const String result;
 
@@ -31,7 +31,7 @@ namespace Chicane
 
     public:
         template <typename... T>
-        static inline String sprint(const String& inValue, T... inParams)
+        static inline String sSprint(const String& inValue, T... inParams)
         {
             const int bufferSize = static_cast<int>(inValue.size()) * 50;
 

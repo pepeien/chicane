@@ -91,7 +91,7 @@ namespace Chicane
         light.translation     = Vec3(m_data.translation.x, m_data.translation.y, m_data.translation.z);
 
         const Vec3 forward = Vec3(m_data.forward.x, m_data.forward.y, m_data.forward.z);
-        light.direction    = forward.dot(forward) < 1e-8f ? Vec3::Forward() : forward.normalize();
+        light.direction    = forward.dot(forward) < 1e-8f ? Vec3::sForward() : forward.normalize();
 
         return light;
     }

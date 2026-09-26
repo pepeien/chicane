@@ -16,15 +16,15 @@ namespace Chicane
     struct CHICANE_CORE Vec3
     {
     public:
-        inline static constexpr Vec3 Zero() { return Vec3(0.0f); }
+        inline static constexpr Vec3 sZero() { return Vec3(0.0f); }
 
-        inline static constexpr Vec3 One() { return Vec3(1.0f); }
+        inline static constexpr Vec3 sOne() { return Vec3(1.0f); }
 
-        inline static constexpr Vec3 Right() { return Vec3(1.0f, 0.0f, 0.0f); }
+        inline static constexpr Vec3 sRight() { return Vec3(1.0f, 0.0f, 0.0f); }
 
-        inline static constexpr Vec3 Forward() { return Vec3(0.0f, 1.0f, 0.0f); }
+        inline static constexpr Vec3 sForward() { return Vec3(0.0f, 1.0f, 0.0f); }
 
-        inline static constexpr Vec3 Up() { return Vec3(0.0f, 0.0f, 1.0f); }
+        inline static constexpr Vec3 sUp() { return Vec3(0.0f, 0.0f, 1.0f); }
 
     public:
         template <typename... A>

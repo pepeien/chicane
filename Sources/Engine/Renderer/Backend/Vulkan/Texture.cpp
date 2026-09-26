@@ -38,14 +38,16 @@ namespace Chicane
                 m_logicalDevice.destroySampler(sampler);
                 sampler = nullptr;
             }
+
             if (view)
             {
                 m_logicalDevice.destroyImageView(view);
                 view = nullptr;
             }
+
             if (m_allocator)
             {
-                m_allocator->destroyImage(*this);
+                VulkanAllocator::sDestroyImage(*this);
             }
         }
 
@@ -76,9 +78,9 @@ namespace Chicane
             m_sourceWidth  = std::min(m_sourceWidth, TEXTURE_MAX_SIZE);
             m_sourceHeight = std::min(m_sourceHeight, TEXTURE_MAX_SIZE);
 
-            extent.width  = std::max(1u, Image::mipDimension(m_sourceWidth, m_residentMinMip));
-            extent.height = std::max(1u, Image::mipDimension(m_sourceHeight, m_residentMinMip));
-            m_mipLevels   = Image::mipCount(extent.width, extent.height);
+            extent.width  = std::max(1u, Image::sMipDimension(m_sourceWidth, m_residentMinMip));
+            extent.height = std::max(1u, Image::sMipDimension(m_sourceHeight, m_residentMinMip));
+            m_mipLevels   = Image::sMipCount(extent.width, extent.height);
         }
 
         void VulkanTexture::initInstance()
@@ -149,8 +151,8 @@ namespace Chicane
                     image = inCreateInfo.image.lock();
                 }
 
-                const std::uint32_t  levelWidth  = Image::mipDimension(extent.width, gpuLevel);
-                const std::uint32_t  levelHeight = Image::mipDimension(extent.height, gpuLevel);
+                const std::uint32_t  levelWidth  = Image::sMipDimension(extent.width, gpuLevel);
+                const std::uint32_t  levelHeight = Image::sMipDimension(extent.height, gpuLevel);
                 const vk::DeviceSize size        = static_cast<vk::DeviceSize>(levelWidth) * levelHeight * 4;
 
                 if (!image || !image->getPixels())

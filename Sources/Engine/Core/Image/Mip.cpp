@@ -4,7 +4,7 @@
 
 namespace Chicane
 {
-    std::uint32_t Image::floorPowerOfTwo(std::uint32_t inValue)
+    std::uint32_t Image::sFloorPowerOfTwo(std::uint32_t inValue)
     {
         if (inValue <= 1)
         {
@@ -20,7 +20,7 @@ namespace Chicane
         return result;
     }
 
-    std::uint32_t Image::mipCount(std::uint32_t inWidth, std::uint32_t inHeight)
+    std::uint32_t Image::sMipCount(std::uint32_t inWidth, std::uint32_t inHeight)
     {
         std::uint32_t count   = 1;
         std::uint32_t largest = std::max(inWidth, inHeight);
@@ -33,15 +33,15 @@ namespace Chicane
         return count;
     }
 
-    std::uint32_t Image::mipDimension(std::uint32_t inSize, std::uint32_t inLevel)
+    std::uint32_t Image::sMipDimension(std::uint32_t inSize, std::uint32_t inLevel)
     {
         return std::max(1u, inSize >> inLevel);
     }
 
-    std::uint32_t Image::streamTailMinMip(std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inTail)
+    std::uint32_t Image::sStreamTailMinMip(std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inTail)
     {
         const std::uint32_t tail   = std::max(1u, inTail);
-        const std::uint32_t count  = mipCount(inWidth, inHeight);
+        const std::uint32_t count  = sMipCount(inWidth, inHeight);
         std::uint32_t       mip    = 0;
         std::uint32_t       width  = inWidth;
         std::uint32_t       height = inHeight;
@@ -56,7 +56,7 @@ namespace Chicane
         return mip;
     }
 
-    std::size_t Image::mipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight)
+    std::size_t Image::sMipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight)
     {
         std::size_t   bytes  = 0;
         std::uint32_t width  = std::max(1u, inWidth);

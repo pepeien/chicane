@@ -13,11 +13,11 @@ namespace Chicane
     {
     public:
         Time::Point timestamp = {};
-        Vec3        location  = Vec3::Zero();
-        Vec3        impact    = Vec3::Zero();
+        Vec3        location  = Vec3::sZero();
+        Vec3        impact    = Vec3::sZero();
         float       distance  = 0.0f;
-        Vec3        start     = Vec3::Zero();
-        Vec3        end       = Vec3::Zero();
+        Vec3        start     = Vec3::sZero();
+        Vec3        end       = Vec3::sZero();
         Actor*      actor     = nullptr;
     };
 }

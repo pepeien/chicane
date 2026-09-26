@@ -29,16 +29,16 @@ namespace Chicane
               lowPercent(0.0f),
               spanPercent(100.0f),
               precision(3),
-              lowText(String::empty()),
-              highText(String::empty()),
+              lowText(String::sEmpty()),
+              highText(String::sEmpty()),
               m_drag(Drag::None),
               m_spanWidth(0.0f),
               m_grabOffset(0.0f),
               m_bIsEdited(false)
         {
             load(
-                "Assets/Engine/UI/Components/Input/Slider/Range.grid",
-                "Assets/Engine/UI/Components/Input/Slider/Range.decal"
+                "Assets/Engine/UI/Components/Input/Slider/Range/Index.grid",
+                "Assets/Engine/UI/Components/Input/Slider/Range/Index.decal"
             );
         }
 

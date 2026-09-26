@@ -15,14 +15,14 @@ namespace Chicane
         static constexpr inline const Mat<4, float> One  = Mat<4, float>(1.0f);
 
     public:
-        static bool toPosition(
+        static bool sToPosition(
             const Vec3& inWorldPosition,
             const Mat4& inView,
             const Mat4& inProjection,
             const Vec2& inViewport,
             Vec2&       outPosition
         );
-        static Vec2 toPosition(
+        static Vec2 sToPosition(
             const Vec3& inWorldPosition, const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport
         );
 
@@ -60,7 +60,7 @@ namespace Chicane
         bool toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition) const;
         Vec2 toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const;
 
-        static bool fromPosition(
+        static bool sFromPosition(
             const Vec2& inPosition,
             const Mat4& inView,
             const Mat4& inProjection,

@@ -155,7 +155,7 @@ namespace Chicane
         {
             if (!inBox)
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             const Vec2 content = inBox->getInnerLayoutSize();
@@ -359,20 +359,19 @@ namespace Chicane
             std::vector<String>& stack;
         };
 
-        Component* Component::create(const XmlNode& inNode)
+        Component* Component::sCreate(const XmlNode& inNode)
         {
-            if (inNode.empty() || !inNode.isElement() || isContentSlot(inNode))
+            if (inNode.empty() || !inNode.isElement() || sIsContentSlot(inNode))
             {
                 return nullptr;
             }
 
-            const String              tag = inNode.getName();
-            const ReflectionTypeInfo* type =
-                ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + tag);
+            const String              tag  = inNode.getName();
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(String("Chicane::Grid::") + tag);
 
             if (!type)
             {
-                type = ReflectionTypeRegistry::getInstance().find(tag);
+                type = ReflectionTypeRegistry::sInstance().find(tag);
             }
 
             if (!type && !tag.isEmpty())
@@ -381,7 +380,7 @@ namespace Chicane
 
                 if (!pascal.equals(tag))
                 {
-                    type = ReflectionTypeRegistry::getInstance().find(String("Chicane::Grid::") + pascal);
+                    type = ReflectionTypeRegistry::sInstance().find(String("Chicane::Grid::") + pascal);
                 }
             }
 
@@ -404,7 +403,7 @@ namespace Chicane
             return instance;
         }
 
-        bool Component::isContentSlot(const XmlNode& inNode)
+        bool Component::sIsContentSlot(const XmlNode& inNode)
         {
             if (inNode.empty() || !inNode.isElement())
             {
@@ -544,11 +543,11 @@ namespace Chicane
         Component::Component(const String& inTag)
             : Animatable(),
               m_tag(inTag),
-              m_id(String::empty()),
-              m_className(String::empty()),
+              m_id(String::sEmpty()),
+              m_className(String::sEmpty()),
               m_status(ComponentStatus::None),
               m_flags(ComponentDirty::Style | ComponentDirty::Layout),
-              m_live(String::empty()),
+              m_live(String::sEmpty()),
               m_liveHash(0),
               m_directives({}),
               m_variables({}),
@@ -564,17 +563,17 @@ namespace Chicane
               m_children({}),
               m_peripherals({}),
               m_paintChildren({}),
-              m_size(Vec2::Zero()),
-              m_scale(Vec2::Zero()),
-              m_offset(Vec2::Zero()),
-              m_cursor(Vec2::Zero()),
+              m_size(Vec2::sZero()),
+              m_scale(Vec2::sZero()),
+              m_offset(Vec2::sZero()),
+              m_cursor(Vec2::sZero()),
               m_scratch(0.0f),
               m_layoutParentSize(Vec2(-1.0f)),
               m_layoutParentFontSize(-1.0f),
               m_primitive({}),
               m_draw({}),
               m_forInstances({}),
-              m_forVariable(String::empty()),
+              m_forVariable(String::sEmpty()),
               m_forSource({})
         {
             m_style.setParent(this);
@@ -794,7 +793,7 @@ namespace Chicane
                 m_style.foregroundColor.copyValue(m_parent->getStyle().foregroundColor);
             }
 
-            m_live = String::empty();
+            m_live = String::sEmpty();
             for (const auto& [key, value] : properties)
             {
                 if (value.contains("ref(") || isReference(value))
@@ -1026,7 +1025,7 @@ namespace Chicane
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                Vec2 origin = Vec2::Zero();
+                Vec2 origin = Vec2::sZero();
 
                 if (!isRoot() && hasParent())
                 {
@@ -1138,13 +1137,28 @@ namespace Chicane
         {
             const bool bIsBackgroundImageVisible    = !m_style.background.image.getRaw().isEmpty();
             const bool bIsBackgroundColorVisible    = m_style.background.color.get().a > 0.0f;
-            const bool bIsBackgroundGradientVisible = StyleGradient::isActive(m_style.background.gradients);
+            const bool bIsBackgroundGradientVisible = StyleGradient::sIsActive(m_style.background.gradients);
             const bool bIsBackdropVisible           = m_style.backdrop.blur.get() > 0.0f;
             const bool bIsBorderVisible             = m_style.border.isVisible();
 
             return (bIsBackgroundImageVisible || bIsBackgroundColorVisible || bIsBackgroundGradientVisible ||
                     bIsBackdropVisible || bIsBorderVisible) &&
                    getOpacity() > 0.0f;
+        }
+
+        void Component::setVisible(bool inValue)
+        {
+            const StyleDisplay display = inValue ? StyleDisplay::Flex : StyleDisplay::None;
+            if (m_style.display.get() == display)
+            {
+                return;
+            }
+
+            m_style.display.set(display);
+            m_style.display.setRaw(inValue ? "flex" : "none");
+
+            markStyleDirtySubtree();
+            markLayoutDirtySubtree();
         }
 
         bool Component::isSolid() const
@@ -1500,7 +1514,7 @@ namespace Chicane
 
         void Component::refresh()
         {
-            Vec2  parentSize     = Vec2::Zero();
+            Vec2  parentSize     = Vec2::sZero();
             float parentFont     = 0.0f;
             bool  bParentLaidOut = false;
             if (hasParent() && !isRoot())
@@ -1904,7 +1918,7 @@ namespace Chicane
                 return m_parent->getStyleVariable(inName);
             }
 
-            return String::empty();
+            return String::sEmpty();
         }
 
         void Component::refreshStyleSubtree()
@@ -2220,7 +2234,7 @@ namespace Chicane
                         return {};
                     }
 
-                    const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(base.typeIndex.value());
+                    const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(base.typeIndex.value());
 
                     if (!type)
                     {
@@ -2245,7 +2259,7 @@ namespace Chicane
                 }
             }
 
-            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this)))
             {
                 const ReflectionFieldAccessor result = type->resolve(inId);
 
@@ -2514,7 +2528,7 @@ namespace Chicane
 
             const bool bEscapes = escapesOverflow();
 
-            m_draw.clip = bEscapes ? Bounds2D::unconstrained() : inContext.clip;
+            m_draw.clip = bEscapes ? Bounds2D::sUnconstrained() : inContext.clip;
 
             std::vector<const Component*> roundedAncestors;
             if (!bEscapes && inContext.roundedAncestors)
@@ -2616,12 +2630,12 @@ namespace Chicane
 
         void Component::paintRoundClips(const std::vector<const Component*>& inRoundedAncestors)
         {
-            m_draw.innerClip        = Vec4::Sentinel();
-            m_draw.innerClipRadiusX = Vec4::Zero();
-            m_draw.innerClipRadiusY = Vec4::Zero();
-            m_draw.outerClip        = Vec4::Sentinel();
-            m_draw.outerClipRadiusX = Vec4::Zero();
-            m_draw.outerClipRadiusY = Vec4::Zero();
+            m_draw.innerClip        = Vec4::sSentinel();
+            m_draw.innerClipRadiusX = Vec4::sZero();
+            m_draw.innerClipRadiusY = Vec4::sZero();
+            m_draw.outerClip        = Vec4::sSentinel();
+            m_draw.outerClipRadiusX = Vec4::sZero();
+            m_draw.outerClipRadiusY = Vec4::sZero();
 
             std::uint32_t filled = 0;
 
@@ -2664,12 +2678,12 @@ namespace Chicane
 
         Vec2 Component::getScrollOffset() const
         {
-            return Vec2::Zero();
+            return Vec2::sZero();
         }
 
         Vec2 Component::getScrollBarGutter() const
         {
-            return Vec2::Zero();
+            return Vec2::sZero();
         }
 
         bool Component::hideIfDirective()
@@ -2922,14 +2936,14 @@ namespace Chicane
             bool bWasAdopted = false;
             for (const auto& child : inNode.getChildren())
             {
-                if (isContentSlot(child))
+                if (sIsContentSlot(child))
                 {
                     addProjectedContent(child);
 
                     continue;
                 }
 
-                Component* component = create(child);
+                Component* component = sCreate(child);
                 if (!component)
                 {
                     continue;
@@ -3149,7 +3163,7 @@ namespace Chicane
 
         Vec2 Component::getChildrenContentSizeFromOrigin(float inOriginX, float inOriginY) const
         {
-            Vec2 result = Vec2::Zero();
+            Vec2 result = Vec2::sZero();
 
             for (const Component* child : m_children)
             {
@@ -3753,7 +3767,7 @@ namespace Chicane
                 setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
                 addChildren(getSource());
             }
-            else if (Component* wrapper = create(root))
+            else if (Component* wrapper = sCreate(root))
             {
                 addChild(wrapper);
             }
@@ -3761,6 +3775,11 @@ namespace Chicane
             for (Component* child : projected)
             {
                 addChild(child);
+            }
+
+            if (View* view = dynamic_cast<View*>(this))
+            {
+                view->loadViewScript(inTemplate);
             }
         }
 
@@ -3771,7 +3790,7 @@ namespace Chicane
                 return;
             }
 
-            const String select = inSlot.parseString(CONTENT_SELECT_ATTRIBUTE_NAME, String::empty()).trim();
+            const String select = inSlot.parseString(CONTENT_SELECT_ATTRIBUTE_NAME, String::sEmpty()).trim();
 
             std::vector<Component*> leftover;
             leftover.reserve(g_projected->size());
@@ -3920,7 +3939,7 @@ namespace Chicane
         Drift::Clip Component::makeAnimationClip(const StyleKeyframe::List& inKeyframes) const
         {
             Drift::Clip clip(m_style.animation.name);
-            clip.duration   = Time::fromMilliseconds(m_style.animation.duration);
+            clip.duration   = Time::sFromMilliseconds(m_style.animation.duration);
             clip.iterations = m_style.animation.iterations;
             clip.loop       = m_style.animation.bIsAlternate
                                   ? Drift::Loop::PingPong
@@ -3941,7 +3960,7 @@ namespace Chicane
                 {
                     StylePropertyId id = StylePropertyId::Count;
 
-                    if (!StylePropertyTable::find(name, id))
+                    if (!StylePropertyTable::sFind(name, id))
                     {
                         continue;
                     }
@@ -3953,7 +3972,7 @@ namespace Chicane
                         continue;
                     }
 
-                    const std::vector<float> parsed(values, values + StylePropertyTable::get(id).arity);
+                    const std::vector<float> parsed(values, values + StylePropertyTable::sGet(id).arity);
 
                     auto found = tracks.find(name);
 
@@ -4024,21 +4043,21 @@ namespace Chicane
             const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
             if (open == String::npos)
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             const String qualified = inValue.substr(0, open).trim();
             if (qualified.isEmpty())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             const std::size_t dot      = qualified.lastOf('.');
-            const String      receiver = dot == String::npos ? String::empty() : qualified.substr(0, dot);
+            const String      receiver = dot == String::npos ? String::sEmpty() : qualified.substr(0, dot);
             const String      name     = dot == String::npos ? qualified : qualified.substr(dot + 1);
             if (name.isEmpty())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             for (const Component* node = this; node != nullptr; node = node->hasParent() ? node->getParent() : nullptr)
@@ -4048,7 +4067,7 @@ namespace Chicane
 
                 if (receiver.isEmpty())
                 {
-                    type     = ReflectionTypeRegistry::getInstance().find(typeid(*node));
+                    type     = ReflectionTypeRegistry::sInstance().find(typeid(*node));
                     instance = const_cast<Component*>(node);
                 }
                 else
@@ -4064,7 +4083,7 @@ namespace Chicane
                         continue;
                     }
 
-                    type     = ReflectionTypeRegistry::getInstance().find(accessor.typeIndex.value());
+                    type     = ReflectionTypeRegistry::sInstance().find(accessor.typeIndex.value());
                     instance = const_cast<char*>(accessor.address(node));
 
                     if (name.equals("isEmpty") && accessor.isType<String>())
@@ -4089,7 +4108,7 @@ namespace Chicane
                         }
                         catch (const std::exception&)
                         {
-                            return String::empty();
+                            return String::sEmpty();
                         }
                     }
                 }
@@ -4100,7 +4119,7 @@ namespace Chicane
                 }
             }
 
-            return String::empty();
+            return String::sEmpty();
         }
 
         void Component::addVariable(const String& inId, const ReflectionFieldAccessor& inValue)
@@ -4123,7 +4142,7 @@ namespace Chicane
             }
 
             Scope      scope(m_importOwner);
-            Component* clone = create(m_source);
+            Component* clone = sCreate(m_source);
             if (!clone)
             {
                 return nullptr;
@@ -4260,6 +4279,80 @@ namespace Chicane
             return bHasOpening && bHasClosing;
         }
 
+        static bool parseLuaStringArgs(const String& inSignature, std::vector<String>& outArgs)
+        {
+            outArgs.clear();
+
+            const std::size_t open  = inSignature.firstOf(METHOD_PARAMS_OPENING);
+            const std::size_t close = inSignature.lastOf(METHOD_PARAMS_CLOSING);
+            if (open == String::npos || close == String::npos || close <= open)
+            {
+                return false;
+            }
+
+            const String raw = inSignature.substr(open + 1, close - open - 1).trim();
+            if (raw.isEmpty())
+            {
+                return true;
+            }
+
+            const char*       cursor = raw.toChar();
+            const char* const end    = cursor + raw.size();
+
+            while (cursor < end)
+            {
+                while (cursor < end && (*cursor == ' ' || *cursor == '\t'))
+                {
+                    cursor++;
+                }
+
+                if (cursor >= end)
+                {
+                    break;
+                }
+
+                const char quote = *cursor;
+                if (quote != '"' && quote != '\'')
+                {
+                    return false;
+                }
+
+                cursor++;
+                const char* start = cursor;
+                while (cursor < end && *cursor != quote)
+                {
+                    cursor++;
+                }
+
+                if (cursor >= end)
+                {
+                    return false;
+                }
+
+                outArgs.emplace_back(String(std::string(start, static_cast<std::size_t>(cursor - start))));
+                cursor++;
+
+                while (cursor < end && (*cursor == ' ' || *cursor == '\t'))
+                {
+                    cursor++;
+                }
+
+                if (cursor >= end)
+                {
+                    return true;
+                }
+
+                if (*cursor != METHOD_PARAMS_SEPARATOR)
+                {
+                    return false;
+                }
+
+                cursor++;
+            }
+
+            return true;
+        }
+
         ReflectionTypeMethod Component::getMethod(const String& inValue, const Component* inParamContext) const
         {
             String signature = inValue.trim();
@@ -4274,10 +4367,19 @@ namespace Chicane
                 return {};
             }
 
-            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this)))
-            {
-                const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
+            const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
 
+            if (View* view = dynamic_cast<View*>(m_root ? m_root : const_cast<Component*>(this)))
+            {
+                std::vector<String> args;
+                if (parseLuaStringArgs(signature, args) && view->callLuaGlobal(name, args))
+                {
+                    return {};
+                }
+            }
+
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this)))
+            {
                 if (const ReflectionTypeMethodInfo* method = type->findMethod(name))
                 {
                     ReflectionTypeMethod result(method);
@@ -4328,7 +4430,7 @@ namespace Chicane
                 }
 
                 const String expected =
-                    info && paramIndex < info->paramTypes.size() ? info->paramTypes.at(paramIndex) : String::empty();
+                    info && paramIndex < info->paramTypes.size() ? info->paramTypes.at(paramIndex) : String::sEmpty();
                 paramIndex++;
 
                 if ((param.startsWith("\"") && param.endsWith("\"")) || (param.startsWith("'") && param.endsWith("'")))

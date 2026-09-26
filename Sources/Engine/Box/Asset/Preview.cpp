@@ -13,6 +13,7 @@
 
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -129,7 +130,7 @@ namespace Chicane
             return result;
         }
 
-        String AssetPreview::textureIdOf(const FileSystem::Path& inAsset)
+        String AssetPreview::sTextureIdOf(const FileSystem::Path& inAsset)
         {
             String result = TEXTURE_PREFIX;
             result.append(inAsset.lexicallyNormal().toString());
@@ -137,19 +138,53 @@ namespace Chicane
             return result;
         }
 
-        FileSystem::Path AssetPreview::trackPath(AssetType inType)
+        FileSystem::Path AssetPreview::sTrackPath()
         {
-            const String           name = inType == AssetType::Undefined ? "Default" : toString(inType);
-            const FileSystem::Path path = FileSystem::Path(TRACK_DIRECTORY) / (name + TRACK_EXTENSION);
-            if (FileSystem::exists(path))
-            {
-                return path;
-            }
-
-            return FileSystem::Path(TRACK_DIRECTORY) / (String("Default") + TRACK_EXTENSION);
+            return FileSystem::Path(TRACK_PATH);
         }
 
-        float AssetPreview::cameraDistance(float inRadius, float inFieldOfView, float inAspectRatio)
+        String AssetPreview::sEventName(AssetType inType, bool bBake)
+        {
+            String       result = EVENT_PREFIX;
+            const String type   = toString(inType);
+            result.append(type.isEmpty() ? "Undefined" : type);
+            if (bBake)
+            {
+                result.append(EVENT_BAKE_SUFFIX);
+            }
+
+            return result;
+        }
+
+        static Vec3 cameraHint(const Vec3& inFrom)
+        {
+            Vec3 hint = inFrom;
+            if (hint.z <= AssetPreview::EXTENT_EPSILON)
+            {
+                const float horiz     = std::sqrt(hint.x * hint.x + hint.y * hint.y);
+                const float viewHoriz = std::sqrt(
+                    AssetPreview::VIEW_DIRECTION.x * AssetPreview::VIEW_DIRECTION.x +
+                    AssetPreview::VIEW_DIRECTION.y * AssetPreview::VIEW_DIRECTION.y
+                );
+                if (horiz > AssetPreview::EXTENT_EPSILON && viewHoriz > AssetPreview::EXTENT_EPSILON)
+                {
+                    hint.z = (-AssetPreview::VIEW_DIRECTION.z / viewHoriz) * horiz;
+                }
+                else
+                {
+                    hint = AssetPreview::VIEW_DIRECTION * -1.0f;
+                }
+            }
+
+            if (hint.dot(hint) <= AssetPreview::EXTENT_EPSILON)
+            {
+                hint = AssetPreview::VIEW_DIRECTION * -1.0f;
+            }
+
+            return hint;
+        }
+
+        float AssetPreview::sCameraDistance(float inRadius, float inFieldOfView, float inAspectRatio)
         {
             if (inRadius <= EXTENT_EPSILON)
             {
@@ -167,59 +202,31 @@ namespace Chicane
             return inRadius / (CAMERA_FIT * limit);
         }
 
-        Vec3 AssetPreview::cameraStart(const Vec3& inTarget, const Vec3& inFrom)
+        Vec3 AssetPreview::sCameraStart(const Vec3& inTarget, const Vec3& inFrom)
         {
-            return cameraStart(inTarget, inFrom, START_DISTANCE);
+            return sCameraStart(inTarget, inFrom, START_DISTANCE);
         }
 
-        Vec3 AssetPreview::cameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance)
+        Vec3 AssetPreview::sCameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance)
         {
-            Vec3 direction = inFrom - inTarget;
-            if (direction.dot(direction) <= EXTENT_EPSILON)
-            {
-                direction = VIEW_DIRECTION * -1.0f;
-            }
-
-            return inTarget + direction.normalize() * std::max(inDistance, EXTENT_EPSILON);
+            return inTarget + cameraHint(inFrom).normalize() * std::max(inDistance, EXTENT_EPSILON);
         }
 
-        static Vec3 viewDirectionFromTrack(AssetType inType)
+        static void previewCamera(Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
         {
-            const FileSystem::Path path = AssetPreview::trackPath(inType);
-            if (!FileSystem::exists(path))
+            outViewDir = AssetPreview::VIEW_DIRECTION.normalize();
+            outRight   = outViewDir.cross(Vec3::sUp());
+            if (outRight.dot(outRight) < AssetPreview::NORMAL_EPSILON)
             {
-                return AssetPreview::VIEW_DIRECTION;
+                outRight = Vec3::sRight();
             }
 
-            const XmlDocument document = Xml::load(path);
-            const XmlNode     root     = document.getFirstChild();
-            if (root.empty())
-            {
-                return AssetPreview::VIEW_DIRECTION;
-            }
-
-            for (const XmlNode& child : root.getChildren())
-            {
-                if (!String(child.getName()).equals("ACamera"))
-                {
-                    continue;
-                }
-
-                const Vec3 camera  = Xml::parseVec3(child, "absoluteTranslation", Vec3::Zero());
-                const Vec3 target  = Xml::parseVec3(Xml::getAttribute("lookTo", child), Vec3::Zero());
-                const Vec3 forward = target - camera;
-                if (forward.dot(forward) < AssetPreview::EXTENT_EPSILON)
-                {
-                    break;
-                }
-
-                return forward.normalize();
-            }
-
-            return AssetPreview::VIEW_DIRECTION;
+            outRight = outRight.normalize();
+            outUp    = outRight.cross(outViewDir).normalize();
+            outLight = AssetPreview::LIGHT_DIRECTION.normalize();
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::create(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreate(
             const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
         )
         {
@@ -234,7 +241,7 @@ namespace Chicane
             inImage.blit(pixels.data(), SIZE, SIZE, 0);
             if (inType == AssetType::Texture)
             {
-                Image::flipY(pixels.data(), SIZE, SIZE, CHANNELS);
+                Image::sFlipY(pixels.data(), SIZE, SIZE, CHANNELS);
             }
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
@@ -243,24 +250,6 @@ namespace Chicane
             result->image = std::make_shared<Image>(pixels.data(), SIZE, SIZE, CHANNELS, CHANNELS);
 
             return result;
-        }
-
-        static void previewCamera(AssetType inType, Vec3& outViewDir, Vec3& outRight, Vec3& outUp, Vec3& outLight)
-        {
-            outViewDir = viewDirectionFromTrack(inType);
-            if (outViewDir.dot(outViewDir) < AssetPreview::EXTENT_EPSILON)
-            {
-                outViewDir = AssetPreview::VIEW_DIRECTION.normalize();
-            }
-            outRight = outViewDir.cross(Vec3::Up());
-            if (outRight.dot(outRight) < AssetPreview::NORMAL_EPSILON)
-            {
-                outRight = Vec3::Right();
-            }
-
-            outRight = outRight.normalize();
-            outUp    = outRight.cross(outViewDir).normalize();
-            outLight = AssetPreview::LIGHT_DIRECTION.normalize();
         }
 
         static void sampleCubemap(
@@ -436,14 +425,7 @@ namespace Chicane
             const std::vector<Image::Instance>& inFaces
         )
         {
-            if (inBatches.empty() && !inFaces.empty())
-            {
-                PreviewGeometryBatch batch;
-                appendUnitCube(batch.vertices, batch.indices);
-                inBatches.push_back(std::move(batch));
-            }
-
-            if (inAsset.isEmpty() || inBatches.empty())
+            if (inAsset.isEmpty())
             {
                 return nullptr;
             }
@@ -471,19 +453,28 @@ namespace Chicane
                 }
             }
 
+            // createFromSky always passes a batch even when model load failed; treat that as empty.
             if (!hasGeometry)
             {
-                return nullptr;
+                if (inType != AssetType::Sky && inFaces.empty())
+                {
+                    return nullptr;
+                }
+
+                inBatches.clear();
+                PreviewGeometryBatch batch;
+                appendUnitCube(batch.vertices, batch.indices);
+                inBatches.push_back(std::move(batch));
             }
 
             Vec3 viewDir;
             Vec3 right;
             Vec3 up;
             Vec3 light;
-            previewCamera(inType, viewDir, right, up, light);
+            previewCamera(viewDir, right, up, light);
 
-            Vec3 minPosition = Vec3::Zero();
-            Vec3 maxPosition = Vec3::Zero();
+            Vec3 minPosition = Vec3::sZero();
+            Vec3 maxPosition = Vec3::sZero();
             bool bHasBounds  = false;
             for (const PreviewGeometryBatch& batch : inBatches)
             {
@@ -731,7 +722,7 @@ namespace Chicane
             return result;
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreateFromGeometry(
             const FileSystem::Path&                  inAsset,
             const std::vector<PreviewGeometryBatch>& inBatches,
             const std::vector<Image::Instance>&      inFaces
@@ -746,7 +737,7 @@ namespace Chicane
             return rasterPreview(inAsset, type, inBatches, inFaces);
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::createFromGeometry(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreateFromGeometry(
             const FileSystem::Path&             inAsset,
             const Vertex::List&                 inVertices,
             const Vertex::Indices&              inIndices,
@@ -759,10 +750,10 @@ namespace Chicane
             batch.indices  = inIndices;
             batch.texture  = inTexture;
 
-            return createFromGeometry(inAsset, std::vector<PreviewGeometryBatch>{std::move(batch)}, inFaces);
+            return sCreateFromGeometry(inAsset, std::vector<PreviewGeometryBatch>{std::move(batch)}, inFaces);
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::createFromSky(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreateFromSky(
             const FileSystem::Path&             inAsset,
             const Vertex::List&                 inVertices,
             const Vertex::Indices&              inIndices,
@@ -776,7 +767,7 @@ namespace Chicane
             return rasterPreview(inAsset, AssetType::Sky, {std::move(batch)}, inFaces);
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::createFromFont(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreateFromFont(
             const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel
         )
         {
@@ -1001,7 +992,7 @@ namespace Chicane
             return result;
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::createFromSound(
+        std::unique_ptr<AssetPreview> AssetPreview::sCreateFromSound(
             const FileSystem::Path& inAsset, const std::vector<unsigned char>& inData
         )
         {
@@ -1190,14 +1181,14 @@ namespace Chicane
             return result;
         }
 
-        bool AssetPreview::write(XmlNode inRoot, AssetType inType, const Image& inImage)
+        bool AssetPreview::sWrite(XmlNode inRoot, AssetType inType, const Image& inImage)
         {
             if (inRoot.empty())
             {
                 return false;
             }
 
-            const std::unique_ptr<AssetPreview> preview = create(FileSystem::Path(), inType, inImage);
+            const std::unique_ptr<AssetPreview> preview = sCreate(FileSystem::Path(), inType, inImage);
             if (!preview || !preview->image || !preview->image->getPixels())
             {
                 return false;
@@ -1247,7 +1238,7 @@ namespace Chicane
             return true;
         }
 
-        bool AssetPreview::bake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage)
+        bool AssetPreview::sBake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage)
         {
             if (inAsset.isEmpty() || !FileSystem::exists(inAsset))
             {
@@ -1258,7 +1249,7 @@ namespace Chicane
             {
                 XmlDocument document = Xml::load(inAsset);
                 XmlNode     root     = document.getFirstChild();
-                if (root.empty() || !write(root, inType, inImage))
+                if (root.empty() || !sWrite(root, inType, inImage))
                 {
                     return false;
                 }
@@ -1267,13 +1258,21 @@ namespace Chicane
 
                 return true;
             }
+            catch (const std::exception& exception)
+            {
+                Log::warning("Failed to bake preview for [%s]: %s", inAsset.toChar(), exception.what());
+
+                return false;
+            }
             catch (...)
             {
+                Log::warning("Failed to bake preview for [%s]", inAsset.toChar());
+
                 return false;
             }
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::read(const FileSystem::Path& inAsset)
+        std::unique_ptr<AssetPreview> AssetPreview::sRead(const FileSystem::Path& inAsset)
         {
             if (inAsset.isEmpty() || !FileSystem::exists(inAsset))
             {
@@ -1327,7 +1326,7 @@ namespace Chicane
             }
         }
 
-        std::unique_ptr<AssetPreview> AssetPreview::read(const XmlNode& inRoot)
+        std::unique_ptr<AssetPreview> AssetPreview::sRead(const XmlNode& inRoot)
         {
             if (inRoot.empty())
             {
@@ -1344,7 +1343,7 @@ namespace Chicane
 
         String AssetPreview::textureId() const
         {
-            return textureIdOf(path);
+            return sTextureIdOf(path);
         }
     }
 }

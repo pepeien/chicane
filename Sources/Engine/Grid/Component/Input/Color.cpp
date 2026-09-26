@@ -20,12 +20,12 @@ namespace Chicane
     {
         static String toHexRgb(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB)
         {
-            return String::sprint("#%02X%02X%02X", inR, inG, inB);
+            return String::sSprint("#%02X%02X%02X", inR, inG, inB);
         }
 
         static String toHexRgba(std::uint8_t inR, std::uint8_t inG, std::uint8_t inB, std::uint8_t inA)
         {
-            return String::sprint("#%02X%02X%02X%02X", inR, inG, inB, inA);
+            return String::sSprint("#%02X%02X%02X%02X", inR, inG, inB, inA);
         }
 
         static std::uint8_t toByte(float inValue)
@@ -255,7 +255,10 @@ namespace Chicane
               m_bIsPickingWheel(false),
               m_bIsPickingValue(false)
         {
-            load("Assets/Engine/UI/Components/Input/Color.grid", "Assets/Engine/UI/Components/Input/Color.decal");
+            load(
+                "Assets/Engine/UI/Components/Input/Color/Index.grid",
+                "Assets/Engine/UI/Components/Input/Color/Index.decal"
+            );
             refreshWheel();
         }
 

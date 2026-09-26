@@ -25,8 +25,8 @@ namespace Chicane
         }
 
         MouseWheelEvent::MouseWheelEvent()
-            : delta(Vec2::Zero()),
-              location(Vec2::Zero())
+            : delta(Vec2::sZero()),
+              location(Vec2::sZero())
         {}
     }
 }

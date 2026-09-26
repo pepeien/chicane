@@ -12,7 +12,7 @@ namespace Chicane
 
     String Vec3::toString() const
     {
-        return String::sprint("[%.2f, %.2f, %.2f]", x, y, z);
+        return String::sSprint("[%.2f, %.2f, %.2f]", x, y, z);
     }
 
     Vec3 Vec3::min(const Vec3& inValue) const

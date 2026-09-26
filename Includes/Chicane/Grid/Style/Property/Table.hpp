@@ -20,11 +20,11 @@ namespace Chicane
             static constexpr inline const std::size_t VALUE_COUNT = 64;
 
         public:
-            static const StylePropertyEntry& get(StylePropertyId inId);
+            static const StylePropertyEntry& sGet(StylePropertyId inId);
 
-            static bool find(const String& inName, StylePropertyId& outId);
+            static bool sFind(const String& inName, StylePropertyId& outId);
 
-            static std::size_t offset(StylePropertyId inId);
+            static std::size_t sOffset(StylePropertyId inId);
         };
     }
 }

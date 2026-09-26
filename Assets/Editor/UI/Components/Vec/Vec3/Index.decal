@@ -1,0 +1,42 @@
+.vector-3d {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+
+    &__value {
+        width: 33%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.25em;
+        background-color: $--light-gray;
+        padding: 0.05em;
+        border-radius: 0.15em;
+        overflow: hidden;
+
+        &__label {
+            height: 100%;
+            padding: 0.15em;
+            font-size: 0.55em;
+
+            &.--x {
+                background-color: #CF1C46;
+            }
+
+            &.--y {
+                background-color: #60AB80;
+            }
+
+            &.--z {
+                background-color: #4875CA;
+            }
+        }
+
+        Input::Text {
+            width: 100%;
+            height: 100%;
+            color: $--black;
+        }
+    }
+}

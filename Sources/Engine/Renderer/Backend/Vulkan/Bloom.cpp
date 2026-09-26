@@ -64,7 +64,7 @@ namespace Chicane
             }
         }
 
-        void VulkanBloom::destroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer)
+        void VulkanBloom::sDestroyFramebuffer(vk::Device inLogicalDevice, vk::Framebuffer& inFramebuffer)
         {
             if (!inFramebuffer)
             {
@@ -75,7 +75,7 @@ namespace Chicane
             inFramebuffer = nullptr;
         }
 
-        vk::Framebuffer VulkanBloom::makeFramebuffer(
+        vk::Framebuffer VulkanBloom::sMakeFramebuffer(
             vk::Device inLogicalDevice, vk::RenderPass inPass, vk::ImageView inView, vk::Extent2D inExtent
         )
         {
@@ -92,12 +92,12 @@ namespace Chicane
 
         void VulkanBloom::destroy(vk::Device inLogicalDevice)
         {
-            destroyFramebuffer(inLogicalDevice, extractFramebuffer);
+            sDestroyFramebuffer(inLogicalDevice, extractFramebuffer);
             for (vk::Framebuffer& framebuffer : framebuffers)
             {
-                destroyFramebuffer(inLogicalDevice, framebuffer);
+                sDestroyFramebuffer(inLogicalDevice, framebuffer);
             }
-            destroyFramebuffer(inLogicalDevice, compositeFramebuffer);
+            sDestroyFramebuffer(inLogicalDevice, compositeFramebuffer);
 
             for (VulkanImageInfo& image : images)
             {
@@ -111,7 +111,7 @@ namespace Chicane
                     inLogicalDevice.destroyImageView(image.view);
                     image.view = nullptr;
                 }
-                VulkanAllocator::destroyImage(image);
+                VulkanAllocator::sDestroyImage(image);
             }
         }
 
@@ -123,19 +123,19 @@ namespace Chicane
             const VulkanImageInfo& inColorImage
         )
         {
-            destroyFramebuffer(inLogicalDevice, extractFramebuffer);
+            sDestroyFramebuffer(inLogicalDevice, extractFramebuffer);
             for (vk::Framebuffer& framebuffer : framebuffers)
             {
-                destroyFramebuffer(inLogicalDevice, framebuffer);
+                sDestroyFramebuffer(inLogicalDevice, framebuffer);
             }
-            destroyFramebuffer(inLogicalDevice, compositeFramebuffer);
+            sDestroyFramebuffer(inLogicalDevice, compositeFramebuffer);
 
             extractFramebuffer =
-                makeFramebuffer(inLogicalDevice, inExtractPass, images.at(0).view, images.at(0).extent);
-            framebuffers.at(0) = makeFramebuffer(inLogicalDevice, inBlurPass, images.at(0).view, images.at(0).extent);
-            framebuffers.at(1) = makeFramebuffer(inLogicalDevice, inBlurPass, images.at(1).view, images.at(1).extent);
+                sMakeFramebuffer(inLogicalDevice, inExtractPass, images.at(0).view, images.at(0).extent);
+            framebuffers.at(0) = sMakeFramebuffer(inLogicalDevice, inBlurPass, images.at(0).view, images.at(0).extent);
+            framebuffers.at(1) = sMakeFramebuffer(inLogicalDevice, inBlurPass, images.at(1).view, images.at(1).extent);
             compositeFramebuffer =
-                makeFramebuffer(inLogicalDevice, inCompositePass, inColorImage.view, inColorImage.extent);
+                sMakeFramebuffer(inLogicalDevice, inCompositePass, inColorImage.view, inColorImage.extent);
         }
     }
 }

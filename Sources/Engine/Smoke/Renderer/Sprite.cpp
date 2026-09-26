@@ -41,7 +41,7 @@ namespace Chicane
 
                 Particle draw = particle;
                 draw.additive = additive;
-                draw.axis     = Vec3::Zero();
+                draw.axis     = Vec3::sZero();
                 outDraws.push_back(draw);
             }
         }

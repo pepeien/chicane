@@ -20,8 +20,8 @@ namespace Chicane
             using Points = std::vector<Vec2>;
 
         public:
-            Vec2   boundsMin = Vec2::Zero();
-            Vec2   boundsMax = Vec2::Zero();
+            Vec2   boundsMin = Vec2::sZero();
+            Vec2   boundsMax = Vec2::sZero();
             Points points    = {};
         };
     }

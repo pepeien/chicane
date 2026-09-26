@@ -398,7 +398,7 @@ namespace Chicane
             RHI::PassCreateInfo pass = rhiScenePass(*rhi, false, RHI::LoadOp::Clear, RHI::LoadOp::DontCare);
             if (!inFrame.getSkyInstance().bVisible)
             {
-                pass.color.clear = Vec4::Zero();
+                pass.color.clear = Vec4::sZero();
             }
             rhi->commands->beginPass(pass);
             rhiApplyView(rhi->commands, m_backend, this);

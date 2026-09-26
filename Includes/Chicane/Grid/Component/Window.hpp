@@ -31,7 +31,7 @@ namespace Chicane
             static constexpr inline const char* BAR_CLASS_NAME = "window__bar";
 
         public:
-            static Window* findFrom(Component* inComponent);
+            static Window* sFindFrom(Component* inComponent);
 
         public:
             CH_CONSTRUCTOR()

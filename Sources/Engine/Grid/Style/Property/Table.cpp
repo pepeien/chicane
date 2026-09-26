@@ -689,12 +689,12 @@ namespace Chicane
             return result;
         }
 
-        const StylePropertyEntry& StylePropertyTable::get(StylePropertyId inId)
+        const StylePropertyEntry& StylePropertyTable::sGet(StylePropertyId inId)
         {
             return entries().at(static_cast<std::size_t>(inId));
         }
 
-        bool StylePropertyTable::find(const String& inName, StylePropertyId& outId)
+        bool StylePropertyTable::sFind(const String& inName, StylePropertyId& outId)
         {
             for (std::size_t i = 0; i < COUNT; i++)
             {
@@ -709,7 +709,7 @@ namespace Chicane
             return false;
         }
 
-        std::size_t StylePropertyTable::offset(StylePropertyId inId)
+        std::size_t StylePropertyTable::sOffset(StylePropertyId inId)
         {
             return offsets().at(static_cast<std::size_t>(inId));
         }

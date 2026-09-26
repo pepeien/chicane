@@ -9,7 +9,7 @@ namespace Chicane
     {
         InputSelectOption::InputSelectOption(const XmlNode& inNode)
             : Button(inNode),
-              value(String::empty())
+              value(String::sEmpty())
         {
             ensureText(String(inNode.getText()).trim());
             refreshValue();
@@ -69,7 +69,7 @@ namespace Chicane
             XmlNode     node = document.appendChild(Text::TAG_ID);
             node.setText(inText);
 
-            if (Component* child = create(node))
+            if (Component* child = sCreate(node))
             {
                 addChild(child);
             }

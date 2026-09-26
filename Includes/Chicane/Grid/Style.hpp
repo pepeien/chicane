@@ -431,7 +431,7 @@ namespace Chicane
             void refresh();
 
         private:
-            static bool coversProperty(const String& inProperty, const String& inTarget);
+            static bool sCoversProperty(const String& inProperty, const String& inTarget);
 
             void refreshTransitionLookup();
             bool canKeepFillPercent(SizeDirection inDirection) const;
