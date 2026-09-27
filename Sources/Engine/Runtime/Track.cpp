@@ -232,10 +232,7 @@ namespace Chicane
             XmlNode node = outParent.appendChild(tag.toChar());
             Xml::addAttribute(node, ID_ATTRIBUTE_NAME, inObject.getId());
 
-            const Component* component = dynamic_cast<const Component*>(&inObject);
-            const bool       bAttached = component && component->getParent();
-
-            if (bAttached)
+            if (inObject.isAttached())
             {
                 if (!isRelativeIdentity(inObject))
                 {
@@ -265,7 +262,7 @@ namespace Chicane
 
             writeFields(node, inObject);
 
-            for (Component* attachment : inObject.getAttachments())
+            for (Object* attachment : inObject.getAttachments())
             {
                 if (!attachment)
                 {
@@ -307,7 +304,7 @@ namespace Chicane
             inObject.parse(inNode);
         }
 
-        Actor* spawnActor(Scene& inScene, const XmlNode& inNode)
+        Object* spawnObject(Scene& inScene, const XmlNode& inNode, Object* inParent)
         {
             if (inNode.empty() || !inNode.isElement())
             {
@@ -321,63 +318,57 @@ namespace Chicane
             }
 
             Object* instance = type->create<Object>({});
-            Actor*  actor    = dynamic_cast<Actor*>(instance);
-            if (!actor)
+            if (!instance)
+            {
+                return nullptr;
+            }
+
+            Actor*     actor     = dynamic_cast<Actor*>(instance);
+            Component* component = actor ? nullptr : dynamic_cast<Component*>(instance);
+            if (!actor && !component)
             {
                 delete instance;
 
                 return nullptr;
             }
 
-            applyAttributes(*actor, inNode);
-            inScene.adoptActor(actor);
+            applyAttributes(*instance, inNode);
+
+            if (actor)
+            {
+                inScene.adoptActor(actor);
+            }
+            else
+            {
+                inScene.adoptComponent(component);
+            }
+
+            if (inParent)
+            {
+                instance->attachTo(inParent);
+            }
+
+            if (component)
+            {
+                component->activate();
+            }
 
             for (XmlNode child : inNode.getChildren())
             {
-                spawnComponent(inScene, child, actor);
+                spawnObject(inScene, child, instance);
             }
 
-            return actor;
+            return instance;
+        }
+
+        Actor* spawnActor(Scene& inScene, const XmlNode& inNode)
+        {
+            return dynamic_cast<Actor*>(spawnObject(inScene, inNode, nullptr));
         }
 
         Component* spawnComponent(Scene& inScene, const XmlNode& inNode, Object* inParent)
         {
-            if (inNode.empty() || !inNode.isElement())
-            {
-                return nullptr;
-            }
-
-            const ReflectionTypeInfo* type = findType(inNode.getName());
-            if (!type)
-            {
-                return nullptr;
-            }
-
-            Object*    instance  = type->create<Object>({});
-            Component* component = dynamic_cast<Component*>(instance);
-            if (!component)
-            {
-                delete instance;
-
-                return nullptr;
-            }
-
-            applyAttributes(*component, inNode);
-            inScene.adoptComponent(component);
-
-            if (inParent)
-            {
-                component->attachTo(inParent);
-            }
-
-            component->activate();
-
-            for (XmlNode child : inNode.getChildren())
-            {
-                spawnComponent(inScene, child, component);
-            }
-
-            return component;
+            return dynamic_cast<Component*>(spawnObject(inScene, inNode, inParent));
         }
 
         void open(Scene& inScene, const FileSystem::Path& inFilepath)
@@ -399,7 +390,7 @@ namespace Chicane
 
             for (XmlNode child : root.getChildren())
             {
-                spawnActor(inScene, child);
+                spawnObject(inScene, child, nullptr);
             }
         }
 

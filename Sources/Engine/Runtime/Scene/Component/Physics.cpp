@@ -124,7 +124,7 @@ namespace Chicane
 
     void CPhysics::onAttachment(Object* inParent)
     {
-        Component::onAttachment(inParent);
+        Object::onAttachment(inParent);
 
         ensureBody();
     }
@@ -467,7 +467,7 @@ namespace Chicane
             return;
         }
 
-        Actor* attachment = getParent<Actor>();
+        Actor* attachment = dynamic_cast<Actor*>(getParent());
         if (!attachment || !attachment->canCollide())
         {
             return;

@@ -2,6 +2,7 @@
 
 #include <new>
 
+#include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Script/Types.hpp"
 
 extern "C" {
@@ -65,7 +66,7 @@ namespace Chicane
         static int getActor(lua_State* inState)
         {
             Actor* actor = check(inState, 1)->actor;
-            if (!actor)
+            if (!actor || !Script::Handle::contains(actor))
             {
                 lua_pushnil(inState);
 

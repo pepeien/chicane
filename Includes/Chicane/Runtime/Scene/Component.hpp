@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Reflection.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -18,31 +17,21 @@ namespace Chicane
         CH_CONSTRUCTOR()
         Component();
 
-        ~Component() override;
-
     protected:
         inline virtual void onActivation() { return; }
         inline virtual void onDeactivation() { return; }
-        inline virtual void onAttachment(Object* inParent) { return; }
 
     public:
+        CH_FUNCTION()
         bool isActive() const;
+
+        CH_FUNCTION()
         void activate();
+
+        CH_FUNCTION()
         void deactivate();
 
-        bool isAttached() const;
-        template <class T = Object>
-        inline T* getParent() const
-        {
-            return static_cast<T*>(m_parent);
-        }
-        void attachTo(Object* inParent);
-        void detach();
-
-    public:
-        bool                m_bIsActive;
-
-        Object*             m_parent;
-        EventSubscription<> m_parentSubscription;
+    protected:
+        bool m_bIsActive;
     };
 }

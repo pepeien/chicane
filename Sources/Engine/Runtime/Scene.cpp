@@ -157,7 +157,10 @@ namespace Chicane
         }
 
         m_sceneScript = std::make_unique<SceneScript>(this);
-        m_sceneScript->load(script);
+        if (!m_sceneScript->load(script))
+        {
+            m_sceneScript.reset();
+        }
     }
 
     void Scene::save(const FileSystem::Path& inFilepath) const
@@ -191,7 +194,7 @@ namespace Chicane
             }
 
             bool bKeep = false;
-            for (Object* parent = component->getParent(); parent;)
+            for (Object* parent = component->getParent(); parent; parent = parent->getParent())
             {
                 if (parent->isTransient())
                 {
@@ -199,9 +202,6 @@ namespace Chicane
 
                     break;
                 }
-
-                Component* asComponent = dynamic_cast<Component*>(parent);
-                parent                 = asComponent ? asComponent->getParent() : nullptr;
             }
 
             if (bKeep)

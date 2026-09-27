@@ -10,6 +10,7 @@
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
+#include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/Time.hpp"
 
@@ -577,10 +578,13 @@ namespace Chicane
               m_forSource({})
         {
             m_style.setParent(this);
+            Script::Handle::add(this);
         }
 
         Component::~Component()
         {
+            Script::Handle::remove(this);
+
             if (View* view = dynamic_cast<View*>(m_root))
             {
                 view->clearInteraction(this);

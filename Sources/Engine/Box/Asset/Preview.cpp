@@ -453,7 +453,6 @@ namespace Chicane
                 }
             }
 
-            // createFromSky always passes a batch even when model load failed; treat that as empty.
             if (!hasGeometry)
             {
                 if (inType != AssetType::Sky && inFaces.empty())

@@ -12,11 +12,9 @@ namespace Chicane
         struct CHICANE_KERB Gravity
         {
         public:
-            // Body gravity factor (multiplies world gravity).
             static constexpr float FactorNone = 0.0f;
             static constexpr float FactorFull = 1.0f;
 
-            // Surface gravitational acceleration magnitudes (m/s^2).
             static constexpr float Zero    = 0.0f;
             static constexpr float Mercury = 3.70f;
             static constexpr float Venus   = 8.87f;

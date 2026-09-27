@@ -108,7 +108,6 @@ namespace Editor
 
     private:
         void bindScene();
-        void bindScriptEvents();
         void requestOutlinerRebuild();
         void requestAttributesRebuild();
         void flushPendingRebuilds();
@@ -168,6 +167,7 @@ namespace Editor
         Chicane::String selectedAssetName;
 
     private:
+        Chicane::String                      m_activeWorkspace;
         std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;
         Chicane::Object*                     m_editingOutlinerItem;
         Chicane::String                      m_outlinerEditId;

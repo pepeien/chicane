@@ -19,13 +19,25 @@ namespace Chicane
         ACharacter();
 
     public:
+        CH_FUNCTION()
         void setMoveScale(float inScale);
+
+        CH_FUNCTION()
         void setMoveInput(float inForward, float inRight, float inUp = 0.0f);
+
+        CH_FUNCTION()
         void move(const Vec3& inDirection, float inScale);
+
+        CH_FUNCTION()
         void jump(float inSpeed = DEFAULT_JUMP_SPEED);
 
+        CH_FUNCTION()
         void addPitch(float inValue);
+
+        CH_FUNCTION()
         void addRoll(float inValue);
+
+        CH_FUNCTION()
         void addYaw(float inValue);
 
     protected:

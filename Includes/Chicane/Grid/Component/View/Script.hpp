@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Core/FileSystem/Path.hpp"
@@ -34,17 +35,30 @@ namespace Chicane
             void setOnTick(int inRef);
             void pushFind(lua_State* inState, const char* inSelector);
 
+            bool isBound() const;
+            std::uint64_t subscribe(const String& inName, int inRef);
+            void unsubscribe(std::uint64_t inToken);
+
             View* view() const;
             Script::Context& context();
 
         private:
             void bind();
+            void clearSubscriptions();
 
         private:
-            View*           m_view;
-            Script::Context m_context;
-            int             m_onLoad;
-            int             m_onTick;
+            struct Subscription
+            {
+                std::uint64_t token;
+                int           ref;
+            };
+
+            View*                     m_view;
+            Script::Context           m_context;
+            int                       m_onLoad;
+            int                       m_onTick;
+            bool                      m_bClosing;
+            std::vector<Subscription> m_subscriptions;
         };
     }
 }

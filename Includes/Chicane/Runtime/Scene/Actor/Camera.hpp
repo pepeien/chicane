@@ -19,7 +19,10 @@ namespace Chicane
         void onLoad() override;
 
     public:
+        CH_FUNCTION()
         void activate();
+
+        CH_FUNCTION()
         void deactivate();
 
     protected:

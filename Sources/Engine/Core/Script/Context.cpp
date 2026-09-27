@@ -173,6 +173,14 @@ namespace Chicane
             return pcall();
         }
 
+        static int traceback(lua_State* inState)
+        {
+            const char* message = lua_tostring(inState, 1);
+            luaL_traceback(inState, inState, message, 1);
+
+            return 1;
+        }
+
         bool Context::pcall(int inArgs, int inResults)
         {
             if (!m_state)
@@ -180,7 +188,12 @@ namespace Chicane
                 return false;
             }
 
-            const int error = lua_pcall(m_state, inArgs, inResults, 0);
+            const int handler = lua_gettop(m_state) - inArgs;
+            lua_pushcfunction(m_state, traceback);
+            lua_insert(m_state, handler);
+
+            const int error = lua_pcall(m_state, inArgs, inResults, handler);
+            lua_remove(m_state, handler);
             if (error != LUA_OK)
             {
                 reportError("Lua");

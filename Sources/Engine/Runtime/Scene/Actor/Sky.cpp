@@ -97,7 +97,7 @@ namespace Chicane
     {
         if (!m_sun)
         {
-            for (Component* attachment : getAttachments())
+            for (Object* attachment : getAttachments())
             {
                 if (CLight* light = dynamic_cast<CLight*>(attachment))
                 {

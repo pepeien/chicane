@@ -8,8 +8,7 @@ namespace Chicane
     {
         void bind(lua_State* inState)
         {
-            bindActor(inState);
-            bindComponent(inState);
+            bindObject(inState);
             bindTraceRequest(inState);
             bindTrace(inState);
         }

@@ -333,7 +333,7 @@ namespace Editor
 
         float fov    = 45.0f;
         float aspect = 1.0f;
-        for (Chicane::Component* attachment : character->getAttachments())
+        for (Chicane::Object* attachment : character->getAttachments())
         {
             Chicane::CCamera* camera = dynamic_cast<Chicane::CCamera*>(attachment);
             if (!camera)

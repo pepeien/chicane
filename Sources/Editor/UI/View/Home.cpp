@@ -258,7 +258,7 @@ namespace Editor
             return false;
         }
 
-        for (Chicane::Component* attachment : inObject->getAttachments())
+        for (Chicane::Object* attachment : inObject->getAttachments())
         {
             if (attachment && !attachment->isTransient())
             {
@@ -489,6 +489,7 @@ namespace Editor
           scaleState(STATE_IDLE),
           selectedFolderPath(Chicane::String::sEmpty()),
           selectedAssetName(Chicane::String::sEmpty()),
+          m_activeWorkspace(WORKSPACE_VIEWPORT),
           m_collapsedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
           m_outlinerEditId(Chicane::String::sEmpty()),
@@ -507,7 +508,6 @@ namespace Editor
         load("Assets/Editor/UI/Views/Home/Index.grid", "Assets/Editor/UI/Views/Home/Index.decal");
 
         bindScene();
-        bindScriptEvents();
     }
 
     void HomeView::tick(float inDeltaTime)
@@ -549,30 +549,6 @@ namespace Editor
 
         bind(Application::sInstance().getHomeScene());
         bind(Application::sInstance().getViewerScene());
-    }
-
-    void HomeView::bindScriptEvents()
-    {
-        subscribe("onWorkspaceViewport", [this](const Chicane::String&) { onWorkspaceViewport(); });
-        subscribe("onWorkspaceAssets", [this](const Chicane::String&) { onWorkspaceAssets(); });
-        subscribe("onTrackNew", [this](const Chicane::String&) { onTrackNew(); });
-        subscribe("onTrackOpen", [this](const Chicane::String&) { onTrackOpen(); });
-        subscribe("onTrackSave", [this](const Chicane::String&) { onTrackSave(); });
-        subscribe("onTrackSaveAs", [this](const Chicane::String&) { onTrackSaveAs(); });
-        subscribe("onGizmoTranslate", [this](const Chicane::String&) { onGizmoTranslate(); });
-        subscribe("onGizmoRotate", [this](const Chicane::String&) { onGizmoRotate(); });
-        subscribe("onGizmoScale", [this](const Chicane::String&) { onGizmoScale(); });
-        subscribe("onItemEdit", [this](const Chicane::String&) { onItemEdit(); });
-        subscribe("onItemDelete", [this](const Chicane::String&) { onItemDelete(); });
-        subscribe("onItemIdCommit", [this](const Chicane::String&) { onItemIdCommit(); });
-        subscribe("onAssetImport", [this](const Chicane::String&) { onAssetImport(); });
-        subscribe("onSpawnActor", [this](const Chicane::String&) { onSpawnActor(); });
-        subscribe("onSpawnMesh", [this](const Chicane::String&) { onSpawnMesh(); });
-        subscribe("onThemeSwitch", [this](const Chicane::String& inValue) { onThemeSwitch(inValue); });
-        subscribe("onSpawn", [this](const Chicane::String& inValue) { onSpawn(inValue); });
-        subscribe("onExplorerFolder", [this](const Chicane::String& inValue) { onExplorerFolder(inValue); });
-        subscribe("onExplorerAsset", [this](const Chicane::String& inValue) { onExplorerAsset(inValue); });
-        subscribe("onExplorerAssetDrop", [this](const Chicane::String& inValue) { onExplorerAssetDrop(inValue); });
     }
 
     void HomeView::onAssetImport()
@@ -727,16 +703,18 @@ namespace Editor
 
     void HomeView::setWorkspace(const Chicane::String& inValue)
     {
-        if (workspace.equals(inValue))
-        {
-            return;
-        }
-
         workspace            = inValue;
         bIsViewportWorkspace = workspace.equals(WORKSPACE_VIEWPORT);
         bIsAssetsWorkspace   = workspace.equals(WORKSPACE_ASSETS);
         viewportTabState     = bIsViewportWorkspace ? STATE_ACTIVE : STATE_IDLE;
         assetsTabState       = bIsAssetsWorkspace ? STATE_ACTIVE : STATE_IDLE;
+
+        if (m_activeWorkspace.equals(inValue))
+        {
+            return;
+        }
+
+        m_activeWorkspace = inValue;
 
         if (std::shared_ptr<Scene> home = Application::sInstance().getHomeScene())
         {
@@ -1193,7 +1171,7 @@ namespace Editor
             outlinerNodes.push_back(node);
         }
 
-        for (Chicane::Component* attachment : inObject->getAttachments())
+        for (Chicane::Object* attachment : inObject->getAttachments())
         {
             if (!attachment || attachment->isTransient())
             {
@@ -1209,18 +1187,13 @@ namespace Editor
         Chicane::Object* current = inItem;
         while (current)
         {
-            if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(current))
+            current = current->getParent();
+            if (!current)
             {
-                current = component->getParent();
-                if (current)
-                {
-                    m_collapsedOutlinerItems.erase(current);
-                }
-
-                continue;
+                break;
             }
 
-            break;
+            m_collapsedOutlinerItems.erase(current);
         }
     }
 

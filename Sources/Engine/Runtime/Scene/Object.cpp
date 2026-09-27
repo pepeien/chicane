@@ -6,6 +6,7 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
 #include "Chicane/Core/Reflection/Enum/Registry.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
@@ -15,7 +16,6 @@
 #include "Chicane/Drift.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
-#include "Chicane/Runtime/Scene/Component.hpp"
 
 namespace Chicane
 {
@@ -109,15 +109,22 @@ namespace Chicane
           m_bCanCollide(false),
           m_bIsTransient(false),
           m_id(""),
+          m_parent(nullptr),
+          m_parentSubscription({}),
           m_attachments({}),
           m_scene(nullptr),
           m_bIsSpatialDirty(true)
     {
         bindAttributes();
+        Script::Handle::add(this);
     }
 
     Object::~Object()
     {
+        Script::Handle::remove(this);
+
+        detach();
+
         while (!m_attachments.empty())
         {
             m_attachments.back()->detach();
@@ -293,9 +300,58 @@ namespace Chicane
         m_bIsTransient = inValue;
     }
 
-    const std::vector<Component*>& Object::getAttachments() const
+    bool Object::isAttached() const
+    {
+        return m_parent != nullptr;
+    }
+
+    Object* Object::getParent() const
+    {
+        return m_parent;
+    }
+
+    const std::vector<Object*>& Object::getAttachments() const
     {
         return m_attachments;
+    }
+
+    void Object::attachTo(Object* inParent)
+    {
+        if (!inParent || inParent == this)
+        {
+            return;
+        }
+
+        if (isAncestorOf(inParent))
+        {
+            return;
+        }
+
+        if (isAttached())
+        {
+            detach();
+        }
+
+        m_parent = inParent;
+        m_parent->addAttachment(this);
+
+        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
+
+        onAttachment(inParent);
+    }
+
+    void Object::detach()
+    {
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_parentSubscription.complete();
+
+        Object* parent = m_parent;
+        m_parent       = nullptr;
+        parent->removeAttachment(this);
     }
 
     void Object::notifyPropertyEdited(const String& inName)
@@ -358,30 +414,46 @@ namespace Chicane
         return true;
     }
 
-    void Object::addAttachment(Component* inComponent)
+    void Object::addAttachment(Object* inObject)
     {
-        if (!inComponent)
+        if (!inObject)
         {
             return;
         }
 
-        if (std::find(m_attachments.begin(), m_attachments.end(), inComponent) != m_attachments.end())
+        if (std::find(m_attachments.begin(), m_attachments.end(), inObject) != m_attachments.end())
         {
             return;
         }
 
-        m_attachments.push_back(inComponent);
+        m_attachments.push_back(inObject);
     }
 
-    void Object::removeAttachment(Component* inComponent)
+    void Object::removeAttachment(Object* inObject)
     {
-        auto found = std::find(m_attachments.begin(), m_attachments.end(), inComponent);
+        auto found = std::find(m_attachments.begin(), m_attachments.end(), inObject);
         if (found == m_attachments.end())
         {
             return;
         }
 
         m_attachments.erase(found);
+    }
+
+    bool Object::isAncestorOf(const Object* inObject) const
+    {
+        const Object* current = inObject ? inObject->m_parent : nullptr;
+        while (current)
+        {
+            if (current == this)
+            {
+                return true;
+            }
+
+            current = current->m_parent;
+        }
+
+        return false;
     }
 
     void Object::setScene(Scene* inScene)

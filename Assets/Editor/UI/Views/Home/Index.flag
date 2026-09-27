@@ -1,82 +1,130 @@
-Instance.onLoad(function()
-end)
+local ACTIVE = "active"
+local IDLE   = "idle"
+
+local function home()
+    return Instance.view()
+end
+
+local function applyWorkspace(name)
+    local view = home()
+    if not view then
+        return
+    end
+
+    local isViewport = name == "viewport"
+    view.workspace            = name
+    view.bIsViewportWorkspace = isViewport
+    view.bIsAssetsWorkspace   = not isViewport
+    view.viewportTabState     = isViewport and ACTIVE or IDLE
+    view.assetsTabState       = isViewport and IDLE or ACTIVE
+end
+
+local function applyGizmo(kind)
+    local view = home()
+    if not view then
+        return
+    end
+
+    view.translateState = kind == "translate" and ACTIVE or IDLE
+    view.rotateState    = kind == "rotate" and ACTIVE or IDLE
+    view.scaleState     = kind == "scale" and ACTIVE or IDLE
+end
 
 function onWorkspaceViewport()
-    Instance.send("onWorkspaceViewport")
+    applyWorkspace("viewport")
+    Instance.invoke("onWorkspaceViewport")
 end
 
 function onWorkspaceAssets()
-    Instance.send("onWorkspaceAssets")
-end
-
-function onTrackNew()
-    Instance.send("onTrackNew")
-end
-
-function onTrackOpen()
-    Instance.send("onTrackOpen")
-end
-
-function onTrackSave()
-    Instance.send("onTrackSave")
-end
-
-function onTrackSaveAs()
-    Instance.send("onTrackSaveAs")
-end
-
-function onGizmoTranslate()
-    Instance.send("onGizmoTranslate")
-end
-
-function onGizmoRotate()
-    Instance.send("onGizmoRotate")
-end
-
-function onGizmoScale()
-    Instance.send("onGizmoScale")
-end
-
-function onItemEdit()
-    Instance.send("onItemEdit")
-end
-
-function onItemDelete()
-    Instance.send("onItemDelete")
-end
-
-function onItemIdCommit()
-    Instance.send("onItemIdCommit")
-end
-
-function onAssetImport()
-    Instance.send("onAssetImport")
-end
-
-function onSpawnActor()
-    Instance.send("onSpawnActor")
-end
-
-function onSpawnMesh()
-    Instance.send("onSpawnMesh")
+    applyWorkspace("assets")
+    Instance.invoke("onWorkspaceAssets")
 end
 
 function onThemeSwitch(value)
-    Instance.send("onThemeSwitch", value or "")
+    local view = home()
+    if view then
+        view.theme = value or ""
+    end
 end
 
-function onSpawn(typeName)
-    Instance.send("onSpawn", typeName or "")
+function onGizmoTranslate()
+    applyGizmo("translate")
+    Instance.invoke("onGizmoTranslate")
+end
+
+function onGizmoRotate()
+    applyGizmo("rotate")
+    Instance.invoke("onGizmoRotate")
+end
+
+function onGizmoScale()
+    applyGizmo("scale")
+    Instance.invoke("onGizmoScale")
 end
 
 function onExplorerFolder(path)
-    Instance.send("onExplorerFolder", path or "")
+    local view = home()
+    if view then
+        view.selectedFolderPath = path or ""
+        view.selectedAssetName  = ""
+    end
 end
 
 function onExplorerAsset(name)
-    Instance.send("onExplorerAsset", name or "")
+    local view = home()
+    if view then
+        view.selectedAssetName = name or ""
+    end
+end
+
+function onAttributeCommit(name, value)
+    Instance.invoke("onAttributeCommit", name or "", value or "")
+end
+
+function onTrackNew()
+    Instance.invoke("onTrackNew")
+end
+
+function onTrackOpen()
+    Instance.invoke("onTrackOpen")
+end
+
+function onTrackSave()
+    Instance.invoke("onTrackSave")
+end
+
+function onTrackSaveAs()
+    Instance.invoke("onTrackSaveAs")
+end
+
+function onItemEdit()
+    Instance.invoke("onItemEdit")
+end
+
+function onItemDelete()
+    Instance.invoke("onItemDelete")
+end
+
+function onItemIdCommit()
+    Instance.invoke("onItemIdCommit")
+end
+
+function onAssetImport()
+    Instance.invoke("onAssetImport")
+end
+
+function onSpawnActor()
+    Instance.invoke("onSpawnActor")
+end
+
+function onSpawnMesh()
+    Instance.invoke("onSpawnMesh")
+end
+
+function onSpawn(typeName)
+    Instance.invoke("onSpawn", typeName or "")
 end
 
 function onExplorerAssetDrop(path)
-    Instance.send("onExplorerAssetDrop", path or "")
+    Instance.invoke("onExplorerAssetDrop", path or "")
 end

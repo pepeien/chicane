@@ -1,13 +1,11 @@
 #include "Shared.hpp"
 
+#include <exception>
 #include <typeinfo>
 
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
-#include "Chicane/Core/Script/Types.hpp"
-#include "Chicane/Runtime/Scene/Actor.hpp"
-#include "Chicane/Runtime/Scene/Component.hpp"
+#include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Runtime/Scene/Object.hpp"
-#include "Chicane/Runtime/Script/Types.hpp"
 
 namespace Chicane
 {
@@ -15,82 +13,29 @@ namespace Chicane
     {
         struct MethodBox
         {
-            void*                           instance;
+            Object*                         instance;
             const ReflectionTypeMethodInfo* method;
         };
 
-        static Actor* actorOf(lua_State* inState, int inIndex)
-        {
-            if (!isActor(inState, inIndex))
-            {
-                return nullptr;
-            }
-
-            return checkActor(inState, inIndex);
-        }
-
-        static Component* componentOf(lua_State* inState, int inIndex)
-        {
-            if (!isComponent(inState, inIndex))
-            {
-                return nullptr;
-            }
-
-            return checkComponent(inState, inIndex);
-        }
-
         static Object* objectOf(lua_State* inState, int inIndex)
         {
-            if (Actor* actor = actorOf(inState, inIndex))
-            {
-                return actor;
-            }
+            ObjectBox* box = testObjectBox(inState, inIndex);
 
-            return componentOf(inState, inIndex);
-        }
-
-        static int lookupMethod(lua_State* inState)
-        {
-            if (!lua_getmetatable(inState, 1))
-            {
-                return 0;
-            }
-
-            while (true)
-            {
-                lua_pushvalue(inState, 2);
-                lua_rawget(inState, -2);
-                if (!lua_isnil(inState, -1))
-                {
-                    lua_remove(inState, -2);
-
-                    return 1;
-                }
-
-                lua_pop(inState, 1);
-                if (!lua_getmetatable(inState, -1))
-                {
-                    lua_pop(inState, 1);
-
-                    return 0;
-                }
-
-                lua_remove(inState, -2);
-            }
+            return box && Script::Handle::contains(box->object) ? box->object : nullptr;
         }
 
         static int callMethod(lua_State* inState)
         {
             const MethodBox* box = static_cast<const MethodBox*>(lua_touserdata(inState, lua_upvalueindex(1)));
-            if (!box || !box->instance || !box->method)
+            if (!box || !box->instance || !box->method || !Script::Handle::contains(box->instance))
             {
                 return luaL_error(inState, "reflected method is no longer valid");
             }
 
-            int first = 1;
+            int cursor = 1;
             if (lua_gettop(inState) >= 1 && objectOf(inState, 1))
             {
-                first = 2;
+                cursor = 2;
             }
 
             ReflectionTypeMethodInfo::Params params;
@@ -98,7 +43,8 @@ namespace Chicane
             for (std::size_t i = 0; i < box->method->paramTypes.size(); i++)
             {
                 std::any value;
-                if (!Script::Types::readValue(inState, first + static_cast<int>(i), box->method->paramTypes[i], value))
+                int      consumed = 1;
+                if (!readReflectedValue(inState, cursor, box->method->paramTypes[i], value, consumed))
                 {
                     return luaL_error(
                         inState,
@@ -108,13 +54,21 @@ namespace Chicane
                     );
                 }
 
+                cursor += consumed;
                 params.push_back(std::move(value));
             }
 
-            return Script::Types::pushValue(inState, box->method->invoke(box->instance, params));
+            try
+            {
+                return pushReflectedValue(inState, *box->method, box->method->invoke(box->instance, params));
+            }
+            catch (const std::exception& error)
+            {
+                return luaL_error(inState, "%s failed: %s", box->method->name.toChar(), error.what());
+            }
         }
 
-        static int pushMethod(lua_State* inState, void* inInstance, const ReflectionTypeMethodInfo* inMethod)
+        static int pushMethod(lua_State* inState, Object* inInstance, const ReflectionTypeMethodInfo* inMethod)
         {
             MethodBox* box = static_cast<MethodBox*>(lua_newuserdatauv(inState, sizeof(MethodBox), 0));
             box->instance  = inInstance;
@@ -124,18 +78,42 @@ namespace Chicane
             return 1;
         }
 
-        int reflectedIndex(lua_State* inState)
+        static bool lookupMethod(lua_State* inState)
         {
-            if (lookupMethod(inState))
+            if (lua_getfield(inState, LUA_REGISTRYINDEX, METHODS_REGISTRY) != LUA_TTABLE)
             {
-                return 1;
+                lua_pop(inState, 1);
+
+                return false;
             }
 
+            lua_pushvalue(inState, 2);
+            lua_rawget(inState, -2);
+
+            if (lua_isnil(inState, -1))
+            {
+                lua_pop(inState, 2);
+
+                return false;
+            }
+
+            lua_remove(inState, -2);
+
+            return true;
+        }
+
+        int reflectedIndex(lua_State* inState)
+        {
             Object* object = objectOf(inState, 1);
             if (!object || lua_type(inState, 2) != LUA_TSTRING)
             {
                 lua_pushnil(inState);
 
+                return 1;
+            }
+
+            if (lookupMethod(inState))
+            {
                 return 1;
             }
 
@@ -152,6 +130,24 @@ namespace Chicane
             if (Script::Types::pushField(inState, accessor, object))
             {
                 return 1;
+            }
+
+            if (accessor.isValid() && accessor.size == sizeof(void*) && accessor.address(object))
+            {
+                void* pointee = *reinterpret_cast<void* const*>(accessor.address(object));
+                if (!pointee)
+                {
+                    lua_pushnil(inState);
+
+                    return 1;
+                }
+
+                if (Script::Handle::contains(pointee))
+                {
+                    pushObject(inState, static_cast<Object*>(pointee));
+
+                    return 1;
+                }
             }
 
             if (const ReflectionTypeMethodInfo* method = type->findMethod(key))
@@ -180,14 +176,28 @@ namespace Chicane
             }
 
             const ReflectionFieldAccessor accessor = type->resolve(key);
-            if (!Script::Types::setField(inState, accessor, object, 3))
+            if (Script::Types::setField(inState, accessor, object, 3))
             {
-                return luaL_error(inState, "unknown property '%s'", key);
+                object->notifyPropertyEdited(key);
+
+                return 0;
             }
 
-            object->notifyPropertyEdited(key);
+            if (accessor.isValid() && accessor.size == sizeof(void*) && accessor.address(object))
+            {
+                Object* value = nullptr;
+                if (!lua_isnoneornil(inState, 3))
+                {
+                    value = checkObject(inState, 3);
+                }
 
-            return 0;
+                *reinterpret_cast<void**>(accessor.address(object)) = value;
+                object->notifyPropertyEdited(key);
+
+                return 0;
+            }
+
+            return luaL_error(inState, "unknown property '%s'", key);
         }
     }
 }

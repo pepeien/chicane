@@ -9,11 +9,16 @@ namespace Chicane
           light(nullptr)
     {}
 
+    Component* ALight::getLight() const
+    {
+        return light;
+    }
+
     void ALight::onLoad()
     {
         if (!light)
         {
-            for (Component* attachment : getAttachments())
+            for (Object* attachment : getAttachments())
             {
                 if (CLight* existing = dynamic_cast<CLight*>(attachment))
                 {

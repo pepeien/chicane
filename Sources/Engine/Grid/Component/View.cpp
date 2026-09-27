@@ -173,7 +173,10 @@ namespace Chicane
             }
 
             m_viewScript = std::make_unique<ViewScript>(this);
-            m_viewScript->load(script);
+            if (!m_viewScript->load(script))
+            {
+                m_viewScript.reset();
+            }
         }
 
         std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const

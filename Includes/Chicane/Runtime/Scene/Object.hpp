@@ -3,6 +3,7 @@
 #include <atomic>
 #include <vector>
 
+#include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Serializable.hpp"
 #include "Chicane/Core/String.hpp"
@@ -13,13 +14,11 @@
 namespace Chicane
 {
     class Scene;
-    class Component;
 
     CH_TYPE(Manual)
     class CHICANE_RUNTIME Object : public Transformable, public Serializable
     {
         friend Scene;
-        friend Component;
 
     public:
         // Attributes
@@ -44,6 +43,7 @@ namespace Chicane
         inline virtual void onUnload() { return; }
         inline virtual void onTick(float inDeltaTime) { return; }
         inline virtual void onPropertyEdited(const String& inName) { (void)inName; }
+        inline virtual void onAttachment(Object* inParent) { (void)inParent; }
 
     public:
         CH_FUNCTION()
@@ -62,6 +62,7 @@ namespace Chicane
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
 
+        CH_FUNCTION()
         void setId(const String& inId);
 
         void setIsTransient(bool inValue);
@@ -69,7 +70,20 @@ namespace Chicane
         void notifyPropertyEdited(const String& inName);
         bool applySerializedField(const String& inName, const String& inValue);
 
-        const std::vector<Component*>& getAttachments() const;
+        CH_FUNCTION()
+        bool isAttached() const;
+
+        CH_FUNCTION()
+        Object* getParent() const;
+
+        CH_FUNCTION()
+        const std::vector<Object*>& getAttachments() const;
+
+        CH_FUNCTION()
+        void attachTo(Object* inParent);
+
+        CH_FUNCTION()
+        void detach();
 
     protected:
         void bindAttributes();
@@ -89,17 +103,20 @@ namespace Chicane
         void setScene(Scene* inScene);
         void markSpatialDirty();
         bool consumeSpatialDirty();
-        void addAttachment(Component* inComponent);
-        void removeAttachment(Component* inComponent);
+        void addAttachment(Object* inObject);
+        void removeAttachment(Object* inObject);
+        bool isAncestorOf(const Object* inObject) const;
 
     protected:
-        bool                    m_bCanTick;
-        bool                    m_bCanCollide;
-        bool                    m_bIsTransient;
+        bool                 m_bCanTick;
+        bool                 m_bCanCollide;
+        bool                 m_bIsTransient;
 
-        String                  m_id;
+        String               m_id;
 
-        std::vector<Component*> m_attachments;
+        Object*              m_parent;
+        EventSubscription<>  m_parentSubscription;
+        std::vector<Object*> m_attachments;
 
     private:
         Scene*            m_scene;

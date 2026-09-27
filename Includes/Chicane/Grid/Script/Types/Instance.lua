@@ -13,6 +13,13 @@ function Instance.onTick(fn) end
 ---@return Component|nil
 function Instance.find(selector) end
 
+---@return Component|nil
+function Instance.view() end
+
+---@param name string
+---@param ... any
+function Instance.invoke(name, ...) end
+
 ---@param text string
 function Instance.Log(text) end
 

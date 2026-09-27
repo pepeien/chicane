@@ -276,22 +276,7 @@ namespace Chicane
         lua_pushvalue(inState, 2);
         const int ref = host->context().ref();
 
-        const std::uint64_t token = host->scene()->subscribe(
-            name,
-            [host, ref](const String& inData)
-            {
-                if (!host->context().isOpen())
-                {
-                    return;
-                }
-
-                lua_State* state = host->context().state();
-                lua_pushstring(state, inData.toChar());
-                host->context().callRef(ref, 1);
-            }
-        );
-
-        lua_pushinteger(inState, static_cast<lua_Integer>(token));
+        lua_pushinteger(inState, static_cast<lua_Integer>(host->subscribe(name, ref)));
 
         return 1;
     }
@@ -299,9 +284,9 @@ namespace Chicane
     static int instanceUnsubscribe(lua_State* inState)
     {
         SceneScript* host = hostFrom(inState);
-        if (host && host->scene())
+        if (host)
         {
-            host->scene()->unsubscribe(static_cast<std::uint64_t>(luaL_checkinteger(inState, 1)));
+            host->unsubscribe(static_cast<std::uint64_t>(luaL_checkinteger(inState, 1)));
         }
 
         return 0;
@@ -340,11 +325,15 @@ namespace Chicane
         : m_scene(inScene),
           m_context(),
           m_onLoad(LUA_NOREF),
-          m_onTick(LUA_NOREF)
+          m_onTick(LUA_NOREF),
+          m_bClosing(false),
+          m_subscriptions({})
     {}
 
     SceneScript::~SceneScript()
     {
+        m_bClosing = true;
+        clearSubscriptions();
         m_context.close();
     }
 
@@ -392,6 +381,76 @@ namespace Chicane
     Script::Context& SceneScript::context()
     {
         return m_context;
+    }
+
+    bool SceneScript::isBound() const
+    {
+        return !m_bClosing && m_context.isOpen();
+    }
+
+    std::uint64_t SceneScript::subscribe(const String& inName, int inRef)
+    {
+        if (!m_scene || !isBound())
+        {
+            m_context.unref(inRef);
+
+            return 0;
+        }
+
+        const std::uint64_t token = m_scene->subscribe(
+            inName,
+            [this, inRef](const String& inData)
+            {
+                if (!isBound())
+                {
+                    return;
+                }
+
+                lua_State* state = m_context.state();
+                lua_pushstring(state, inData.toChar());
+                m_context.callRef(inRef, 1);
+            }
+        );
+
+        m_subscriptions.push_back({token, inRef});
+
+        return token;
+    }
+
+    void SceneScript::unsubscribe(std::uint64_t inToken)
+    {
+        if (m_scene)
+        {
+            m_scene->unsubscribe(inToken);
+        }
+
+        for (auto it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
+        {
+            if (it->token != inToken)
+            {
+                continue;
+            }
+
+            m_context.unref(it->ref);
+            m_subscriptions.erase(it);
+
+            return;
+        }
+    }
+
+    void SceneScript::clearSubscriptions()
+    {
+        for (const Subscription& subscription : m_subscriptions)
+        {
+            if (m_scene)
+            {
+                m_scene->unsubscribe(subscription.token);
+            }
+
+            m_context.unref(subscription.ref);
+        }
+
+        m_subscriptions.clear();
     }
 
     void SceneScript::setOnLoad(int inRef)

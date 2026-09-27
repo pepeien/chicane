@@ -420,17 +420,29 @@ namespace Chicane
                 continue;
             }
 
-            const std::vector<Component*> attachments = actor->getAttachments();
-            for (Component* component : attachments)
+            const std::vector<Object*> attachments = actor->getAttachments();
+            for (Object* attachment : attachments)
             {
-                if (!component)
+                if (!attachment)
                 {
                     continue;
                 }
 
-                component->detach();
-                inScene.removeComponent(component);
-                delete component;
+                attachment->detach();
+
+                if (Actor* attachedActor = dynamic_cast<Actor*>(attachment))
+                {
+                    inScene.removeActor(attachedActor);
+                    delete attachedActor;
+
+                    continue;
+                }
+
+                if (Component* component = dynamic_cast<Component*>(attachment))
+                {
+                    inScene.removeComponent(component);
+                    delete component;
+                }
             }
 
             inScene.removeActor(actor);

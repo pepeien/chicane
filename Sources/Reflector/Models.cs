@@ -31,7 +31,10 @@ namespace Reflector
         List<FunctionModel> Functions,
         List<FieldModel> Fields,
         string Group,
-        string Description
+        string Description,
+        List<string> Bases,
+        List<FunctionModel> OwnFunctions,
+        List<FieldModel> OwnFields
     )
     {
         public bool Resolved { get; set; } = false;

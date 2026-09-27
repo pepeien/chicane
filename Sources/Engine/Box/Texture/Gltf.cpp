@@ -299,7 +299,6 @@ namespace Chicane
                         material.pbr_metallic_roughness.base_color_texture.index
                     );
                     assignMap(maps, TextureMaterial::Normal, model, material.normal_texture.index);
-                    // glTF packs AO in R (when shared), roughness in G, metalness in B.
                     assignMap(
                         maps,
                         TextureMaterial::Roughness,

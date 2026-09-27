@@ -42,6 +42,51 @@ class Program
         File.WriteAllLines(path, lines);
     }
 
+    // The scene object root, whose descendants are the types scripts can hold
+    const string SceneObjectRoot = "Chicane::Object";
+
+    static HashSet<string> CollectSceneObjects(List<Reflector.TypeModel> types)
+    {
+        Dictionary<string, Reflector.TypeModel> byName = new(StringComparer.Ordinal);
+
+        foreach (Reflector.TypeModel type in types)
+        {
+            byName.TryAdd(type.Name, type);
+        }
+
+        HashSet<string> found = new(StringComparer.Ordinal);
+
+        bool Derives(string name, HashSet<string> seen)
+        {
+            if (name == SceneObjectRoot)
+            {
+                return true;
+            }
+
+            if (found.Contains(name))
+            {
+                return true;
+            }
+
+            if (!seen.Add(name) || !byName.TryGetValue(name, out Reflector.TypeModel? type))
+            {
+                return false;
+            }
+
+            return type.Bases.Any(b => Derives(b, seen));
+        }
+
+        foreach (Reflector.TypeModel type in types)
+        {
+            if (Derives(type.Name, []))
+            {
+                found.Add(type.Name);
+            }
+        }
+
+        return found;
+    }
+
     static int Main(string[] args)
     {
         List<string> inputFiles = [];
@@ -52,6 +97,7 @@ class Program
         string outputDir = "";
         string typesDir = "";
         string targetName = "";
+        string luaDir = "";
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -209,6 +255,20 @@ class Program
 
                     break;
 
+                case "-u":
+                    if (i + 1 < args.Length)
+                    {
+                        luaDir = Path.GetFullPath(args[++i]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: -u requires a Lua output folder path.");
+
+                        return 1;
+                    }
+
+                    break;
+
                 default:
                     break;
             }
@@ -216,7 +276,7 @@ class Program
 
         if (inputFiles.Count == 0 || string.IsNullOrEmpty(baseDir) || string.IsNullOrEmpty(outputDir))
         {
-            Console.WriteLine("Usage: program (-i <input files> | -f <inputs list>) -b <base folder> -s <source folder> -o <output folder> [-l <look-up folders>] [-L <includes list>] [-t <types dir> -n <target name>]");
+            Console.WriteLine("Usage: program (-i <input files> | -f <inputs list>) -b <base folder> -s <source folder> -o <output folder> [-l <look-up folders>] [-L <includes list>] [-t <types dir> -n <target name>] [-u <lua stubs dir>]");
 
             return 1;
         }
@@ -246,6 +306,12 @@ class Program
             }
         }
 
+        HashSet<string> sceneObjects = CollectSceneObjects(flatTypes);
+        HashSet<string> enumNames = new(
+            allEnums.Values.SelectMany(e => e).Select(e => e.Name),
+            StringComparer.Ordinal
+        );
+
         Parallel.ForEach(
             inputFiles,
             file =>
@@ -267,6 +333,23 @@ class Program
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
                 File.WriteAllText(outputPath, Reflector.Emitter.Emit(file, types, enums, reflectedTypeNames, baseDir));
+
+                if (string.IsNullOrEmpty(luaDir))
+                {
+                    return;
+                }
+
+                string? stub = Reflector.Lua.Emit(types, enums, sceneObjects, enumNames);
+                if (stub is null)
+                {
+                    return;
+                }
+
+                string luaPath = Path.Combine(luaDir, directory, $"{baseName}.lua");
+
+                Directory.CreateDirectory(Path.GetDirectoryName(luaPath)!);
+
+                File.WriteAllText(luaPath, stub);
             }
         );
 

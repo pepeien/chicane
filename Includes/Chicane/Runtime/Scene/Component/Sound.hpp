@@ -25,7 +25,10 @@ namespace Chicane
         void onPropertyEdited(const String& inName) override;
 
     public:
+        CH_FUNCTION()
         void load(const FileSystem::Path& inFilePath);
+
+        CH_FUNCTION()
         void play();
 
     public:

@@ -27,7 +27,9 @@ namespace Chicane
         virtual void onInput() { return; }
 
     public:
+        CH_FUNCTION()
         bool isControlled() const;
+
         template <class T = Controller>
         T* getController() const
         {

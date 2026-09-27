@@ -22,4 +22,5 @@ function Component:isVisible() end
 function Component:setVisible(visible) end
 
 ---@param name string
-function Component:invoke(name) end
+---@param ... any
+function Component:invoke(name, ...) end

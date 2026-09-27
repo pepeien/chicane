@@ -19,6 +19,10 @@ namespace Chicane
         void onLoad() override;
 
     public:
+        CH_FUNCTION()
+        Component* getLight() const;
+
+    public:
         CH_FIELD(Group = "Light")
         CLight* light;
     };

@@ -179,7 +179,7 @@ namespace Editor
                 camera->deactivate();
             }
 
-            for (Chicane::Component* attachment : character->getAttachments())
+            for (Chicane::Object* attachment : character->getAttachments())
             {
                 Chicane::CCamera* camera = dynamic_cast<Chicane::CCamera*>(attachment);
                 if (!camera)

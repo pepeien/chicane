@@ -107,11 +107,13 @@ namespace Editor
             return;
         }
 
-        const std::vector<Chicane::Component*> attachments = inObject->getAttachments();
-        for (Chicane::Component* child : attachments)
+        const std::vector<Chicane::Object*> attachments = inObject->getAttachments();
+        for (Chicane::Object* child : attachments)
         {
             destroyObjectTree(child);
         }
+
+        inObject->detach();
 
         if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
         {
@@ -123,7 +125,6 @@ namespace Editor
 
         if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
         {
-            component->detach();
             removeComponent(component);
             delete component;
         }

@@ -1,7 +1,13 @@
 #include "Chicane/Grid/Component/View/Script.hpp"
 
+#include <any>
+#include <exception>
+
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Reflection/Type/Method.hpp"
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Channel.hpp"
+#include "Chicane/Core/Script/Types.hpp"
 
 #include "Chicane/Grid/Component/View.hpp"
 #include "Chicane/Grid/Script/Types.hpp"
@@ -72,6 +78,72 @@ namespace Chicane
             return 1;
         }
 
+        static int instanceView(lua_State* inState)
+        {
+            ViewScript* host = hostFrom(inState);
+            if (!host || !host->view())
+            {
+                lua_pushnil(inState);
+
+                return 1;
+            }
+
+            Types::pushComponent(inState, host->view());
+
+            return 1;
+        }
+
+        static int instanceInvoke(lua_State* inState)
+        {
+            ViewScript* host = hostFrom(inState);
+            const char* name = luaL_checkstring(inState, 1);
+            if (!host || !host->view())
+            {
+                return 0;
+            }
+
+            View*                     view = host->view();
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*view));
+            if (!type)
+            {
+                return 0;
+            }
+
+            const ReflectionTypeMethodInfo* method = type->findMethod(name);
+            if (!method)
+            {
+                return luaL_error(inState, "unknown method '%s'", name);
+            }
+
+            ReflectionTypeMethod result(method);
+            result.bind(view);
+
+            for (std::size_t i = 0; i < method->paramTypes.size(); i++)
+            {
+                std::any value;
+                if (!Script::Types::readValue(inState, 2 + static_cast<int>(i), method->paramTypes[i], value))
+                {
+                    return luaL_error(
+                        inState,
+                        "invalid argument %d for %s",
+                        static_cast<int>(i) + 1,
+                        method->name.toChar()
+                    );
+                }
+
+                result.addParam(std::move(value));
+            }
+
+            try
+            {
+                return Script::Types::pushValue(inState, result.invoke());
+            }
+            catch (const std::exception& error)
+            {
+                return luaL_error(inState, "%s failed: %s", method->name.toChar(), error.what());
+            }
+        }
+
         static int instanceLog(lua_State* inState)
         {
             Log::emmit(Color::HEX_COLOR_LIME, "Flag", "%s", luaL_checkstring(inState, 1));
@@ -94,22 +166,7 @@ namespace Chicane
             lua_pushvalue(inState, 2);
             const int ref = host->context().ref();
 
-            const std::uint64_t token = host->view()->subscribe(
-                name,
-                [host, ref](const String& inData)
-                {
-                    if (!host->context().isOpen())
-                    {
-                        return;
-                    }
-
-                    lua_State* state = host->context().state();
-                    lua_pushstring(state, inData.toChar());
-                    host->context().callRef(ref, 1);
-                }
-            );
-
-            lua_pushinteger(inState, static_cast<lua_Integer>(token));
+            lua_pushinteger(inState, static_cast<lua_Integer>(host->subscribe(name, ref)));
 
             return 1;
         }
@@ -117,9 +174,9 @@ namespace Chicane
         static int instanceUnsubscribe(lua_State* inState)
         {
             ViewScript* host = hostFrom(inState);
-            if (host && host->view())
+            if (host)
             {
-                host->view()->unsubscribe(static_cast<std::uint64_t>(luaL_checkinteger(inState, 1)));
+                host->unsubscribe(static_cast<std::uint64_t>(luaL_checkinteger(inState, 1)));
             }
 
             return 0;
@@ -142,6 +199,8 @@ namespace Chicane
             {"onLoad",      instanceOnLoad     },
             {"onTick",      instanceOnTick     },
             {"find",        instanceFind       },
+            {"view",        instanceView       },
+            {"invoke",      instanceInvoke     },
             {"Log",         instanceLog        },
             {"subscribe",   instanceSubscribe  },
             {"unsubscribe", instanceUnsubscribe},
@@ -153,11 +212,15 @@ namespace Chicane
             : m_view(inView),
               m_context(),
               m_onLoad(LUA_NOREF),
-              m_onTick(LUA_NOREF)
+              m_onTick(LUA_NOREF),
+              m_bClosing(false),
+              m_subscriptions({})
         {}
 
         ViewScript::~ViewScript()
         {
+            m_bClosing = true;
+            clearSubscriptions();
             m_context.close();
         }
 
@@ -216,6 +279,76 @@ namespace Chicane
         Script::Context& ViewScript::context()
         {
             return m_context;
+        }
+
+        bool ViewScript::isBound() const
+        {
+            return !m_bClosing && m_context.isOpen();
+        }
+
+        std::uint64_t ViewScript::subscribe(const String& inName, int inRef)
+        {
+            if (!m_view || !isBound())
+            {
+                m_context.unref(inRef);
+
+                return 0;
+            }
+
+            const std::uint64_t token = m_view->subscribe(
+                inName,
+                [this, inRef](const String& inData)
+                {
+                    if (!isBound())
+                    {
+                        return;
+                    }
+
+                    lua_State* state = m_context.state();
+                    lua_pushstring(state, inData.toChar());
+                    m_context.callRef(inRef, 1);
+                }
+            );
+
+            m_subscriptions.push_back({token, inRef});
+
+            return token;
+        }
+
+        void ViewScript::unsubscribe(std::uint64_t inToken)
+        {
+            if (m_view)
+            {
+                m_view->unsubscribe(inToken);
+            }
+
+            for (auto it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
+            {
+                if (it->token != inToken)
+                {
+                    continue;
+                }
+
+                m_context.unref(it->ref);
+                m_subscriptions.erase(it);
+
+                return;
+            }
+        }
+
+        void ViewScript::clearSubscriptions()
+        {
+            for (const Subscription& subscription : m_subscriptions)
+            {
+                if (m_view)
+                {
+                    m_view->unsubscribe(subscription.token);
+                }
+
+                m_context.unref(subscription.ref);
+            }
+
+            m_subscriptions.clear();
         }
 
         void ViewScript::setOnLoad(int inRef)

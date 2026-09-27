@@ -43,8 +43,12 @@ namespace Chicane
     public:
         bool isDrawable() const;
 
+        CH_FUNCTION()
         bool hasMesh() const;
+
+        CH_FUNCTION()
         void setMesh(const FileSystem::Path& inFilePath);
+
         const Box::Mesh* getMesh() const;
 
         bool hasSkeleton() const;
@@ -63,10 +67,19 @@ namespace Chicane
         void removeAnimation(const String& inId);
         void clearAnimations();
 
+        CH_FUNCTION()
         void playAnimation(const String& inId);
+
+        CH_FUNCTION()
         void queueAnimation(const String& inId);
+
+        CH_FUNCTION()
         void stopAnimation();
+
+        CH_FUNCTION()
         bool isPlayingAnimation() const;
+
+        CH_FUNCTION()
         const String& getPlayingAnimation() const;
 
         Mat4 getGroupMatrix(const Box::MeshGroup& inGroup) const;
@@ -75,9 +88,13 @@ namespace Chicane
         void setFlags(Renderer::DrawPoly3DFlag inValue);
 
         bool canCastShadows() const;
+
+        CH_FUNCTION()
         void setCanCastShadows(bool inValue);
 
         bool isLit() const;
+
+        CH_FUNCTION()
         void setIsLit(bool inValue);
 
         bool isForeground() const;

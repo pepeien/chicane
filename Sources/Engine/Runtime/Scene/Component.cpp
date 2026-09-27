@@ -1,20 +1,11 @@
 #include "Chicane/Runtime/Scene/Component.reflected.hpp"
 
-#include "Chicane/Runtime/Scene.hpp"
-
 namespace Chicane
 {
     Component::Component()
         : Object(),
-          m_bIsActive(false),
-          m_parent(nullptr),
-          m_parentSubscription({})
+          m_bIsActive(false)
     {}
-
-    Component::~Component()
-    {
-        detach();
-    }
 
     bool Component::isActive() const
     {
@@ -33,44 +24,5 @@ namespace Chicane
         m_bIsActive = false;
 
         onDeactivation();
-    }
-
-    bool Component::isAttached() const
-    {
-        return m_parent != nullptr;
-    }
-
-    void Component::attachTo(Object* inParent)
-    {
-        if (!inParent || inParent == this)
-        {
-            return;
-        }
-
-        if (isAttached())
-        {
-            detach();
-        }
-
-        m_parent = inParent;
-        m_parent->addAttachment(this);
-
-        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
-
-        onAttachment(inParent);
-    }
-
-    void Component::detach()
-    {
-        if (!isAttached())
-        {
-            return;
-        }
-
-        m_parentSubscription.complete();
-
-        Object* parent = m_parent;
-        m_parent       = nullptr;
-        parent->removeAttachment(this);
     }
 }

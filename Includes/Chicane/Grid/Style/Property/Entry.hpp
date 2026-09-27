@@ -14,8 +14,6 @@ namespace Chicane
         struct CHICANE_GRID StylePropertyEntry
         {
         public:
-            // `read` reports whether the property currently takes part in animations
-            // `auto` sizes and unset origins
             using Read  = bool (*)(const Style& inStyle, float* outValues);
             using Write = void (*)(Style& outStyle, const float* inValues);
 
