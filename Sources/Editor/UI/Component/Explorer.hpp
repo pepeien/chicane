@@ -41,6 +41,7 @@ namespace Editor
 
     public:
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
+        void tick(float inDeltaTime) override;
 
     protected:
         void onTick(float inDeltaTime) override;
@@ -54,11 +55,13 @@ namespace Editor
 
         CH_FUNCTION()
         void onLayoutHorizontal();
+
         CH_FUNCTION()
         void onLayoutVertical();
 
         CH_FUNCTION()
         void onSortMatch();
+
         CH_FUNCTION()
         void onSortName();
 
@@ -111,6 +114,7 @@ namespace Editor
     public:
         CH_FIELD()
         Chicane::FileSystem::Item explorerFolder;
+
         CH_FIELD()
         Chicane::FileSystem::Item::List gridItems;
 
@@ -119,6 +123,7 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String searchQuery;
+
         CH_FIELD()
         bool isSearchEmpty;
 
@@ -127,25 +132,31 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String layout;
+
         CH_FIELD()
         Chicane::String layoutHorizontalState;
+
         CH_FIELD()
         Chicane::String layoutVerticalState;
 
         CH_FIELD()
         Chicane::String sortBy;
+
         CH_FIELD()
         Chicane::String sortMatchState;
+
         CH_FIELD()
         Chicane::String sortNameState;
 
         CH_FIELD()
         Chicane::String iconSize;
+
         CH_FIELD()
         float iconSizePercent;
 
         CH_FIELD()
         Chicane::String selectedFolderPath;
+
         CH_FIELD()
         Chicane::String selectedAssetName;
 

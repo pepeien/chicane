@@ -1,5 +1,5 @@
 <Track version="1" id="Default">
-    <ASky id="Sky" sky="Assets/Engine/Skies/Preview.bsky" intensity="1.0" exposure="1.4" visible="false">
+    <ASky id="Sky" sky="Assets/Engine/Skies/Preview.bsky" intensity="2.0" exposure="1.4" visible="false">
         <CLight id="Environment" type="Environment" intensity="1.0" color="1,1,1" castShadows="false"/>
     </ASky>
     <ALight id="Key" absoluteTranslation="-6.5,10.0,9.0">

@@ -1,4 +1,4 @@
-$contentPadding: 0.5em;
+$contentPadding: 0.35em;
 $contentPaddingDouble: calc($contentPadding * 2);
 
 .--light {
@@ -6,8 +6,7 @@ $contentPaddingDouble: calc($contentPadding * 2);
     $--orange: #d4a017;
 
     $--gray: #aaaaaa;
-    $--lighter-gray: #877c7c;
-    $--lighter-gray: #524e4e;
+    $--lighter-gray: #6b6262;
     $--light-gray: #423e3e;
     $--dark-gray: #323232;
 
@@ -20,7 +19,7 @@ $contentPaddingDouble: calc($contentPadding * 2);
     $--orange: #d4a017;
 
     $--gray: #aaaaaa;
-    $--lighter-gray: #524e4e;
+    $--lighter-gray: #6b6262;
     $--light-gray: #423e3e;
     $--dark-gray: #323232;
 
@@ -38,7 +37,7 @@ $contentPaddingDouble: calc($contentPadding * 2);
         width: 100%;
         height: 100%;
         padding: $contentPadding;
-        gap: 0.5em;
+        gap: $contentPadding;
         background-color: $--light-gray;
 
         Text {
@@ -76,6 +75,10 @@ $contentPaddingDouble: calc($contentPadding * 2);
             width: 100%;
             height: 100%;
             overflow: hidden;
+        }
+
+        Editor::Console {
+            escape: true;
         }
 
         Editor::AssetManager {

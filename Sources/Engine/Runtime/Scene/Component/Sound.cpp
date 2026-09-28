@@ -9,7 +9,19 @@ namespace Chicane
         : Component(),
           sound(),
           m_instance()
-    {}
+    {
+        applyDefaultBounds();
+    }
+
+    void CSound::onAttachment(Object* inParent)
+    {
+        if (!inParent)
+        {
+            return;
+        }
+
+        inParent->addBounds(getBounds());
+    }
 
     void CSound::onPropertyEdited(const String& inName)
     {

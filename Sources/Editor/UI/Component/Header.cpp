@@ -27,12 +27,15 @@ namespace Editor
           m_moveWindow(nullptr),
           m_moveHitMutex(),
           m_moveBounds({}),
-          m_moveControls({})
+          m_moveControls({}),
+          m_moveOverlays({})
     {
         import <Logo>();
         import <HeaderMenu>();
 
         load("Assets/Editor/UI/Components/Header/Index.grid", "Assets/Editor/UI/Components/Header/Index.decal");
+
+        setAttribute(Chicane::Grid::Component::FOCUSABLE_ATTRIBUTE_NAME, "true");
 
         initFileMenu();
         initSettingsMenu();
@@ -45,11 +48,6 @@ namespace Editor
     Header::~Header()
     {
         unbindMoveHitTest();
-    }
-
-    bool Header::isFocusable() const
-    {
-        return true;
     }
 
     bool Header::onEvent(const Chicane::WindowEvent& inEvent)
@@ -191,6 +189,7 @@ namespace Editor
     {
         Chicane::Bounds2D              bounds;
         std::vector<Chicane::Bounds2D> controls;
+        std::vector<Chicane::Bounds2D> overlays;
 
         if (isDisplayable())
         {
@@ -209,11 +208,41 @@ namespace Editor
                     controls.push_back(box);
                 }
             }
+
+            if (Chicane::Grid::Component* root = getRoot())
+            {
+                const float headerDepth = getDepth();
+
+                for (Chicane::Grid::Component* child : root->getChildrenFlat())
+                {
+                    if (!child || child == this || !child->isDisplayable() || containsNode(child))
+                    {
+                        continue;
+                    }
+
+                    if (!child->getStyle().isPositioned() && !child->escapesOverflow())
+                    {
+                        continue;
+                    }
+
+                    if (child->getDepth() <= headerDepth)
+                    {
+                        continue;
+                    }
+
+                    const Chicane::Bounds2D box = child->getDrawBounds();
+                    if (!box.isEmpty())
+                    {
+                        overlays.push_back(box);
+                    }
+                }
+            }
         }
 
         std::lock_guard<std::mutex> lock(m_moveHitMutex);
         m_moveBounds   = bounds;
         m_moveControls = std::move(controls);
+        m_moveOverlays = std::move(overlays);
     }
 
     bool Header::isMoveRegion(int inX, int inY) const
@@ -231,6 +260,14 @@ namespace Editor
         }
 
         for (const Chicane::Bounds2D& box : m_moveControls)
+        {
+            if (box.contains(location))
+            {
+                return false;
+            }
+        }
+
+        for (const Chicane::Bounds2D& box : m_moveOverlays)
         {
             if (box.contains(location))
             {

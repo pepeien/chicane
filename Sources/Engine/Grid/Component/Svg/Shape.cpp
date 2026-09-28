@@ -28,7 +28,7 @@ namespace Chicane
 
         void SvgShape::configure(const Primitive& inPrimitive, const Color::Rgba& inColor)
         {
-            m_style.background.color.set(inColor);
+            style.background.color.set(inColor);
 
             setPrimitive(inPrimitive);
         }
@@ -91,7 +91,7 @@ namespace Chicane
 
             setSize(0.0f, 0.0f);
 
-            m_style.background.color.set(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT));
+            style.background.color.set(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT));
         }
     }
 }

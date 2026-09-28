@@ -1,3 +1,7 @@
+Editor::Toolbar {
+    escape: true;
+}
+
 .toolbar {
     display: flex;
     flex-direction: column;

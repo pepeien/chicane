@@ -262,16 +262,6 @@ namespace Chicane
             refreshWheel();
         }
 
-        bool InputColor::isFocusable() const
-        {
-            return false;
-        }
-
-        bool InputColor::escapesOverflow() const
-        {
-            return isOpen;
-        }
-
         bool InputColor::onEvent(const WindowEvent& inEvent)
         {
             if (inEvent.type == WindowEventType::MouseButtonUp)
@@ -289,24 +279,8 @@ namespace Chicane
                     const Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
                     if (event.button == Input::MouseButton::Left)
                     {
-                        Component* hit     = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
-                        bool       bInside = false;
-                        for (Component* node = hit; node != nullptr; node = node->getParent())
-                        {
-                            if (node == this)
-                            {
-                                bInside = true;
-
-                                break;
-                            }
-
-                            if (node->isRoot())
-                            {
-                                break;
-                            }
-                        }
-
-                        if (!bInside)
+                        Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                        if (!containsNode(hit))
                         {
                             close();
                         }
@@ -410,6 +384,12 @@ namespace Chicane
             isOpen    = true;
             openState = "open";
             refreshStyleSubtree();
+            setEscapesOverflow(true);
+        }
+
+        void InputColor::onRefresh()
+        {
+            setEscapesOverflow(isOpen);
         }
 
         void InputColor::close()
@@ -422,6 +402,7 @@ namespace Chicane
             isOpen    = false;
             openState = "closed";
             refreshStyleSubtree();
+            setEscapesOverflow(false);
         }
 
         void InputColor::commitHex()

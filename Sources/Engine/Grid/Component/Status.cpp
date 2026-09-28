@@ -21,6 +21,9 @@ namespace Chicane
         case Grid::ComponentStatus::Culled:
             return "Culled";
 
+        case Grid::ComponentStatus::Selected:
+            return "Selected";
+
         default:
             return "";
         }

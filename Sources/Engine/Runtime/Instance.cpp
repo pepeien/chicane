@@ -15,9 +15,12 @@
 #include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Sky.hpp"
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Module.hpp"
@@ -54,10 +57,14 @@
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 #include "Chicane/Runtime/Scene/Component/Physics.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Box.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Cone.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Cylinder.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Line.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Pyramid.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Rectangle.hpp"
+#include "Chicane/Runtime/Scene/Trace/Shape/Sphere.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
 
 namespace Chicane
@@ -254,6 +261,53 @@ namespace Chicane
                 cone->getRadiusAt(1.0f, length),
                 inColor,
                 cone->segmentCount
+            );
+
+            return;
+        }
+
+        if (const SceneTraceShapePyramid* pyramid = dynamic_cast<const SceneTraceShapePyramid*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendPyramid(
+                outVertices,
+                inRequest.origin,
+                inRequest.destination,
+                pyramid->getHalfExtentsAt(1.0f),
+                inColor
+            );
+
+            return;
+        }
+
+        if (const SceneTraceShapeBox* box = dynamic_cast<const SceneTraceShapeBox*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendBox(
+                outVertices,
+                inRequest.origin,
+                QuatFloat(1.0f, 0.0f, 0.0f, 0.0f),
+                box->halfExtents,
+                inColor
+            );
+
+            return;
+        }
+
+        if (const SceneTraceShapeSphere* sphere = dynamic_cast<const SceneTraceShapeSphere*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendSphere(outVertices, inRequest.origin, sphere->radius, inColor);
+
+            return;
+        }
+
+        if (const SceneTraceShapeMesh* mesh = dynamic_cast<const SceneTraceShapeMesh*>(inRequest.shape.get()))
+        {
+            Renderer::Debug::appendMesh(
+                outVertices,
+                inRequest.origin,
+                inRequest.destination,
+                mesh->getVertices(),
+                mesh->getIndices(),
+                inColor
             );
         }
     }
@@ -976,6 +1030,7 @@ namespace Chicane
         }
 
         Vertex::List debugLines;
+        Vertex::List skyLines;
         if (hasSceneFeature(Renderer::RendererFeature::Bounds))
         {
             for (Actor* actor : inScene->getActors())
@@ -1002,6 +1057,46 @@ namespace Chicane
             }
         }
 
+        if (hasSceneFeature(Renderer::RendererFeature::Wireframe))
+        {
+            for (ASky* sky : inScene->getActors<ASky>())
+            {
+                const Box::Sky* asset = sky ? sky->getSky() : nullptr;
+                if (!sky || sky->isTransient() || !asset)
+                {
+                    continue;
+                }
+
+                const Box::Model* model = Box::load<Box::Model>(asset->getModel().getSource());
+                if (!model)
+                {
+                    continue;
+                }
+
+                const Box::ModelParsed& parsed = model->getModel(asset->getModel().getReference());
+                if (parsed.vertices.empty())
+                {
+                    continue;
+                }
+
+                const Vec3  cameraPos = activeCamera ? activeCamera->getTranslation() : sky->getTranslation();
+                const float clip      = activeCamera ? std::max(activeCamera->getFarClip(), 1.0f) : 1000.0f;
+                const float scale     = clip * (0.99f / std::sqrt(3.0f));
+
+                Mat4 transform = glm::translate(Mat4::One, static_cast<glm::vec3>(cameraPos));
+                transform      = glm::scale(transform, glm::vec3(scale));
+                transform      = transform * parsed.transform.getMatrix();
+
+                Renderer::Debug::appendMesh(
+                    skyLines,
+                    transform,
+                    parsed.vertices,
+                    parsed.indices,
+                    Renderer::Debug::MESH_COLOR
+                );
+            }
+        }
+
         Vertex::List skeletonLines;
         if (hasSceneFeature(Renderer::RendererFeature::Skeletons))
         {
@@ -1024,6 +1119,11 @@ namespace Chicane
         if (!debugLines.empty())
         {
             command.polys.push_back(makeLinePoly(std::move(debugLines)));
+        }
+
+        if (!skyLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(skyLines), Renderer::DrawPoly3DFlag::Foreground));
         }
 
         if (!skeletonLines.empty())

@@ -15,7 +15,6 @@ namespace Editor
     {
     public:
         // Attributes
-        static constexpr inline const char* NODES_ATTRIBUTE             = "outlinerNodes";
         static constexpr inline const char* ON_ITEM_SELECTION_ATTRIBUTE = "onItemSelection";
         static constexpr inline const char* ON_ITEM_TOGGLE_ATTRIBUTE    = "onItemToggle";
         static constexpr inline const char* ON_ITEM_EDIT_ATTRIBUTE      = "onItemEdit";
@@ -28,9 +27,9 @@ namespace Editor
 
     public:
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
+        void tick(float inDeltaTime) override;
 
-    protected:
-        void onTick(float inDeltaTime) override;
+        void syncRowSelection();
 
     public:
         CH_FUNCTION()
@@ -49,10 +48,6 @@ namespace Editor
         void beginRename();
         void commitRename();
         void focusRenameInput();
-
-    public:
-        CH_FIELD()
-        OutlinerNode::List outlinerNodes;
 
     private:
         bool m_bShouldFocusRename;

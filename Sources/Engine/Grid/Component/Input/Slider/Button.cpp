@@ -36,11 +36,8 @@ namespace Chicane
                 "Assets/Engine/UI/Components/Input/Slider/Button/Index.grid",
                 "Assets/Engine/UI/Components/Input/Slider/Button/Index.decal"
             );
-        }
 
-        bool InputButtonSlider::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputButtonSlider::onEvent(const WindowEvent& inEvent)

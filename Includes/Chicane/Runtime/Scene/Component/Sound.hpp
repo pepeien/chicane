@@ -23,6 +23,7 @@ namespace Chicane
 
     protected:
         void onPropertyEdited(const String& inName) override;
+        void onAttachment(Object* inParent) override;
 
     public:
         CH_FUNCTION()

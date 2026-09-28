@@ -1,6 +1,7 @@
 #include "Editor/UI/Component/Outliner.reflected.hpp"
 
 #include <Chicane/Core/Input/Mouse/Button/Event.hpp>
+#include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
 #include <Chicane/Core/Window/Event/Type.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Input/Text.hpp>
@@ -13,15 +14,12 @@ namespace Editor
 {
     Outliner::Outliner(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          outlinerNodes({}),
           m_bShouldFocusRename(false),
           m_bRenameFocused(false)
     {
         import <DockHeader>();
 
         load("Assets/Editor/UI/Components/Outliner/Index.grid", "Assets/Editor/UI/Components/Outliner/Index.decal");
-
-        Prop::bind(this, NODES_ATTRIBUTE, outlinerNodes);
     }
 
     bool Outliner::onEvent(const Chicane::WindowEvent& inEvent)
@@ -61,11 +59,11 @@ namespace Editor
         return Chicane::Grid::Container::onEvent(inEvent);
     }
 
-    void Outliner::onTick(float inDeltaTime)
+    void Outliner::tick(float inDeltaTime)
     {
-        Chicane::Grid::Container::onTick(inDeltaTime);
+        Chicane::Grid::Container::tick(inDeltaTime);
 
-        Prop::copy(this, NODES_ATTRIBUTE, outlinerNodes);
+        syncRowSelection();
 
         if (m_bShouldFocusRename)
         {
@@ -135,6 +133,58 @@ namespace Editor
         return false;
     }
 
+    void Outliner::syncRowSelection()
+    {
+        Chicane::Object* selected = nullptr;
+        for (const Chicane::Grid::Component* node = this; node != nullptr;
+             node                                 = node->hasParent() ? node->getParent() : nullptr)
+        {
+            const Chicane::ReflectionFieldAccessor accessor = node->getField("selectedItem");
+            if (accessor.isValid() && accessor.isType<Chicane::Object*>())
+            {
+                const void* instance =
+                    accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(node);
+                if (const auto* value = accessor.getValue<Chicane::Object*>(instance))
+                {
+                    selected = *value;
+                }
+
+                break;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        for (Chicane::Grid::Component* row : getChildrenFlat())
+        {
+            if (!row)
+            {
+                continue;
+            }
+
+            const Chicane::String& className = row->getClassName();
+            if (!className.equals("outliner__item") && !className.startsWith("outliner__item "))
+            {
+                continue;
+            }
+
+            const Chicane::ReflectionFieldAccessor accessor = row->getField("node");
+            if (!accessor.isValid() || !accessor.isType<OutlinerNode>())
+            {
+                row->setSelected(false);
+                continue;
+            }
+
+            const void* instance =
+                accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(row);
+            const OutlinerNode* entry = accessor.getValue<OutlinerNode>(instance);
+            row->setSelected(entry && entry->item == selected);
+        }
+    }
+
     Chicane::Grid::Component* Outliner::findRenameInput() const
     {
         for (Chicane::Grid::Component* child : getChildrenFlat())
@@ -151,11 +201,31 @@ namespace Editor
 
     bool Outliner::hasEditingNode() const
     {
-        for (const OutlinerNode& entry : outlinerNodes)
+        for (const Chicane::Grid::Component* node = this; node != nullptr;
+             node                                 = node->hasParent() ? node->getParent() : nullptr)
         {
-            if (entry.bIsEditing)
+            const Chicane::ReflectionFieldAccessor accessor = node->getField("outlinerNodes");
+            if (accessor.isValid() && accessor.isType<OutlinerNode::List>())
             {
-                return true;
+                const void* instance =
+                    accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(node);
+                if (const OutlinerNode::List* list = accessor.getValue<OutlinerNode::List>(instance))
+                {
+                    for (const OutlinerNode& entry : *list)
+                    {
+                        if (entry.bIsEditing)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            if (node->isRoot())
+            {
+                break;
             }
         }
 

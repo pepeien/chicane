@@ -19,11 +19,8 @@ namespace Chicane
                 "Assets/Engine/UI/Components/Button/Radio/Index.grid",
                 "Assets/Engine/UI/Components/Button/Radio/Index.decal"
             );
-        }
 
-        bool ButtonRadio::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool ButtonRadio::onEvent(const WindowEvent& inEvent)

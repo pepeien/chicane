@@ -16,7 +16,9 @@
 #include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
+#include <Chicane/Runtime/Scene/Component.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
+#include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 
 #include "Editor/Component/Gizmo/PlaneHandle.hpp"
 #include "Editor/UI/View/Home.hpp"
@@ -227,11 +229,6 @@ namespace Editor
     {
         if (m_target == inTarget)
         {
-            if (m_target)
-            {
-                activate();
-            }
-
             return;
         }
 
@@ -684,7 +681,7 @@ namespace Editor
             return;
         }
 
-        m_dragStartTranslation = m_target->getAbsoluteTranslation();
+        m_dragStartTranslation = m_target->getTranslation();
         m_dragStartScale       = m_target->getAbsoluteScale();
         m_dragStartRotation    = m_target->getAbsoluteRotation();
     }
@@ -698,6 +695,7 @@ namespace Editor
 
         setAbsoluteTranslation(m_target->getTranslation());
         setAbsoluteScale(Chicane::Vec3(handleScale()));
+        syncOrigin();
     }
 
     void Gizmo::applyTranslationDelta(const Chicane::Vec3& inWorldDelta)
@@ -714,7 +712,7 @@ namespace Editor
             return;
         }
 
-        m_target->setAbsoluteTranslation(m_dragStartTranslation + inWorldDelta);
+        m_target->setTranslation(m_dragStartTranslation + inWorldDelta);
     }
 
     void Gizmo::applyRotationDelta(float inDelta)
@@ -792,7 +790,23 @@ namespace Editor
             return;
         }
 
-        m_origin->lookAt(camera->getTranslation());
+        const Chicane::Vec3 view = camera->getForward();
+        if (view.dot(view) < 0.0001f)
+        {
+            return;
+        }
+
+        Chicane::Vec3 up = camera->getUp();
+        if (up.dot(up) < 0.0001f)
+        {
+            up = Chicane::Vec3::sUp();
+        }
+
+        const Chicane::QuatFloat facing = (Chicane::QuatFloat::sLookAt(view.normalize() * -1.0f, up.normalize()) *
+                                           Chicane::QuatFloat::sFromEuler(Chicane::Vec3(-90.0f, 0.0f, 0.0f)))
+                                              .normalize();
+
+        m_origin->setRelativeRotation(inverseQuat(getRotation().get()) * facing);
     }
 
     float Gizmo::handleScale() const
@@ -1141,6 +1155,23 @@ namespace Editor
 
             best   = enter;
             target = actor;
+        }
+
+        for (Chicane::Component* component : scene->getComponents())
+        {
+            if (!component || component->isTransient() || dynamic_cast<Chicane::CMesh*>(component))
+            {
+                continue;
+            }
+
+            float enter = 0.0f;
+            if (!request.intersects(component->getBounds(), enter) || enter >= best)
+            {
+                continue;
+            }
+
+            best   = enter;
+            target = component;
         }
 
         if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())

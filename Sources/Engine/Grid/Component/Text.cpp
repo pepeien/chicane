@@ -178,7 +178,7 @@ namespace Chicane
         {
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
@@ -253,7 +253,7 @@ namespace Chicane
             outMin = Vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
             outMax = Vec2(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
 
-            const Vec2 padding(m_style.insetLeft(), m_style.insetTop());
+            const Vec2 padding(style.insetLeft(), style.insetTop());
 
             for (const TextGlyph* glyph : m_glyphs)
             {
@@ -368,7 +368,7 @@ namespace Chicane
 
         void Text::refreshFont()
         {
-            m_font = Box::findFont(m_style.font.family.get(), m_style.font.weight.get());
+            m_font = Box::findFont(style.font.family.get(), style.font.weight.get());
         }
 
         TextGlyph* Text::acquireGlyph(std::size_t inIndex)
@@ -393,8 +393,8 @@ namespace Chicane
                 return;
             }
 
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = style.width.isAuto();
+            const bool bIsHeightAuto = style.height.isAuto();
 
             if (!bIsWidthAuto || !bIsHeightAuto)
             {
@@ -406,8 +406,8 @@ namespace Chicane
 
         void Text::applyContentSize()
         {
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = style.width.isAuto();
+            const bool bIsHeightAuto = style.height.isAuto();
 
             if (!bIsWidthAuto && !bIsHeightAuto)
             {
@@ -415,8 +415,8 @@ namespace Chicane
             }
 
             setSize(
-                bIsWidthAuto ? m_contentSize.x + m_style.insetHorizontal() : m_size.x,
-                bIsHeightAuto ? m_contentSize.y + m_style.insetVertical() : m_size.y
+                bIsWidthAuto ? m_contentSize.x + style.insetHorizontal() : m_size.x,
+                bIsHeightAuto ? m_contentSize.y + style.insetVertical() : m_size.y
             );
         }
 
@@ -439,11 +439,11 @@ namespace Chicane
             }
 
             const String         value         = parseText(m_text);
-            const float          fontSize      = m_style.font.size.get();
-            const float          letterSpacing = m_style.letterSpacing.get();
-            const Color::Rgba    color         = m_style.foregroundColor.get();
-            const float          innerWidth    = std::max(0.0f, m_size.x - m_style.insetHorizontal());
-            const StyleWordBreak wordBreak     = m_style.wordBreak.get();
+            const float          fontSize      = style.font.size.get();
+            const float          letterSpacing = style.letterSpacing.get();
+            const Color::Rgba    color         = style.foregroundColor.get();
+            const float          innerWidth    = std::max(0.0f, m_size.x - style.insetHorizontal());
+            const StyleWordBreak wordBreak     = style.wordBreak.get();
 
             float wrapWidth = 0.0f;
             auto  tighten   = [&wrapWidth](float inWidth)
@@ -456,22 +456,22 @@ namespace Chicane
                 wrapWidth = wrapWidth > 0.0f ? std::min(wrapWidth, inWidth) : inWidth;
             };
 
-            if (!m_style.width.isAuto())
+            if (!style.width.isAuto())
             {
                 tighten(innerWidth);
             }
 
-            const float ownInset = m_style.insetHorizontal();
-            if (m_style.width.hasMax())
+            const float ownInset = style.insetHorizontal();
+            if (style.width.hasMax())
             {
-                tighten(m_style.width.max.get() - ownInset);
+                tighten(style.width.max.get() - ownInset);
             }
 
             if (hasParent())
             {
                 const Style& parentStyle = m_parent->getStyle();
                 const float  parentInset = parentStyle.insetHorizontal();
-                const float  childGutter = ownInset + m_style.margin.left.get() + m_style.margin.right.get();
+                const float  childGutter = ownInset + style.margin.left.get() + style.margin.right.get();
 
                 if (!parentStyle.width.isAuto())
                 {
@@ -485,10 +485,10 @@ namespace Chicane
             }
 
             const String signature =
-                value + "|" + m_style.font.family.get() + "|" + std::to_string(m_style.font.weight.get()) + "|" +
+                value + "|" + style.font.family.get() + "|" + std::to_string(style.font.weight.get()) + "|" +
                 std::to_string(fontSize) + "|" + std::to_string(letterSpacing) + "|" + std::to_string(color.r) + "|" +
                 std::to_string(color.g) + "|" + std::to_string(color.b) + "|" + std::to_string(color.a) + "|" +
-                std::to_string(static_cast<int>(m_style.align.get())) + "|" +
+                std::to_string(static_cast<int>(style.align.get())) + "|" +
                 std::to_string(static_cast<int>(wordBreak)) + "|" + std::to_string(innerWidth) + "|" +
                 std::to_string(wrapWidth);
 
@@ -501,7 +501,7 @@ namespace Chicane
             m_parsedText      = value;
 
             const std::size_t      glyphCount = m_glyphs.size();
-            const Box::FontFamily& fontFamily = m_font->getData(m_style.font.weight.get());
+            const Box::FontFamily& fontFamily = m_font->getData(style.font.weight.get());
             float                  ascender   = 0.0f;
             float                  descender  = 0.0f;
 
@@ -649,10 +649,10 @@ namespace Chicane
                 return;
             }
 
-            const float inner = std::max(0.0f, m_size.x - m_style.insetHorizontal());
+            const float inner = std::max(0.0f, m_size.x - style.insetHorizontal());
             float       shift = 0.0f;
 
-            switch (m_style.align.get())
+            switch (style.align.get())
             {
             case StyleAlignment::Center:
                 shift = std::max(0.0f, (inner - inLineWidth) * 0.5f);

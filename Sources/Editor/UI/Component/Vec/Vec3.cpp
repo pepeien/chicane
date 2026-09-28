@@ -3,6 +3,7 @@
 #include <Chicane/Core/Math/Rotator.hpp>
 #include <Chicane/Core/Math/Transform/Spatial.hpp>
 #include <Chicane/Grid.hpp>
+#include <Chicane/Runtime/Scene/Object.hpp>
 
 namespace Editor
 {
@@ -148,7 +149,14 @@ namespace Editor
             const Chicane::String name = accessor.getName();
             if (name.equals("translation"))
             {
-                spatial->setAbsoluteTranslation(value);
+                if (Chicane::Object* object = dynamic_cast<Chicane::Object*>(spatial))
+                {
+                    object->setTranslation(value);
+                }
+                else
+                {
+                    spatial->setAbsoluteTranslation(value);
+                }
 
                 return;
             }

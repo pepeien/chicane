@@ -19,6 +19,7 @@ namespace Chicane
 
     protected:
         void onTransform() override;
+        void onAttachment(Object* inParent) override;
 
     public:
         inline virtual void onResize(const Vec<2, std::uint32_t>& inValue) { return; }

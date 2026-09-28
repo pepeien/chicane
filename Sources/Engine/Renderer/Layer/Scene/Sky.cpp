@@ -256,7 +256,7 @@ namespace Chicane
             desc.layouts          = {m_frameLayout, m_textureLayout};
             m_pipeline            = device->createPipeline(desc);
 
-            desc.fragmentPath  = "Assets/Engine/Shaders/Scene/SkyPanorama";
+            desc.fragmentPath  = "Assets/Engine/Shaders/Scene/Sky/Panorama";
             m_panoramaPipeline = device->createPipeline(desc);
 
             LScene* parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);

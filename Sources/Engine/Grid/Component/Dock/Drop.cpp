@@ -2,8 +2,6 @@
 
 #include "Chicane/Core/Math/Vertex.hpp"
 
-#include "Chicane/Grid/Component/Scrollable.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -57,30 +55,6 @@ namespace Chicane
             return m_parent->getDepth() + 200.0f + m_depthBias;
         }
 
-        Vec2 DockDrop::getDrawPosition() const
-        {
-            Vec2 result = getPosition();
-
-            const Component* ancestor = hasParent() ? m_parent->getParent() : nullptr;
-            while (ancestor && ancestor != this)
-            {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
-                {
-                    result.x -= scrollable->getScroll().x;
-                    result.y -= scrollable->getScroll().y;
-                }
-
-                if (ancestor->isRoot())
-                {
-                    break;
-                }
-
-                ancestor = ancestor->getParent();
-            }
-
-            return result;
-        }
-
         void DockDrop::configure(const Bounds2D& inBox, const Color::Rgba& inColor)
         {
             if (inBox.isEmpty())
@@ -92,9 +66,9 @@ namespace Chicane
 
             m_depthBias = 0.0f;
 
-            m_style.background.color.set(inColor);
-            m_style.radius.x.setAll(BORDER_RADIUS_IN_PX);
-            m_style.radius.y.setAll(BORDER_RADIUS_IN_PX);
+            style.background.color.set(inColor);
+            style.radius.x.setAll(BORDER_RADIUS_IN_PX);
+            style.radius.y.setAll(BORDER_RADIUS_IN_PX);
 
             const float width  = inBox.right - inBox.left;
             const float height = inBox.bottom - inBox.top;

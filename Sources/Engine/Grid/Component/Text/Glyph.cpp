@@ -99,7 +99,7 @@ namespace Chicane
                 return;
             }
 
-            m_style.background.color.set(inColor);
+            style.background.color.set(inColor);
 
             const float scale    = inFontSize;
             const float height   = m_glyph->height * scale;
@@ -118,8 +118,8 @@ namespace Chicane
                 (height * 0.5f) - ascender + ((min.y + max.y) * 0.5f * scale)
             );
 
-            m_style.width.value.set(advance);
-            m_style.height.value.set(height);
+            style.width.value.set(advance);
+            style.height.value.set(height);
 
             m_advance  = advance;
             m_relative = inRelative;

@@ -30,8 +30,6 @@ namespace Editor
         Toolbar(const Chicane::XmlNode& inNode);
 
     public:
-        bool isFocusable() const override;
-        bool escapesOverflow() const override;
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
 
     protected:

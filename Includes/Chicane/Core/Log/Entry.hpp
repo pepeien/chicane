@@ -22,6 +22,7 @@ namespace Chicane
         public:
             CH_FIELD()
             String text;
+
             CH_FIELD()
             String color;
         };

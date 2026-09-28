@@ -113,11 +113,7 @@ namespace Chicane
                 "Assets/Engine/UI/Components/Input/Text/Index.decal"
             );
             hoistChrome();
-        }
-
-        bool InputText::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputText::onEvent(const WindowEvent& inEvent)
@@ -283,7 +279,7 @@ namespace Chicane
             const String character = characterFromKey(event);
             if (character.isEmpty())
             {
-                return true;
+                return false;
             }
 
             insert(character);
@@ -332,8 +328,8 @@ namespace Chicane
 
         void InputText::refreshSize()
         {
-            m_style.width.refresh();
-            m_style.height.refresh();
+            style.width.refresh();
+            style.height.refresh();
 
             Component::refreshSize();
         }
@@ -374,7 +370,7 @@ namespace Chicane
             m_caret                 = std::min(m_caret, count);
             m_anchor                = std::min(m_anchor, count);
 
-            const Color::Rgba color     = m_style.foregroundColor.get();
+            const Color::Rgba color     = style.foregroundColor.get();
             const String      nextColor = String::sSprint(
                 "#%02X%02X%02X%02X",
                 static_cast<unsigned>(color.r),
@@ -652,7 +648,7 @@ namespace Chicane
             const Vec3 mapped   = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
             const Vec2 position = getDrawPosition();
 
-            return Vec2(mapped.x - position.x - m_style.insetLeft(), mapped.y - position.y - m_style.insetTop());
+            return Vec2(mapped.x - position.x - style.insetLeft(), mapped.y - position.y - style.insetTop());
         }
 
         std::size_t InputText::hitIndex(const Vec2& inLocation) const

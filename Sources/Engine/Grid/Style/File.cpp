@@ -390,9 +390,7 @@ namespace Chicane
                     {
                         const String suffix = trimmedSelector.substr(1);
 
-                        const bool bParentHasPseudo = inSelector.contains(Style::PSEUDO_CLASS_HOVER) ||
-                                                      inSelector.contains(Style::PSEUDO_CLASS_FOCUS) ||
-                                                      inSelector.contains(Style::PSEUDO_CLASS_DRAG);
+                        const bool bParentHasPseudo       = Style::sHasPseudoClass(inSelector);
                         const bool isCompoundContinuation = !suffix.isEmpty() && !suffix.startsWithChars(
                                                                                      Style::PSEUDO_CLASS_SELECTOR,
                                                                                      Style::CLASS_SELECTOR,
@@ -402,25 +400,8 @@ namespace Chicane
 
                         if (bParentHasPseudo && isCompoundContinuation)
                         {
-                            auto stripPseudo = [](String& ioValue, const char* inToken)
-                            {
-                                while (true)
-                                {
-                                    const std::size_t at = ioValue.find(inToken);
-                                    if (at == String::npos)
-                                    {
-                                        break;
-                                    }
-
-                                    const std::size_t tokenSize = std::strlen(inToken);
-                                    ioValue = ioValue.substr(0, at) + ioValue.substr(at + tokenSize);
-                                }
-                            };
-
                             String base = inSelector;
-                            stripPseudo(base, Style::PSEUDO_CLASS_HOVER);
-                            stripPseudo(base, Style::PSEUDO_CLASS_FOCUS);
-                            stripPseudo(base, Style::PSEUDO_CLASS_DRAG);
+                            Style::sConsumePseudoClasses(base);
                             base = base.trim();
 
                             resolvedSelector = inSelector;

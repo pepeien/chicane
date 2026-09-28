@@ -30,12 +30,11 @@ namespace Chicane
             InputColor(const XmlNode& inNode);
 
         public:
-            bool isFocusable() const override;
-            bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
 
         protected:
             void onTick(float inDeltaTime) override;
+            void onRefresh() override;
 
         public:
             CH_FUNCTION()

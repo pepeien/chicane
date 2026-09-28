@@ -31,7 +31,6 @@ namespace Chicane
             InputButtonSlider(const XmlNode& inNode);
 
         public:
-            bool isFocusable() const override;
             bool onEvent(const WindowEvent& inEvent) override;
 
         protected:
@@ -64,18 +63,25 @@ namespace Chicane
         public:
             CH_FIELD()
             float value;
+
             CH_FIELD()
             float min;
+
             CH_FIELD()
             float max;
+
             CH_FIELD()
             float step;
+
             CH_FIELD()
             float percentage;
+
             CH_FIELD()
             int precision;
+
             CH_FIELD()
             String label;
+
             CH_FIELD()
             String valueText;
 

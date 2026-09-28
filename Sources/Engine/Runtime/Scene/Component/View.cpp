@@ -9,7 +9,19 @@ namespace Chicane
           m_data({}),
           m_focusPoint(Vec3::sZero()),
           m_target("")
-    {}
+    {
+        applyDefaultBounds();
+    }
+
+    void CView::onAttachment(Object* inParent)
+    {
+        if (!inParent)
+        {
+            return;
+        }
+
+        inParent->addBounds(getBounds());
+    }
 
     void CView::onTransform()
     {
@@ -187,11 +199,7 @@ namespace Chicane
 
     void CView::updateView()
     {
-        m_data.view = glm::lookAt(
-            static_cast<glm::vec3>(getTranslation()),
-            static_cast<glm::vec3>(m_focusPoint),
-            static_cast<glm::vec3>(getUp())
-        );
+        m_data.view = getMatrix().inverse();
 
         m_frustum.update(this, m_settings);
     }

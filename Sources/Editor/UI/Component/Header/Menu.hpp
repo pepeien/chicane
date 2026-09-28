@@ -69,17 +69,22 @@ namespace Editor
     public:
         CH_FIELD()
         bool bIsOpen;
+
         CH_FIELD()
         bool bShouldShowChevron;
+
         CH_FIELD()
         bool bHasShortcut;
+
         CH_FIELD()
         bool bIsChecked;
 
         CH_FIELD()
         Chicane::String label;
+
         CH_FIELD()
         Chicane::String shortcut;
+
         CH_FIELD()
         Chicane::String checkState;
 

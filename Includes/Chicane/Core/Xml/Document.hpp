@@ -8,9 +8,14 @@
 
 namespace Chicane
 {
+    struct XmlDocumentImpl;
+
     class CHICANE_CORE XmlDocument
     {
         friend class XmlNode;
+
+    public:
+        static XmlDocument sLoad(const FileSystem::Path& inFilepath);
 
     public:
         XmlDocument();
@@ -32,14 +37,10 @@ namespace Chicane
         XmlNode appendChild(const String& inName);
         XmlNode appendCopy(const XmlNode& inNode);
 
-        static XmlDocument sLoad(const FileSystem::Path& inFilepath);
         bool loadBuffer(const void* inData, std::size_t inSize);
         void save(const FileSystem::Path& inFilepath) const;
 
     private:
-        struct Impl;
-
-    private:
-        std::unique_ptr<Impl> m_impl;
+        std::unique_ptr<XmlDocumentImpl> m_impl;
     };
 }

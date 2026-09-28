@@ -13,8 +13,8 @@ namespace Chicane
         class CHICANE_CORE Context
         {
         public:
-            static constexpr inline const char* FLAG_MODULE = "Chicane.flag";
-            static constexpr inline const char* STWD_MODULE = "Chicane.stew";
+            static constexpr inline const char* FLAG_MODULE    = "Chicane.flag";
+            static constexpr inline const char* STEWARD_MODULE = "Chicane.stew";
 
         public:
             static Context* sFrom(lua_State* inState);

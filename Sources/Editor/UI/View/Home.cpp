@@ -36,6 +36,7 @@
 #include "Editor/Viewer/Scene.hpp"
 #include "Editor/UI/Component/Asset/Manager.hpp"
 #include "Editor/UI/Component/Attributes.hpp"
+#include "Editor/UI/Component/Console.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
 #include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
@@ -284,7 +285,7 @@ namespace Editor
         const bool bIsRelative = inSpace == CoordinateSpace::Relative;
         if (ioField.name.equals("translation"))
         {
-            ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getAbsoluteTranslation();
+            ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getTranslation();
         }
         else if (ioField.name.equals("rotation"))
         {
@@ -310,7 +311,7 @@ namespace Editor
             }
             else
             {
-                inItem.setAbsoluteTranslation(inField.vector);
+                inItem.setTranslation(inField.vector);
             }
         }
         else if (inField.name.equals("rotation"))
@@ -494,11 +495,13 @@ namespace Editor
           m_editingOutlinerItem(nullptr),
           m_outlinerEditId(Chicane::String::sEmpty()),
           m_coordinateSpace(CoordinateSpace::Absolute),
+          m_attributesType(nullptr),
           m_bOutlinerDirty(false),
           m_bAttributesDirty(false)
     {
         import <AssetManager>();
         import <Attributes>();
+        import <Console>();
         import <Explorer>();
         import <Header>();
         import <Outliner>();
@@ -596,6 +599,11 @@ namespace Editor
             commitOutlinerEdit(false);
         }
 
+        if (selectedItem == inItem)
+        {
+            return;
+        }
+
         selectedItem    = inItem;
         bIsItemSelected = selectedItem != nullptr;
 
@@ -604,8 +612,18 @@ namespace Editor
             scene->setSelection(selectedItem);
         }
 
-        requestOutlinerRebuild();
-        requestAttributesRebuild();
+        const std::size_t collapsed = m_collapsedOutlinerItems.size();
+        expandOutlinerAncestors(selectedItem);
+        if (m_collapsedOutlinerItems.size() != collapsed)
+        {
+            requestOutlinerRebuild();
+        }
+        else
+        {
+            syncOutlinerSelection();
+        }
+
+        refreshAttributesForSelection();
     }
 
     void HomeView::onItemToggle(Chicane::Object* inItem)
@@ -739,7 +757,7 @@ namespace Editor
         }
 
         requestOutlinerRebuild();
-        requestAttributesRebuild();
+        refreshAttributesForSelection();
     }
 
     void HomeView::onTrackNew()
@@ -1129,7 +1147,7 @@ namespace Editor
 
             scene->setSelection(nullptr);
 
-            rebuildAttributes();
+            refreshAttributesForSelection();
         }
 
         if (m_editingOutlinerItem && live.find(m_editingOutlinerItem) == live.end())
@@ -1156,18 +1174,17 @@ namespace Editor
         if (inIsVisible)
         {
             OutlinerNode node;
-            node.item          = inObject;
-            node.label         = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
-            node.icon          = outlinerIcon(inObject);
-            node.indent        = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
-            node.expandState   = !bHasChildren  ? OUTLINER_EXPAND_LEAF
-                                 : bIsCollapsed ? OUTLINER_EXPAND_COLLAPSED
-                                                : OUTLINER_EXPAND_EXPANDED;
-            node.selectedState = inObject == selectedItem ? "selected" : "idle";
-            node.bHasChildren  = bHasChildren;
-            node.bIsLeaf       = !bHasChildren;
-            node.bIsEditing    = inObject == m_editingOutlinerItem;
-            node.bShowLabel    = !node.bIsEditing;
+            node.item         = inObject;
+            node.label        = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
+            node.icon         = outlinerIcon(inObject);
+            node.indent       = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
+            node.expandState  = !bHasChildren  ? OUTLINER_EXPAND_LEAF
+                                : bIsCollapsed ? OUTLINER_EXPAND_COLLAPSED
+                                               : OUTLINER_EXPAND_EXPANDED;
+            node.bHasChildren = bHasChildren;
+            node.bIsLeaf      = !bHasChildren;
+            node.bIsEditing   = inObject == m_editingOutlinerItem;
+            node.bShowLabel   = !node.bIsEditing;
             outlinerNodes.push_back(node);
         }
 
@@ -1194,6 +1211,33 @@ namespace Editor
             }
 
             m_collapsedOutlinerItems.erase(current);
+        }
+    }
+
+    void HomeView::syncOutlinerSelection()
+    {
+        bool bFound = selectedItem == nullptr;
+        for (const OutlinerNode& node : outlinerNodes)
+        {
+            if (node.item == selectedItem)
+            {
+                bFound = true;
+                break;
+            }
+        }
+
+        if (selectedItem && !bFound)
+        {
+            requestOutlinerRebuild();
+            return;
+        }
+
+        for (Chicane::Grid::Component* child : getChildrenFlat())
+        {
+            if (Outliner* outliner = dynamic_cast<Outliner*>(child))
+            {
+                outliner->syncRowSelection();
+            }
         }
     }
 
@@ -1229,7 +1273,7 @@ namespace Editor
         if (bShouldRebuild)
         {
             requestOutlinerRebuild();
-            requestAttributesRebuild();
+            refreshAttributesForSelection();
         }
     }
 
@@ -1465,21 +1509,44 @@ namespace Editor
     {
         attributeFields.clear();
         attributeGroups.clear();
+        m_attributesType = selectedAttributeType();
 
+        if (!selectedItem || !m_attributesType)
+        {
+            return;
+        }
+
+        collectAttributeFields(
+            attributeGroups,
+            *selectedItem,
+            *m_attributesType,
+            *m_attributesType,
+            {},
+            {},
+            m_coordinateSpace
+        );
+        insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
+    }
+
+    const Chicane::ReflectionTypeInfo* HomeView::selectedAttributeType() const
+    {
         if (!selectedItem)
         {
-            return;
+            return nullptr;
         }
 
-        const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
-        if (!type)
+        return Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
+    }
+
+    void HomeView::refreshAttributesForSelection()
+    {
+        const Chicane::ReflectionTypeInfo* type = selectedAttributeType();
+        if (!type || type == m_attributesType)
         {
             return;
         }
 
-        collectAttributeFields(attributeGroups, *selectedItem, *type, *type, {}, {}, m_coordinateSpace);
-        insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
+        requestAttributesRebuild();
     }
 
     void HomeView::syncAttributeValues()

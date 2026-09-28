@@ -10,7 +10,6 @@ Window::Header {
     padding: 0.35em 0.6em;
     background-color: white;
     border-bottom: 1px solid gray;
-    border-radius: 0.75em 0.75em 0 0;
     cursor: grab;
 
     &__label {

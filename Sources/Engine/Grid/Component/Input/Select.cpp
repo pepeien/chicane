@@ -25,16 +25,8 @@ namespace Chicane
                 "Assets/Engine/UI/Components/Input/Select/Index.grid",
                 "Assets/Engine/UI/Components/Input/Select/Index.decal"
             );
-        }
 
-        bool InputSelect::isFocusable() const
-        {
-            return true;
-        }
-
-        bool InputSelect::escapesOverflow() const
-        {
-            return isOpen;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputSelect::onEvent(const WindowEvent& inEvent)
@@ -206,7 +198,13 @@ namespace Chicane
             isOpen = true;
             refreshHighlight();
             refreshStyleSubtree();
+            setEscapesOverflow(true);
             markLayoutDirtySubtree();
+        }
+
+        void InputSelect::onRefresh()
+        {
+            setEscapesOverflow(isOpen);
         }
 
         void InputSelect::close()
@@ -220,6 +218,7 @@ namespace Chicane
             m_highlighted = INVALID_HIGHLIGHT;
 
             refreshStyleSubtree();
+            setEscapesOverflow(false);
             markLayoutDirtySubtree();
         }
 

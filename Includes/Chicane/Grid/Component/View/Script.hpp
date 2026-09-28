@@ -17,6 +17,12 @@ namespace Chicane
     {
         class View;
 
+        struct ViewScriptSubscription
+        {
+            std::uint64_t token;
+            int           ref;
+        };
+
         class CHICANE_GRID ViewScript
         {
         public:
@@ -47,18 +53,12 @@ namespace Chicane
             void clearSubscriptions();
 
         private:
-            struct Subscription
-            {
-                std::uint64_t token;
-                int           ref;
-            };
-
-            View*                     m_view;
-            Script::Context           m_context;
-            int                       m_onLoad;
-            int                       m_onTick;
-            bool                      m_bClosing;
-            std::vector<Subscription> m_subscriptions;
+            View*                               m_view;
+            Script::Context                     m_context;
+            int                                 m_onLoad;
+            int                                 m_onTick;
+            bool                                m_bClosing;
+            std::vector<ViewScriptSubscription> m_subscriptions;
         };
     }
 }

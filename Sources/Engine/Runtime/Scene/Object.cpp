@@ -2,9 +2,11 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cmath>
 #include <stdexcept>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
@@ -138,6 +140,262 @@ namespace Chicane
         }
     }
 
+    void Object::onRefresh()
+    {
+        Transformable::onRefresh();
+
+        markSpatialDirty();
+    }
+
+    void Object::onAttributeChange(const String& inName, const String& inValue)
+    {
+        if (inName.equals(ID_ATTRIBUTE_NAME) || isTransformAttribute(inName) || inValue.isEmpty())
+        {
+            return;
+        }
+
+        applySerializedField(inName, inValue);
+    }
+
+    bool Object::canTick() const
+    {
+        return m_bCanTick;
+    }
+
+    const String& Object::getId() const
+    {
+        return m_id;
+    }
+
+    void Object::setId(const String& inId)
+    {
+        if (m_scene)
+        {
+            m_scene->setObjectId(this, inId);
+
+            return;
+        }
+
+        m_id = inId;
+    }
+
+    String Object::getTypeName() const
+    {
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
+        if (!type)
+        {
+            return String::sEmpty();
+        }
+
+        const String&     name  = type->getName();
+        const std::size_t split = name.lastOf(':');
+        if (split == String::npos)
+        {
+            return name;
+        }
+
+        return name.substr(split + 1);
+    }
+
+    bool Object::isTransient() const
+    {
+        return m_bIsTransient;
+    }
+
+    bool Object::isAttached() const
+    {
+        return m_parent != nullptr;
+    }
+
+    Object* Object::getParent() const
+    {
+        return m_parent;
+    }
+
+    const std::vector<Object*>& Object::getAttachments() const
+    {
+        return m_attachments;
+    }
+
+    void Object::attachTo(Object* inParent)
+    {
+        if (!inParent || inParent == this)
+        {
+            return;
+        }
+
+        if (isAncestorOf(inParent))
+        {
+            return;
+        }
+
+        if (isAttached())
+        {
+            detach();
+        }
+
+        m_parent = inParent;
+        m_parent->addAttachment(this);
+
+        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
+
+        setAbsolute(*m_parent);
+
+        onAttachment(inParent);
+    }
+
+    void Object::detach()
+    {
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_parentSubscription.complete();
+
+        Object* parent = m_parent;
+        m_parent       = nullptr;
+        parent->removeAttachment(this);
+    }
+
+    const Vec3& Object::getTranslation() const
+    {
+        return Transform::getTranslation();
+    }
+
+    void Object::setTranslation(const Vec3& inValue)
+    {
+        if (!isAttached())
+        {
+            setAbsoluteTranslation(inValue);
+
+            return;
+        }
+
+        const Vec3 parentWorld = getAbsoluteTranslation();
+        const Vec3 parentScale = getAbsoluteScale();
+        const Vec3 delta       = inValue - parentWorld;
+        const Vec3 local       = glm::inverse(static_cast<const glm::quat&>(getAbsoluteRotation().get())) *
+                           glm::vec3(delta.x, delta.y, delta.z);
+
+        const auto divide = [](float inValue, float inScale) -> float
+        { return std::fabs(inScale) > 1e-8f ? inValue / inScale : inValue; };
+
+        SpatialTransform::setRelativeTranslation(
+            Vec3(divide(local.x, parentScale.x), divide(local.y, parentScale.y), divide(local.z, parentScale.z))
+        );
+    }
+
+    void Object::setRelativeTranslation(const Vec3& inValue)
+    {
+        SpatialTransform::setRelativeTranslation(inValue);
+    }
+
+    void Object::lookAt(const Vec3& inTarget)
+    {
+        SpatialTransform::lookAt(inTarget);
+    }
+
+    const Vec3& Object::getCenter() const
+    {
+        return Transformable::getCenter();
+    }
+
+    const Vec3& Object::getTop() const
+    {
+        return Transformable::getTop();
+    }
+
+    const Vec3& Object::getBottom() const
+    {
+        return Transformable::getBottom();
+    }
+
+    const Vec3& Object::getSize() const
+    {
+        return getBounds().getSize();
+    }
+
+    void Object::setCanTick(bool inCanTick)
+    {
+        m_bCanTick = inCanTick;
+    }
+
+    void Object::tick(float inDeltaTime)
+    {
+        if (!canTick())
+        {
+            return;
+        }
+
+        onTick(inDeltaTime);
+    }
+
+    void Object::setIsTransient(bool inValue)
+    {
+        m_bIsTransient = inValue;
+    }
+
+    void Object::notifyPropertyEdited(const String& inName)
+    {
+        onPropertyEdited(inName);
+    }
+
+    bool Object::applySerializedField(const String& inName, const String& inValue)
+    {
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
+        if (!type)
+        {
+            return false;
+        }
+
+        const ReflectionFieldAccessor accessor = type->resolve(inName);
+        if (!accessor.isValid() || accessor.bIsIterable || !accessor.address(this))
+        {
+            return false;
+        }
+
+        if (applyEnum(accessor, this, inValue))
+        {
+            notifyPropertyEdited(inName);
+
+            return true;
+        }
+
+        if (accessor.isType<FileSystem::Path>())
+        {
+            accessor.set<FileSystem::Path>(this, FileSystem::Path(inValue));
+        }
+        else if (accessor.isType<String>())
+        {
+            accessor.set<String>(this, inValue);
+        }
+        else if (accessor.isType<bool>())
+        {
+            accessor.set<bool>(this, inValue.toBool() || inValue.equals("true", "1"));
+        }
+        else if (accessor.isType<float>())
+        {
+            accessor.set<float>(this, std::stof(inValue.toStandard()));
+        }
+        else if (accessor.isType<Vec3>())
+        {
+            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
+        }
+        else if (accessor.isType<int>())
+        {
+            accessor.set<int>(this, std::stoi(inValue.toStandard()));
+        }
+        else
+        {
+            return false;
+        }
+
+        notifyPropertyEdited(inName);
+
+        return true;
+    }
+
     void Object::bindAttributes()
     {
         watchAttribute(
@@ -218,200 +476,35 @@ namespace Chicane
         );
     }
 
-    void Object::onRefresh()
+    void Object::applyDefaultBounds()
     {
-        Transformable::onRefresh();
+        addBounds(Bounds3D::sBox(DEFAULT_BOUNDS_SIZE));
+    }
 
+    void Object::setScene(Scene* inScene)
+    {
+        if (m_scene == inScene)
+        {
+            return;
+        }
+
+        if (m_scene)
+        {
+            m_scene->removeSpatial(this);
+        }
+
+        m_scene = inScene;
         markSpatialDirty();
     }
 
-    void Object::onAttributeChange(const String& inName, const String& inValue)
+    void Object::markSpatialDirty()
     {
-        if (inName.equals(ID_ATTRIBUTE_NAME) || isTransformAttribute(inName) || inValue.isEmpty())
-        {
-            return;
-        }
-
-        applySerializedField(inName, inValue);
+        m_bIsSpatialDirty.store(true, std::memory_order_relaxed);
     }
 
-    bool Object::canTick() const
+    bool Object::consumeSpatialDirty()
     {
-        return m_bCanTick;
-    }
-
-    void Object::setCanTick(bool inCanTick)
-    {
-        m_bCanTick = inCanTick;
-    }
-
-    void Object::tick(float inDeltaTime)
-    {
-        if (!canTick())
-        {
-            return;
-        }
-
-        onTick(inDeltaTime);
-    }
-
-    const String& Object::getId() const
-    {
-        return m_id;
-    }
-
-    void Object::setId(const String& inId)
-    {
-        if (m_scene)
-        {
-            m_scene->setObjectId(this, inId);
-
-            return;
-        }
-
-        m_id = inId;
-    }
-
-    String Object::getTypeName() const
-    {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
-        if (!type)
-        {
-            return String::sEmpty();
-        }
-
-        const String&     name  = type->getName();
-        const std::size_t split = name.lastOf(':');
-        if (split == String::npos)
-        {
-            return name;
-        }
-
-        return name.substr(split + 1);
-    }
-
-    bool Object::isTransient() const
-    {
-        return m_bIsTransient;
-    }
-
-    void Object::setIsTransient(bool inValue)
-    {
-        m_bIsTransient = inValue;
-    }
-
-    bool Object::isAttached() const
-    {
-        return m_parent != nullptr;
-    }
-
-    Object* Object::getParent() const
-    {
-        return m_parent;
-    }
-
-    const std::vector<Object*>& Object::getAttachments() const
-    {
-        return m_attachments;
-    }
-
-    void Object::attachTo(Object* inParent)
-    {
-        if (!inParent || inParent == this)
-        {
-            return;
-        }
-
-        if (isAncestorOf(inParent))
-        {
-            return;
-        }
-
-        if (isAttached())
-        {
-            detach();
-        }
-
-        m_parent = inParent;
-        m_parent->addAttachment(this);
-
-        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
-
-        onAttachment(inParent);
-    }
-
-    void Object::detach()
-    {
-        if (!isAttached())
-        {
-            return;
-        }
-
-        m_parentSubscription.complete();
-
-        Object* parent = m_parent;
-        m_parent       = nullptr;
-        parent->removeAttachment(this);
-    }
-
-    void Object::notifyPropertyEdited(const String& inName)
-    {
-        onPropertyEdited(inName);
-    }
-
-    bool Object::applySerializedField(const String& inName, const String& inValue)
-    {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
-        if (!type)
-        {
-            return false;
-        }
-
-        const ReflectionFieldAccessor accessor = type->resolve(inName);
-        if (!accessor.isValid() || accessor.bIsIterable || !accessor.address(this))
-        {
-            return false;
-        }
-
-        if (applyEnum(accessor, this, inValue))
-        {
-            notifyPropertyEdited(inName);
-
-            return true;
-        }
-
-        if (accessor.isType<FileSystem::Path>())
-        {
-            accessor.set<FileSystem::Path>(this, FileSystem::Path(inValue));
-        }
-        else if (accessor.isType<String>())
-        {
-            accessor.set<String>(this, inValue);
-        }
-        else if (accessor.isType<bool>())
-        {
-            accessor.set<bool>(this, inValue.toBool() || inValue.equals("true", "1"));
-        }
-        else if (accessor.isType<float>())
-        {
-            accessor.set<float>(this, std::stof(inValue.toStandard()));
-        }
-        else if (accessor.isType<Vec3>())
-        {
-            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
-        }
-        else if (accessor.isType<int>())
-        {
-            accessor.set<int>(this, std::stoi(inValue.toStandard()));
-        }
-        else
-        {
-            return false;
-        }
-
-        notifyPropertyEdited(inName);
-
-        return true;
+        return m_bIsSpatialDirty.exchange(false, std::memory_order_acq_rel);
     }
 
     void Object::addAttachment(Object* inObject)
@@ -454,31 +547,5 @@ namespace Chicane
         }
 
         return false;
-    }
-
-    void Object::setScene(Scene* inScene)
-    {
-        if (m_scene == inScene)
-        {
-            return;
-        }
-
-        if (m_scene)
-        {
-            m_scene->removeSpatial(this);
-        }
-
-        m_scene = inScene;
-        markSpatialDirty();
-    }
-
-    void Object::markSpatialDirty()
-    {
-        m_bIsSpatialDirty.store(true, std::memory_order_relaxed);
-    }
-
-    bool Object::consumeSpatialDirty()
-    {
-        return m_bIsSpatialDirty.exchange(false, std::memory_order_acq_rel);
     }
 }

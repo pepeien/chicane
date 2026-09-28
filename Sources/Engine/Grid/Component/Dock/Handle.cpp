@@ -3,7 +3,6 @@
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
 
-#include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
@@ -59,30 +58,6 @@ namespace Chicane
             return m_parent->getDepth() + 50.0f + m_depthBias;
         }
 
-        Vec2 DockHandle::getDrawPosition() const
-        {
-            Vec2 result = getPosition();
-
-            const Component* ancestor = hasParent() ? m_parent->getParent() : nullptr;
-            while (ancestor && ancestor != this)
-            {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
-                {
-                    result.x -= scrollable->getScroll().x;
-                    result.y -= scrollable->getScroll().y;
-                }
-
-                if (ancestor->isRoot())
-                {
-                    break;
-                }
-
-                ancestor = ancestor->getParent();
-            }
-
-            return result;
-        }
-
         void DockHandle::configure(const Bounds2D& inBox, const Color::Rgba& inColor)
         {
             if (inBox.isEmpty())
@@ -93,9 +68,9 @@ namespace Chicane
             }
 
             m_depthBias = 0.0f;
-            m_style.background.color.set(inColor);
-            m_style.cursor.setRaw(Style::CURSOR_TYPE_GRAB);
-            m_style.cursor.set(WindowCursor::Grab);
+            style.background.color.set(inColor);
+            style.cursor.setRaw(Style::CURSOR_TYPE_GRAB);
+            style.cursor.set(WindowCursor::Grab);
 
             const float width  = inBox.right - inBox.left;
             const float height = inBox.bottom - inBox.top;

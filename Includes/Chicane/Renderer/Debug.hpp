@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Chicane/Core/Math/Bounds/3D.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
@@ -73,6 +74,28 @@ namespace Chicane
                 const Vec3&   inDestination,
                 const Vec2&   inHalfExtent,
                 const Vec4&   inColor
+            );
+            CHICANE_RENDERER void appendPyramid(
+                Vertex::List& outVertices,
+                const Vec3&   inOrigin,
+                const Vec3&   inDestination,
+                const Vec2&   inHalfExtent,
+                const Vec4&   inColor
+            );
+            CHICANE_RENDERER void appendMesh(
+                Vertex::List&          outVertices,
+                const Vec3&            inOrigin,
+                const Vec3&            inDestination,
+                const Vertex::List&    inVertices,
+                const Vertex::Indices& inIndices,
+                const Vec4&            inColor
+            );
+            CHICANE_RENDERER void appendMesh(
+                Vertex::List&          outVertices,
+                const Mat4&            inTransform,
+                const Vertex::List&    inVertices,
+                const Vertex::Indices& inIndices,
+                const Vec4&            inColor
             );
             CHICANE_RENDERER void appendBox(
                 Vertex::List&    outVertices,

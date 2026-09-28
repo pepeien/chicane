@@ -15,6 +15,12 @@ namespace Chicane
 {
     class Scene;
 
+    struct SceneScriptSubscription
+    {
+        std::uint64_t token;
+        int           ref;
+    };
+
     class CHICANE_RUNTIME SceneScript
     {
     public:
@@ -24,6 +30,7 @@ namespace Chicane
         explicit SceneScript(Scene* inScene);
         ~SceneScript();
 
+    public:
         bool load(const FileSystem::Path& inPath);
         void tick(float inDelta);
         bool callGlobal(const String& inName);
@@ -43,17 +50,11 @@ namespace Chicane
         void clearSubscriptions();
 
     private:
-        struct Subscription
-        {
-            std::uint64_t token;
-            int           ref;
-        };
-
-        Scene*                     m_scene;
-        Script::Context            m_context;
-        int                        m_onLoad;
-        int                        m_onTick;
-        bool                       m_bClosing;
-        std::vector<Subscription>  m_subscriptions;
+        Scene*                               m_scene;
+        Script::Context                      m_context;
+        int                                  m_onLoad;
+        int                                  m_onTick;
+        bool                                 m_bClosing;
+        std::vector<SceneScriptSubscription> m_subscriptions;
     };
 }

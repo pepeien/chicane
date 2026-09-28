@@ -140,7 +140,7 @@ namespace Chicane
                 return;
             }
 
-            for (ImmediateGeometry& slot : m_immediate)
+            for (LSceneLineGeometry& slot : m_immediate)
             {
                 if (slot.vertex.handle)
                 {
@@ -221,7 +221,7 @@ namespace Chicane
             return shouldDrawMeshWireframe(inFrame) || shouldDrawLineList(inFrame) || shouldDrawOutline(inFrame);
         }
 
-        LSceneLine::ImmediateGeometry& LSceneLine::ensureImmediate(
+        LSceneLineGeometry& LSceneLine::ensureImmediate(
             RHI::Device* inDevice, const Frame& inFrame, std::uint32_t inFrameIndex
         )
         {
@@ -230,9 +230,9 @@ namespace Chicane
                 m_immediate.resize(inFrameIndex + 1);
             }
 
-            ImmediateGeometry& slot        = m_immediate[inFrameIndex];
-            const std::size_t  vertexBytes = sizeof(Vertex) * inFrame.getImmediateVertices().size();
-            const std::size_t  indexBytes  = sizeof(Vertex::Index) * inFrame.getImmediateIndices().size();
+            LSceneLineGeometry& slot        = m_immediate[inFrameIndex];
+            const std::size_t   vertexBytes = sizeof(Vertex) * inFrame.getImmediateVertices().size();
+            const std::size_t   indexBytes  = sizeof(Vertex::Index) * inFrame.getImmediateIndices().size();
 
             if (vertexBytes > slot.vertexBytes)
             {
@@ -411,7 +411,7 @@ namespace Chicane
 
             if (shouldDrawLineList(inFrame) && inFrame.hasImmediateVertices())
             {
-                ImmediateGeometry& immediate = ensureImmediate(device, inFrame, rhi->frameIndex);
+                LSceneLineGeometry& immediate = ensureImmediate(device, inFrame, rhi->frameIndex);
                 for (const DrawPoly& draw : inFrame.getDraws(DrawPolyType::e3D, DrawPolyMode::Line))
                 {
                     if (!draw.isLineList())

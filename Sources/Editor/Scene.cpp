@@ -15,6 +15,7 @@
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 #include <Chicane/Runtime/Scene/Trace/Request.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Cone.hpp>
+#include <Chicane/Runtime/Scene/Trace/Shape/Pyramid.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Utility.hpp>
 #include <Chicane/Runtime/Track.hpp>
 
@@ -31,6 +32,7 @@ namespace Editor
     Scene::Scene()
         : Chicane::Scene(),
           m_gizmo(nullptr),
+          m_selected(nullptr),
           m_helperSubscription({}),
           m_helpers({}),
           m_bSyncingHelpers(false)
@@ -59,8 +61,38 @@ namespace Editor
         pushLightTraces();
     }
 
+    void Scene::destroyObject(Chicane::Object* inObject)
+    {
+        if (!inObject || inObject->isTransient())
+        {
+            return;
+        }
+
+        if (m_selected)
+        {
+            for (Chicane::Object* node = m_selected; node != nullptr; node = node->getParent())
+            {
+                if (node == inObject)
+                {
+                    setSelection(nullptr);
+                    break;
+                }
+            }
+        }
+
+        destroyObjectTree(inObject);
+    }
+
     void Scene::setSelection(Chicane::Object* inItem)
     {
+        if (m_selected == inItem)
+        {
+            return;
+        }
+
+        m_selected = inItem;
+        syncHelpers();
+
         for (Chicane::CMesh* mesh : getComponents<Chicane::CMesh>())
         {
             bool bSelected = inItem != nullptr && (mesh == inItem || mesh->getParent() == inItem);
@@ -88,46 +120,6 @@ namespace Editor
         }
 
         m_gizmo->setTarget(inItem);
-    }
-
-    void Scene::destroyObject(Chicane::Object* inObject)
-    {
-        if (!inObject || inObject->isTransient())
-        {
-            return;
-        }
-
-        destroyObjectTree(inObject);
-    }
-
-    void Scene::destroyObjectTree(Chicane::Object* inObject)
-    {
-        if (!inObject)
-        {
-            return;
-        }
-
-        const std::vector<Chicane::Object*> attachments = inObject->getAttachments();
-        for (Chicane::Object* child : attachments)
-        {
-            destroyObjectTree(child);
-        }
-
-        inObject->detach();
-
-        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
-        {
-            removeActor(actor);
-            delete actor;
-
-            return;
-        }
-
-        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
-        {
-            removeComponent(component);
-            delete component;
-        }
     }
 
     Gizmo* Scene::getGizmo() const
@@ -188,6 +180,36 @@ namespace Editor
         m_helperSubscription = watchComponents([this](std::vector<Chicane::Component*>) { syncHelpers(); });
     }
 
+    void Scene::destroyObjectTree(Chicane::Object* inObject)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        const std::vector<Chicane::Object*> attachments = inObject->getAttachments();
+        for (Chicane::Object* child : attachments)
+        {
+            destroyObjectTree(child);
+        }
+
+        inObject->detach();
+
+        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
+        {
+            removeActor(actor);
+            delete actor;
+
+            return;
+        }
+
+        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
+        {
+            removeComponent(component);
+            delete component;
+        }
+    }
+
     void Scene::syncHelpers()
     {
         if (m_bSyncingHelpers)
@@ -235,7 +257,7 @@ namespace Editor
 
         for (Chicane::CLight* light : getComponents<Chicane::CLight>())
         {
-            if (!shouldVisualize(light))
+            if (!shouldVisualize(light) || !isSelectedVisual(light))
             {
                 continue;
             }
@@ -287,6 +309,19 @@ namespace Editor
         inMesh->setAbsoluteScale(Chicane::Vec3(scale));
     }
 
+    Chicane::CMesh* Scene::createHelper(const Chicane::FileSystem::Path& inMesh)
+    {
+        Chicane::CMesh* mesh = createComponent<Chicane::CMesh>();
+        mesh->setCanCastShadows(false);
+        mesh->setIsLit(false);
+        mesh->setIsForeground(true);
+        mesh->setIsTransient(true);
+        mesh->setMesh(inMesh);
+        mesh->activate();
+
+        return mesh;
+    }
+
     void Scene::pushLightTraces()
     {
         Chicane::Vertex::List vertices;
@@ -296,9 +331,55 @@ namespace Editor
         {
             const Chicane::Vec4 color = ViewportOverlay::sInstance().tracerColor;
 
+            for (Chicane::CCamera* camera : getComponents<Chicane::CCamera>())
+            {
+                if (!shouldVisualize(camera) || !isSelectedVisual(camera))
+                {
+                    continue;
+                }
+
+                Chicane::Vec3 forward = camera->getForward();
+                const float   length  = std::sqrt(forward.dot(forward));
+                if (length <= 1e-8f)
+                {
+                    continue;
+                }
+
+                const float         depth       = std::max(camera->getFarClip(), 1e-8f);
+                const Chicane::Vec3 origin      = camera->getTranslation();
+                const Chicane::Vec3 destination = origin + (forward / length) * depth;
+                float               aspect      = camera->getAspectRatio();
+                if (aspect <= 1e-4f)
+                {
+                    aspect = 1.0f;
+                }
+
+                const float halfVertical =
+                    std::tan(camera->getFieldOfView() * 0.5f * Chicane::Math::DEG_TO_RAD) * depth;
+                const Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::sPyramid(
+                    origin,
+                    destination,
+                    Chicane::Vec2(halfVertical * aspect, halfVertical)
+                );
+                const Chicane::SceneTraceShapePyramid* pyramid =
+                    dynamic_cast<const Chicane::SceneTraceShapePyramid*>(request.shape.get());
+                if (!pyramid)
+                {
+                    continue;
+                }
+
+                Chicane::Renderer::Debug::appendPyramid(
+                    vertices,
+                    origin,
+                    destination,
+                    pyramid->getHalfExtentsAt(1.0f),
+                    color
+                );
+            }
+
             for (Chicane::CLight* light : getComponents<Chicane::CLight>())
             {
-                if (!shouldVisualize(light))
+                if (!shouldVisualize(light) || !isSelectedVisual(light))
                 {
                     continue;
                 }
@@ -360,7 +441,12 @@ namespace Editor
         return true;
     }
 
-    bool Scene::helperBelongsTo(Chicane::Object* inTarget, const Chicane::Object* inItem) const
+    bool Scene::isSelectedVisual(const Chicane::Object* inTarget) const
+    {
+        return helperBelongsTo(inTarget, m_selected);
+    }
+
+    bool Scene::helperBelongsTo(const Chicane::Object* inTarget, const Chicane::Object* inItem) const
     {
         if (!inTarget || !inItem)
         {
@@ -372,31 +458,18 @@ namespace Editor
             return true;
         }
 
-        Chicane::Component* component = dynamic_cast<Chicane::Component*>(inTarget);
+        const Chicane::Component* component = dynamic_cast<const Chicane::Component*>(inTarget);
         while (component)
         {
-            Chicane::Object* parent = component->getParent();
+            const Chicane::Object* parent = component->getParent();
             if (parent == inItem)
             {
                 return true;
             }
 
-            component = dynamic_cast<Chicane::Component*>(parent);
+            component = dynamic_cast<const Chicane::Component*>(parent);
         }
 
         return false;
-    }
-
-    Chicane::CMesh* Scene::createHelper(const Chicane::FileSystem::Path& inMesh)
-    {
-        Chicane::CMesh* mesh = createComponent<Chicane::CMesh>();
-        mesh->setCanCastShadows(false);
-        mesh->setIsLit(false);
-        mesh->setIsForeground(true);
-        mesh->setIsTransient(true);
-        mesh->setMesh(inMesh);
-        mesh->activate();
-
-        return mesh;
     }
 }

@@ -27,9 +27,11 @@ namespace Editor
 
     private:
         bool isEditing() const;
+
         bool resolveBinding(Chicane::ReflectionFieldAccessor& outAccessor, void*& outInstance);
         void refreshValue();
         void applyValue();
+
         void emitInput();
 
     public:

@@ -32,8 +32,6 @@ namespace Editor
         ~Header() override;
 
     public:
-        bool isFocusable() const override;
-
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
         void tick(float inDeltaTime) override;
 
@@ -91,5 +89,6 @@ namespace Editor
         mutable std::mutex             m_moveHitMutex;
         Chicane::Bounds2D              m_moveBounds;
         std::vector<Chicane::Bounds2D> m_moveControls;
+        std::vector<Chicane::Bounds2D> m_moveOverlays;
     };
 }

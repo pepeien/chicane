@@ -673,6 +673,7 @@ namespace Reflector
             bool isIterable = IsIterableType(resultType);
             string elementName = isIterable ? GetTemplateParam(resultType) : "";
             bool isElementPointer = elementName.EndsWith('*');
+            bool isStatic = clang.CXXMethod_isStatic(cursor) != 0;
 
             if (isElementPointer)
             {
@@ -685,7 +686,8 @@ namespace Reflector
                 paramTypes,
                 isIterable,
                 elementName,
-                isElementPointer
+                isElementPointer,
+                isStatic
             );
         }
 

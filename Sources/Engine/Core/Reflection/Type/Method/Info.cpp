@@ -16,12 +16,14 @@ namespace Chicane
         TypeIndex               inElementIndex,
         std::size_t             inReturnSize,
         ReflectionFieldIterable inIterable,
-        ContainerResolver       inContainerResolver
+        ContainerResolver       inContainerResolver,
+        bool                    bInIsStatic
     )
         : name(std::move(inName)),
           returnType(std::move(inReturnType)),
           paramTypes(std::move(inParamTypes)),
           bIsIterable(bInIsIterable),
+          bIsStatic(bInIsStatic),
           returnTypeIndex(std::move(inReturnTypeIndex)),
           elementIndex(std::move(inElementIndex)),
           returnSize(inReturnSize),
@@ -35,6 +37,7 @@ namespace Chicane
           returnType(""),
           paramTypes({}),
           bIsIterable(false),
+          bIsStatic(false),
           returnTypeIndex(std::nullopt),
           elementIndex(std::nullopt),
           returnSize(0),

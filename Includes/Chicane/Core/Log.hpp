@@ -26,6 +26,7 @@ namespace Chicane
         );
 
         CHICANE_CORE void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage);
+
         template <typename... T>
         inline void emmit(const String& inHexColor, const String& inIdentifier, String inMessage, T... inParams)
         {
@@ -33,6 +34,7 @@ namespace Chicane
         }
 
         CHICANE_CORE void info(const String& inMessage);
+
         template <typename... T>
         inline void info(String inMessage, T... inParams)
         {
@@ -40,6 +42,7 @@ namespace Chicane
         }
 
         CHICANE_CORE void warning(const String& inMessage);
+
         template <typename... T>
         inline void warning(String inMessage, T... inParams)
         {
@@ -47,6 +50,7 @@ namespace Chicane
         }
 
         CHICANE_CORE void error(const String& inMessage);
+
         template <typename... T>
         inline void error(String inMessage, T... inParams)
         {
@@ -54,10 +58,13 @@ namespace Chicane
         }
 
         CHICANE_CORE void critical(const String& inMessage);
+
         template <typename... T>
         inline void critical(String inMessage, T... inParams)
         {
             critical(String::sSprint(inMessage, inParams...));
         }
+
+        CHICANE_CORE void clear();
     }
 }

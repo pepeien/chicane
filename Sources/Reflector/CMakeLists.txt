@@ -182,10 +182,8 @@ function(CH_GENERATE_REFLECTION TARGET)
 
     set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/Reflected")
     set(TYPES_DIR  "${OUTPUT_DIR}/Types")
-    set(LUA_DIR    "${OUTPUT_DIR}/Lua")
     file(MAKE_DIRECTORY "${OUTPUT_DIR}")
     file(MAKE_DIRECTORY "${TYPES_DIR}")
-    file(MAKE_DIRECTORY "${LUA_DIR}")
 
     set(INPUT_FILES)
     foreach(FILE ${HEADERS})
@@ -264,7 +262,6 @@ function(CH_GENERATE_REFLECTION TARGET)
             -o "${OUTPUT_DIR}"
             -t "${TYPES_DIR}"
             -n "${TARGET}"
-            -u "${LUA_DIR}"
         COMMAND
             ${CMAKE_COMMAND} -E touch ${STAMP_FILE}
         BYPRODUCTS
@@ -312,16 +309,14 @@ function(CH_GENERATE_REFLECTION TARGET)
     target_include_directories(${TARGET} PRIVATE "${OUTPUT_DIR}")
 endfunction()
 
-# The language server cannot see ${CMAKE_BINARY_DIR}/Reflected/Lua on its own.
-# Write a root .luarc.json for the active preset so only one stub tree is indexed.
-file(TO_CMAKE_PATH "${CMAKE_BINARY_DIR}/Reflected/Lua" _CHICANE_LUA_STUBS)
+# The language server cannot see generated headers on its own.
+# Point it at the remaining hand stubs (math, Instance).
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Core/Script/Types" _CHICANE_LUA_CORE)
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Runtime/Script/Types" _CHICANE_LUA_RUNTIME)
 file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Grid/Script/Types" _CHICANE_LUA_GRID)
 file(WRITE "${CMAKE_SOURCE_DIR}/.luarc.json" "{
   \"workspace\": {
     \"library\": [
-      \"${_CHICANE_LUA_STUBS}\",
       \"${_CHICANE_LUA_CORE}\",
       \"${_CHICANE_LUA_RUNTIME}\",
       \"${_CHICANE_LUA_GRID}\"

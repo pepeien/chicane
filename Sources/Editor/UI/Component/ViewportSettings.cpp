@@ -80,11 +80,6 @@ namespace Editor
         refreshAxisState();
     }
 
-    bool ViewportSettings::escapesOverflow() const
-    {
-        return true;
-    }
-
     bool ViewportSettings::onEvent(const Chicane::WindowEvent& inEvent)
     {
         if (!isVisible || inEvent.type != Chicane::WindowEventType::MouseButtonUp || !inEvent.data)
@@ -100,9 +95,14 @@ namespace Editor
         }
 
         Chicane::Grid::Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+        if (containsNode(hit))
+        {
+            return false;
+        }
+
         for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
         {
-            if (node == this || node->getId().equals(ANCHOR_ID))
+            if (node->getId().equals(ANCHOR_ID))
             {
                 return false;
             }

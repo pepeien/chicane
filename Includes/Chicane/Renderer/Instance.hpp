@@ -118,6 +118,7 @@ namespace Chicane
 
             // Backend
             bool hasBackend() const;
+
             template <typename Target = Layer, typename... Params>
             inline void addBackendLayer(const ListPush<Layer*>& inSettings, Params... inParams)
             {

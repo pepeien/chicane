@@ -1543,7 +1543,7 @@ namespace Chicane
 
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
@@ -1577,7 +1577,7 @@ namespace Chicane
 
         void Svg::onRefresh()
         {
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
@@ -1610,8 +1610,8 @@ namespace Chicane
 
         void Svg::refreshSize()
         {
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = style.width.isAuto();
+            const bool bIsHeightAuto = style.height.isAuto();
 
             Component::refreshSize();
 
@@ -1646,30 +1646,30 @@ namespace Chicane
 
         void Svg::applySizeAttributes()
         {
-            if (m_style.width.value.getRaw().isEmpty())
+            if (style.width.value.getRaw().isEmpty())
             {
                 const String width = parseText(getAttribute(WIDTH_ATTRIBUTE_NAME)).trim();
 
                 if (!width.isEmpty())
                 {
-                    m_style.width.value.setRaw(width);
+                    style.width.value.setRaw(width);
                 }
             }
 
-            if (m_style.height.value.getRaw().isEmpty())
+            if (style.height.value.getRaw().isEmpty())
             {
                 const String height = parseText(getAttribute(HEIGHT_ATTRIBUTE_NAME)).trim();
 
                 if (!height.isEmpty())
                 {
-                    m_style.height.value.setRaw(height);
+                    style.height.value.setRaw(height);
                 }
             }
         }
 
         void Svg::rebuildShapes()
         {
-            const Color::Rgba current   = m_style.foregroundColor.get();
+            const Color::Rgba current   = style.foregroundColor.get();
             const String      signature = String::sSprint(
                 "%d,%d,%d,%d",
                 static_cast<int>(current.r),

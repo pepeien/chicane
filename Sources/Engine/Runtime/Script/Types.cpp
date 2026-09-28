@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Script/Types.hpp"
 
-struct lua_State;
+#include "Types/ReflectedValue.hpp"
 
 namespace Chicane
 {
@@ -8,9 +8,7 @@ namespace Chicane
     {
         void bind(lua_State* inState)
         {
-            bindObject(inState);
-            bindTraceRequest(inState);
-            bindTrace(inState);
+            bindReflectedStatics(inState);
         }
     }
 }

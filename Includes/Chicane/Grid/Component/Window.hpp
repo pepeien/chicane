@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
@@ -25,6 +27,7 @@ namespace Chicane
             static constexpr inline const char* TITLE_ATTRIBUTE_NAME        = "title";
             static constexpr inline const char* HANDLE_ATTRIBUTE_NAME       = "handle";
             static constexpr inline const char* IS_GRABBABLE_ATTRIBUTE_NAME = "isGrabbable";
+            static constexpr inline const char* IS_RESIZABLE_ATTRIBUTE_NAME = "isResizable";
             static constexpr inline const char* ON_CLOSE_ATTRIBUTE_NAME     = "onClose";
 
             // Value
@@ -38,20 +41,23 @@ namespace Chicane
             Window(const XmlNode& inNode);
 
         public:
-            bool isFocusable() const override;
-            bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
             void tick(float inDeltaTime) override;
 
         protected:
+            void refreshSize() override;
             void refreshPosition() override;
 
         public:
             CH_FUNCTION()
             void dismiss();
 
+        public:
             bool isGrabbable() const;
             void setGrabbable(bool inValue);
+
+            bool isResizable() const;
+            void setResizable(bool inValue);
 
             bool hasAssignedHandle() const;
             bool isAssignedHandle(const Component* inComponent) const;
@@ -65,6 +71,17 @@ namespace Chicane
             void beginMove(const Vec2& inLocation);
             void updateMove(const Vec2& inLocation);
             void endMove();
+            void shift(const Vec2& inDelta);
+
+            std::uint8_t hitResize(const Vec2& inLocation) const;
+            void beginResize(std::uint8_t inEdge, const Vec2& inLocation);
+            void updateResize(const Vec2& inLocation);
+            void endResize();
+            void applyExtent(float inWidth, float inHeight);
+            void applyResizeCursor(std::uint8_t inEdge);
+            void refreshResizeCursor(const Vec2& inLocation);
+            void clearCursor();
+            float resizeGrip() const;
 
         public:
             CH_FIELD()
@@ -77,11 +94,16 @@ namespace Chicane
             String title;
 
         private:
-            String m_handleId;
-            bool   m_bIsGrabbable;
-            bool   m_bIsMoving;
-            Vec2   m_move;
-            Vec2   m_moveCursor;
+            String       m_handleId;
+            bool         m_bIsGrabbable;
+            bool         m_bIsResizable;
+            bool         m_bIsMoving;
+            bool         m_bHasExtent;
+            Vec2         m_move;
+            Vec2         m_moveCursor;
+            Vec2         m_extent;
+            std::uint8_t m_resizeEdge;
+            Vec2         m_resizeCursor;
         };
     }
 }

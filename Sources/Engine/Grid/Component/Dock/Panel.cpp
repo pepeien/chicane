@@ -271,7 +271,7 @@ namespace Chicane
                 peripherals.push_back(m_handle);
             }
 
-            setPeripherals(peripherals);
+            setPinnedPeripherals(peripherals);
         }
 
         void DockPanel::onRefresh()
@@ -312,9 +312,9 @@ namespace Chicane
                 m_parent->getPosition().x + parentStyle.insetLeft() + slot->box.left,
                 m_parent->getPosition().y + parentStyle.insetTop() + slot->box.top
             );
-            addCursor(m_style.insetLeft(), m_style.insetTop());
+            addCursor(style.insetLeft(), style.insetTop());
 
-            m_style.zIndex.set(isFloating() ? 100.0f : 0.0f);
+            style.zIndex.set(isFloating() ? 100.0f : 0.0f);
 
             refreshHandle();
         }

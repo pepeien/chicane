@@ -46,7 +46,7 @@ namespace Editor
     {
         if (Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::sFindFrom(this))
         {
-            panel->addClassName("--closed");
+            panel->classList.add("--closed");
         }
         else if (Chicane::Grid::Window* window = Chicane::Grid::Window::sFindFrom(this))
         {

@@ -25,7 +25,8 @@ namespace Chicane
               m_bReserveHorizontalBar(false),
               m_bReserveVerticalBar(false),
               m_horizontalBar({}),
-              m_verticalBar({})
+              m_verticalBar({}),
+              m_pinnedPeripherals({})
         {}
 
         Scrollable::Scrollable(const String& inTag)
@@ -36,7 +37,8 @@ namespace Chicane
               m_bReserveHorizontalBar(false),
               m_bReserveVerticalBar(false),
               m_horizontalBar({}),
-              m_verticalBar({})
+              m_verticalBar({}),
+              m_pinnedPeripherals({})
         {}
 
         Scrollable::~Scrollable()
@@ -52,8 +54,12 @@ namespace Chicane
             const Vec2 previous = m_currentPosition;
 
             Component::tick(inDelta);
+            refreshScrollBarReservation();
 
-            if (!hasFlag(ComponentDirty::LaidOut) && previous.x == m_currentPosition.x &&
+            const bool bOverflowChanged =
+                m_horizontalBar.bIsVisible != canScrollX() || m_verticalBar.bIsVisible != canScrollY();
+
+            if (!hasFlag(ComponentDirty::LaidOut) && !bOverflowChanged && previous.x == m_currentPosition.x &&
                 previous.y == m_currentPosition.y)
             {
                 return;
@@ -127,7 +133,7 @@ namespace Chicane
 
         bool Scrollable::handleWheel(const Vec2& inDelta)
         {
-            const float step = std::max(16.0f, m_style.font.size.get() * 3.0f);
+            const float step = std::max(16.0f, style.font.size.get() * 3.0f);
 
             Vec2 delta = Vec2::sZero();
 
@@ -151,13 +157,36 @@ namespace Chicane
             return true;
         }
 
+        bool Scrollable::isScrollPinned(const Component* inChild) const
+        {
+            if (!inChild)
+            {
+                return false;
+            }
+
+            return std::find(m_pinnedPeripherals.begin(), m_pinnedPeripherals.end(), inChild) !=
+                   m_pinnedPeripherals.end();
+        }
+
+        void Scrollable::setPinnedPeripherals(const std::vector<Component*>& inPeripherals)
+        {
+            m_pinnedPeripherals = inPeripherals;
+            Component::setPeripherals(inPeripherals);
+        }
+
+        void Scrollable::setPeripherals(const std::vector<Component*>& inPeripherals)
+        {
+            m_pinnedPeripherals.clear();
+            Component::setPeripherals(inPeripherals);
+        }
+
         void Scrollable::refreshPeripherals()
         {
             std::vector<Component*> peripherals;
             m_verticalBar.append(peripherals);
             m_horizontalBar.append(peripherals);
 
-            setPeripherals(peripherals);
+            setPinnedPeripherals(peripherals);
         }
 
         const Vec2& Scrollable::getScroll() const
@@ -197,12 +226,21 @@ namespace Chicane
 
             m_virtualContentSize = inValue;
             m_bHasVirtualContent = true;
+            refreshScrollBarReservation();
+            refreshScrollBars();
         }
 
         void Scrollable::clearVirtualContentSize()
         {
+            if (!m_bHasVirtualContent)
+            {
+                return;
+            }
+
             m_virtualContentSize = Vec2::sZero();
             m_bHasVirtualContent = false;
+            refreshScrollBarReservation();
+            refreshScrollBars();
         }
 
         void Scrollable::addScroll(const Vec2& inValue)
@@ -240,7 +278,7 @@ namespace Chicane
 
         bool Scrollable::isClippingOverflow() const
         {
-            return m_style.isClippingOverflow();
+            return style.isClippingOverflow();
         }
 
         bool Scrollable::canScroll() const
@@ -250,7 +288,7 @@ namespace Chicane
 
         bool Scrollable::canScrollX() const
         {
-            const StyleOverflow overflow = m_style.overflowX.get();
+            const StyleOverflow overflow = style.overflowX.get();
 
             if (overflow == StyleOverflow::Scroll)
             {
@@ -267,7 +305,7 @@ namespace Chicane
 
         bool Scrollable::canScrollY() const
         {
-            const StyleOverflow overflow = m_style.overflowY.get();
+            const StyleOverflow overflow = style.overflowY.get();
 
             if (overflow == StyleOverflow::Scroll)
             {
@@ -447,18 +485,18 @@ namespace Chicane
 
         float Scrollable::scrollBarThickness() const
         {
-            return std::max(6.0f, m_style.font.size.get() * 0.45f);
+            return std::max(6.0f, style.font.size.get() * 0.45f);
         }
 
         float Scrollable::scrollBarMargin() const
         {
-            return std::max(0.0f, m_style.font.size.get() * SCROLL_BAR_MARGIN_EM);
+            return std::max(0.0f, style.font.size.get() * SCROLL_BAR_MARGIN_EM);
         }
 
         void Scrollable::refreshScrollBarReservation()
         {
-            const StyleOverflow overflowX   = m_style.overflowX.get();
-            const StyleOverflow overflowY   = m_style.overflowY.get();
+            const StyleOverflow overflowX   = style.overflowX.get();
+            const StyleOverflow overflowY   = style.overflowY.get();
             const bool          canReserveX = overflowX == StyleOverflow::Scroll || overflowX == StyleOverflow::Auto;
             const bool          canReserveY = overflowY == StyleOverflow::Scroll || overflowY == StyleOverflow::Auto;
 
@@ -539,10 +577,10 @@ namespace Chicane
             const float thickness = scrollBarThickness();
             const float minThumb  = std::max(thickness * 2.0f, 16.0f);
             const Vec2  maxScroll = getScrollMax();
-            const float padLeft   = m_style.insetLeft();
-            const float padRight  = m_style.insetRight();
-            const float padTop    = m_style.insetTop();
-            const float padBottom = m_style.insetBottom();
+            const float padLeft   = style.insetLeft();
+            const float padRight  = style.insetRight();
+            const float padTop    = style.insetTop();
+            const float padBottom = style.insetBottom();
             const float innerW    = std::max(0.0f, m_size.x - padLeft - padRight);
             const float innerH    = std::max(0.0f, m_size.y - padTop - padBottom);
 

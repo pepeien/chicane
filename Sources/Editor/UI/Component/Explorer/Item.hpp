@@ -29,11 +29,11 @@ namespace Editor
 
     public:
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
-        bool escapesOverflow() const override;
         float getDepth() const override;
 
     protected:
         void onTick(float inDeltaTime) override;
+        void onRefresh() override;
         void onDrag() override;
         void onDragEnd() override;
         void refreshPosition() override;
@@ -66,10 +66,13 @@ namespace Editor
     public:
         CH_FIELD()
         ExplorerItemKind kind;
+
         CH_FIELD()
         Chicane::String typeClass;
+
         CH_FIELD()
         Chicane::String dragClass;
+
         CH_FIELD()
         Chicane::String ghostClass;
 
@@ -78,6 +81,7 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String itemName;
+
         CH_FIELD()
         Chicane::String itemPath;
 

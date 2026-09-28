@@ -33,13 +33,12 @@ namespace Chicane
             InputSelect(const XmlNode& inNode);
 
         public:
-            bool isFocusable() const override;
-            bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
             void tick(float inDeltaTime) override;
 
         protected:
             void onTick(float inDeltaTime) override;
+            void onRefresh() override;
             void onFocus() override;
             void onBlur() override;
 
@@ -76,8 +75,10 @@ namespace Chicane
         public:
             CH_FIELD()
             String value;
+
             CH_FIELD()
             String label;
+
             CH_FIELD()
             String placeholder;
 

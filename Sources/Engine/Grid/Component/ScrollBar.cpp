@@ -1,7 +1,6 @@
 #include "Chicane/Grid/Component/ScrollBar.hpp"
 
 #include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Grid/Component/Scrollable.hpp"
 
 namespace Chicane
 {
@@ -56,30 +55,6 @@ namespace Chicane
             return m_parent->getDepth() + 50.0f + m_depthBias;
         }
 
-        Vec2 ScrollBar::getDrawPosition() const
-        {
-            Vec2 result = getPosition();
-
-            const Component* ancestor = hasParent() ? m_parent->getParent() : nullptr;
-            while (ancestor && ancestor != this)
-            {
-                if (const Scrollable* scrollable = dynamic_cast<const Scrollable*>(ancestor))
-                {
-                    result.x -= scrollable->getScroll().x;
-                    result.y -= scrollable->getScroll().y;
-                }
-
-                if (ancestor->isRoot())
-                {
-                    break;
-                }
-
-                ancestor = ancestor->getParent();
-            }
-
-            return result;
-        }
-
         void ScrollBar::configure(const Bounds2D& inBox, const Color::Rgba& inColor, float inDepthBias)
         {
             if (inBox.isEmpty())
@@ -91,7 +66,7 @@ namespace Chicane
 
             m_depthBias = inDepthBias;
 
-            m_style.background.color.set(inColor);
+            style.background.color.set(inColor);
 
             const float width  = inBox.right - inBox.left;
             const float height = inBox.bottom - inBox.top;

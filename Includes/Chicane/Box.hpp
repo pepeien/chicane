@@ -36,6 +36,7 @@ namespace Chicane
         using PreviewSubscription = EventSubscription<const AssetPreview*>;
 
         CHICANE_BOX std::vector<const class Asset*> getById(const String& inId);
+
         template <typename T>
         inline const T* getById(const String& inId)
         {
@@ -55,6 +56,7 @@ namespace Chicane
         CHICANE_BOX void notify(const class Asset* inAsset);
 
         CHICANE_BOX const class Asset* load(const FileSystem::Path& inFilePath);
+
         template <typename T>
         inline const T* load(const FileSystem::Path& inFilePath)
         {

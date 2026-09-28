@@ -172,6 +172,12 @@ namespace Editor
         return Chicane::Grid::Container::onEvent(inEvent);
     }
 
+    void Explorer::tick(float inDeltaTime)
+    {
+        Chicane::Grid::Container::tick(inDeltaTime);
+        syncGridTiles();
+    }
+
     void Explorer::onTick(float inDeltaTime)
     {
         Chicane::Grid::Container::onTick(inDeltaTime);
@@ -182,7 +188,6 @@ namespace Editor
 
         ensureListed(m_rootFolder);
         pumpListings();
-        syncGridTiles();
     }
 
     void Explorer::onSearch()

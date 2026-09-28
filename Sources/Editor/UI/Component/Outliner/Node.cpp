@@ -8,7 +8,6 @@ namespace Editor
           icon("Person"),
           indent("0em"),
           expandState("leaf"),
-          selectedState("idle"),
           bHasChildren(false),
           bIsLeaf(true),
           bIsEditing(false),

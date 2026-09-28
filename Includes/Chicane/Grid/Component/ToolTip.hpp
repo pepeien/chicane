@@ -28,11 +28,11 @@ namespace Chicane
             ToolTip(const XmlNode& inNode);
 
         public:
-            bool escapesOverflow() const override;
             bool onEvent(const WindowEvent& inEvent) override;
 
         protected:
             void onTick(float inDeltaTime) override;
+            void onRefresh() override;
             void refreshPosition() override;
 
         public:

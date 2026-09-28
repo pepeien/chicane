@@ -1,4 +1,6 @@
-#include "Shared.hpp"
+#include "Value.hpp"
+
+#include "ReflectedValue.hpp"
 
 #include <typeindex>
 #include <typeinfo>
@@ -8,6 +10,8 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 #include "Chicane/Runtime/Scene/Object.hpp"
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
+#include "Chicane/Runtime/Scene/Trace/Response.hpp"
 
 namespace Chicane
 {
@@ -171,6 +175,20 @@ namespace Chicane
                 return 1;
             }
 
+            if (const auto* value = std::any_cast<SceneTraceRequest>(&inValue))
+            {
+                pushValueCopy(inState, *value);
+
+                return 1;
+            }
+
+            if (const auto* value = std::any_cast<SceneTraceResponse>(&inValue))
+            {
+                pushValueCopy(inState, *value);
+
+                return 1;
+            }
+
             return Script::Types::pushValue(inState, inValue);
         }
 
@@ -220,6 +238,20 @@ namespace Chicane
             }
 
             const String tail = typeTail(name);
+
+            if (tail.equals("SceneTraceRequest") || tail.equals("TraceRequest"))
+            {
+                outValue = checkValueCopy<SceneTraceRequest>(inState, inIndex);
+
+                return true;
+            }
+
+            if (tail.equals("SceneTraceResponse") || tail.equals("Trace"))
+            {
+                outValue = checkValueCopy<SceneTraceResponse>(inState, inIndex);
+
+                return true;
+            }
 
             if (tail.equals("Vec2"))
             {

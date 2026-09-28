@@ -49,11 +49,6 @@ namespace Chicane
             );
         }
 
-        bool ToolTip::escapesOverflow() const
-        {
-            return isVisible;
-        }
-
         bool ToolTip::onEvent(const WindowEvent& inEvent)
         {
             if (!isPinned() || !isVisible || inEvent.type != WindowEventType::MouseButtonUp || !inEvent.data)
@@ -68,13 +63,13 @@ namespace Chicane
             }
 
             Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+            if (containsNode(hit))
+            {
+                return false;
+            }
+
             for (Component* node = hit; node != nullptr; node = node->getParent())
             {
-                if (node == this)
-                {
-                    return false;
-                }
-
                 if (node->getId().equals(anchorId))
                 {
                     return false;
@@ -95,12 +90,17 @@ namespace Chicane
         {
             refreshAttributes();
             refreshVisibility();
+
+            if (isVisible)
+            {
+                refreshPosition();
+            }
+
             Container::onTick(inDeltaTime);
         }
 
         void ToolTip::refreshPosition()
         {
-            refreshVisibility();
             Container::refreshPosition();
 
             if (!isVisible)
@@ -117,7 +117,12 @@ namespace Chicane
             const Vec2 current = getPosition();
             const Vec2 target(anchor->getPosition().x, anchor->getPosition().y + anchor->getSize().y + 6.0f);
 
-            addPosition(target.x - current.x, target.y - current.y);
+            if (current.x != target.x || current.y != target.y)
+            {
+                addPosition(target.x - current.x, target.y - current.y);
+            }
+
+            reflowChildPositions();
         }
 
         void ToolTip::dismiss()
@@ -173,7 +178,13 @@ namespace Chicane
             }
 
             isVisible = bReveal;
+            setEscapesOverflow(isVisible);
             markLayoutDirtySubtree();
+        }
+
+        void ToolTip::onRefresh()
+        {
+            setEscapesOverflow(isVisible);
         }
 
         bool ToolTip::isPinned() const

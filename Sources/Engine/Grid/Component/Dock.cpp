@@ -131,7 +131,7 @@ namespace Chicane
                 peripherals.push_back(m_drop);
             }
 
-            setPeripherals(peripherals);
+            setPinnedPeripherals(peripherals);
         }
 
         const DockRegion* Dock::findRegion(const DockPanel* inPanel) const
@@ -251,8 +251,8 @@ namespace Chicane
             m_regions.clear();
 
             const Vec2 content(
-                std::max(0.0f, m_size.x - m_style.insetHorizontal()),
-                std::max(0.0f, m_size.y - m_style.insetVertical())
+                std::max(0.0f, m_size.x - style.insetHorizontal()),
+                std::max(0.0f, m_size.y - style.insetVertical())
             );
 
             Bounds2D remaining;
@@ -362,7 +362,7 @@ namespace Chicane
             const float width         = inRemaining.right - inRemaining.left;
             const float height        = inRemaining.bottom - inRemaining.top;
             const bool  bShouldSplitX = width >= height;
-            const float gap           = std::max(0.0f, bShouldSplitX ? m_style.gap.left.get() : m_style.gap.top.get());
+            const float gap           = std::max(0.0f, bShouldSplitX ? style.gap.left.get() : style.gap.top.get());
             const float usable        = std::max(
                 0.0f,
                 (bShouldSplitX ? width : height) -
@@ -436,10 +436,10 @@ namespace Chicane
             }
 
             Bounds2D box = getDropPreview(m_drag.drop);
-            box.left += m_style.insetLeft();
-            box.right += m_style.insetLeft();
-            box.top += m_style.insetTop();
-            box.bottom += m_style.insetTop();
+            box.left += style.insetLeft();
+            box.right += style.insetLeft();
+            box.top += style.insetTop();
+            box.bottom += style.insetTop();
 
             m_drop->configure(box, DROP_COLOR);
         }
@@ -521,10 +521,10 @@ namespace Chicane
             const Vec2 origin = getDrawPosition();
 
             Bounds2D result = inRegion.gap;
-            result.left += origin.x + m_style.insetLeft();
-            result.right += origin.x + m_style.insetLeft();
-            result.top += origin.y + m_style.insetTop();
-            result.bottom += origin.y + m_style.insetTop();
+            result.left += origin.x + style.insetLeft();
+            result.right += origin.x + style.insetLeft();
+            result.top += origin.y + style.insetTop();
+            result.bottom += origin.y + style.insetTop();
 
             return result;
         }
@@ -535,10 +535,10 @@ namespace Chicane
 
             Bounds2D result;
             result.set(
-                origin.y + m_style.insetTop(),
-                origin.x + m_style.insetLeft(),
-                origin.y + m_style.insetTop() + std::max(0.0f, m_size.y - m_style.insetVertical()),
-                origin.x + m_style.insetLeft() + std::max(0.0f, m_size.x - m_style.insetHorizontal())
+                origin.y + style.insetTop(),
+                origin.x + style.insetLeft(),
+                origin.y + style.insetTop() + std::max(0.0f, m_size.y - style.insetVertical()),
+                origin.x + style.insetLeft() + std::max(0.0f, m_size.x - style.insetHorizontal())
             );
 
             return result;
@@ -547,8 +547,8 @@ namespace Chicane
         Bounds2D Dock::getDropPreview(DockSide inSide) const
         {
             const Vec2 content(
-                std::max(0.0f, m_size.x - m_style.insetHorizontal()),
-                std::max(0.0f, m_size.y - m_style.insetVertical())
+                std::max(0.0f, m_size.x - style.insetHorizontal()),
+                std::max(0.0f, m_size.y - style.insetVertical())
             );
 
             const Vec2 band(
@@ -665,14 +665,14 @@ namespace Chicane
         {
             if (isHorizontal(inSide))
             {
-                m_style.cursor.setRaw(Style::CURSOR_TYPE_EW_RESIZE);
-                m_style.cursor.set(WindowCursor::EwResize);
+                style.cursor.setRaw(Style::CURSOR_TYPE_EW_RESIZE);
+                style.cursor.set(WindowCursor::EwResize);
 
                 return;
             }
 
-            m_style.cursor.setRaw(Style::CURSOR_TYPE_NS_RESIZE);
-            m_style.cursor.set(WindowCursor::NsResize);
+            style.cursor.setRaw(Style::CURSOR_TYPE_NS_RESIZE);
+            style.cursor.set(WindowCursor::NsResize);
         }
 
         void Dock::refreshResizeCursor(const Vec2& inLocation)
@@ -685,7 +685,7 @@ namespace Chicane
                 return;
             }
 
-            if (m_style.cursor.get() == WindowCursor::EwResize || m_style.cursor.get() == WindowCursor::NsResize)
+            if (style.cursor.get() == WindowCursor::EwResize || style.cursor.get() == WindowCursor::NsResize)
             {
                 clearCursor();
             }
@@ -733,10 +733,10 @@ namespace Chicane
                 raise(m_drag.panel);
             }
 
-            const Vec2 origin(getDrawPosition().x + m_style.insetLeft(), getDrawPosition().y + m_style.insetTop());
+            const Vec2 origin(getDrawPosition().x + style.insetLeft(), getDrawPosition().y + style.insetTop());
             const Vec2 content(
-                std::max(0.0f, m_size.x - m_style.insetHorizontal()),
-                std::max(0.0f, m_size.y - m_style.insetVertical())
+                std::max(0.0f, m_size.x - style.insetHorizontal()),
+                std::max(0.0f, m_size.y - style.insetVertical())
             );
 
             Vec2 size = m_drag.panel->getFloatSize();
@@ -793,14 +793,14 @@ namespace Chicane
 
         void Dock::applyDragCursor()
         {
-            m_style.cursor.setRaw(Style::CURSOR_TYPE_GRABBING);
-            m_style.cursor.set(WindowCursor::Grabbing);
+            style.cursor.setRaw(Style::CURSOR_TYPE_GRABBING);
+            style.cursor.set(WindowCursor::Grabbing);
         }
 
         void Dock::clearCursor()
         {
-            m_style.cursor.setRaw("");
-            m_style.cursor.set(WindowCursor::Default);
+            style.cursor.setRaw("");
+            style.cursor.set(WindowCursor::Default);
         }
 
         void Dock::raise(DockPanel* inPanel)
@@ -868,22 +868,22 @@ namespace Chicane
             switch (inSide)
             {
             case DockSide::Left:
-                gap = m_style.gap.left.get();
+                gap = style.gap.left.get();
 
                 break;
 
             case DockSide::Right:
-                gap = m_style.gap.right.get();
+                gap = style.gap.right.get();
 
                 break;
 
             case DockSide::Top:
-                gap = m_style.gap.top.get();
+                gap = style.gap.top.get();
 
                 break;
 
             case DockSide::Bottom:
-                gap = m_style.gap.bottom.get();
+                gap = style.gap.bottom.get();
 
                 break;
 
@@ -951,7 +951,7 @@ namespace Chicane
             }
 
             Size parser;
-            parser.setFontSize(m_style.font.size.get() > 0.0f ? m_style.font.size.get() : Box::Font::BASE_SIZE);
+            parser.setFontSize(style.font.size.get() > 0.0f ? style.font.size.get() : Box::Font::BASE_SIZE);
             parser.setParent(inContent);
             parser.setRoot(hasRoot() ? getRoot()->getSize() : inContent);
             parser.setTextParser([this](const String& inText) { return parseText(inText); });

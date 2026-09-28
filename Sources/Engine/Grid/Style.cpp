@@ -1,9 +1,10 @@
-#include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/Style.reflected.hpp"
 
 #include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
 #include <utility>
 
 #include "Chicane/Box/Font.hpp"
@@ -16,6 +17,137 @@ namespace Chicane
 {
     namespace Grid
     {
+        ComponentStatus Style::sConsumePseudoClasses(String& ioSelector)
+        {
+            ComponentStatus status = ComponentStatus::None;
+
+            while (true)
+            {
+                const StylePseudoClass* match = nullptr;
+                std::size_t             at    = String::npos;
+
+                for (const StylePseudoClass& entry : PSEUDO_CLASSES)
+                {
+                    const std::size_t found = ioSelector.find(entry.token);
+                    if (found != String::npos && (at == String::npos || found < at))
+                    {
+                        at    = found;
+                        match = &entry;
+                    }
+                }
+
+                if (!match)
+                {
+                    break;
+                }
+
+                status |= match->status;
+                ioSelector = ioSelector.substr(0, at) + ioSelector.substr(at + std::strlen(match->token));
+            }
+
+            return status;
+        }
+
+        bool Style::sHasPseudoClass(const String& inSelector)
+        {
+            for (const StylePseudoClass& entry : PSEUDO_CLASSES)
+            {
+                if (inSelector.contains(entry.token))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        bool Style::sCoversProperty(const String& inProperty, const String& inTarget)
+        {
+            auto contains = [](const String& inProperty, const String& inTarget) -> bool
+            {
+                if (inProperty.equals(inTarget))
+                {
+                    return true;
+                }
+
+                if (inProperty.equals(PADDING_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(PADDING_TOP_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_BOTTOM_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(GAP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(GAP_TOP_ATTRIBUTE_NAME) || inTarget.equals(GAP_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(GAP_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(GAP_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_WIDTH_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_COLOR_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_TOP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_RIGHT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_BOTTOM_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_LEFT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                return false;
+            };
+
+            return contains(inProperty, inTarget);
+        }
+
         Style::Style(const StyleRuleset::Properties& inProperties, Component* inParent)
             : Style()
         {
@@ -37,6 +169,7 @@ namespace Chicane
               gap({}),
               overflowX(StyleOverflow::Visible),
               overflowY(StyleOverflow::Visible),
+              escape(false),
               radius({}),
               background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
@@ -240,6 +373,15 @@ namespace Chicane
 
             overflowY.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
 
+            escape.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    return value.equals("true", "1");
+                }
+            );
+
             radius.parseWith(
                 [this](const String& inValue, SizeDirection inDirection)
                 {
@@ -303,6 +445,14 @@ namespace Chicane
             cursor.parseWith([this](const String& inValue) { return parseCursor(inValue); });
         }
 
+        void Style::set(const String& inKey, const String& inValue)
+        {
+            StyleRuleset::Properties properties;
+            properties[inKey] = inValue;
+
+            applyProperties(properties);
+        }
+
         bool Style::isDisplay(StyleDisplay inValue) const
         {
             return display.get() == inValue;
@@ -354,6 +504,26 @@ namespace Chicane
         }
 
         void Style::setProperties(const StyleRuleset::Properties& inProperties)
+        {
+            if (inProperties.find(WIDTH_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                width.value.setRaw(Size::AUTO_KEYWORD);
+            }
+
+            if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                height.value.setRaw(Size::AUTO_KEYWORD);
+            }
+
+            if (inProperties.find(CURSOR_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                cursor.setRaw("");
+            }
+
+            applyProperties(inProperties);
+        }
+
+        void Style::applyProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(DISPLAY_ATTRIBUTE_NAME) != inProperties.end())
             {
@@ -502,13 +672,14 @@ namespace Chicane
                 overflowY.setRaw(inProperties.at(OVERFLOW_Y_ATTRIBUTE_NAME));
             }
 
+            if (inProperties.find(ESCAPE_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                escape.setRaw(inProperties.at(ESCAPE_ATTRIBUTE_NAME));
+            }
+
             if (inProperties.find(CURSOR_ATTRIBUTE_NAME) != inProperties.end())
             {
                 cursor.setRaw(inProperties.at(CURSOR_ATTRIBUTE_NAME));
-            }
-            else
-            {
-                cursor.setRaw("");
             }
 
             parseTransitions(inProperties);
@@ -560,6 +731,7 @@ namespace Chicane
 
             overflowX.copyValue(inStyle.overflowX);
             overflowY.copyValue(inStyle.overflowY);
+            escape.copyValue(inStyle.escape);
 
             radius.x.top.copyValue(inStyle.radius.x.top);
             radius.x.bottom.copyValue(inStyle.radius.x.bottom);
@@ -791,93 +963,6 @@ namespace Chicane
             return m_transitionLookup.at(static_cast<std::size_t>(inId));
         }
 
-        bool Style::sCoversProperty(const String& inProperty, const String& inTarget)
-        {
-            auto contains = [](const String& inProperty, const String& inTarget) -> bool
-            {
-                if (inProperty.equals(inTarget))
-                {
-                    return true;
-                }
-
-                if (inProperty.equals(PADDING_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(PADDING_TOP_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_BOTTOM_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(GAP_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(GAP_TOP_ATTRIBUTE_NAME) || inTarget.equals(GAP_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(GAP_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(GAP_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_WIDTH_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_COLOR_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_TOP_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_RIGHT_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_BOTTOM_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_LEFT_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                return false;
-            };
-
-            return contains(inProperty, inTarget);
-        }
-
         bool Style::hasParent() const
         {
             return m_parent != nullptr;
@@ -975,6 +1060,7 @@ namespace Chicane
         {
             overflowX.refresh();
             overflowY.refresh();
+            escape.refresh();
 
             if (overflowX.get() == StyleOverflow::Visible && overflowY.get() != StyleOverflow::Visible)
             {

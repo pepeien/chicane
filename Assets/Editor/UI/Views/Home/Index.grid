@@ -6,6 +6,7 @@
         onWorkspaceViewport="{{ onWorkspaceViewport }}"
         onWorkspaceAssets="{{ onWorkspaceAssets }}"
     />
+    <Editor::Console />
     <Dock dir:if="{{ bIsViewportWorkspace }}" class="home__content">
         <DockPanel side="top" max-size="6em" handle="toolbarHeader" isResizable="false">
             <Editor::Toolbar
@@ -26,7 +27,6 @@
         </DockPanel>
         <DockPanel side="left" size="15%" handle="outlinerHeader">
             <Editor::Outliner
-                outlinerNodes="{{ outlinerNodes }}"
                 onItemSelection="{{ onItemSelection }}"
                 onItemToggle="{{ onItemToggle }}"
                 onItemEdit="{{ onItemEdit }}"
@@ -36,8 +36,6 @@
         </DockPanel>
         <DockPanel side="right" size="20%" handle="attributesHeader">
             <Editor::Attributes
-                bIsItemSelected="{{ bIsItemSelected }}"
-                attributeGroups="{{ attributeGroups }}"
                 onAttributeCommit="{{ onAttributeCommit }}"
             />
         </DockPanel>
@@ -67,7 +65,6 @@
         </DockPanel>
         <DockPanel side="right" size="15%" handle="outlinerHeader">
             <Editor::Outliner
-                outlinerNodes="{{ outlinerNodes }}"
                 onItemSelection="{{ onItemSelection }}"
                 onItemToggle="{{ onItemToggle }}"
                 onItemEdit="{{ onItemEdit }}"

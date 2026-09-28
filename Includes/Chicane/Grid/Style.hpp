@@ -7,6 +7,7 @@
 
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
@@ -43,6 +44,13 @@ namespace Chicane
     {
         class Component;
 
+        struct StylePseudoClass
+        {
+            const char*     token;
+            ComponentStatus status;
+        };
+
+        CH_TYPE(Manual)
         struct CHICANE_GRID Style
         {
         public:
@@ -52,40 +60,44 @@ namespace Chicane
 
         public:
             // Extension
-            static constexpr inline const char* FILE_EXTENSION_NAME = "decal";
+            static constexpr inline const char*      FILE_EXTENSION_NAME = "decal";
 
             // Attribute
-            static constexpr inline const char* ATTRIBUTE_NAME = "style";
+            static constexpr inline const char*      ATTRIBUTE_NAME = "style";
 
             // Reference
-            static constexpr inline const char* REFERENCE_KEYWORD = "ref";
+            static constexpr inline const char*      REFERENCE_KEYWORD = "ref";
 
             // Import
-            static constexpr inline const char* IMPORT_KEYWORD = "@import";
-            static constexpr inline const char* URL_KEYWORD    = "url";
+            static constexpr inline const char*      IMPORT_KEYWORD = "@import";
+            static constexpr inline const char*      URL_KEYWORD    = "url";
 
             // Ruleset
-            static constexpr inline const char  COMMAND_ENDING   = ';';
-            static constexpr inline const char  VARIABLE_KEYWORD = '$';
-            static constexpr inline const char  RULESET_OPENING  = '{';
-            static constexpr inline const char  RULESET_CLOSING  = '}';
+            static constexpr inline const char       COMMAND_ENDING   = ';';
+            static constexpr inline const char       VARIABLE_KEYWORD = '$';
+            static constexpr inline const char       RULESET_OPENING  = '{';
+            static constexpr inline const char       RULESET_CLOSING  = '}';
 
             // Separator
-            static constexpr inline const char  ONELINE_SEPARATOR  = ' ';
-            static constexpr inline const char  SELECTOR_SEPARATOR = ',';
-            static constexpr inline const char  CLASS_SEPARATOR    = ' ';
+            static constexpr inline const char       ONELINE_SEPARATOR  = ' ';
+            static constexpr inline const char       SELECTOR_SEPARATOR = ',';
+            static constexpr inline const char       CLASS_SEPARATOR    = ' ';
 
             // Selectors
-            static constexpr inline const char  ID_SELECTOR              = '#';
-            static constexpr inline const char  CLASS_SELECTOR           = '.';
-            static constexpr inline const char  INCLUSIVE_SELECTOR       = '*';
-            static constexpr inline const char  SELECTOR_INHERITANCE     = '&';
-            static constexpr inline const char  SELECTOR_SEPARATOR_COMMA = ',';
-            static constexpr inline const char  SELECTOR_SEPARATOR_SPACE = ' ';
-            static constexpr inline const char  PSEUDO_CLASS_SELECTOR    = ':';
-            static constexpr inline const char* PSEUDO_CLASS_HOVER       = ":hover";
-            static constexpr inline const char* PSEUDO_CLASS_FOCUS       = ":focus";
-            static constexpr inline const char* PSEUDO_CLASS_DRAG        = ":drag";
+            static constexpr inline const char       ID_SELECTOR              = '#';
+            static constexpr inline const char       CLASS_SELECTOR           = '.';
+            static constexpr inline const char       INCLUSIVE_SELECTOR       = '*';
+            static constexpr inline const char       SELECTOR_INHERITANCE     = '&';
+            static constexpr inline const char       SELECTOR_SEPARATOR_COMMA = ',';
+            static constexpr inline const char       SELECTOR_SEPARATOR_SPACE = ' ';
+            static constexpr inline const char       PSEUDO_CLASS_SELECTOR    = ':';
+
+            static constexpr inline StylePseudoClass PSEUDO_CLASSES[] = {
+                {":hover",    ComponentStatus::Hovered },
+                {":focus",    ComponentStatus::Focused },
+                {":drag",     ComponentStatus::Dragging},
+                {":selected", ComponentStatus::Selected}
+            };
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
@@ -102,6 +114,7 @@ namespace Chicane
             static constexpr inline const char* OVERFLOW_TYPE_HIDDEN      = "hidden";
             static constexpr inline const char* OVERFLOW_TYPE_SCROLL      = "scroll";
             static constexpr inline const char* OVERFLOW_TYPE_AUTO        = "auto";
+            static constexpr inline const char* ESCAPE_ATTRIBUTE_NAME     = "escape";
 
             // Z-Index
             static constexpr inline const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
@@ -386,8 +399,19 @@ namespace Chicane
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
         public:
+            static ComponentStatus sConsumePseudoClasses(String& ioSelector);
+            static bool sHasPseudoClass(const String& inSelector);
+
+        private:
+            static bool sCoversProperty(const String& inProperty, const String& inTarget);
+
+        public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
+
+        public:
+            CH_FUNCTION()
+            void set(const String& inKey, const String& inValue);
 
         public:
             bool isDisplay(StyleDisplay inValue) const;
@@ -395,7 +419,9 @@ namespace Chicane
             bool isPositioned() const;
             bool isClippingOverflow() const;
             bool isFillPercent(const String& inRaw) const;
+
             void resolveFillPercent(const Vec2& inRemaining);
+
             void clampSize(float& outWidth, float& outHeight) const;
 
             float insetLeft() const;
@@ -431,8 +457,7 @@ namespace Chicane
             void refresh();
 
         private:
-            static bool sCoversProperty(const String& inProperty, const String& inTarget);
-
+            void applyProperties(const StyleRuleset::Properties& inProperties);
             void refreshTransitionLookup();
             bool canKeepFillPercent(SizeDirection inDirection) const;
             float preservedFillPercent(float inParsed, float inLaidOut) const;
@@ -503,6 +528,7 @@ namespace Chicane
             StyleCorners                  gap;
             StyleProperty<StyleOverflow>  overflowX;
             StyleProperty<StyleOverflow>  overflowY;
+            StyleProperty<bool>           escape;
             StyleRadius                   radius;
 
             // Background

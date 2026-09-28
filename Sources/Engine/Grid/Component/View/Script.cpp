@@ -338,7 +338,7 @@ namespace Chicane
 
         void ViewScript::clearSubscriptions()
         {
-            for (const Subscription& subscription : m_subscriptions)
+            for (const ViewScriptSubscription& subscription : m_subscriptions)
             {
                 if (m_view)
                 {
@@ -402,14 +402,11 @@ namespace Chicane
                     className = className.substr(1);
                 }
 
-                for (const String& part : component->getClassName().split(' '))
+                if (component->classList.contains(className))
                 {
-                    if (part.equals(className))
-                    {
-                        Types::pushComponent(inState, component);
+                    Types::pushComponent(inState, component);
 
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -419,8 +416,6 @@ namespace Chicane
         void ViewScript::bind()
         {
             lua_State* state = m_context.state();
-
-            Types::bind(state);
 
             lua_newtable(state);
             luaL_setfuncs(state, kInstanceMethods, 0);

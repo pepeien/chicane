@@ -7,6 +7,8 @@
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Script/Types.hpp"
 
+#include "../Script/Types/ReflectedValue.hpp"
+
 extern "C" {
 #include "lauxlib.h"
 #include "lua.h"
@@ -50,9 +52,9 @@ namespace Chicane
 
     static bool readRequest(lua_State* inState, SceneTraceRequest& outRequest, int& outIgnoredIndex)
     {
-        if (Types::isTraceRequest(inState, 1))
+        if (Types::isValueCopy<SceneTraceRequest>(inState, 1))
         {
-            outRequest      = Types::checkTraceRequest(inState, 1);
+            outRequest      = Types::checkValueCopy<SceneTraceRequest>(inState, 1);
             outIgnoredIndex = 2;
 
             return true;
@@ -225,7 +227,7 @@ namespace Chicane
             return 1;
         }
 
-        Types::pushTrace(inState, hit);
+        Types::pushValueCopy(inState, hit);
 
         return 1;
     }
@@ -247,7 +249,7 @@ namespace Chicane
         int index = 1;
         for (const SceneTraceResponse& hit : hits)
         {
-            Types::pushTrace(inState, hit);
+            Types::pushValueCopy(inState, hit);
             lua_rawseti(inState, -2, index++);
         }
 
@@ -339,7 +341,7 @@ namespace Chicane
 
     bool SceneScript::load(const FileSystem::Path& inPath)
     {
-        if (!m_context.open(Script::Context::STWD_MODULE))
+        if (!m_context.open(Script::Context::STEWARD_MODULE))
         {
             return false;
         }
@@ -440,7 +442,7 @@ namespace Chicane
 
     void SceneScript::clearSubscriptions()
     {
-        for (const Subscription& subscription : m_subscriptions)
+        for (const SceneScriptSubscription& subscription : m_subscriptions)
         {
             if (m_scene)
             {

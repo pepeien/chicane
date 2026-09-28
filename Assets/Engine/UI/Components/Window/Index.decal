@@ -1,6 +1,8 @@
 Window {
     position: absolute;
     z-index: 80;
+    escape: true;
+    background-color: black;
 
     &:drag {
         cursor: grabbing;
@@ -9,10 +11,9 @@ Window {
 
 .window {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    border-radius: 0.75em;
-    background-color: transparent;
 
     &__bar {
         width: 100%;
@@ -20,9 +21,8 @@ Window {
         display: flex;
         flex-direction: row;
         padding: 0.35em 0.6em;
-        background-color: white;
+        background-color: transparent;
         border-bottom: 1px solid gray;
-        border-radius: 0.75em 0.75em 0 0;
         cursor: grab;
     }
 
@@ -48,7 +48,9 @@ Window {
 
     &__body {
         width: 100%;
+        height: calc(100% - 1.8em);
         display: flex;
         flex-direction: column;
+        overflow: hidden;
     }
 }

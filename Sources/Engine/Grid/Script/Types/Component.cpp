@@ -3,14 +3,12 @@
 #include <any>
 #include <exception>
 
-#include "Chicane/Core/Reflection/Type/Method.hpp"
+#include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Script/Types.hpp"
 
 #include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Component/Text.hpp"
-#include "Chicane/Grid/Style/Display.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -27,170 +25,84 @@ namespace Chicane
 
             struct ComponentBox
             {
-                Component* component;
+                void*                     instance;
+                const ReflectionTypeInfo* type;
+                Component*                owner;
             };
 
-            static Component* liveComponent(ComponentBox* inBox)
+            static Component* liveOwner(const ComponentBox* inBox)
             {
-                if (!inBox || !inBox->component || !Script::Handle::contains(inBox->component))
+                if (!inBox || !inBox->owner || !Script::Handle::contains(inBox->owner))
                 {
                     return nullptr;
                 }
 
-                return inBox->component;
+                return inBox->owner;
             }
 
-            static int reflectedIndex(lua_State* inState)
+            static ComponentBox* testBox(lua_State* inState, int inIndex)
             {
-                if (lua_getmetatable(inState, 1))
-                {
-                    lua_pushvalue(inState, 2);
-                    lua_rawget(inState, -2);
-                    if (!lua_isnil(inState, -1))
-                    {
-                        lua_remove(inState, -2);
-
-                        return 1;
-                    }
-
-                    lua_pop(inState, 2);
-                }
-
-                Component* component = checkComponent(inState, 1);
-                if (!component || lua_type(inState, 2) != LUA_TSTRING)
-                {
-                    lua_pushnil(inState);
-
-                    return 1;
-                }
-
-                const char*               key  = lua_tostring(inState, 2);
-                const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*component));
-                if (!type)
-                {
-                    lua_pushnil(inState);
-
-                    return 1;
-                }
-
-                const ReflectionFieldAccessor accessor = type->resolve(key);
-                if (Script::Types::pushField(inState, accessor, component))
-                {
-                    return 1;
-                }
-
-                lua_pushnil(inState);
-
-                return 1;
+                return static_cast<ComponentBox*>(luaL_testudata(inState, inIndex, COMPONENT_METATABLE));
             }
 
-            static int reflectedNewIndex(lua_State* inState)
+            static int reflectedIndex(lua_State* inState);
+            static int reflectedNewIndex(lua_State* inState);
+
+            static void ensureMetatable(lua_State* inState)
             {
-                Component* component = checkComponent(inState, 1);
-                if (!component || lua_type(inState, 2) != LUA_TSTRING)
+                if (luaL_getmetatable(inState, COMPONENT_METATABLE) != LUA_TNIL)
                 {
-                    return luaL_error(inState, "cannot set property");
+                    lua_pop(inState, 1);
+
+                    return;
                 }
 
-                const char*               key  = lua_tostring(inState, 2);
-                const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*component));
-                if (!type)
+                lua_pop(inState, 1);
+
+                luaL_newmetatable(inState, COMPONENT_METATABLE);
+                lua_pushcfunction(inState, reflectedIndex);
+                lua_setfield(inState, -2, "__index");
+                lua_pushcfunction(inState, reflectedNewIndex);
+                lua_setfield(inState, -2, "__newindex");
+                lua_pop(inState, 1);
+            }
+
+            static void pushBox(
+                lua_State* inState, void* inInstance, const ReflectionTypeInfo* inType, Component* inOwner
+            )
+            {
+                ensureMetatable(inState);
+
+                ComponentBox* box = static_cast<ComponentBox*>(lua_newuserdatauv(inState, sizeof(ComponentBox), 0));
+                box->instance     = inInstance;
+                box->type         = inType;
+                box->owner        = inOwner;
+                luaL_setmetatable(inState, COMPONENT_METATABLE);
+            }
+
+            static int callMethod(lua_State* inState)
+            {
+                const ComponentBox* box =
+                    static_cast<const ComponentBox*>(lua_touserdata(inState, lua_upvalueindex(1)));
+                const auto* method =
+                    static_cast<const ReflectionTypeMethodInfo*>(lua_touserdata(inState, lua_upvalueindex(2)));
+                if (!box || !method || !liveOwner(box) || !box->instance)
                 {
-                    return luaL_error(inState, "type is not reflected");
+                    return luaL_error(inState, "reflected method is no longer valid");
                 }
 
-                const ReflectionFieldAccessor accessor = type->resolve(key);
-                if (!Script::Types::setField(inState, accessor, component, 3))
+                int cursor = 1;
+                if (lua_gettop(inState) >= 1 && testBox(inState, 1))
                 {
-                    return luaL_error(inState, "unknown property '%s'", key);
+                    cursor = 2;
                 }
 
-                return 0;
-            }
-
-            static int getClassName(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                lua_pushstring(inState, component->getClassName().toChar());
-
-                return 1;
-            }
-
-            static int setClassName(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                component->setClassName(luaL_checkstring(inState, 2));
-
-                return 0;
-            }
-
-            static int getText(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                if (Text* text = dynamic_cast<Text*>(component))
-                {
-                    lua_pushstring(inState, text->getText().toChar());
-
-                    return 1;
-                }
-
-                lua_pushstring(inState, "");
-
-                return 1;
-            }
-
-            static int setText(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                if (Text* text = dynamic_cast<Text*>(component))
-                {
-                    text->setText(luaL_checkstring(inState, 2));
-                }
-
-                return 0;
-            }
-
-            static int isVisible(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                lua_pushboolean(inState, !component->getStyle().isDisplay(StyleDisplay::None));
-
-                return 1;
-            }
-
-            static int setVisible(lua_State* inState)
-            {
-                Component* component = checkComponent(inState, 1);
-                component->setVisible(lua_toboolean(inState, 2) != 0);
-
-                return 0;
-            }
-
-            static int invoke(lua_State* inState)
-            {
-                Component*  component = checkComponent(inState, 1);
-                const char* name      = luaL_checkstring(inState, 2);
-
-                const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*component));
-                if (!type)
-                {
-                    return 0;
-                }
-
-                const ReflectionTypeMethodInfo* method = type->findMethod(name);
-                if (!method)
-                {
-                    return 0;
-                }
-
-                ReflectionTypeMethod result(method);
-                result.bind(component);
-
-                // Arguments follow the method name, so the first one sits at index 3
+                ReflectionTypeMethodInfo::Params params;
+                params.reserve(method->paramTypes.size());
                 for (std::size_t i = 0; i < method->paramTypes.size(); i++)
                 {
                     std::any value;
-                    if (!Script::Types::readValue(inState, 3 + static_cast<int>(i), method->paramTypes[i], value))
+                    if (!Script::Types::readValue(inState, cursor, method->paramTypes[i], value))
                     {
                         return luaL_error(
                             inState,
@@ -200,12 +112,13 @@ namespace Chicane
                         );
                     }
 
-                    result.addParam(std::move(value));
+                    cursor += 1;
+                    params.push_back(std::move(value));
                 }
 
                 try
                 {
-                    return Script::Types::pushValue(inState, result.invoke());
+                    return Script::Types::pushValue(inState, method->invoke(box->instance, params));
                 }
                 catch (const std::exception& error)
                 {
@@ -213,47 +126,104 @@ namespace Chicane
                 }
             }
 
-            static const luaL_Reg kMethods[] = {
-                {"getClassName", getClassName},
-                {"setClassName", setClassName},
-                {"getText",      getText     },
-                {"setText",      setText     },
-                {"isVisible",    isVisible   },
-                {"setVisible",   setVisible  },
-                {"invoke",       invoke      },
-                {nullptr,        nullptr     }
-            };
-
-            void bindComponent(lua_State* inState)
+            static int pushMethod(
+                lua_State* inState, const ComponentBox& inBox, const ReflectionTypeMethodInfo* inMethod
+            )
             {
-                luaL_newmetatable(inState, COMPONENT_METATABLE);
-                luaL_setfuncs(inState, kMethods, 0);
-                lua_pushcfunction(inState, reflectedIndex);
-                lua_setfield(inState, -2, "__index");
-                lua_pushcfunction(inState, reflectedNewIndex);
-                lua_setfield(inState, -2, "__newindex");
-                lua_pop(inState, 1);
+                ComponentBox* box = static_cast<ComponentBox*>(lua_newuserdatauv(inState, sizeof(ComponentBox), 0));
+                *box              = inBox;
+                lua_pushlightuserdata(inState, const_cast<ReflectionTypeMethodInfo*>(inMethod));
+                lua_pushcclosure(inState, callMethod, 2);
+
+                return 1;
+            }
+
+            static int reflectedIndex(lua_State* inState)
+            {
+                ComponentBox* box   = testBox(inState, 1);
+                Component*    owner = liveOwner(box);
+                if (!owner || !box->instance || !box->type || lua_type(inState, 2) != LUA_TSTRING)
+                {
+                    lua_pushnil(inState);
+
+                    return 1;
+                }
+
+                const char* key = lua_tostring(inState, 2);
+                if (const ReflectionTypeMethodInfo* method = box->type->findMethod(key))
+                {
+                    return pushMethod(inState, *box, method);
+                }
+
+                const ReflectionFieldAccessor accessor = box->type->resolve(key);
+                if (Script::Types::pushField(inState, accessor, box->instance))
+                {
+                    return 1;
+                }
+
+                if (accessor.isValid() && accessor.typeIndex.has_value())
+                {
+                    if (const ReflectionTypeInfo* nested =
+                            ReflectionTypeRegistry::sInstance().find(accessor.typeIndex.value()))
+                    {
+                        if (void* address = accessor.address(box->instance))
+                        {
+                            pushBox(inState, address, nested, owner);
+
+                            return 1;
+                        }
+                    }
+                }
+
+                lua_pushnil(inState);
+
+                return 1;
+            }
+
+            static int reflectedNewIndex(lua_State* inState)
+            {
+                ComponentBox* box   = testBox(inState, 1);
+                Component*    owner = liveOwner(box);
+                if (!owner || !box->instance || !box->type || lua_type(inState, 2) != LUA_TSTRING)
+                {
+                    return luaL_error(inState, "cannot set property");
+                }
+
+                const char*                   key      = lua_tostring(inState, 2);
+                const ReflectionFieldAccessor accessor = box->type->resolve(key);
+                if (!Script::Types::setField(inState, accessor, box->instance, 3))
+                {
+                    return luaL_error(inState, "unknown property '%s'", key);
+                }
+
+                return 0;
             }
 
             void pushComponent(lua_State* inState, Component* inComponent)
             {
-                ComponentBox* box = static_cast<ComponentBox*>(lua_newuserdatauv(inState, sizeof(ComponentBox), 0));
-                box->component    = inComponent;
-                luaL_setmetatable(inState, COMPONENT_METATABLE);
+                if (!inComponent)
+                {
+                    lua_pushnil(inState);
+
+                    return;
+                }
+
+                const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*inComponent));
+                pushBox(inState, inComponent, type, inComponent);
             }
 
             bool isComponent(lua_State* inState, int inIndex)
             {
-                ComponentBox* box = static_cast<ComponentBox*>(luaL_testudata(inState, inIndex, COMPONENT_METATABLE));
+                ComponentBox* box = testBox(inState, inIndex);
 
-                return liveComponent(box) != nullptr;
+                return liveOwner(box) != nullptr && box->instance == box->owner;
             }
 
             Component* checkComponent(lua_State* inState, int inIndex)
             {
-                ComponentBox* box = static_cast<ComponentBox*>(luaL_testudata(inState, inIndex, COMPONENT_METATABLE));
-                Component*    component = liveComponent(box);
-                if (!component)
+                ComponentBox* box       = testBox(inState, inIndex);
+                Component*    component = liveOwner(box);
+                if (!component || box->instance != box->owner)
                 {
                     luaL_error(inState, "component is no longer valid");
 

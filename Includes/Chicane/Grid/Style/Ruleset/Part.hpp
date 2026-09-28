@@ -6,6 +6,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Component/Status.hpp"
 
 namespace Chicane
 {
@@ -17,12 +18,10 @@ namespace Chicane
             std::uint32_t specificity() const;
 
         public:
-            bool                bCanHover = false;
-            bool                bCanFocus = false;
-            bool                bCanDrag  = false;
-            String              tag       = String::sEmpty();
-            String              id        = String::sEmpty();
-            std::vector<String> classes   = {};
+            ComponentStatus     status  = ComponentStatus::None;
+            String              tag     = String::sEmpty();
+            String              id      = String::sEmpty();
+            std::vector<String> classes = {};
         };
     }
 }

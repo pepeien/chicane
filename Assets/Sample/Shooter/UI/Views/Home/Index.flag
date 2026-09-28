@@ -2,10 +2,6 @@ Instance.onLoad(function()
     local score = Instance.find(".score")
     local banner = Instance.find(".victory")
 
-    if banner then
-        banner:setVisible(false)
-    end
-
     Instance.subscribe("score", function(data)
         if score then
             score:setText("Score " .. data)
@@ -14,7 +10,7 @@ Instance.onLoad(function()
 
     Instance.subscribe("victory", function()
         if banner then
-            banner:setVisible(true)
+            banner.classList:add("--shown")
         end
     end)
 end)

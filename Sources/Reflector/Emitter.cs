@@ -170,6 +170,10 @@ namespace Reflector
             sb.AppendLine("\t\t{");
             foreach (FunctionModel f in t.Functions)
             {
+                if (t.Fields.Any(field => field.Name == f.Name))
+                {
+                    continue;
+                }
                 var paramUnpack = string.Join(",", f.ParamTypes.Select((p, i) => $"\n\t\t\t\t\t\t{EmitAnyCast(p, $"inParams.at({i})")}"));
                 var paramChecker = "";
 
@@ -187,10 +191,16 @@ namespace Reflector
                 }
 
                 bool isVoid = f.ReturnType == "void";
+                string receiver = f.IsStatic
+                    ? $"{t.Name}::{f.Name}"
+                    : $"static_cast<{t.Name}*>(inInstance)->{f.Name}";
+                string unusedInstance = f.IsStatic ? "\t\t\t\t\t(void)inInstance;\n" : "";
                 string call = isVoid
-                    ? $"\t\t\t\t\tstatic_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n" +
+                    ? unusedInstance +
+                      $"\t\t\t\t\t{receiver}({paramUnpack});\n" +
                       $"\t\t\t\t\treturn {{}};\n"
-                    : $"\t\t\t\t\treturn static_cast<{t.Name}*>(inInstance)->{f.Name}({paramUnpack});\n";
+                    : unusedInstance +
+                      $"\t\t\t\t\treturn {receiver}({paramUnpack});\n";
 
                 string returnTypeIndex = isVoid
                     ? "std::nullopt"
@@ -216,7 +226,8 @@ namespace Reflector
                     $"\t\t\t\t{returnSize},\n" +
                     EmitIterable(f.ReturnType, f.IsIterable, f.ElementName, f.IsElementPointer) +
                     $",\n" +
-                    EmitMethodContainerResolver(f) + "\n" +
+                    EmitMethodContainerResolver(f) + ",\n" +
+                    $"\t\t\t\t{(f.IsStatic ? "true" : "false")}\n" +
                     $"\t\t\t}},"
                 );
             }

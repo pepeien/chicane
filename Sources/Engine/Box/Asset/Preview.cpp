@@ -239,10 +239,6 @@ namespace Chicane
                 static_cast<std::size_t>(SIZE) * static_cast<std::size_t>(SIZE) * static_cast<std::size_t>(CHANNELS)
             );
             inImage.blit(pixels.data(), SIZE, SIZE, 0);
-            if (inType == AssetType::Texture)
-            {
-                Image::sFlipY(pixels.data(), SIZE, SIZE, CHANNELS);
-            }
 
             std::unique_ptr<AssetPreview> result = std::make_unique<AssetPreview>();
             result->path                         = inAsset;
@@ -802,7 +798,7 @@ namespace Chicane
                 const Vertex::Index base = static_cast<Vertex::Index>(outPoints.size());
                 for (const Vertex& vertex : inGlyph.vertices)
                 {
-                    outPoints.push_back({vertex.position.x + inCursor, vertex.position.y});
+                    outPoints.push_back({-(vertex.position.x + inCursor), -vertex.position.y});
                 }
 
                 if (inGlyph.indices.empty())

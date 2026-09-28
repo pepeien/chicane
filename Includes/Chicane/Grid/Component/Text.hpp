@@ -39,7 +39,10 @@ namespace Chicane
             void refreshPosition() override;
 
         public:
+            CH_FUNCTION()
             const String& getText() const;
+
+            CH_FUNCTION()
             void setText(const String& inValue);
 
             const Vec2& getContentSize() const;

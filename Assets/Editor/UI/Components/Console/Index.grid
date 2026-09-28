@@ -1,0 +1,3 @@
+<Window class="console" title="Console" isGrabbable="true" isResizable="true">
+    <Logger class="console__log" />
+</Window>

@@ -29,8 +29,10 @@ namespace Editor
         void onTick(float inDeltaTime) override;
 
     public:
-        void setSelection(Chicane::Object* inItem);
         virtual void destroyObject(Chicane::Object* inObject);
+
+    public:
+        void setSelection(Chicane::Object* inItem);
 
         Gizmo* getGizmo() const;
         void setGizmoType(GizmoType inType);
@@ -45,16 +47,22 @@ namespace Editor
 
     private:
         void destroyObjectTree(Chicane::Object* inObject);
+
         void syncHelpers();
         void poseHelper(Chicane::Object* inTarget);
         void poseHelper(Chicane::CMesh* inMesh, Chicane::Object* inTarget);
-        void pushLightTraces();
-        bool shouldVisualize(const Chicane::Component* inComponent) const;
-        bool helperBelongsTo(Chicane::Object* inTarget, const Chicane::Object* inItem) const;
         Chicane::CMesh* createHelper(const Chicane::FileSystem::Path& inMesh);
 
+        void pushLightTraces();
+
+        bool shouldVisualize(const Chicane::Component* inComponent) const;
+        bool isSelectedVisual(const Chicane::Object* inTarget) const;
+        bool helperBelongsTo(const Chicane::Object* inTarget, const Chicane::Object* inItem) const;
+
     private:
-        Gizmo*                                            m_gizmo;
+        Gizmo*           m_gizmo;
+        Chicane::Object* m_selected;
+
         ComponentsSubscription                            m_helperSubscription;
         std::unordered_map<Chicane::Object*, SceneHelper> m_helpers;
         bool                                              m_bSyncingHelpers;

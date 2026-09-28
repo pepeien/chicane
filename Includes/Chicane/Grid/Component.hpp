@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
-#include <set>
 #include <stdexcept>
+#include <vector>
 #include <type_traits>
 #include <typeinfo>
 #include <unordered_map>
@@ -29,6 +29,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Animatable.hpp"
+#include "Chicane/Grid/Component/ClassList.hpp"
 #include "Chicane/Grid/Component/Dirty.hpp"
 #include "Chicane/Grid/Component/DrawCache.hpp"
 #include "Chicane/Grid/Component/PaintContext.hpp"
@@ -46,7 +47,6 @@ namespace Chicane
         class CHICANE_GRID Component : public Animatable, public Serializable
         {
         public:
-            using ClassList  = std::set<String>;
             using Directive  = std::function<void(const String&)>;
             using Directives = std::unordered_map<String, Directive>;
             using Variables  = std::unordered_map<String, ReflectionFieldAccessor>;
@@ -70,6 +70,7 @@ namespace Chicane
             static constexpr inline const char* ON_BLUR_ATTRIBUTE_NAME     = "onBlur";
             static constexpr inline const char* ON_DRAG_ATTRIBUTE_NAME     = "onDrag";
             static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME = "onDragEnd";
+            static constexpr inline const char* FOCUSABLE_ATTRIBUTE_NAME   = "focusable";
 
         public:
             static Component* sCreate(const XmlNode& inNode);
@@ -94,7 +95,6 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
             virtual bool isFocusable() const;
-            virtual bool escapesOverflow() const;
 
             // Event
             virtual bool onEvent(const WindowEvent& inEvent);
@@ -137,16 +137,36 @@ namespace Chicane
             virtual void refreshPosition();
 
         public:
+            CH_FUNCTION()
+            bool isVisible() const;
+
+            CH_FUNCTION()
+            String getClassName() const;
+
+            CH_FUNCTION()
+            void setClassName(const String& inValue);
+
+            CH_FUNCTION()
+            void addClassName(const String& inValue);
+
+            template <typename T, typename... Args>
+            inline void addClassName(T inFirst, Args... inRest)
+            {
+                classList.add(inFirst, inRest...);
+            }
+
+        public:
             // Checkers
             bool isRoot() const;
             bool isDisplayable() const;
-            bool isVisible() const;
-            void setVisible(bool inValue);
             bool isSolid() const;
             bool isHovered() const;
             bool isFocused() const;
             bool isDragging() const;
             bool isCulled() const;
+            bool isSelected() const;
+            bool escapesOverflow() const;
+            void setEscapesOverflow(bool inValue);
 
             ComponentStatus getStatus() const;
             bool hasStatus(ComponentStatus inStatus) const;
@@ -169,6 +189,7 @@ namespace Chicane
             void setFocused(bool inValue, bool bShouldInvalidateSubtree = true);
             void setDragging(bool inValue, bool bShouldInvalidateSubtree = true);
             void setCulled(bool inValue);
+            void setSelected(bool inValue, bool bShouldInvalidateSubtree = true);
 
             // Properties
             const String& getTag() const;
@@ -176,25 +197,9 @@ namespace Chicane
             String getId() const;
             void setId(const String& inValue);
 
-            ClassList getClassList() const;
-            const String& getClassName() const;
-            void setClassName(const String& inValue);
-            template <typename... Args>
-            inline void addClassName(Args... inClasses)
-            {
-                String className = m_className;
-
-                (
-                    [&]()
-                    {
-                        className.append(inClasses);
-                        className.append(' ');
-                    }(),
-                    ...
-                );
-
-                setClassName(className.trim());
-            }
+            ClassList& getClassList();
+            const ClassList& getClassList() const;
+            void setClassList(const ClassList& inValue);
 
             // Directive
             void refreshDirectives();
@@ -257,6 +262,7 @@ namespace Chicane
             void paint(const ComponentPaintContext& inContext);
             Component* getHitAt(const Vec2& inLocation) const;
             bool containsPoint(const Vec2& inLocation) const;
+            bool containsNode(const Component* inNode) const;
             bool broadcastEvent(const WindowEvent& inEvent);
             bool bubbleEvent(const WindowEvent& inEvent, const Vec2& inLocation);
             void addChildren(const XmlNode& inNode);
@@ -397,60 +403,69 @@ namespace Chicane
             void setPeripherals(const std::vector<Component*>& inPeripherals);
 
         protected:
+            void onClassListChanged();
+
+        public:
+            CH_FIELD()
+            Style style;
+
+            CH_FIELD()
+            ClassList classList;
+
+        protected:
             // Properties
-            String                     m_tag;
-            String                     m_id;
-            String                     m_className;
+            String                         m_tag;
+            String                         m_id;
+            ClassList::ChangesSubscription m_classListSubscription;
 
             // Status
-            ComponentStatus            m_status;
-            ComponentDirty             m_flags;
+            ComponentStatus                m_status;
+            ComponentDirty                 m_flags;
 
             // Hash
-            String                     m_live;
-            std::uint64_t              m_liveHash;
+            String                         m_live;
+            std::uint64_t                  m_liveHash;
 
             // Modifier
-            Directives                 m_directives;
+            Directives                     m_directives;
 
             // Runtime
-            Variables                  m_variables;
+            Variables                      m_variables;
 
             // Style
-            Style                      m_style;
-            StyleFile::Variables       m_styleVariables;
-            StyleFile*                 m_styleFile;
-            std::unique_ptr<StyleFile> m_styles;
-            bool                       m_bHasOwnStyle;
+            StyleFile::Variables           m_styleVariables;
+            StyleFile*                     m_styleFile;
+            std::unique_ptr<StyleFile>     m_styles;
+            bool                           m_bHasOwnStyle;
 
             // Imports
-            Imports                    m_imports;
-            Component*                 m_importOwner;
+            Imports                        m_imports;
+            Component*                     m_importOwner;
 
             // Hierarchy
-            Component*                 m_root;
-            Component*                 m_parent;
-            std::vector<Component*>    m_children;
-            std::vector<Component*>    m_peripherals;
-            std::vector<Component*>    m_paintChildren;
+            Component*                     m_root;
+            Component*                     m_parent;
+            std::vector<Component*>        m_children;
+            std::vector<Component*>        m_peripherals;
+            std::vector<Component*>        m_paintChildren;
 
             // Position
-            Vec2                       m_size;
-            Vec2                       m_scale;
-            Vec2                       m_offset;
-            Vec2                       m_cursor;
-            float                      m_scratch;
-            Vec2                       m_layoutParentSize;
-            float                      m_layoutParentFontSize;
+            Vec2                           m_size;
+            Vec2                           m_scale;
+            Vec2                           m_offset;
+            Vec2                           m_cursor;
+            float                          m_scratch;
+            Vec2                           m_layoutParentSize;
+            float                          m_layoutParentFontSize;
 
             // Draw
-            Primitive                  m_primitive;
-            DrawCache                  m_draw;
+            Primitive                      m_primitive;
+            DrawCache                      m_draw;
 
             // For-loop
-            std::vector<Component*>    m_forInstances;
-            String                     m_forVariable;
-            std::any                   m_forSource;
+            std::vector<Component*>        m_forInstances;
+            String                         m_forVariable;
+            std::any                       m_forSource;
         };
     }
 }

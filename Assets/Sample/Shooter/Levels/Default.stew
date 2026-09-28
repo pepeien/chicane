@@ -7,6 +7,16 @@ Instance.onLoad(function()
         end
     end
 
+    local pawn = Instance.findActor("Player")
+    local camera = Instance.findComponent("First Person")
+    if pawn and camera then
+        local origin = pawn:getTranslation()
+        local top = pawn:getTop()
+        local bottom = pawn:getBottom()
+
+        camera:setRelativeTranslation(0, 0, (top.z - origin.z) - (top.z - bottom.z) * 0.05)
+    end
+
     Instance.send("ui:ready", "")
 end)
 

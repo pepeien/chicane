@@ -1,27 +1,28 @@
-#include "Shared.hpp"
+#include "Property.hpp"
+
+#include "ReflectedValue.hpp"
+#include "Value.hpp"
 
 #include <exception>
 #include <typeinfo>
 
+#include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Runtime/Scene/Object.hpp"
+
+extern "C" {
+#include "lauxlib.h"
+#include "lua.h"
+}
 
 namespace Chicane
 {
     namespace Types
     {
-        struct MethodBox
-        {
-            Object*                         instance;
-            const ReflectionTypeMethodInfo* method;
-        };
-
         static Object* objectOf(lua_State* inState, int inIndex)
         {
-            ObjectBox* box = testObjectBox(inState, inIndex);
-
-            return box && Script::Handle::contains(box->object) ? box->object : nullptr;
+            return liveObject(inState, inIndex);
         }
 
         static int callMethod(lua_State* inState)
@@ -78,30 +79,6 @@ namespace Chicane
             return 1;
         }
 
-        static bool lookupMethod(lua_State* inState)
-        {
-            if (lua_getfield(inState, LUA_REGISTRYINDEX, METHODS_REGISTRY) != LUA_TTABLE)
-            {
-                lua_pop(inState, 1);
-
-                return false;
-            }
-
-            lua_pushvalue(inState, 2);
-            lua_rawget(inState, -2);
-
-            if (lua_isnil(inState, -1))
-            {
-                lua_pop(inState, 2);
-
-                return false;
-            }
-
-            lua_remove(inState, -2);
-
-            return true;
-        }
-
         int reflectedIndex(lua_State* inState)
         {
             Object* object = objectOf(inState, 1);
@@ -109,11 +86,6 @@ namespace Chicane
             {
                 lua_pushnil(inState);
 
-                return 1;
-            }
-
-            if (lookupMethod(inState))
-            {
                 return 1;
             }
 

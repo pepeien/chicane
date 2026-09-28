@@ -34,10 +34,6 @@ namespace Chicane
             {
                 value.setRaw(inProperties.at(inValueName));
             }
-            else
-            {
-                value.setRaw(Size::AUTO_KEYWORD);
-            }
 
             if (inProperties.find(inMinName) != inProperties.end())
             {

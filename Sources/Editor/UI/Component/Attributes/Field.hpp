@@ -25,20 +25,28 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String name;
+
         CH_FIELD()
         Chicane::String label;
+
         CH_FIELD()
         Chicane::String group;
+
         CH_FIELD()
         Chicane::String description;
+
         CH_FIELD()
         AttributeFieldType type;
+
         CH_FIELD()
         Chicane::String kind;
+
         CH_FIELD()
         Chicane::String text;
+
         CH_FIELD()
         Chicane::Vec3 vector;
+
         CH_FIELD()
         std::vector<Chicane::String> options;
     };

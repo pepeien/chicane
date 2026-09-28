@@ -23,7 +23,6 @@ namespace Chicane
         public:
             bool isDrawable() const override;
             float getDepth() const override;
-            Vec2 getDrawPosition() const override;
 
         public:
             void configure(const Bounds2D& inBox, const Color::Rgba& inColor);

@@ -89,22 +89,14 @@ namespace Editor
 
         load("Assets/Editor/UI/Components/Toolbar/Index.grid", "Assets/Editor/UI/Components/Toolbar/Index.decal");
 
+        setAttribute(Chicane::Grid::Component::FOCUSABLE_ATTRIBUTE_NAME, "true");
+
         initAddMenu();
 
         Prop::bind(this, ORIENTATION_ATTRIBUTE, orientation);
         Prop::bind(this, TRANSLATE_STATE_ATTRIBUTE, translateState);
         Prop::bind(this, ROTATE_STATE_ATTRIBUTE, rotateState);
         Prop::bind(this, SCALE_STATE_ATTRIBUTE, scaleState);
-    }
-
-    bool Toolbar::isFocusable() const
-    {
-        return true;
-    }
-
-    bool Toolbar::escapesOverflow() const
-    {
-        return true;
     }
 
     bool Toolbar::onEvent(const Chicane::WindowEvent& inEvent)
@@ -122,9 +114,14 @@ namespace Editor
         }
 
         Chicane::Grid::Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+        if (containsNode(hit))
+        {
+            return false;
+        }
+
         for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
         {
-            if (node == this || node->getId().equals(ADD_ANCHOR_ID))
+            if (node->getId().equals(ADD_ANCHOR_ID))
             {
                 return false;
             }

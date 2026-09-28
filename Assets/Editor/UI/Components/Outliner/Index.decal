@@ -30,12 +30,8 @@ $outlinerHeaderHeight: 1.65em;
             background-color: $--lighter-gray;
         }
 
-        &.--selected {
+        &:selected {
             background-color: $--light-gray;
-        }
-
-        &.--idle {
-            background-color: transparent;
         }
 
         &__caret {

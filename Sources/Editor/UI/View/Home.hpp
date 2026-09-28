@@ -116,9 +116,12 @@ namespace Editor
             Chicane::Object* inObject, int inDepth, bool inIsVisible, std::unordered_set<Chicane::Object*>& outLive
         );
         void expandOutlinerAncestors(Chicane::Object* inItem);
+        void syncOutlinerSelection();
         void commitOutlinerEdit(bool bShouldRebuild = true);
         void rebuildAttributes();
         void syncAttributeValues();
+        void refreshAttributesForSelection();
+        const Chicane::ReflectionTypeInfo* selectedAttributeType() const;
         bool hasSelectedItem() const;
         void setWorkspace(const Chicane::String& inValue);
 
@@ -137,6 +140,7 @@ namespace Editor
 
         CH_FIELD()
         bool bIsItemSelected;
+
         CH_FIELD()
         Chicane::Object* selectedItem;
 
@@ -145,24 +149,31 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String workspace;
+
         CH_FIELD()
         bool bIsViewportWorkspace;
+
         CH_FIELD()
         bool bIsAssetsWorkspace;
+
         CH_FIELD()
         Chicane::String viewportTabState;
+
         CH_FIELD()
         Chicane::String assetsTabState;
 
         CH_FIELD()
         Chicane::String translateState;
+
         CH_FIELD()
         Chicane::String rotateState;
+
         CH_FIELD()
         Chicane::String scaleState;
 
         CH_FIELD()
         Chicane::String selectedFolderPath;
+
         CH_FIELD()
         Chicane::String selectedAssetName;
 
@@ -172,6 +183,7 @@ namespace Editor
         Chicane::Object*                     m_editingOutlinerItem;
         Chicane::String                      m_outlinerEditId;
         CoordinateSpace                      m_coordinateSpace;
+        const Chicane::ReflectionTypeInfo*   m_attributesType;
         std::atomic<bool>                    m_bOutlinerDirty;
         std::atomic<bool>                    m_bAttributesDirty;
     };
