@@ -32,8 +32,8 @@ namespace Chicane
         public:
             bool                 bIsOpen = false;
             FontGlyphCurve::List curves  = {};
-            Vec2                 cursor  = Vec2::Zero();
-            Vec2                 contour = Vec2::Zero();
+            Vec2                 cursor  = Vec2::sZero();
+            Vec2                 contour = Vec2::sZero();
         };
     }
 }

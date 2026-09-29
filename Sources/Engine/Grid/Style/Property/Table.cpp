@@ -658,6 +658,26 @@ namespace Chicane
                 [](Style& outStyle, const float* inValues) { outStyle.gap.right.set(inValues[0]); }
             );
 
+            set(
+                StylePropertyId::Display,
+                Style::DISPLAY_ATTRIBUTE_NAME,
+                1,
+                StylePropertyDirty::Layout,
+                [](const Style& inStyle, float* outValues)
+                {
+                    outValues[0] = static_cast<float>(static_cast<std::uint8_t>(inStyle.display.get()));
+
+                    return true;
+                },
+                [](Style& outStyle, const float* inValues)
+                {
+                    const int count = static_cast<int>(StyleDisplay::None) + 1;
+                    const int index = std::clamp(static_cast<int>(std::lround(inValues[0])), 0, count - 1);
+
+                    outStyle.display.set(static_cast<StyleDisplay>(index));
+                }
+            );
+
             return entries;
         }
 
@@ -683,18 +703,20 @@ namespace Chicane
                     cursor += entries().at(i).arity;
                 }
 
+                assert(cursor <= StylePropertyTable::VALUE_COUNT);
+
                 return values;
             }();
 
             return result;
         }
 
-        const StylePropertyEntry& StylePropertyTable::get(StylePropertyId inId)
+        const StylePropertyEntry& StylePropertyTable::sGet(StylePropertyId inId)
         {
             return entries().at(static_cast<std::size_t>(inId));
         }
 
-        bool StylePropertyTable::find(const String& inName, StylePropertyId& outId)
+        bool StylePropertyTable::sFind(const String& inName, StylePropertyId& outId)
         {
             for (std::size_t i = 0; i < COUNT; i++)
             {
@@ -709,7 +731,7 @@ namespace Chicane
             return false;
         }
 
-        std::size_t StylePropertyTable::offset(StylePropertyId inId)
+        std::size_t StylePropertyTable::sOffset(StylePropertyId inId)
         {
             return offsets().at(static_cast<std::size_t>(inId));
         }

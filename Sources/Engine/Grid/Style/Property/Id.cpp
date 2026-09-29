@@ -123,6 +123,9 @@ namespace Chicane
         case Grid::StylePropertyId::GapRight:
             return "GapRight";
 
+        case Grid::StylePropertyId::Display:
+            return "Display";
+
         default:
             return "";
         }

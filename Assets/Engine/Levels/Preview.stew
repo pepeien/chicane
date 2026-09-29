@@ -1,0 +1,204 @@
+local KEY_INTENSITY  = 2.4
+local FILL_INTENSITY = 0.9
+local CAMERA_FIT     = 0.65
+local START_DISTANCE = 2.0
+local EXTENT_EPSILON = 1e-10
+local VIEW_DIRECTION = Vec3(-0.44, -0.85, -0.26)
+
+local STAGE = {
+    Camera = true,
+    Key = true,
+    Fill = true,
+    Sky = true
+}
+
+local pendingFit = false
+
+local function setIntensity(id, intensity)
+    local actor = Instance.findActor(id)
+    if not actor then
+        return
+    end
+
+    local light = actor:getLight()
+    if light then
+        light.intensity = intensity
+    end
+end
+
+local function viewOf(actor)
+    if not actor then
+        return nil
+    end
+
+    for _, component in ipairs(actor:getAttachments()) do
+        if component.getFieldOfView then
+            return component
+        end
+    end
+end
+
+local function viewInfo(actor)
+    local fov, aspect = 45, 1
+    local view = viewOf(actor)
+    if not view then
+        return fov, aspect
+    end
+
+    fov = view:getFieldOfView()
+    local ratio = view:getAspectRatio()
+    if ratio > 0 then
+        aspect = ratio
+    end
+
+    return fov, aspect
+end
+
+local function viewOffset()
+    return (VIEW_DIRECTION * -1):normalize()
+end
+
+local function cameraAxes()
+    local look  = VIEW_DIRECTION:normalize()
+    local right = look:cross(Vec3.Up())
+    if right:dot(right) <= EXTENT_EPSILON then
+        right = Vec3.Right()
+    else
+        right = right:normalize()
+    end
+
+    return right, right:cross(look):normalize()
+end
+
+local function projectedSpan(size)
+    local right, up = cameraAxes()
+    local half      = size * 0.5
+    local spanX     = math.abs(half.x * right.x) + math.abs(half.y * right.y) + math.abs(half.z * right.z)
+    local spanY     = math.abs(half.x * up.x) + math.abs(half.y * up.y) + math.abs(half.z * up.z)
+
+    return math.max(spanX, spanY)
+end
+
+local function cameraDistance(span, fov, aspect)
+    if span <= EXTENT_EPSILON then
+        return START_DISTANCE
+    end
+
+    local half = math.tan(math.rad(math.max(fov, 1) * 0.5))
+    local ratio = aspect > 0 and aspect or 1
+    local limit = half * math.min(1, ratio)
+    if limit <= EXTENT_EPSILON then
+        return START_DISTANCE
+    end
+
+    return span / (CAMERA_FIT * limit)
+end
+
+local function previewBounds()
+    local min
+    local max
+    for _, actor in ipairs(Instance.getActors()) do
+        if not actor:isTransient() and not STAGE[actor:getId()] then
+            local size = actor:getSize()
+            if size:dot(size) > EXTENT_EPSILON then
+                local center = actor:getCenter()
+                local half   = size * 0.5
+                local low    = center - half
+                local high   = center + half
+
+                if min then
+                    min = min:min(low)
+                    max = max:max(high)
+                else
+                    min = low
+                    max = high
+                end
+            end
+        end
+    end
+
+    if not min then
+        return Vec3.Zero(), Vec3.Zero()
+    end
+
+    return (min + max) * 0.5, max - min
+end
+
+local function poseView(actor, start, pivot)
+    if not actor then
+        return
+    end
+
+    actor:setTranslation(start)
+    actor:lookAt(pivot)
+end
+
+local function fit()
+    local camera = Instance.findActor("Camera")
+    if not camera then
+        return
+    end
+
+    local pivot, size = previewBounds()
+    local fov, aspect = viewInfo(camera)
+    local distance = cameraDistance(projectedSpan(size), fov, aspect)
+    local start = pivot + viewOffset() * distance
+
+    poseView(camera, start, pivot)
+end
+
+local function setup(skyVisible, studioLights)
+    local sky = Instance.findActor("Sky")
+    if sky then
+        sky.bIsVisible = skyVisible
+    end
+
+    setIntensity("Key", studioLights and KEY_INTENSITY or 0)
+    setIntensity("Fill", studioLights and FILL_INTENSITY or 0)
+
+    fit()
+end
+
+local function idle()
+    setup(false, true)
+end
+
+Instance.subscribe("Preview::Undefined", idle)
+Instance.subscribe("Preview::Texture", idle)
+Instance.subscribe("Preview::Font", idle)
+Instance.subscribe("Preview::Sound", idle)
+Instance.subscribe("Preview::Animation", idle)
+Instance.subscribe("Preview::Skeleton", idle)
+Instance.subscribe("Preview::Effect", idle)
+
+-- Mesh
+Instance.subscribe("Preview::Mesh", function()
+    setup(true, true)
+end)
+Instance.subscribe("Preview::Mesh::Bake", function()
+    setup(false, true)
+end)
+
+-- Material
+Instance.subscribe("Preview::Material", function()
+    setup(true, false)
+end)
+Instance.subscribe("Preview::Material::Bake", function()
+    setup(false, false)
+end)
+
+-- Model
+Instance.subscribe("Preview::Model", function()
+    setup(false, false)
+end)
+Instance.subscribe("Preview::Model::Bake", function()
+    setup(false, false)
+end)
+
+-- Sky
+Instance.subscribe("Preview::Sky", function()
+    setup(false, false)
+end)
+Instance.subscribe("Preview::Sky::Bake", function()
+    setup(false, false)
+end)

@@ -160,8 +160,7 @@ namespace Chicane
         std::size_t elementSize = iterable.elementSize;
         if (elementSize == 0 && elementIndex.has_value())
         {
-            if (const ReflectionTypeInfo* elementType =
-                    ReflectionTypeRegistry::getInstance().find(elementIndex.value()))
+            if (const ReflectionTypeInfo* elementType = ReflectionTypeRegistry::sInstance().find(elementIndex.value()))
             {
                 elementSize = elementType->size;
             }
@@ -228,13 +227,13 @@ namespace Chicane
             return result;
         }
 
-        const ReflectionEnumInfo* enumeration = ReflectionEnumRegistry::getInstance().find(typeName);
+        const ReflectionEnumInfo* enumeration = ReflectionEnumRegistry::sInstance().find(typeName);
         if (!enumeration)
         {
             const std::size_t split = typeName.lastOf(':');
             if (split != String::npos)
             {
-                enumeration = ReflectionEnumRegistry::getInstance().find(typeName.substr(split + 1));
+                enumeration = ReflectionEnumRegistry::sInstance().find(typeName.substr(split + 1));
             }
         }
 
@@ -401,10 +400,9 @@ namespace Chicane
 
         if (elementIndex.has_value())
         {
-            if (const ReflectionTypeInfo* elementType =
-                    ReflectionTypeRegistry::getInstance().find(elementIndex.value()))
+            if (const ReflectionTypeInfo* elementType = ReflectionTypeRegistry::sInstance().find(elementIndex.value()))
             {
-                if (elementType->findField(names.empty() ? String::empty() : names.at(0)))
+                if (elementType->findField(names.empty() ? String::sEmpty() : names.at(0)))
                 {
                     return "<" + typeName + ">";
                 }
@@ -416,6 +414,6 @@ namespace Chicane
 
     const String& ReflectionFieldAccessor::getName() const
     {
-        return names.empty() ? String::empty() : names.at(0);
+        return names.empty() ? String::sEmpty() : names.at(0);
     }
 }

@@ -12,14 +12,16 @@
 
 namespace Chicane
 {
+    class Instance;
+
     namespace Smoke
     {
         class CHICANE_SMOKE Engine
         {
-            friend class Application;
+            friend class ::Chicane::Instance;
 
         public:
-            static Engine& getInstance();
+            static Engine& sInstance();
 
         public:
             Engine(const Engine&)            = delete;

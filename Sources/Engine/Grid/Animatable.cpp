@@ -24,12 +24,20 @@ namespace Chicane
         Animatable::Animatable()
             : Transformable2D(),
               m_animator(),
-              m_animationClip(String::empty()),
-              m_lastTransformRaw(String::empty()),
-              m_lastTranslateRaw(String::empty()),
+              m_animationClip(String::sEmpty()),
+              m_lastTransformRaw(String::sEmpty()),
+              m_lastTranslateRaw(String::sEmpty()),
               m_animationDelta(0.0f),
-              m_bIsAnimationReady(false)
+              m_bIsAnimationReady(false),
+              m_bIsReplayingAnimation(false)
         {}
+
+        void Animatable::replayAnimation()
+        {
+            m_animator.stopPlayer();
+            m_animationClip         = String::sEmpty();
+            m_bIsReplayingAnimation = true;
+        }
 
         void Animatable::tickAnimation(Style& outStyle, float inDeltaTime)
         {
@@ -48,7 +56,7 @@ namespace Chicane
                 return;
             }
 
-            if (!canPlayAnimation())
+            if (!canPlayAnimation() && !m_bIsReplayingAnimation && !m_animator.hasPlayer())
             {
                 m_animator.stop();
                 m_animationClip = "";
@@ -57,6 +65,8 @@ namespace Chicane
 
                 return;
             }
+
+            m_bIsReplayingAnimation = false;
 
             const Style::AnimatedValues& visual     = outStyle.getSnapshotValues();
             const Style::AnimatedMask&   visualMask = outStyle.getSnapshotMask();
@@ -83,8 +93,8 @@ namespace Chicane
                     continue;
                 }
 
-                const std::uint8_t arity = StylePropertyTable::get(id).arity;
-                const float* from = visualMask.test(i) ? (visual.data() + StylePropertyTable::offset(id)) : target;
+                const std::uint8_t arity = StylePropertyTable::sGet(id).arity;
+                const float* from = visualMask.test(i) ? (visual.data() + StylePropertyTable::sOffset(id)) : target;
 
                 if (areNear(from, target, arity))
                 {
@@ -174,7 +184,7 @@ namespace Chicane
                     for (const StyleAnimatorTrack& track : m_animator.getPlayerTracks())
                     {
                         const std::vector<float> value = player->sample(track.name);
-                        const std::uint8_t       arity = StylePropertyTable::get(track.id).arity;
+                        const std::uint8_t       arity = StylePropertyTable::sGet(track.id).arity;
 
                         if (value.size() < static_cast<std::size_t>(arity))
                         {

@@ -23,7 +23,10 @@ namespace Chicane
         class CHICANE_RENDERER VulkanAllocator
         {
         public:
-            static std::size_t queryDedicatedHeapSize(const vk::PhysicalDevice& inPhysicalDevice);
+            static std::size_t sQueryDedicatedHeapSize(const vk::PhysicalDevice& inPhysicalDevice);
+
+        public:
+            static void sDestroyImage(VulkanImageInfo& inImage);
 
         public:
             VulkanAllocator();
@@ -47,7 +50,6 @@ namespace Chicane
                 const VulkanImageCreateInfo&       inCreateInfo,
                 const VulkanImageMemoryCreateInfo& inMemoryCreateInfo
             );
-            static void destroyImage(VulkanImageInfo& inImage);
 
             void* map(VulkanBuffer& inBuffer);
             void unmap(VulkanBuffer& inBuffer);

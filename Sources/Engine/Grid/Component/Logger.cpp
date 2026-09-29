@@ -8,7 +8,7 @@ namespace Chicane
             : Container(inNode),
               logs({})
         {
-            load("Assets/Engine/UI/Components/Logger.grid", "Assets/Engine/UI/Components/Logger.decal");
+            load("Assets/Engine/UI/Components/Logger/Index.grid", "Assets/Engine/UI/Components/Logger/Index.decal");
         }
 
         void Logger::onTick(float inDeltaTime)

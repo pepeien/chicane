@@ -10,14 +10,17 @@ namespace Editor
 {
     AssetSelector::AssetSelector(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          value(Chicane::String::empty()),
-          kind(Chicane::String::empty()),
+          value(Chicane::String::sEmpty()),
+          kind(Chicane::String::sEmpty()),
           label("None"),
           hasPreview(false),
           isEmpty(true),
           hasValue(false)
     {
-        load("Assets/Editor/UI/Components/Asset/Selector.grid", "Assets/Editor/UI/Components/Asset/Selector.decal");
+        load(
+            "Assets/Editor/UI/Components/Asset/Selector/Index.grid",
+            "Assets/Editor/UI/Components/Asset/Selector/Index.decal"
+        );
     }
 
     void AssetSelector::onTick(float inDeltaTime)
@@ -79,7 +82,7 @@ namespace Editor
 
     void AssetSelector::onClear()
     {
-        value = Chicane::String::empty();
+        value = Chicane::String::sEmpty();
         applyToBinding();
         emitInput();
         refreshPreview();

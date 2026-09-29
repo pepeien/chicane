@@ -15,7 +15,7 @@ namespace Chicane
         class CHICANE_CORE ListingService
         {
         public:
-            static inline ListingService& getInstance()
+            static inline ListingService& sInstance()
             {
                 static ListingService result;
 

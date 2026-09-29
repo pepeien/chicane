@@ -29,12 +29,12 @@ namespace Chicane
               m_bIsSliding(false),
               m_bIsEdited(false)
         {
-            load("Assets/Engine/UI/Components/Input/Slider.grid", "Assets/Engine/UI/Components/Input/Slider.decal");
-        }
+            load(
+                "Assets/Engine/UI/Components/Input/Slider/Index.grid",
+                "Assets/Engine/UI/Components/Input/Slider/Index.decal"
+            );
 
-        bool InputSlider::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputSlider::onEvent(const WindowEvent& inEvent)

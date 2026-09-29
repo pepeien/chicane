@@ -19,6 +19,7 @@ namespace Chicane
 
     protected:
         void onTransform() override;
+        void onAttachment(Object* inParent) override;
 
     public:
         inline virtual void onResize(const Vec<2, std::uint32_t>& inValue) { return; }
@@ -33,26 +34,38 @@ namespace Chicane
         void setViewport(const Vec<2, std::uint32_t>& inViewport);
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
 
+        CH_FUNCTION()
         float getAspectRatio() const;
 
         // F.O.V
+        CH_FUNCTION()
         float getFieldOfView() const;
+
+        CH_FUNCTION()
         void setFieldOfView(float inFov);
 
         // Clipping
+        CH_FUNCTION()
         float getNearClip() const;
+
         void setNearClip(float inNearClip);
 
+        CH_FUNCTION()
         float getFarClip() const;
+
         void setFarClip(float inFarClip);
 
+        CH_FUNCTION()
         void setClip(float inNearClip, float inFarClip);
 
         // Data
         const View& getData() const;
 
         // Focus
+        CH_FUNCTION()
         const Vec3& getFocusPoint() const;
+
+        CH_FUNCTION()
         void setFocusPoint(const Vec3& inPoint);
 
         // Type
@@ -60,7 +73,10 @@ namespace Chicane
         void setProjectionType(ViewProjectionType inType);
 
         // Target
+        CH_FUNCTION()
         const String& getTarget() const;
+
+        CH_FUNCTION()
         void setTarget(const String& inValue);
 
     protected:

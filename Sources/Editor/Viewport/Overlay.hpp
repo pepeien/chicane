@@ -8,7 +8,7 @@ namespace Editor
     struct ViewportOverlay
     {
     public:
-        static inline ViewportOverlay& getInstance()
+        static inline ViewportOverlay& sInstance()
         {
             static ViewportOverlay overlay;
 

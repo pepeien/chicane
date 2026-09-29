@@ -14,32 +14,34 @@
 
 namespace Chicane
 {
+    class Instance;
+
     namespace Kerb
     {
         class CHICANE_KERB Engine
         {
-            friend class Application;
+            friend class ::Chicane::Instance;
 
         public:
-            static Engine& getInstance();
+            static Engine& sInstance();
 
             // Gravity
-            static const Vec3& getZeroGravity();
-            static const Vec3& getMercuryGravity();
-            static const Vec3& getVenusGravity();
-            static const Vec3& getEarthGravity();
-            static const Vec3& getMoonGravity();
-            static const Vec3& getMarsGravity();
-            static const Vec3& getJupiterGravity();
-            static const Vec3& getSaturnGravity();
-            static const Vec3& getUranusGravity();
-            static const Vec3& getNeptuneGravity();
-            static const Vec3& getPlutoGravity();
-            static const Vec3& getPlanetGravity(Planet inPlanet);
+            static const Vec3& sGetZeroGravity();
+            static const Vec3& sGetMercuryGravity();
+            static const Vec3& sGetVenusGravity();
+            static const Vec3& sGetEarthGravity();
+            static const Vec3& sGetMoonGravity();
+            static const Vec3& sGetMarsGravity();
+            static const Vec3& sGetJupiterGravity();
+            static const Vec3& sGetSaturnGravity();
+            static const Vec3& sGetUranusGravity();
+            static const Vec3& sGetNeptuneGravity();
+            static const Vec3& sGetPlutoGravity();
+            static const Vec3& sGetPlanetGravity(Planet inPlanet);
 
-            static void setZeroGravity();
-            static void setGravity(Planet inPlanet);
-            static void setGravity(const Vec3& inValue);
+            static void sSetZeroGravity();
+            static void sSetGravity(Planet inPlanet);
+            static void sSetGravity(const Vec3& inValue);
 
         public:
             Engine(const Engine&)            = delete;

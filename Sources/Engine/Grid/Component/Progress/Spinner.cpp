@@ -11,8 +11,8 @@ namespace Chicane
               bIsSpinning(true)
         {
             load(
-                "Assets/Engine/UI/Components/Progress/Spinner.grid",
-                "Assets/Engine/UI/Components/Progress/Spinner.decal"
+                "Assets/Engine/UI/Components/Progress/Spinner/Index.grid",
+                "Assets/Engine/UI/Components/Progress/Spinner/Index.decal"
             );
 
             watchAttribute(

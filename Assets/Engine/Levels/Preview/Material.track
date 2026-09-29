@@ -1,4 +1,0 @@
-<Track version="1" id="Material">
-    <ASky id="Sky" sky="Assets/Engine/Skies/Preview.bsky" intensity="1.0" exposure="1.4" visible="false"/>
-    <ACamera id="Camera" absoluteTranslation="0.9,-1.7,1.0" lookTo="0,0,0.45"/>
-</Track>

@@ -48,8 +48,9 @@ namespace Chicane
             static constexpr inline Vec3        LIGHT_DIRECTION = Vec3(-0.50f, 0.50f, 0.70f);
             static constexpr inline float       START_DISTANCE  = 2.0f;
 
-            static constexpr inline const char* TRACK_DIRECTORY = "Assets/Engine/Levels/Preview";
-            static constexpr inline const char* TRACK_EXTENSION = ".track";
+            static constexpr inline const char* TRACK_PATH        = "Assets/Engine/Levels/Preview.track";
+            static constexpr inline const char* EVENT_PREFIX      = "Preview::";
+            static constexpr inline const char* EVENT_BAKE_SUFFIX = "::Bake";
 
             static constexpr inline float       GEOMETRY_FIT        = 0.82f;
             static constexpr inline float       CAMERA_FIT          = 0.88f;
@@ -94,43 +95,44 @@ namespace Chicane
             static constexpr std::int32_t       WAV_PCM24_EXTEND        = static_cast<std::int32_t>(0xFF000000);
 
         public:
-            static String textureIdOf(const FileSystem::Path& inAsset);
-            static FileSystem::Path trackPath(AssetType inType);
-            static float cameraDistance(float inRadius, float inFieldOfView = 45.0f, float inAspectRatio = 1.0f);
-            static Vec3 cameraStart(const Vec3& inTarget, const Vec3& inFrom);
-            static Vec3 cameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance);
+            static String sTextureIdOf(const FileSystem::Path& inAsset);
+            static FileSystem::Path sTrackPath();
+            static String sEventName(AssetType inType, bool bBake = false);
+            static float sCameraDistance(float inRadius, float inFieldOfView = 45.0f, float inAspectRatio = 1.0f);
+            static Vec3 sCameraStart(const Vec3& inTarget, const Vec3& inFrom);
+            static Vec3 sCameraStart(const Vec3& inTarget, const Vec3& inFrom, float inDistance);
 
-            static std::unique_ptr<AssetPreview> create(
+            static std::unique_ptr<AssetPreview> sCreate(
                 const FileSystem::Path& inAsset, AssetType inType, const Image& inImage
             );
-            static std::unique_ptr<AssetPreview> createFromGeometry(
+            static std::unique_ptr<AssetPreview> sCreateFromGeometry(
                 const FileSystem::Path&                  inAsset,
                 const std::vector<PreviewGeometryBatch>& inBatches,
                 const std::vector<Image::Instance>&      inFaces = {}
             );
-            static std::unique_ptr<AssetPreview> createFromGeometry(
+            static std::unique_ptr<AssetPreview> sCreateFromGeometry(
                 const FileSystem::Path&             inAsset,
                 const Vertex::List&                 inVertices,
                 const Vertex::Indices&              inIndices,
                 const Image::Instance&              inTexture = {},
                 const std::vector<Image::Instance>& inFaces   = {}
             );
-            static std::unique_ptr<AssetPreview> createFromFont(
+            static std::unique_ptr<AssetPreview> sCreateFromFont(
                 const FileSystem::Path& inAsset, const FontFamily& inFamily, const String& inLabel
             );
-            static std::unique_ptr<AssetPreview> createFromSound(
+            static std::unique_ptr<AssetPreview> sCreateFromSound(
                 const FileSystem::Path& inAsset, const std::vector<unsigned char>& inData
             );
-            static std::unique_ptr<AssetPreview> createFromSky(
+            static std::unique_ptr<AssetPreview> sCreateFromSky(
                 const FileSystem::Path&             inAsset,
                 const Vertex::List&                 inVertices,
                 const Vertex::Indices&              inIndices,
                 const std::vector<Image::Instance>& inFaces
             );
-            static bool write(XmlNode inRoot, AssetType inType, const Image& inImage);
-            static bool bake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage);
-            static std::unique_ptr<AssetPreview> read(const FileSystem::Path& inAsset);
-            static std::unique_ptr<AssetPreview> read(const XmlNode& inRoot);
+            static bool sWrite(XmlNode inRoot, AssetType inType, const Image& inImage);
+            static bool sBake(const FileSystem::Path& inAsset, AssetType inType, const Image& inImage);
+            static std::unique_ptr<AssetPreview> sRead(const FileSystem::Path& inAsset);
+            static std::unique_ptr<AssetPreview> sRead(const XmlNode& inRoot);
 
         public:
             AssetPreview() = default;

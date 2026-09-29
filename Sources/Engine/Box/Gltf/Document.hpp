@@ -31,7 +31,7 @@ namespace Chicane
                 const tg3_model& model = get();
                 if (inIndex < 0 || static_cast<std::uint32_t>(inIndex) >= model.nodes_count)
                 {
-                    return String::sprint("Node_%d", inIndex);
+                    return String::sSprint("Node_%d", inIndex);
                 }
 
                 const String name = toString(model.nodes[inIndex].name);
@@ -40,7 +40,7 @@ namespace Chicane
                     return name;
                 }
 
-                return String::sprint("Node_%d", inIndex);
+                return String::sSprint("Node_%d", inIndex);
             }
 
             std::vector<std::int32_t> parents() const

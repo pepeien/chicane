@@ -14,7 +14,7 @@ namespace Chicane
         using Names = std::unordered_map<String, ReflectionEnumInfo>;
 
     public:
-        static ReflectionEnumRegistry& getInstance();
+        static ReflectionEnumRegistry& sInstance();
 
     private:
         ReflectionEnumRegistry();

@@ -16,6 +16,11 @@ namespace Chicane
                 std::uint32_t                              inIndex
             )
             {
+                if (!inMesh || inIndex >= inMesh->index_count)
+                {
+                    return;
+                }
+
                 const fastObjIndex& index = inMesh->indices[inIndex];
 
                 String dataSet = "";
@@ -32,6 +37,12 @@ namespace Chicane
                     return;
                 }
 
+                if (index.p >= inMesh->position_count || index.n >= inMesh->normal_count ||
+                    index.t >= inMesh->texcoord_count)
+                {
+                    return;
+                }
+
                 Vertex vertex;
 
                 vertex.color = Vec4(1.0f);
@@ -45,7 +56,7 @@ namespace Chicane
                 vertex.normal.z = inMesh->normals[index.n * 3 + 2];
 
                 vertex.uv.x = inMesh->texcoords[index.t * 2 + 0];
-                vertex.uv.y = inMesh->texcoords[index.t * 2 + 1];
+                vertex.uv.y = 1.0f - inMesh->texcoords[index.t * 2 + 1];
 
                 std::uint32_t currentIndex = static_cast<std::uint32_t>(outResult.vertices.size());
 
@@ -88,7 +99,12 @@ namespace Chicane
 
                     for (std::uint32_t f = 0; f < obj.face_count; f++)
                     {
-                        std::uint32_t faceIndex  = obj.face_offset + f;
+                        std::uint32_t faceIndex = obj.face_offset + f;
+                        if (faceIndex >= mesh->face_count)
+                        {
+                            break;
+                        }
+
                         std::uint32_t faceVertex = mesh->face_vertices[faceIndex];
                         std::uint32_t indexStart = faceIndexOffsets[faceIndex];
 

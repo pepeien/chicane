@@ -50,6 +50,7 @@ namespace Chicane
             GapBottom,
             GapLeft,
             GapRight,
+            Display,
             Count
         };
     }

@@ -11,19 +11,19 @@
 
 namespace Chicane
 {
-    struct XmlDocument::Impl
+    struct XmlDocumentWriter : pugi::xml_writer
+    {
+        std::string data;
+
+        void write(const void* inData, size_t inSize) override
+        {
+            data.append(static_cast<const char*>(inData), inSize);
+        }
+    };
+
+    struct XmlDocumentImpl
     {
         pugi::xml_document document;
-
-        struct Writer : pugi::xml_writer
-        {
-            std::string data;
-
-            void write(const void* inData, size_t inSize) override
-            {
-                data.append(static_cast<const char*>(inData), inSize);
-            }
-        };
     };
 
     static pugi::xml_node asPugi(void* inNode)
@@ -37,7 +37,7 @@ namespace Chicane
     }
 
     XmlDocument::XmlDocument()
-        : m_impl(std::make_unique<Impl>())
+        : m_impl(std::make_unique<XmlDocumentImpl>())
     {}
 
     XmlDocument::~XmlDocument() = default;
@@ -64,7 +64,7 @@ namespace Chicane
     {
         if (!m_impl)
         {
-            m_impl = std::make_unique<Impl>();
+            m_impl = std::make_unique<XmlDocumentImpl>();
 
             return;
         }
@@ -86,7 +86,7 @@ namespace Chicane
     {
         if (!m_impl)
         {
-            m_impl = std::make_unique<Impl>();
+            m_impl = std::make_unique<XmlDocumentImpl>();
         }
 
         return XmlNode(asHandle(m_impl->document.append_child(inName.toChar())));
@@ -96,13 +96,13 @@ namespace Chicane
     {
         if (!m_impl)
         {
-            m_impl = std::make_unique<Impl>();
+            m_impl = std::make_unique<XmlDocumentImpl>();
         }
 
         return XmlNode(asHandle(m_impl->document.append_copy(asPugi(inNode.handle()))));
     }
 
-    XmlDocument XmlDocument::load(const FileSystem::Path& inFilepath)
+    XmlDocument XmlDocument::sLoad(const FileSystem::Path& inFilepath)
     {
         if (inFilepath.isEmpty())
         {
@@ -124,7 +124,7 @@ namespace Chicane
     {
         if (!m_impl)
         {
-            m_impl = std::make_unique<Impl>();
+            m_impl = std::make_unique<XmlDocumentImpl>();
         }
 
         if (!inData || inSize == 0)
@@ -151,7 +151,7 @@ namespace Chicane
                                           ? FileSystem::resolve(inFilepath)
                                           : FileSystem::Path(std::filesystem::absolute(inFilepath));
 
-        XmlDocument::Impl::Writer writer;
+        XmlDocumentWriter writer;
         m_impl->document.save(
             writer,
             "    ",

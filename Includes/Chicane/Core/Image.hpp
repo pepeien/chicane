@@ -30,20 +30,20 @@ namespace Chicane
         static constexpr inline const std::uint32_t STREAM_TAIL = 128;
 
     public:
-        static ImageVendor parseVendor(const String& inValue);
-        static const String& getVendorExtension(ImageVendor inValue);
+        static ImageVendor sParseVendor(const String& inValue);
+        static const String& sGetVendorExtension(ImageVendor inValue);
 
-        static std::uint32_t floorPowerOfTwo(std::uint32_t inValue);
-        static std::uint32_t mipCount(std::uint32_t inWidth, std::uint32_t inHeight);
-        static std::uint32_t mipDimension(std::uint32_t inSize, std::uint32_t inLevel);
-        static std::uint32_t streamTailMinMip(
+        static std::uint32_t sFloorPowerOfTwo(std::uint32_t inValue);
+        static std::uint32_t sMipCount(std::uint32_t inWidth, std::uint32_t inHeight);
+        static std::uint32_t sMipDimension(std::uint32_t inSize, std::uint32_t inLevel);
+        static std::uint32_t sStreamTailMinMip(
             std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inTail = STREAM_TAIL
         );
-        static std::size_t mipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight);
-        static ImageMipChain makeMipChain(
+        static std::size_t sMipChainBytes(std::uint32_t inWidth, std::uint32_t inHeight);
+        static ImageMipChain sMakeMipChain(
             const Image& inSource, std::uint32_t inMaxSize = MAX_SIZE, bool inIsNormal = false
         );
-        static ImageMipChain makeMipChain(
+        static ImageMipChain sMakeMipChain(
             const Pixel*  inPixels,
             int           inWidth,
             int           inHeight,
@@ -51,7 +51,7 @@ namespace Chicane
             std::uint32_t inMaxSize  = MAX_SIZE,
             bool          inIsNormal = false
         );
-        static void flipY(Pixels inPixels, int inWidth, int inHeight, int inChannel);
+        static void sFlipY(Pixels inPixels, int inWidth, int inHeight, int inChannel);
 
     public:
         Image(const FileSystem::Path& inLocation);

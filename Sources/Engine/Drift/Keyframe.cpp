@@ -7,17 +7,17 @@ namespace Chicane
     namespace Drift
     {
         Keyframe::Keyframe()
-            : time(Time::Zero()),
+            : time(Time::sZero()),
               value({}),
-              easing(EasingCurve::ease())
+              easing(EasingCurve::sEase())
         {}
 
         Keyframe::Keyframe(const Time& inTime, const std::vector<float>& inValue)
-            : Keyframe(inTime, inValue, EasingCurve::ease())
+            : Keyframe(inTime, inValue, EasingCurve::sEase())
         {}
 
         Keyframe::Keyframe(const Time& inTime, const std::vector<float>& inValue, const EasingCurve& inEasing)
-            : time(inTime < Time::Zero() ? Time::Zero() : inTime),
+            : time(inTime < Time::sZero() ? Time::sZero() : inTime),
               value(inValue),
               easing(inEasing)
         {}

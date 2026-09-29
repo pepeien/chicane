@@ -8,7 +8,9 @@ namespace Chicane
 {
     namespace Renderer
     {
-        vk::Viewport VulkanGraphicsPipeline::createViewport(const Vec<2, std::uint32_t>& inSize, const Vec2& inPosition)
+        vk::Viewport VulkanGraphicsPipeline::sCreateViewport(
+            const Vec<2, std::uint32_t>& inSize, const Vec2& inPosition
+        )
         {
             vk::Viewport viewport;
             viewport.x        = inPosition.x;
@@ -21,7 +23,7 @@ namespace Chicane
             return viewport;
         }
 
-        vk::Rect2D VulkanGraphicsPipeline::createScissor(const Vec<2, std::uint32_t>& inSize)
+        vk::Rect2D VulkanGraphicsPipeline::sCreateScissor(const Vec<2, std::uint32_t>& inSize)
         {
             vk::Rect2D scissor;
             scissor.offset.x      = 0;
@@ -32,7 +34,7 @@ namespace Chicane
             return scissor;
         }
 
-        vk::PipelineVertexInputStateCreateInfo VulkanGraphicsPipeline::createVertexInputState()
+        vk::PipelineVertexInputStateCreateInfo VulkanGraphicsPipeline::sCreateVertexInputState()
         {
             vk::PipelineVertexInputStateCreateInfo createInfo;
             createInfo.flags                           = vk::PipelineVertexInputStateCreateFlags();
@@ -44,7 +46,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineInputAssemblyStateCreateInfo VulkanGraphicsPipeline::createInputAssemblyState()
+        vk::PipelineInputAssemblyStateCreateInfo VulkanGraphicsPipeline::sCreateInputAssemblyState()
         {
             vk::PipelineInputAssemblyStateCreateInfo createInfo;
             createInfo.flags    = vk::PipelineInputAssemblyStateCreateFlags();
@@ -53,7 +55,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineViewportStateCreateInfo VulkanGraphicsPipeline::createViewportState(
+        vk::PipelineViewportStateCreateInfo VulkanGraphicsPipeline::sCreateViewportState(
             const vk::Viewport& inViewport, const vk::Rect2D& inScissor
         )
         {
@@ -67,7 +69,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineDynamicStateCreateInfo VulkanGraphicsPipeline::createDynamicState(
+        vk::PipelineDynamicStateCreateInfo VulkanGraphicsPipeline::sCreateDynamicState(
             const std::vector<vk::DynamicState>& inDynamicStates
         )
         {
@@ -78,7 +80,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineRasterizationStateCreateInfo VulkanGraphicsPipeline::createRasterizationState(
+        vk::PipelineRasterizationStateCreateInfo VulkanGraphicsPipeline::sCreateRasterizationState(
             vk::PolygonMode inPolygonMode
         )
         {
@@ -98,7 +100,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineMultisampleStateCreateInfo VulkanGraphicsPipeline::createMulitsampleState()
+        vk::PipelineMultisampleStateCreateInfo VulkanGraphicsPipeline::sCreateMulitsampleState()
         {
             vk::PipelineMultisampleStateCreateInfo createInfo;
             createInfo.flags                 = vk::PipelineMultisampleStateCreateFlags();
@@ -111,7 +113,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineColorBlendAttachmentState VulkanGraphicsPipeline::createBlendAttachmentState(bool bInIsEnabled)
+        vk::PipelineColorBlendAttachmentState VulkanGraphicsPipeline::sCreateBlendAttachmentState(bool bInIsEnabled)
         {
             vk::PipelineColorBlendAttachmentState createInfo;
             createInfo.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
@@ -127,9 +129,9 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineColorBlendAttachmentState VulkanGraphicsPipeline::createAdditiveBlendAttachmentState()
+        vk::PipelineColorBlendAttachmentState VulkanGraphicsPipeline::sCreateAdditiveBlendAttachmentState()
         {
-            vk::PipelineColorBlendAttachmentState createInfo = createBlendAttachmentState(true);
+            vk::PipelineColorBlendAttachmentState createInfo = sCreateBlendAttachmentState(true);
             createInfo.srcColorBlendFactor                   = vk::BlendFactor::eOne;
             createInfo.dstColorBlendFactor                   = vk::BlendFactor::eOne;
             createInfo.srcAlphaBlendFactor                   = vk::BlendFactor::eOne;
@@ -138,7 +140,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineColorBlendStateCreateInfo VulkanGraphicsPipeline::createColorBlendState()
+        vk::PipelineColorBlendStateCreateInfo VulkanGraphicsPipeline::sCreateColorBlendState()
         {
             vk::PipelineColorBlendStateCreateInfo createInfo;
             createInfo.flags             = vk::PipelineColorBlendStateCreateFlags();
@@ -152,7 +154,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineDepthStencilStateCreateInfo VulkanGraphicsPipeline::createDepthStencilState()
+        vk::PipelineDepthStencilStateCreateInfo VulkanGraphicsPipeline::sCreateDepthStencilState()
         {
             vk::PipelineDepthStencilStateCreateInfo createInfo;
             createInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
@@ -165,7 +167,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::PipelineLayout VulkanGraphicsPipeline::createLayout(
+        vk::PipelineLayout VulkanGraphicsPipeline::sCreateLayout(
             const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
             const std::vector<vk::PushConstantRange>&   inPushConstants,
             const vk::Device&                           inLogicalDevice
@@ -181,7 +183,7 @@ namespace Chicane
             return inLogicalDevice.createPipelineLayout(createInfo);
         }
 
-        vk::AttachmentDescription VulkanGraphicsPipeline::createColorAttachment(
+        vk::AttachmentDescription VulkanGraphicsPipeline::sCreateColorAttachment(
             const VulkanGraphicsPipelineAttachment& inAttachment
         )
         {
@@ -199,7 +201,7 @@ namespace Chicane
             return createInfo;
         }
 
-        vk::SubpassDependency VulkanGraphicsPipeline::createColorSubpassDepedency()
+        vk::SubpassDependency VulkanGraphicsPipeline::sCreateColorSubpassDepedency()
         {
             vk::SubpassDependency subpassDepedency;
             subpassDepedency.srcSubpass    = VK_SUBPASS_EXTERNAL;
@@ -213,7 +215,7 @@ namespace Chicane
             return subpassDepedency;
         }
 
-        vk::AttachmentDescription VulkanGraphicsPipeline::createDepthAttachment(
+        vk::AttachmentDescription VulkanGraphicsPipeline::sCreateDepthAttachment(
             const VulkanGraphicsPipelineAttachment& inAttachment
         )
         {
@@ -231,7 +233,7 @@ namespace Chicane
             return attachmentDescription;
         }
 
-        vk::SubpassDependency VulkanGraphicsPipeline::createDepthSubpassDepedency()
+        vk::SubpassDependency VulkanGraphicsPipeline::sCreateDepthSubpassDepedency()
         {
             vk::SubpassDependency subpassDepedency;
             subpassDepedency.srcSubpass = VK_SUBPASS_EXTERNAL;
@@ -247,7 +249,7 @@ namespace Chicane
             return subpassDepedency;
         }
 
-        vk::RenderPass VulkanGraphicsPipeline::createRendepass(
+        vk::RenderPass VulkanGraphicsPipeline::sCreateRendepass(
             const std::vector<vk::AttachmentDescription>& inAttachments,
             const std::vector<vk::SubpassDependency>&     inSubpassDepedencies,
             const std::vector<vk::SubpassDescription>&    inSubpasses,

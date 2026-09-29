@@ -13,8 +13,8 @@ namespace Chicane
     struct CHICANE_RUNTIME SceneSpatialCell
     {
     public:
-        Vec3                 min     = Vec3::Zero();
-        Vec3                 max     = Vec3::Zero();
+        Vec3                 min     = Vec3::sZero();
+        Vec3                 max     = Vec3::sZero();
         std::vector<Object*> objects = {};
     };
 }

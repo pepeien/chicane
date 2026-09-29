@@ -2,10 +2,13 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <cmath>
 #include <stdexcept>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
 #include "Chicane/Core/Reflection/Enum/Registry.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
@@ -15,7 +18,6 @@
 #include "Chicane/Drift.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
-#include "Chicane/Runtime/Scene/Component.hpp"
 
 namespace Chicane
 {
@@ -32,7 +34,7 @@ namespace Chicane
 
     static const ReflectionEnumInfo* findEnum(const String& inTypeName)
     {
-        ReflectionEnumRegistry& registry = ReflectionEnumRegistry::getInstance();
+        ReflectionEnumRegistry& registry = ReflectionEnumRegistry::sInstance();
         if (const ReflectionEnumInfo* found = registry.find(inTypeName))
         {
             return found;
@@ -98,28 +100,33 @@ namespace Chicane
             Object::RELATIVE_SCALE_ATTRIBUTE_NAME,
             Object::ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
             Object::ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME,
-            Object::LOOK_TO_ATTRIBUTE_NAME
+            Object::ABSOLUTE_SCALE_ATTRIBUTE_NAME
         );
     }
 
     Object::Object()
         : Transformable(),
           Serializable(),
-          lookTo(),
           m_bCanTick(false),
           m_bCanCollide(false),
           m_bIsTransient(false),
           m_id(""),
+          m_parent(nullptr),
+          m_parentSubscription({}),
           m_attachments({}),
           m_scene(nullptr),
           m_bIsSpatialDirty(true)
     {
         bindAttributes();
+        Script::Handle::add(this);
     }
 
     Object::~Object()
     {
+        Script::Handle::remove(this);
+
+        detach();
+
         while (!m_attachments.empty())
         {
             m_attachments.back()->detach();
@@ -131,96 +138,6 @@ namespace Chicane
         {
             m_scene->removeSpatial(this);
         }
-    }
-
-    void Object::bindAttributes()
-    {
-        watchAttribute(
-            ID_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setId(inValue);
-                }
-            }
-        );
-
-        watchAttribute(
-            RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setRelativeTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
-                }
-            }
-        );
-
-        watchAttribute(
-            RELATIVE_ROTATION_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setRelativeRotation(Xml::parseVec3(inValue, Vec3::Zero()));
-                }
-            }
-        );
-
-        watchAttribute(
-            RELATIVE_SCALE_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setRelativeScale(Xml::parseVec3(inValue, Vec3::One()));
-                }
-            }
-        );
-
-        watchAttribute(
-            ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setAbsoluteTranslation(Xml::parseVec3(inValue, Vec3::Zero()));
-                }
-            }
-        );
-
-        watchAttribute(
-            ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setAbsoluteRotation(Xml::parseVec3(inValue, Vec3::Zero()));
-                }
-            }
-        );
-
-        watchAttribute(
-            ABSOLUTE_SCALE_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                if (!inValue.isEmpty())
-                {
-                    setAbsoluteScale(Xml::parseVec3(inValue, Vec3::One()));
-                }
-            }
-        );
-
-        watchAttribute(
-            LOOK_TO_ATTRIBUTE_NAME,
-            [this](const String& inValue)
-            {
-                lookTo = inValue;
-
-                applyLookTo(lookTo);
-            }
-        );
     }
 
     void Object::onRefresh()
@@ -245,21 +162,6 @@ namespace Chicane
         return m_bCanTick;
     }
 
-    void Object::setCanTick(bool inCanTick)
-    {
-        m_bCanTick = inCanTick;
-    }
-
-    void Object::tick(float inDeltaTime)
-    {
-        if (!canTick())
-        {
-            return;
-        }
-
-        onTick(inDeltaTime);
-    }
-
     const String& Object::getId() const
     {
         return m_id;
@@ -279,10 +181,10 @@ namespace Chicane
 
     String Object::getTypeName() const
     {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
         if (!type)
         {
-            return String::empty();
+            return String::sEmpty();
         }
 
         const String&     name  = type->getName();
@@ -300,29 +202,147 @@ namespace Chicane
         return m_bIsTransient;
     }
 
+    bool Object::isAttached() const
+    {
+        return m_parent != nullptr;
+    }
+
+    Object* Object::getParent() const
+    {
+        return m_parent;
+    }
+
+    const std::vector<Object*>& Object::getAttachments() const
+    {
+        return m_attachments;
+    }
+
+    void Object::attachTo(Object* inParent)
+    {
+        if (!inParent || inParent == this)
+        {
+            return;
+        }
+
+        if (isAncestorOf(inParent))
+        {
+            return;
+        }
+
+        if (isAttached())
+        {
+            detach();
+        }
+
+        m_parent = inParent;
+        m_parent->addAttachment(this);
+
+        m_parentSubscription = m_parent->watchChanges([this]() { setAbsolute(*m_parent); });
+
+        setAbsolute(*m_parent);
+
+        onAttachment(inParent);
+    }
+
+    void Object::detach()
+    {
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_parentSubscription.complete();
+
+        Object* parent = m_parent;
+        m_parent       = nullptr;
+        parent->removeAttachment(this);
+    }
+
+    const Vec3& Object::getTranslation() const
+    {
+        return Transform::getTranslation();
+    }
+
+    void Object::setTranslation(const Vec3& inValue)
+    {
+        if (!isAttached())
+        {
+            setAbsoluteTranslation(inValue);
+
+            return;
+        }
+
+        const Vec3 parentWorld = getAbsoluteTranslation();
+        const Vec3 parentScale = getAbsoluteScale();
+        const Vec3 delta       = inValue - parentWorld;
+        const Vec3 local = getAbsoluteRotation().get().inverse() * delta;
+
+        const auto divide = [](float inValue, float inScale) -> float
+        { return std::fabs(inScale) > 1e-8f ? inValue / inScale : inValue; };
+
+        SpatialTransform::setRelativeTranslation(
+            Vec3(divide(local.x, parentScale.x), divide(local.y, parentScale.y), divide(local.z, parentScale.z))
+        );
+    }
+
+    void Object::setRelativeTranslation(const Vec3& inValue)
+    {
+        SpatialTransform::setRelativeTranslation(inValue);
+    }
+
+    void Object::lookAt(const Vec3& inTarget)
+    {
+        SpatialTransform::lookAt(inTarget);
+    }
+
+    const Vec3& Object::getCenter() const
+    {
+        return Transformable::getCenter();
+    }
+
+    const Vec3& Object::getTop() const
+    {
+        return Transformable::getTop();
+    }
+
+    const Vec3& Object::getBottom() const
+    {
+        return Transformable::getBottom();
+    }
+
+    const Vec3& Object::getSize() const
+    {
+        return getBounds().getSize();
+    }
+
+    void Object::setCanTick(bool inCanTick)
+    {
+        m_bCanTick = inCanTick;
+    }
+
+    void Object::tick(float inDeltaTime)
+    {
+        if (!canTick())
+        {
+            return;
+        }
+
+        onTick(inDeltaTime);
+    }
+
     void Object::setIsTransient(bool inValue)
     {
         m_bIsTransient = inValue;
     }
 
-    const std::vector<Component*>& Object::getAttachments() const
-    {
-        return m_attachments;
-    }
-
     void Object::notifyPropertyEdited(const String& inName)
     {
-        if (inName.equals(LOOK_TO_ATTRIBUTE_NAME))
-        {
-            applyLookTo(lookTo);
-        }
-
         onPropertyEdited(inName);
     }
 
     bool Object::applySerializedField(const String& inName, const String& inValue)
     {
-        const ReflectionTypeInfo* type = ReflectionTypeRegistry::getInstance().find(typeid(*this));
+        const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this));
         if (!type)
         {
             return false;
@@ -359,7 +379,7 @@ namespace Chicane
         }
         else if (accessor.isType<Vec3>())
         {
-            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::Zero()));
+            accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
         }
         else if (accessor.isType<int>())
         {
@@ -375,86 +395,89 @@ namespace Chicane
         return true;
     }
 
-    void Object::applyLookTo()
+    void Object::bindAttributes()
     {
-        applyLookTo(lookTo);
-    }
-
-    void Object::applyLookTo(const String& inTarget)
-    {
-        const String value = inTarget.trim();
-        if (value.isEmpty())
-        {
-            return;
-        }
-
-        String raw = value;
-        if (raw.startsWith("["))
-        {
-            raw = raw.substr(1);
-        }
-
-        if (raw.endsWith("]"))
-        {
-            raw = raw.substr(0, raw.size() - 1);
-        }
-
-        const std::vector<String> parts = raw.split(',');
-        if (parts.size() >= 3)
-        {
-            try
+        watchAttribute(
+            ID_ATTRIBUTE_NAME,
+            [this](const String& inValue)
             {
-                lookAt(Vec3(
-                    std::stof(parts.at(0).trim().toStandard()),
-                    std::stof(parts.at(1).trim().toStandard()),
-                    std::stof(parts.at(2).trim().toStandard())
-                ));
-
-                return;
+                if (!inValue.isEmpty())
+                {
+                    setId(inValue);
+                }
             }
-            catch (const std::exception&)
-            {}
-        }
+        );
 
-        Scene* scene = getScene();
-        if (!scene)
-        {
-            return;
-        }
+        watchAttribute(
+            RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeTranslation(Xml::parseVec3(inValue, Vec3::sZero()));
+                }
+            }
+        );
 
-        Object* target = scene->getObject(value);
-        if (!target || target == this)
-        {
-            return;
-        }
+        watchAttribute(
+            RELATIVE_ROTATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeRotation(Xml::parseVec3(inValue, Vec3::sZero()));
+                }
+            }
+        );
 
-        lookAt(target->getTranslation());
+        watchAttribute(
+            RELATIVE_SCALE_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setRelativeScale(Xml::parseVec3(inValue, Vec3::sOne()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteTranslation(Xml::parseVec3(inValue, Vec3::sZero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteRotation(Xml::parseVec3(inValue, Vec3::sZero()));
+                }
+            }
+        );
+
+        watchAttribute(
+            ABSOLUTE_SCALE_ATTRIBUTE_NAME,
+            [this](const String& inValue)
+            {
+                if (!inValue.isEmpty())
+                {
+                    setAbsoluteScale(Xml::parseVec3(inValue, Vec3::sOne()));
+                }
+            }
+        );
     }
 
-    void Object::addAttachment(Component* inComponent)
+    void Object::applyDefaultBounds()
     {
-        if (!inComponent)
-        {
-            return;
-        }
-
-        if (std::find(m_attachments.begin(), m_attachments.end(), inComponent) != m_attachments.end())
-        {
-            return;
-        }
-
-        m_attachments.push_back(inComponent);
-    }
-
-    void Object::removeAttachment(Component* inComponent)
-    {
-        auto found = std::find(m_attachments.begin(), m_attachments.end(), inComponent);
-        if (found == m_attachments.end())
-        {
-            return;
-        }
-
-        m_attachments.erase(found);
+        addBounds(Bounds3D::sBox(DEFAULT_BOUNDS_SIZE));
     }
 
     void Object::setScene(Scene* inScene)
@@ -481,5 +504,47 @@ namespace Chicane
     bool Object::consumeSpatialDirty()
     {
         return m_bIsSpatialDirty.exchange(false, std::memory_order_acq_rel);
+    }
+
+    void Object::addAttachment(Object* inObject)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        if (std::find(m_attachments.begin(), m_attachments.end(), inObject) != m_attachments.end())
+        {
+            return;
+        }
+
+        m_attachments.push_back(inObject);
+    }
+
+    void Object::removeAttachment(Object* inObject)
+    {
+        auto found = std::find(m_attachments.begin(), m_attachments.end(), inObject);
+        if (found == m_attachments.end())
+        {
+            return;
+        }
+
+        m_attachments.erase(found);
+    }
+
+    bool Object::isAncestorOf(const Object* inObject) const
+    {
+        const Object* current = inObject ? inObject->m_parent : nullptr;
+        while (current)
+        {
+            if (current == this)
+            {
+                return true;
+            }
+
+            current = current->m_parent;
+        }
+
+        return false;
     }
 }

@@ -256,7 +256,7 @@ namespace Chicane
             desc.layouts          = {m_frameLayout, m_textureLayout};
             m_pipeline            = device->createPipeline(desc);
 
-            desc.fragmentPath  = "Assets/Engine/Shaders/Scene/SkyPanorama";
+            desc.fragmentPath  = "Assets/Engine/Shaders/Scene/Sky/Panorama";
             m_panoramaPipeline = device->createPipeline(desc);
 
             LScene* parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);
@@ -398,7 +398,7 @@ namespace Chicane
             RHI::PassCreateInfo pass = rhiScenePass(*rhi, false, RHI::LoadOp::Clear, RHI::LoadOp::DontCare);
             if (!inFrame.getSkyInstance().bVisible)
             {
-                pass.color.clear = Vec4::Zero();
+                pass.color.clear = Vec4::sZero();
             }
             rhi->commands->beginPass(pass);
             rhiApplyView(rhi->commands, m_backend, this);

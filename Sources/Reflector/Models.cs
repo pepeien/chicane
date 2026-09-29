@@ -9,7 +9,8 @@ namespace Reflector
         List<string> ParamTypes,
         bool IsIterable,
         string ElementName,
-        bool IsElementPointer
+        bool IsElementPointer,
+        bool IsStatic
     );
     record FieldModel(
         string TypeName,
@@ -31,7 +32,10 @@ namespace Reflector
         List<FunctionModel> Functions,
         List<FieldModel> Fields,
         string Group,
-        string Description
+        string Description,
+        List<string> Bases,
+        List<FunctionModel> OwnFunctions,
+        List<FieldModel> OwnFields
     )
     {
         public bool Resolved { get; set; } = false;

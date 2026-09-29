@@ -34,7 +34,7 @@ namespace Chicane
                 m_inFlight.insert(inKey);
             }
 
-            Worker::submit(
+            Worker::sSubmit(
                 [inKey, inBuild = std::move(inBuild)]()
                 {
                     Primitive primitive;
@@ -47,7 +47,7 @@ namespace Chicane
                         primitive.clear();
                     }
 
-                    SvgTessellation::getInstance().finish(inKey, std::move(primitive));
+                    SvgTessellation::sInstance().finish(inKey, std::move(primitive));
                 }
             );
         }

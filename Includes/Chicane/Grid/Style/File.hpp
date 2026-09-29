@@ -22,7 +22,7 @@ namespace Chicane
             using Keyframes = std::unordered_map<String, StyleKeyframe::List>;
 
         public:
-            static inline const StyleFile& empty()
+            static inline const StyleFile& sEmpty()
             {
                 static const StyleFile result;
 

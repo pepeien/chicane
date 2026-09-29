@@ -12,6 +12,19 @@ namespace Chicane
 {
     namespace Renderer
     {
+        void VulkanAllocator::sDestroyImage(VulkanImageInfo& inImage)
+        {
+            if (inImage.allocation && inImage.allocator)
+            {
+                vmaDestroyImage(inImage.allocator, static_cast<VkImage>(inImage.instance), inImage.allocation);
+            }
+
+            inImage.instance   = nullptr;
+            inImage.memory     = nullptr;
+            inImage.allocator  = nullptr;
+            inImage.allocation = nullptr;
+        }
+
         VulkanAllocator::VulkanAllocator()
             : m_allocator(nullptr),
               m_physicalDevice(nullptr),
@@ -21,7 +34,7 @@ namespace Chicane
               m_stagingSize(0)
         {}
 
-        std::size_t VulkanAllocator::queryDedicatedHeapSize(const vk::PhysicalDevice& inPhysicalDevice)
+        std::size_t VulkanAllocator::sQueryDedicatedHeapSize(const vk::PhysicalDevice& inPhysicalDevice)
         {
             const vk::PhysicalDeviceMemoryProperties properties = inPhysicalDevice.getMemoryProperties();
 
@@ -181,7 +194,7 @@ namespace Chicane
             const VulkanImageMemoryCreateInfo& inMemoryCreateInfo
         )
         {
-            destroyImage(outImage);
+            sDestroyImage(outImage);
 
             vk::ImageCreateInfo imageCreateInfo;
             imageCreateInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
@@ -225,19 +238,6 @@ namespace Chicane
             outImage.memory     = info.deviceMemory;
             outImage.allocator  = m_allocator;
             outImage.allocation = allocation;
-        }
-
-        void VulkanAllocator::destroyImage(VulkanImageInfo& inImage)
-        {
-            if (inImage.allocation && inImage.allocator)
-            {
-                vmaDestroyImage(inImage.allocator, static_cast<VkImage>(inImage.instance), inImage.allocation);
-            }
-
-            inImage.instance   = nullptr;
-            inImage.memory     = nullptr;
-            inImage.allocator  = nullptr;
-            inImage.allocation = nullptr;
         }
 
         void* VulkanAllocator::map(VulkanBuffer& inBuffer)

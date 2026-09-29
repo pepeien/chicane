@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Size/Direction.hpp"
 #include "Chicane/Core/String.hpp"

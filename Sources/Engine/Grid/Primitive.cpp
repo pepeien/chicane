@@ -16,11 +16,11 @@ namespace Chicane
 
         void Primitive::clear()
         {
-            reference  = String::empty();
-            glyph      = String::empty();
+            reference  = String::sEmpty();
+            glyph      = String::sEmpty();
             dilation   = 0.0f;
-            outlineMin = Vec2::Zero();
-            outlineMax = Vec2::Zero();
+            outlineMin = Vec2::sZero();
+            outlineMax = Vec2::sZero();
 
             outline.clear();
             vertices.clear();

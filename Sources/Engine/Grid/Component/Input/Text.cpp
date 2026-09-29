@@ -4,13 +4,12 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <glm/gtc/matrix_inverse.hpp>
-
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Input/Text/Event.hpp"
+#include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Window.hpp"
 
@@ -29,12 +28,12 @@ namespace Chicane
                 hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Alt) ||
                 hasModifier(inEvent.modifier, Input::KeyboardButtonModifier::Gui))
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             if (inEvent.key < 32 || inEvent.key > 126)
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             char character = static_cast<char>(inEvent.key);
@@ -97,24 +96,23 @@ namespace Chicane
 
         InputText::InputText(const XmlNode& inNode)
             : Text(inNode),
-              value(String::empty()),
-              caret(Vec2::Zero()),
-              selection(Vec2::Zero()),
+              value(String::sEmpty()),
+              caret(Vec2::sZero()),
+              selection(Vec2::sZero()),
               selectionWidth(0.0f),
               caretColor("#252525FF"),
               m_bIsEdited(false),
               m_bIsSelecting(false),
-              m_pendingText(String::empty()),
+              m_pendingText(String::sEmpty()),
               m_caret(0),
               m_anchor(0)
         {
-            load("Assets/Engine/UI/Components/Input/Text.grid", "Assets/Engine/UI/Components/Input/Text.decal");
+            load(
+                "Assets/Engine/UI/Components/Input/Text/Index.grid",
+                "Assets/Engine/UI/Components/Input/Text/Index.decal"
+            );
             hoistChrome();
-        }
-
-        bool InputText::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputText::onEvent(const WindowEvent& inEvent)
@@ -204,13 +202,13 @@ namespace Chicane
                 const Input::TextEvent event = *static_cast<Input::TextEvent*>(inEvent.data);
                 if (event.text.isEmpty() || event.text.equals(m_pendingText))
                 {
-                    m_pendingText = String::empty();
+                    m_pendingText = String::sEmpty();
 
                     return true;
                 }
 
                 insert(event.text);
-                m_pendingText = String::empty();
+                m_pendingText = String::sEmpty();
 
                 return true;
             }
@@ -240,7 +238,7 @@ namespace Chicane
             if (event.button == Input::KeyboardButton::Backspace)
             {
                 erase();
-                m_pendingText = String::empty();
+                m_pendingText = String::sEmpty();
 
                 return true;
             }
@@ -248,7 +246,7 @@ namespace Chicane
             if (event.button == Input::KeyboardButton::Delete)
             {
                 eraseForward();
-                m_pendingText = String::empty();
+                m_pendingText = String::sEmpty();
 
                 return true;
             }
@@ -280,7 +278,7 @@ namespace Chicane
             const String character = characterFromKey(event);
             if (character.isEmpty())
             {
-                return true;
+                return false;
             }
 
             insert(character);
@@ -320,7 +318,7 @@ namespace Chicane
 
         void InputText::onBlur()
         {
-            m_pendingText  = String::empty();
+            m_pendingText  = String::sEmpty();
             m_bIsSelecting = false;
             collapseSelection();
             setTextInputActive(false);
@@ -329,8 +327,8 @@ namespace Chicane
 
         void InputText::refreshSize()
         {
-            m_style.width.refresh();
-            m_style.height.refresh();
+            style.width.refresh();
+            style.height.refresh();
 
             Component::refreshSize();
         }
@@ -371,8 +369,8 @@ namespace Chicane
             m_caret                 = std::min(m_caret, count);
             m_anchor                = std::min(m_anchor, count);
 
-            const Color::Rgba color     = m_style.foregroundColor.get();
-            const String      nextColor = String::sprint(
+            const Color::Rgba color     = style.foregroundColor.get();
+            const String      nextColor = String::sSprint(
                 "#%02X%02X%02X%02X",
                 static_cast<unsigned>(color.r),
                 static_cast<unsigned>(color.g),
@@ -595,7 +593,7 @@ namespace Chicane
 
         void InputText::setTextInputActive(bool inValue)
         {
-            Window* window = Window::getCurrent();
+            Window* window = Window::sGetCurrent();
             if (!window)
             {
                 return;
@@ -645,11 +643,11 @@ namespace Chicane
 
         Vec2 InputText::toContentPoint(const Vec2& inLocation) const
         {
-            const Mat3 inverse  = glm::inverse(static_cast<glm::mat3>(getPaintMatrix()));
+            const Mat3 inverse  = getPaintMatrix().inverse();
             const Vec3 mapped   = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
             const Vec2 position = getDrawPosition();
 
-            return Vec2(mapped.x - position.x - m_style.insetLeft(), mapped.y - position.y - m_style.insetTop());
+            return Vec2(mapped.x - position.x - style.insetLeft(), mapped.y - position.y - style.insetTop());
         }
 
         std::size_t InputText::hitIndex(const Vec2& inLocation) const

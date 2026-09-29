@@ -8,16 +8,19 @@ namespace Chicane
     {
         WindowHeader::WindowHeader(const XmlNode& inNode)
             : Container(inNode),
-              label(String::empty())
+              label(String::sEmpty())
         {
-            load("Assets/Engine/UI/Components/Window/Header.grid", "Assets/Engine/UI/Components/Window/Header.decal");
+            load(
+                "Assets/Engine/UI/Components/Window/Header/Index.grid",
+                "Assets/Engine/UI/Components/Window/Header/Index.decal"
+            );
 
             watchAttribute(LABEL_ATTRIBUTE_NAME, [this](const String& inValue) { label = parseText(inValue).trim(); });
         }
 
         void WindowHeader::onClose()
         {
-            if (Window* window = Window::findFrom(this))
+            if (Window* window = Window::sFindFrom(this))
             {
                 window->dismiss();
             }

@@ -19,6 +19,6 @@ namespace Chicane
         ) const override;
 
     public:
-        Vec2 halfExtents = Vec2::Zero();
+        Vec2 halfExtents = Vec2::sZero();
     };
 }

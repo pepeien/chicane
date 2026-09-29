@@ -77,7 +77,7 @@ namespace Chicane
             std::uint32_t index = 1;
             while (true)
             {
-                const String candidate = String::sprint("%s_%u", name.toChar(), index);
+                const String candidate = String::sSprint("%s_%u", name.toChar(), index);
                 if (outUsed.insert(candidate).second)
                 {
                     return candidate;
@@ -131,7 +131,7 @@ namespace Chicane
             return result;
         }
 
-        static void generateTangents(ModelParsed::Map& outGeometry)
+        static void sGenerateTangents(ModelParsed::Map& outGeometry)
         {
             std::vector<ModelParsed*> models;
             models.reserve(outGeometry.size());
@@ -140,9 +140,9 @@ namespace Chicane
                 models.push_back(&model);
             }
 
-            WorkerPool::parallel(
+            WorkerPool::sParallel(
                 models.size(),
-                [&models](std::size_t inIndex) { Model::generateTangents(*models[inIndex]); }
+                [&models](std::size_t inIndex) { Model::sGenerateTangents(*models[inIndex]); }
             );
         }
 
@@ -156,7 +156,7 @@ namespace Chicane
                 throw std::runtime_error("The glTF/GLB file has no meshes");
             }
 
-            generateTangents(scene.geometry);
+            sGenerateTangents(scene.geometry);
 
             const FileSystem::Path modelPath = inDirectory / (inId + getTypeExtension(AssetType::Model));
             ensureParent(modelPath);
@@ -194,7 +194,7 @@ namespace Chicane
                 ensureParent(written[index].path);
             }
 
-            WorkerPool::parallel(
+            WorkerPool::sParallel(
                 written.size(),
                 [&textures, &written](std::size_t inIndex)
                 {
@@ -440,7 +440,7 @@ namespace Chicane
                 const ModelParsed& data      = found->second;
                 const String       groupName = instance.bone.isEmpty()
                                                    ? instance.id
-                                                   : String::sprint("%s_%s", instance.id.toChar(), instance.bone.toChar());
+                                                   : String::sSprint("%s_%s", instance.id.toChar(), instance.bone.toChar());
 
                 MeshGroup group;
                 group.setId(uniqueName(groupName, usedGroups));
@@ -519,11 +519,11 @@ namespace Chicane
                 mesh.appendAnimation(animation);
             }
 
-            if (std::unique_ptr<AssetPreview> preview = AssetPreview::createFromGeometry(meshPath, batches))
+            if (std::unique_ptr<AssetPreview> preview = AssetPreview::sCreateFromGeometry(meshPath, batches))
             {
                 if (preview->image)
                 {
-                    AssetPreview::write(mesh.getXML(), AssetType::Mesh, *preview->image);
+                    AssetPreview::sWrite(mesh.getXML(), AssetType::Mesh, *preview->image);
                 }
             }
 
@@ -558,7 +558,7 @@ namespace Chicane
 
             if (hasRawExtension(AssetType::Model, extension))
             {
-                if (Model::parseVendor(extension) == ModelVendor::Gltf)
+                if (Model::sParseVendor(extension) == ModelVendor::Gltf)
                 {
                     return importGltf(inSource, directory, id);
                 }

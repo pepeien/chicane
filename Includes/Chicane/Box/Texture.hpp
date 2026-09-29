@@ -41,7 +41,7 @@ namespace Chicane
             static constexpr inline const char*         GRAY_REFERENCE    = "Color_Gray";
 
         public:
-            static const Texture* getDefault();
+            static const Texture* sGetDefault();
 
         public:
             Texture(const FileSystem::Path& inFilepath);

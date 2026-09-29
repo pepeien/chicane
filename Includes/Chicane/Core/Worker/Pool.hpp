@@ -17,15 +17,15 @@ namespace Chicane
         using Job = std::function<void()>;
 
     public:
-        static inline WorkerPool& getInstance()
+        static inline WorkerPool& sInstance()
         {
             static WorkerPool result;
 
             return result;
         }
 
-        static void submit(Job inJob);
-        static void parallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob);
+        static void sSubmit(Job inJob);
+        static void sParallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob);
 
     public:
         WorkerPool();

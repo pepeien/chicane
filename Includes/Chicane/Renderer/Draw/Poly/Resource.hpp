@@ -48,8 +48,6 @@ namespace Chicane
             std::size_t getStableVertexCount() const { return m_stableVertexCount; }
             std::size_t getStableIndexCount() const { return m_stableIndexCount; }
 
-            // Glyphs are addressed by their offset into the outline buffer, which keeps a header and its curves
-            // contiguous and lets new glyphs be appended without relocating the existing ones
             Draw::Id findGlyph(const Draw::Reference& inReference) const;
             Draw::Id addGlyph(const DrawGlyphData& inData);
 

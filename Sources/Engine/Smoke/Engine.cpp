@@ -16,7 +16,7 @@ namespace Chicane
             return !inSystem || !inSystem->isAlive();
         }
 
-        Engine& Engine::getInstance()
+        Engine& Engine::sInstance()
         {
             static Engine instance;
 
@@ -65,7 +65,7 @@ namespace Chicane
                     continue;
                 }
 
-                Module* module = Module::create(child);
+                Module* module = Module::sCreate(child);
                 if (!module)
                 {
                     continue;

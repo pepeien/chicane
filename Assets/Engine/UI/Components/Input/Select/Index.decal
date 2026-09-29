@@ -1,0 +1,47 @@
+Input::Select {
+    position: relative;
+    cursor: pointer;
+}
+
+.input-select {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    &__control {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    &__label {
+        margin: auto;
+    }
+
+    &__list {
+        position: absolute;
+        width: 100%;
+        margin-top: 1.25em;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border: 1px solid gray;
+        border-radius: 0.3em;
+    }
+}
+
+Input::Select::Option {
+    width: 100%;
+    min-height: 1.4em;
+    height: 1.4em;
+    display: flex;
+    cursor: pointer;
+    overflow: hidden;
+
+    Text {
+        margin: auto 0.4em;
+    }
+}

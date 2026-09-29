@@ -1,5 +1,7 @@
 #include "Chicane/Core/View/Frustum.hpp"
 
+#include "Chicane/Core/Math.hpp"
+
 namespace Chicane
 {
     bool ViewFrustum::contains(const Transformable* inSubject) const
@@ -26,7 +28,7 @@ namespace Chicane
         const Vec3 forward = inView->getForward().normalize();
 
         const float aspectRatio = inSettings.aspectRatio;
-        const float fieldOfView = glm::radians(inSettings.fieldOfView);
+        const float fieldOfView = inSettings.fieldOfView * Math::DEG_TO_RAD;
         const float nearClip    = inSettings.nearClip;
         const float farClip     = inSettings.farClip;
 

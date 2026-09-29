@@ -308,3 +308,26 @@ function(CH_GENERATE_REFLECTION TARGET)
 
     target_include_directories(${TARGET} PRIVATE "${OUTPUT_DIR}")
 endfunction()
+
+# The language server cannot see generated headers on its own.
+# Point it at the remaining hand stubs (math, Instance).
+file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Core/Script/Types" _CHICANE_LUA_CORE)
+file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Runtime/Script/Types" _CHICANE_LUA_RUNTIME)
+file(TO_CMAKE_PATH "${CMAKE_SOURCE_DIR}/Includes/Chicane/Grid/Script/Types" _CHICANE_LUA_GRID)
+file(WRITE "${CMAKE_SOURCE_DIR}/.luarc.json" "{
+  \"workspace\": {
+    \"library\": [
+      \"${_CHICANE_LUA_CORE}\",
+      \"${_CHICANE_LUA_RUNTIME}\",
+      \"${_CHICANE_LUA_GRID}\"
+    ],
+    \"ignoreDir\": [
+      \"Sources/Engine/Core/Vendor\",
+      \"Sources/Engine/Box/Vendor\",
+      \"Sources/Engine/Kerb/Vendor\",
+      \"Sources/Engine/Screech/Vendor\",
+      \"Sources/Engine/Renderer/Vendor\"
+    ]
+  }
+}
+")

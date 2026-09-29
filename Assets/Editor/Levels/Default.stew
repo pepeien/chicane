@@ -1,0 +1,6 @@
+Instance.onLoad(function()
+    Instance.send("level:ready", "")
+end)
+
+Instance.onTick(function(delta)
+end)

@@ -19,12 +19,16 @@ namespace Editor
     public:
         CH_FIELD()
         Chicane::String label;
+
         CH_FIELD()
         Chicane::String shortcut;
+
         CH_FIELD()
         Chicane::String action;
+
         CH_FIELD()
         bool isChecked;
+
         CH_FIELD()
         List children;
     };

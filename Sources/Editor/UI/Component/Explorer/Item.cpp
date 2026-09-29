@@ -10,7 +10,7 @@
 #include <Chicane/Core/Window/Event/Type.hpp>
 #include <Chicane/Grid/Style.hpp>
 #include <Chicane/Renderer/Draw.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/UI/Component/Explorer.hpp"
 
@@ -23,17 +23,20 @@ namespace Editor
           dragClass("static"),
           ghostClass("solid"),
           selectionState("idle"),
-          itemName(Chicane::String::empty()),
-          itemPath(Chicane::String::empty()),
+          itemName(Chicane::String::sEmpty()),
+          itemPath(Chicane::String::sEmpty()),
           m_item(nullptr),
           m_boundIndex(-1),
-          m_slot(Chicane::Vec2::Zero()),
-          m_pointer(Chicane::Vec2::Zero()),
-          m_grab(Chicane::Vec2::Zero()),
-          m_ghostSize(Chicane::Vec2::Zero()),
+          m_slot(Chicane::Vec2::sZero()),
+          m_pointer(Chicane::Vec2::sZero()),
+          m_grab(Chicane::Vec2::sZero()),
+          m_ghostSize(Chicane::Vec2::sZero()),
           m_bIsGhost(false)
     {
-        load("Assets/Editor/UI/Components/Explorer/Item.grid", "Assets/Editor/UI/Components/Explorer/Item.decal");
+        load(
+            "Assets/Editor/UI/Components/Explorer/Item/Index.grid",
+            "Assets/Editor/UI/Components/Explorer/Item/Index.decal"
+        );
     }
 
     bool ExplorerItem::onEvent(const Chicane::WindowEvent& inEvent)
@@ -67,11 +70,6 @@ namespace Editor
         return Chicane::Grid::Button::onEvent(inEvent);
     }
 
-    bool ExplorerItem::escapesOverflow() const
-    {
-        return m_bIsGhost;
-    }
-
     float ExplorerItem::getDepth() const
     {
         if (m_bIsGhost)
@@ -80,6 +78,11 @@ namespace Editor
         }
 
         return Chicane::Grid::Button::getDepth();
+    }
+
+    void ExplorerItem::onRefresh()
+    {
+        setEscapesOverflow(m_bIsGhost);
     }
 
     void ExplorerItem::bind(
@@ -91,7 +94,7 @@ namespace Editor
             return;
         }
 
-        const Chicane::String nextPath = inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::empty();
+        const Chicane::String nextPath = inItem ? inItem->path.lexicallyNormal().toString() : Chicane::String::sEmpty();
 
         if (!inShouldRestyle && itemPath.equals(nextPath) && m_boundIndex == inIndex && m_slot.x == inSlot.x &&
             m_slot.y == inSlot.y)
@@ -106,11 +109,11 @@ namespace Editor
         m_boundIndex = inIndex;
         m_slot       = inSlot;
         ghostClass   = "solid";
-        itemName     = inItem ? inItem->name : Chicane::String::empty();
+        itemName     = inItem ? inItem->name : Chicane::String::sEmpty();
         itemPath     = nextPath;
         kind         = (inItem && inItem->type == Chicane::FileSystem::ItemType::Folder) ? ExplorerItemKind::Folder
                                                                                          : ExplorerItemKind::File;
-        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
+        style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
 
         refreshState();
         refreshPosition();
@@ -137,11 +140,11 @@ namespace Editor
 
         m_item       = nullptr;
         m_boundIndex = -1;
-        m_slot       = Chicane::Vec2::Zero();
-        itemName     = Chicane::String::empty();
-        itemPath     = Chicane::String::empty();
+        m_slot       = Chicane::Vec2::sZero();
+        itemName     = Chicane::String::sEmpty();
+        itemPath     = Chicane::String::sEmpty();
         kind         = ExplorerItemKind::File;
-        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
+        style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
 
         refreshState();
     }
@@ -169,10 +172,11 @@ namespace Editor
             }
         }
 
-        m_bIsGhost   = true;
+        m_bIsGhost = true;
+        setEscapesOverflow(true);
         m_item       = &ioStorage;
         m_boundIndex = -2;
-        m_slot       = Chicane::Vec2::Zero();
+        m_slot       = Chicane::Vec2::sZero();
         m_pointer    = inPointer;
         m_grab       = inPointer - inSource.getPosition();
         m_ghostSize  = inSource.getSize();
@@ -196,7 +200,7 @@ namespace Editor
 
         m_pointer = inPointer;
         setPosition(m_pointer.x - m_grab.x, m_pointer.y - m_grab.y);
-        addCursor(m_style.insetLeft(), m_style.insetTop());
+        addCursor(style.insetLeft(), style.insetTop());
         markPaintDirty();
         markLayoutDirty();
     }
@@ -205,11 +209,12 @@ namespace Editor
     {
         const bool bNeedsRestyle = m_bIsGhost || ghostClass.equals("ghost");
 
-        m_bIsGhost   = false;
+        m_bIsGhost = false;
+        setEscapesOverflow(false);
         m_item       = nullptr;
         m_boundIndex = -1;
-        m_grab       = Chicane::Vec2::Zero();
-        m_ghostSize  = Chicane::Vec2::Zero();
+        m_grab       = Chicane::Vec2::sZero();
+        m_ghostSize  = Chicane::Vec2::sZero();
         ghostClass   = Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN;
 
         applyGhostHidden();
@@ -237,20 +242,20 @@ namespace Editor
             setSize(m_ghostSize);
         }
 
-        m_style.display.set(Chicane::Grid::StyleDisplay::Flex);
-        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
-        m_style.position.set(Chicane::Grid::StylePosition::Absolute);
-        m_style.position.setRaw(Chicane::Grid::Style::POSITION_TYPE_ABSOLUTE);
-        m_style.opacity.set(0.55f);
-        m_style.zIndex.set(999.0f);
+        style.display.set(Chicane::Grid::StyleDisplay::Flex);
+        style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_FLEX);
+        style.position.set(Chicane::Grid::StylePosition::Absolute);
+        style.position.setRaw(Chicane::Grid::Style::POSITION_TYPE_ABSOLUTE);
+        style.opacity.set(0.55f);
+        style.zIndex.set(999.0f);
     }
 
     void ExplorerItem::applyGhostHidden()
     {
-        m_style.display.set(Chicane::Grid::StyleDisplay::None);
-        m_style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
-        m_style.opacity.set(1.0f);
-        m_style.zIndex.set(0.0f);
+        style.display.set(Chicane::Grid::StyleDisplay::None);
+        style.display.setRaw(Chicane::Grid::Style::DISPLAY_TYPE_NONE);
+        style.opacity.set(1.0f);
+        style.zIndex.set(0.0f);
     }
 
     void ExplorerItem::restyleChildren()
@@ -357,7 +362,7 @@ namespace Editor
             return;
         }
 
-        m_style.position.setRaw(Chicane::Grid::Style::POSITION_TYPE_ABSOLUTE);
+        style.position.setRaw(Chicane::Grid::Style::POSITION_TYPE_ABSOLUTE);
 
         const Chicane::Grid::Component* parent      = getParent();
         const Chicane::Grid::Style&     parentStyle = parent->getStyle();
@@ -365,7 +370,7 @@ namespace Editor
             parent->getPosition().x + parentStyle.insetLeft() + m_slot.x,
             parent->getPosition().y + parentStyle.insetTop() + m_slot.y
         );
-        addCursor(m_style.insetLeft(), m_style.insetTop());
+        addCursor(style.insetLeft(), style.insetTop());
     }
 
     void ExplorerItem::refreshState()
@@ -403,7 +408,7 @@ namespace Editor
 
                 if (const Chicane::Box::AssetPreview* preview = Chicane::Box::findPreview(filePath))
                 {
-                    Chicane::Application& application = Chicane::Application::getInstance();
+                    Chicane::Instance& application = Chicane::Instance::sInstance();
                     if (application.hasRenderer() && application.getRenderer()->findTexture(preview->textureId()) >
                                                          Chicane::Renderer::Draw::InvalidId)
                     {

@@ -18,7 +18,7 @@ namespace Chicane
                 m_inFlight.insert(inFilePath);
             }
 
-            Worker::submit(
+            Worker::sSubmit(
                 [inFilePath]()
                 {
                     std::unique_ptr<AssetPreview> preview;
@@ -31,7 +31,7 @@ namespace Chicane
                         preview.reset();
                     }
 
-                    PreviewService::getInstance().finish(inFilePath, std::move(preview));
+                    PreviewService::sInstance().finish(inFilePath, std::move(preview));
                 }
             );
         }

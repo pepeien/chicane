@@ -13,25 +13,20 @@ namespace Chicane
 
         InputSelect::InputSelect(const XmlNode& inNode)
             : Container(inNode),
-              value(String::empty()),
-              label(String::empty()),
-              placeholder(String::empty()),
+              value(String::sEmpty()),
+              label(String::sEmpty()),
+              placeholder(String::sEmpty()),
               isOpen(false),
               items({}),
               m_bIsEdited(false),
               m_highlighted(INVALID_HIGHLIGHT)
         {
-            load("Assets/Engine/UI/Components/Input/Select.grid", "Assets/Engine/UI/Components/Input/Select.decal");
-        }
+            load(
+                "Assets/Engine/UI/Components/Input/Select/Index.grid",
+                "Assets/Engine/UI/Components/Input/Select/Index.decal"
+            );
 
-        bool InputSelect::isFocusable() const
-        {
-            return true;
-        }
-
-        bool InputSelect::escapesOverflow() const
-        {
-            return isOpen;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputSelect::onEvent(const WindowEvent& inEvent)
@@ -203,7 +198,13 @@ namespace Chicane
             isOpen = true;
             refreshHighlight();
             refreshStyleSubtree();
+            setEscapesOverflow(true);
             markLayoutDirtySubtree();
+        }
+
+        void InputSelect::onRefresh()
+        {
+            setEscapesOverflow(isOpen);
         }
 
         void InputSelect::close()
@@ -217,6 +218,7 @@ namespace Chicane
             m_highlighted = INVALID_HIGHLIGHT;
 
             refreshStyleSubtree();
+            setEscapesOverflow(false);
             markLayoutDirtySubtree();
         }
 
@@ -321,7 +323,7 @@ namespace Chicane
         void InputSelect::refreshLabel()
         {
             const String raw = getAttribute(PLACEHOLDER_ATTRIBUTE_NAME);
-            placeholder      = raw.isEmpty() ? String::empty() : parseText(raw).trim();
+            placeholder      = raw.isEmpty() ? String::sEmpty() : parseText(raw).trim();
 
             for (InputSelectOption* option : getOptions())
             {

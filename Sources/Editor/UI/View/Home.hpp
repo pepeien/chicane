@@ -1,11 +1,15 @@
 #pragma once
 
 #include <atomic>
+#include <memory>
 #include <unordered_set>
 
+#include <Chicane/Core/Event/Subscription.hpp>
+#include <Chicane/Core/Math/Vec/Vec2.hpp>
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Core/String.hpp>
 #include <Chicane/Grid/Component/View.hpp>
+#include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Object.hpp>
 
@@ -27,6 +31,7 @@ namespace Editor
 
     public:
         HomeView();
+        ~HomeView() override;
 
         void tick(float inDeltaTime) override;
 
@@ -106,24 +111,38 @@ namespace Editor
         CH_FUNCTION()
         void onExplorerAssetDrop(Chicane::String inPath);
 
+    public:
+        CoordinateSpace getCoordinateSpace() const;
+
     private:
+        bool isViewportAt(const Chicane::Vec2& inLocation) const;
+        bool hasSelectedItem() const;
+
         void bindScene();
+        void bindController();
+        void unbindController();
+        void bindInput(Chicane::Controller* inController);
+
         void requestOutlinerRebuild();
         void requestAttributesRebuild();
         void flushPendingRebuilds();
         void rebuildOutliner();
+
         void appendOutlinerNode(
             Chicane::Object* inObject, int inDepth, bool inIsVisible, std::unordered_set<Chicane::Object*>& outLive
         );
         void expandOutlinerAncestors(Chicane::Object* inItem);
+        void syncOutlinerSelection();
         void commitOutlinerEdit(bool bShouldRebuild = true);
+
         void rebuildAttributes();
         void syncAttributeValues();
-        bool hasSelectedItem() const;
+        void refreshAttributesForSelection();
+        const Chicane::ReflectionTypeInfo* selectedAttributeType() const;
+
         void setWorkspace(const Chicane::String& inValue);
 
-    public:
-        CoordinateSpace getCoordinateSpace() const;
+        void pickAt(const Chicane::Vec2& inLocation);
 
     public:
         CH_FIELD()
@@ -137,6 +156,7 @@ namespace Editor
 
         CH_FIELD()
         bool bIsItemSelected;
+
         CH_FIELD()
         Chicane::Object* selectedItem;
 
@@ -145,33 +165,45 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String workspace;
+
         CH_FIELD()
         bool bIsViewportWorkspace;
+
         CH_FIELD()
         bool bIsAssetsWorkspace;
+
         CH_FIELD()
         Chicane::String viewportTabState;
+
         CH_FIELD()
         Chicane::String assetsTabState;
 
         CH_FIELD()
         Chicane::String translateState;
+
         CH_FIELD()
         Chicane::String rotateState;
+
         CH_FIELD()
         Chicane::String scaleState;
 
         CH_FIELD()
         Chicane::String selectedFolderPath;
+
         CH_FIELD()
         Chicane::String selectedAssetName;
 
     private:
-        std::unordered_set<Chicane::Object*> m_collapsedOutlinerItems;
-        Chicane::Object*                     m_editingOutlinerItem;
-        Chicane::String                      m_outlinerEditId;
-        CoordinateSpace                      m_coordinateSpace;
-        std::atomic<bool>                    m_bOutlinerDirty;
-        std::atomic<bool>                    m_bAttributesDirty;
+        Chicane::String                       m_activeWorkspace;
+        std::unordered_set<Chicane::Object*>  m_expandedOutlinerItems;
+        Chicane::Object*                      m_editingOutlinerItem;
+        Chicane::String                       m_outlinerEditId;
+        CoordinateSpace                       m_coordinateSpace;
+        const Chicane::ReflectionTypeInfo*    m_attributesType;
+        std::atomic<bool>                     m_bOutlinerDirty;
+        std::atomic<bool>                     m_bAttributesDirty;
+        std::shared_ptr<bool>                 m_bIsListening;
+        Chicane::Controller::PawnSubscription m_pawnSubscription;
+        Chicane::Vec2                         m_cursor;
     };
 }

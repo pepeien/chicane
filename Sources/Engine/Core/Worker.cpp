@@ -2,9 +2,9 @@
 
 namespace Chicane
 {
-    void Worker::submit(Job inJob)
+    void Worker::sSubmit(Job inJob)
     {
-        getInstance().enqueue(std::move(inJob));
+        sInstance().enqueue(std::move(inJob));
     }
 
     Worker::Worker()

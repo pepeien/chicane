@@ -14,8 +14,8 @@ namespace Chicane
         struct CHICANE_RENDERER ShadowLight
         {
         public:
-            Vec4                                   splits = Vec4::Zero();
-            Vec4                                   info   = Vec4::Zero();
+            Vec4                                   splits = Vec4::sZero();
+            Vec4                                   info   = Vec4::sZero();
 
             std::array<SceneLight, MAX_LIGHTS>     lights      = {};
             std::array<Mat4, SHADOW_CASCADE_COUNT> views       = {};

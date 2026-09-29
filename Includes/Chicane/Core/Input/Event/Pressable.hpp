@@ -73,7 +73,7 @@ namespace Chicane
                 bool              bDue = false;
                 for (const PressablePressed<B>& entry : m_pressed)
                 {
-                    if (Time::miliseconds(now - entry.lastFire) >= REPEAT_INTERVAL_MS)
+                    if (Time::sMiliseconds(now - entry.lastFire) >= REPEAT_INTERVAL_MS)
                     {
                         bDue = true;
 

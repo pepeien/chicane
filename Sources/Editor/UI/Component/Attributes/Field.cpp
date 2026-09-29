@@ -4,14 +4,14 @@ namespace Editor
 {
     AttributeField::AttributeField()
         : bIsChecked(false),
-          name(Chicane::String::empty()),
-          label(Chicane::String::empty()),
-          group(Chicane::String::empty()),
-          description(Chicane::String::empty()),
+          name(Chicane::String::sEmpty()),
+          label(Chicane::String::sEmpty()),
+          group(Chicane::String::sEmpty()),
+          description(Chicane::String::sEmpty()),
           type(AttributeFieldType::Text),
-          kind(Chicane::String::empty()),
-          text(Chicane::String::empty()),
-          vector(Chicane::Vec3::Zero()),
+          kind(Chicane::String::sEmpty()),
+          text(Chicane::String::sEmpty()),
+          vector(Chicane::Vec3::sZero()),
           options({})
     {}
 }

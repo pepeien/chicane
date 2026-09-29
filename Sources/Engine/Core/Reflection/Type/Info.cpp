@@ -33,8 +33,8 @@ namespace Chicane
           constructors({}),
           methods({}),
           fields({}),
-          group(String::empty()),
-          description(String::empty())
+          group(String::sEmpty()),
+          description(String::sEmpty())
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const
@@ -48,7 +48,7 @@ namespace Chicane
 
     const String& ReflectionTypeInfo::getName() const
     {
-        return names.empty() ? String::empty() : names.front();
+        return names.empty() ? String::sEmpty() : names.front();
     }
 
     const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
@@ -125,7 +125,7 @@ namespace Chicane
                     bHasCrossedPointer = true;
                 }
 
-                currentType = ReflectionTypeRegistry::getInstance().find(currentField->typeIndex.value());
+                currentType = ReflectionTypeRegistry::sInstance().find(currentField->typeIndex.value());
 
                 if (!currentType)
                 {

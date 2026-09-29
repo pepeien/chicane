@@ -8,7 +8,9 @@
 #include <Chicane/Core/Math.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
+
+#include "Editor/Scene.hpp"
 
 namespace Editor
 {
@@ -306,6 +308,18 @@ namespace Editor
             return;
         }
 
+        if (std::shared_ptr<Scene> scene =
+                std::dynamic_pointer_cast<Scene>(Chicane::Instance::sInstance().getScene()))
+        {
+            if (Gizmo* gizmo = scene->getGizmo())
+            {
+                if (gizmo->isDragging() || (m_bLeft && gizmo->isHandleHovered()))
+                {
+                    return;
+                }
+            }
+        }
+
         if (m_bMiddle)
         {
             if (m_bShift)
@@ -357,7 +371,7 @@ namespace Editor
 
     bool Navigation::isViewportHovered() const
     {
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Application::getInstance().getView();
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
         if (!view)
         {
             return true;

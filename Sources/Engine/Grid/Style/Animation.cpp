@@ -9,7 +9,7 @@ namespace Chicane
               duration(0.0f),
               delay(0.0f),
               iterations(1),
-              easing(Drift::EasingCurve::ease()),
+              easing(Drift::EasingCurve::sEase()),
               bIsReverse(false),
               bIsAlternate(false),
               bIsPaused(false),

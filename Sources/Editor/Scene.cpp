@@ -9,12 +9,14 @@
 #include <Chicane/Renderer/Feature.hpp>
 #include <Chicane/Renderer/Instance.hpp>
 #include <Chicane/Renderer/Light/Type.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 #include <Chicane/Runtime/Scene/Component/Light.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 #include <Chicane/Runtime/Scene/Trace/Request.hpp>
+#include <Chicane/Runtime/Scene/Trace/Response.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Cone.hpp>
+#include <Chicane/Runtime/Scene/Trace/Shape/Pyramid.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Utility.hpp>
 #include <Chicane/Runtime/Track.hpp>
 
@@ -31,6 +33,7 @@ namespace Editor
     Scene::Scene()
         : Chicane::Scene(),
           m_gizmo(nullptr),
+          m_selected(nullptr),
           m_helperSubscription({}),
           m_helpers({}),
           m_bSyncingHelpers(false)
@@ -54,13 +57,41 @@ namespace Editor
 
     void Scene::onTick(float inDeltaTime)
     {
-        (void)inDeltaTime;
-
         pushLightTraces();
+    }
+
+    void Scene::destroyObject(Chicane::Object* inObject)
+    {
+        if (!inObject || inObject->isTransient())
+        {
+            return;
+        }
+
+        if (m_selected)
+        {
+            for (Chicane::Object* node = m_selected; node != nullptr; node = node->getParent())
+            {
+                if (node == inObject)
+                {
+                    setSelection(nullptr);
+                    break;
+                }
+            }
+        }
+
+        destroyObjectTree(inObject);
     }
 
     void Scene::setSelection(Chicane::Object* inItem)
     {
+        if (m_selected == inItem)
+        {
+            return;
+        }
+
+        m_selected = inItem;
+        syncHelpers();
+
         for (Chicane::CMesh* mesh : getComponents<Chicane::CMesh>())
         {
             bool bSelected = inItem != nullptr && (mesh == inItem || mesh->getParent() == inItem);
@@ -88,45 +119,6 @@ namespace Editor
         }
 
         m_gizmo->setTarget(inItem);
-    }
-
-    void Scene::destroyObject(Chicane::Object* inObject)
-    {
-        if (!inObject || inObject->isTransient())
-        {
-            return;
-        }
-
-        destroyObjectTree(inObject);
-    }
-
-    void Scene::destroyObjectTree(Chicane::Object* inObject)
-    {
-        if (!inObject)
-        {
-            return;
-        }
-
-        const std::vector<Chicane::Component*> attachments = inObject->getAttachments();
-        for (Chicane::Component* child : attachments)
-        {
-            destroyObjectTree(child);
-        }
-
-        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
-        {
-            removeActor(actor);
-            delete actor;
-
-            return;
-        }
-
-        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
-        {
-            component->detach();
-            removeComponent(component);
-            delete component;
-        }
     }
 
     Gizmo* Scene::getGizmo() const
@@ -166,7 +158,7 @@ namespace Editor
         Character* character = createActor<Character>();
         character->setIsTransient(true);
 
-        Chicane::Controller* controller = Chicane::Application::getInstance().getController();
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
         if (!controller || controller->isAttached())
         {
             return;
@@ -187,6 +179,36 @@ namespace Editor
         m_helperSubscription = watchComponents([this](std::vector<Chicane::Component*>) { syncHelpers(); });
     }
 
+    void Scene::destroyObjectTree(Chicane::Object* inObject)
+    {
+        if (!inObject)
+        {
+            return;
+        }
+
+        const std::vector<Chicane::Object*> attachments = inObject->getAttachments();
+        for (Chicane::Object* child : attachments)
+        {
+            destroyObjectTree(child);
+        }
+
+        inObject->detach();
+
+        if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(inObject))
+        {
+            removeActor(actor);
+            delete actor;
+
+            return;
+        }
+
+        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
+        {
+            removeComponent(component);
+            delete component;
+        }
+    }
+
     void Scene::syncHelpers()
     {
         if (m_bSyncingHelpers)
@@ -196,7 +218,8 @@ namespace Editor
 
         m_bSyncingHelpers = true;
 
-        std::unordered_map<Chicane::Object*, Helper> next;
+        std::unordered_map<Chicane::Object*, SceneHelper> next;
+
         auto keep = [this, &next](Chicane::Object* inTarget, const Chicane::FileSystem::Path& inMesh)
         {
             auto found = m_helpers.find(inTarget);
@@ -214,7 +237,7 @@ namespace Editor
                 return;
             }
 
-            Helper helper;
+            SceneHelper helper;
             helper.mesh         = createHelper(inMesh);
             helper.subscription = inTarget->watchChanges([this, inTarget]() { poseHelper(inTarget); });
             poseHelper(helper.mesh, inTarget);
@@ -233,7 +256,7 @@ namespace Editor
 
         for (Chicane::CLight* light : getComponents<Chicane::CLight>())
         {
-            if (!shouldVisualize(light))
+            if (!shouldVisualize(light) || !isSelectedVisual(light))
             {
                 continue;
             }
@@ -243,8 +266,6 @@ namespace Editor
 
         for (auto& [target, helper] : m_helpers)
         {
-            (void)target;
-
             helper.subscription.complete();
             if (!helper.mesh)
             {
@@ -285,18 +306,77 @@ namespace Editor
         inMesh->setAbsoluteScale(Chicane::Vec3(scale));
     }
 
+    Chicane::CMesh* Scene::createHelper(const Chicane::FileSystem::Path& inMesh)
+    {
+        Chicane::CMesh* mesh = createComponent<Chicane::CMesh>();
+        mesh->setCanCastShadows(false);
+        mesh->setIsLit(false);
+        mesh->setIsForeground(true);
+        mesh->setIsTransient(true);
+        mesh->setMesh(inMesh);
+        mesh->activate();
+
+        return mesh;
+    }
+
     void Scene::pushLightTraces()
     {
         Chicane::Vertex::List vertices;
 
-        Chicane::Renderer::Instance* renderer = Chicane::Application::getInstance().getRenderer();
+        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
         if (renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces))
         {
-            const Chicane::Vec4 color = ViewportOverlay::getInstance().tracerColor;
+            const Chicane::Vec4 color = ViewportOverlay::sInstance().tracerColor;
+
+            for (Chicane::CCamera* camera : getComponents<Chicane::CCamera>())
+            {
+                if (!shouldVisualize(camera) || !isSelectedVisual(camera))
+                {
+                    continue;
+                }
+
+                Chicane::Vec3 forward = camera->getForward();
+                const float   length  = std::sqrt(forward.dot(forward));
+                if (length <= 1e-8f)
+                {
+                    continue;
+                }
+
+                const float         depth       = std::max(camera->getFarClip(), 1e-8f);
+                const Chicane::Vec3 origin      = camera->getTranslation();
+                const Chicane::Vec3 destination = origin + (forward / length) * depth;
+                float               aspect      = camera->getAspectRatio();
+                if (aspect <= 1e-4f)
+                {
+                    aspect = 1.0f;
+                }
+
+                const float halfVertical =
+                    std::tan(camera->getFieldOfView() * 0.5f * Chicane::Math::DEG_TO_RAD) * depth;
+                const Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::sPyramid(
+                    origin,
+                    destination,
+                    Chicane::Vec2(halfVertical * aspect, halfVertical)
+                );
+                const Chicane::SceneTraceShapePyramid* pyramid =
+                    dynamic_cast<const Chicane::SceneTraceShapePyramid*>(request.shape.get());
+                if (!pyramid)
+                {
+                    continue;
+                }
+
+                Chicane::Renderer::Debug::appendPyramid(
+                    vertices,
+                    origin,
+                    destination,
+                    pyramid->getHalfExtentsAt(1.0f),
+                    color
+                );
+            }
 
             for (Chicane::CLight* light : getComponents<Chicane::CLight>())
             {
-                if (!shouldVisualize(light))
+                if (!shouldVisualize(light) || !isSelectedVisual(light))
                 {
                     continue;
                 }
@@ -318,7 +398,8 @@ namespace Editor
                 const Chicane::Vec3 destination = origin + (forward / length) * std::max(light->getRange(), 1e-8f);
                 const float         angle       = std::max(light->getOuterAngle(), 0.0f) * Chicane::Math::DEG_TO_RAD;
 
-                const Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::Cone(origin, destination, angle);
+                const Chicane::SceneTraceRequest request =
+                    Chicane::SceneTraceRequest::sCone(origin, destination, angle);
                 const Chicane::SceneTraceShapeCone* cone =
                     dynamic_cast<const Chicane::SceneTraceShapeCone*>(request.shape.get());
                 if (!cone)
@@ -357,7 +438,12 @@ namespace Editor
         return true;
     }
 
-    bool Scene::helperBelongsTo(Chicane::Object* inTarget, const Chicane::Object* inItem) const
+    bool Scene::isSelectedVisual(const Chicane::Object* inTarget) const
+    {
+        return helperBelongsTo(inTarget, m_selected);
+    }
+
+    bool Scene::helperBelongsTo(const Chicane::Object* inTarget, const Chicane::Object* inItem) const
     {
         if (!inTarget || !inItem)
         {
@@ -369,31 +455,99 @@ namespace Editor
             return true;
         }
 
-        Chicane::Component* component = dynamic_cast<Chicane::Component*>(inTarget);
+        const Chicane::Component* component = dynamic_cast<const Chicane::Component*>(inTarget);
         while (component)
         {
-            Chicane::Object* parent = component->getParent();
+            const Chicane::Object* parent = component->getParent();
             if (parent == inItem)
             {
                 return true;
             }
 
-            component = dynamic_cast<Chicane::Component*>(parent);
+            component = dynamic_cast<const Chicane::Component*>(parent);
         }
 
         return false;
     }
 
-    Chicane::CMesh* Scene::createHelper(const Chicane::FileSystem::Path& inMesh)
+    Chicane::Object* Scene::helperTarget(const Chicane::Object* inObject) const
     {
-        Chicane::CMesh* mesh = createComponent<Chicane::CMesh>();
-        mesh->setCanCastShadows(false);
-        mesh->setIsLit(false);
-        mesh->setIsForeground(true);
-        mesh->setIsTransient(true);
-        mesh->setMesh(inMesh);
-        mesh->activate();
+        if (!inObject)
+        {
+            return nullptr;
+        }
 
-        return mesh;
+        for (const auto& [target, helper] : m_helpers)
+        {
+            if (helper.mesh == inObject)
+            {
+                return target;
+            }
+        }
+
+        return nullptr;
+    }
+
+    Chicane::Object* Scene::selectableFromHit(Chicane::Object* inObject) const
+    {
+        if (!inObject)
+        {
+            return nullptr;
+        }
+
+        if (Chicane::Object* visual = helperTarget(inObject))
+        {
+            return visual;
+        }
+
+        if (inObject->isTransient())
+        {
+            return nullptr;
+        }
+
+        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
+        {
+            if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(component->getParent()))
+            {
+                return actor;
+            }
+        }
+
+        return inObject;
+    }
+
+    Chicane::Object* Scene::pickObject(const Chicane::SceneTraceRequest& inRequest) const
+    {
+        std::vector<const Chicane::Object*> ignored;
+        if (m_gizmo)
+        {
+            ignored.push_back(m_gizmo);
+        }
+
+        std::vector<Chicane::SceneTraceResponse> hits;
+        if (!traceMulti(hits, inRequest, ignored))
+        {
+            return nullptr;
+        }
+
+        for (const Chicane::SceneTraceResponse& hit : hits)
+        {
+            if (!hit.object)
+            {
+                continue;
+            }
+
+            if (m_gizmo && (hit.object == m_gizmo || m_gizmo->isHandle(hit.object)))
+            {
+                continue;
+            }
+
+            if (Chicane::Object* selected = selectableFromHit(hit.object))
+            {
+                return selected;
+            }
+        }
+
+        return nullptr;
     }
 }

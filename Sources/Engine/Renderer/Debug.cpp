@@ -116,7 +116,7 @@ namespace Chicane
                 }
                 else
                 {
-                    trace.expireAt = Time() + Time::fromSeconds(inDuration);
+                    trace.expireAt = Time() + Time::sFromSeconds(inDuration);
                 }
 
                 g_traces.push_back(std::move(trace));
@@ -144,7 +144,7 @@ namespace Chicane
                 }
 
                 const Vec3 axis = inDirection / length;
-                const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::Up() : Vec3::Right();
+                const Vec3 hint = std::abs(axis.z) < 0.999f ? Vec3::sUp() : Vec3::sRight();
 
                 outRight                = hint.cross(axis);
                 const float rightLength = std::sqrt(lengthSquared(outRight));
@@ -191,7 +191,7 @@ namespace Chicane
                 const float length = std::sqrt(lengthSquared(inValue));
                 if (length <= 1e-8f)
                 {
-                    return Vec3::Zero();
+                    return Vec3::sZero();
                 }
 
                 return inValue / length;
@@ -475,6 +475,117 @@ namespace Chicane
                     appendSegment(outVertices, startCorners[i], startCorners[next], inColor);
                     appendSegment(outVertices, endCorners[i], endCorners[next], inColor);
                     appendSegment(outVertices, startCorners[i], endCorners[i], inColor);
+                }
+            }
+
+            void appendPyramid(
+                Vertex::List& outVertices,
+                const Vec3&   inOrigin,
+                const Vec3&   inDestination,
+                const Vec2&   inHalfExtent,
+                const Vec4&   inColor
+            )
+            {
+                const Vec3  direction = inDestination - inOrigin;
+                const float length    = std::sqrt(lengthSquared(direction));
+                if (length <= 0.0f)
+                {
+                    return;
+                }
+
+                Vec3 right;
+                Vec3 up;
+                if (!buildAxisBasis(direction / length, right, up))
+                {
+                    return;
+                }
+
+                const float hx = std::max(0.0f, inHalfExtent.x);
+                const float hy = std::max(0.0f, inHalfExtent.y);
+                if (hx <= 0.0f && hy <= 0.0f)
+                {
+                    return;
+                }
+
+                const std::array<Vec3, 4> corners = {
+                    inDestination + right * hx + up * hy,
+                    inDestination + right * hx - up * hy,
+                    inDestination - right * hx - up * hy,
+                    inDestination - right * hx + up * hy
+                };
+
+                for (int i = 0; i < 4; i++)
+                {
+                    const int next = (i + 1) % 4;
+
+                    appendSegment(outVertices, inOrigin, corners[i], inColor);
+                    appendSegment(outVertices, corners[i], corners[next], inColor);
+                }
+            }
+
+            void appendMesh(
+                Vertex::List&          outVertices,
+                const Vec3&            inOrigin,
+                const Vec3&            inDestination,
+                const Vertex::List&    inVertices,
+                const Vertex::Indices& inIndices,
+                const Vec4&            inColor
+            )
+            {
+                const float scale = std::sqrt(lengthSquared(inDestination - inOrigin));
+                if (scale <= 0.0f)
+                {
+                    return;
+                }
+
+                const Mat4 transform = Mat4::sTranslate(inOrigin) * Mat4::sScale(Vec3(scale));
+
+                appendMesh(outVertices, transform, inVertices, inIndices, inColor);
+            }
+
+            void appendMesh(
+                Vertex::List&          outVertices,
+                const Mat4&            inTransform,
+                const Vertex::List&    inVertices,
+                const Vertex::Indices& inIndices,
+                const Vec4&            inColor
+            )
+            {
+                if (inVertices.empty())
+                {
+                    return;
+                }
+
+                const auto toWorld = [&](std::size_t inIndex) -> Vec3
+                { return inTransform * inVertices[inIndex].position; };
+
+                const auto appendEdge = [&](std::size_t inStart, std::size_t inEnd)
+                {
+                    if (inStart >= inVertices.size() || inEnd >= inVertices.size())
+                    {
+                        return;
+                    }
+
+                    appendSegment(outVertices, toWorld(inStart), toWorld(inEnd), inColor);
+                };
+
+                if (!inIndices.empty())
+                {
+                    for (std::size_t i = 0; i + 2 < inIndices.size(); i += 3)
+                    {
+                        appendEdge(inIndices[i], inIndices[i + 1]);
+                        appendEdge(inIndices[i + 1], inIndices[i + 2]);
+                        appendEdge(inIndices[i + 2], inIndices[i]);
+                    }
+
+                    return;
+                }
+
+                for (std::size_t i = 0; i + 2 < inVertices.size(); i += 3)
+                {
+                    appendEdge(i, i + 1);
+                    appendEdge(i + 1, i + 2);
+                    appendEdge(i + 2, i);
                 }
             }
 

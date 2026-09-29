@@ -97,7 +97,7 @@ namespace Chicane
                 origin = inPlay.destination;
             }
 
-            Vec3  beam       = Vec3::Zero();
+            Vec3  beam       = Vec3::sZero();
             float beamLength = 0.0f;
             if (inPlay.bHasBeam)
             {
@@ -122,7 +122,7 @@ namespace Chicane
                 particle.additive   = additive;
                 particle.rotation   = randomFloat(0.0f, Math::TWO_PI);
 
-                Vec3 offset = Vec3::Zero();
+                Vec3 offset = Vec3::sZero();
                 if (shape.equals(SHAPE_TYPE_SPHERE))
                 {
                     offset = randomDirection() * randomFloat(0.0f, randomFloat(radius.from, radius.to));
@@ -141,7 +141,7 @@ namespace Chicane
                 }
                 else if (shape.equals(SHAPE_TYPE_CONE) && inPlay.bHasBeam)
                 {
-                    offset            = Vec3::Zero();
+                    offset            = Vec3::sZero();
                     const float angle = randomFloat(spread.from, spread.to) * Math::DEG_TO_RAD;
                     Vec3        dir   = beam;
                     if (angle > 0.0f)

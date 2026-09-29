@@ -6,7 +6,7 @@
 #include <Chicane/Renderer/Backend.hpp>
 #include <Chicane/Renderer/Layer/Util.hpp>
 #include <Chicane/Renderer/Shader/Bindings.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Runtime/Instance.hpp>
 
 #include "Editor/Viewer/Scene.hpp"
 #include "Editor/Viewport/Overlay.hpp"
@@ -69,19 +69,16 @@ namespace Editor
 
     bool LGrid::onBeginRender(const Chicane::Renderer::Frame& inFrame)
     {
-        (void)inFrame;
-
-        if (!ViewportOverlay::getInstance().bGridEnabled)
+        if (!ViewportOverlay::sInstance().bGridEnabled)
         {
             return false;
         }
 
-        return dynamic_cast<ViewerScene*>(Chicane::Application::getInstance().getScene().get()) == nullptr;
+        return dynamic_cast<ViewerScene*>(Chicane::Instance::sInstance().getScene().get()) == nullptr;
     }
 
     void LGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        (void)inFrame;
         auto* rhi    = static_cast<Chicane::Renderer::RHI::Frame*>(inData);
         auto* device = m_backend->getRHIDevice();
 
@@ -100,7 +97,7 @@ namespace Editor
         }
         );
 
-        const ViewportOverlay& overlay = ViewportOverlay::getInstance();
+        const ViewportOverlay& overlay = ViewportOverlay::sInstance();
         GridPush               push;
         push.color[0] = overlay.gridColor.x;
         push.color[1] = overlay.gridColor.y;

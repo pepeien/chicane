@@ -25,7 +25,7 @@ namespace Chicane
             {ModelVendor::Cooked,    "COOKED"},
         };
 
-        ModelVendor Model::parseVendor(const String& inValue)
+        ModelVendor Model::sParseVendor(const String& inValue)
         {
             if (inValue.isEmpty())
             {
@@ -51,7 +51,7 @@ namespace Chicane
             return ModelVendor::Undefined;
         }
 
-        const String& Model::getVendorExtension(ModelVendor inValue)
+        const String& Model::sGetVendorExtension(ModelVendor inValue)
         {
             const auto& found = EXTENSIONS.find(inValue);
 
@@ -63,7 +63,7 @@ namespace Chicane
             return found->second;
         }
 
-        const Model* Model::getDefault()
+        const Model* Model::sGetDefault()
         {
             return Box::load<Model>(DEFAULT_SOURCE);
         }
@@ -84,14 +84,14 @@ namespace Chicane
 
         void Model::setVendor(const String& inValue)
         {
-            setVendor(parseVendor(inValue));
+            setVendor(sParseVendor(inValue));
         }
 
         void Model::setVendor(ModelVendor inValue)
         {
             m_vendor = inValue;
 
-            setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
+            setAttribute(VENDOR_ATTRIBUTE_NAME, sGetVendorExtension(m_vendor));
         }
 
         const ModelParsed::Map& Model::getData() const
@@ -326,14 +326,14 @@ namespace Chicane
                     return m_data.begin()->second;
                 }
 
-                return ModelParsed::empty();
+                return ModelParsed::sEmpty();
             }
 
-            const Model* fallback = getDefault();
+            const Model* fallback = sGetDefault();
 
             if (!fallback || fallback == this)
             {
-                return ModelParsed::empty();
+                return ModelParsed::sEmpty();
             }
 
             return fallback->getModel(DEFAULT_REFERENCE);
@@ -365,7 +365,7 @@ namespace Chicane
                 return;
             }
 
-            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
+            m_vendor = sParseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
         }
 
         void Model::fetchDataFromXML()
@@ -415,13 +415,13 @@ namespace Chicane
             }
 
             const std::unique_ptr<AssetPreview> preview =
-                AssetPreview::createFromGeometry(getFilepath(), vertices, indices);
+                AssetPreview::sCreateFromGeometry(getFilepath(), vertices, indices);
             if (!preview || !preview->image)
             {
                 return;
             }
 
-            AssetPreview::write(getXML(), AssetType::Model, *preview->image);
+            AssetPreview::sWrite(getXML(), AssetType::Model, *preview->image);
         }
 
         ModelParsed::Map Model::parseData(const ModelRaw& inValue) const
@@ -506,15 +506,15 @@ namespace Chicane
             outBitangents[inThird] += bitangent;
         }
 
-        void Model::generateTangents(ModelParsed& outModel)
+        void Model::sGenerateTangents(ModelParsed& outModel)
         {
             if (outModel.vertices.empty() || hasVertexTangents(outModel.vertices))
             {
                 return;
             }
 
-            std::vector<Vec3> tangents(outModel.vertices.size(), Vec3::Zero());
-            std::vector<Vec3> bitangents(outModel.vertices.size(), Vec3::Zero());
+            std::vector<Vec3> tangents(outModel.vertices.size(), Vec3::sZero());
+            std::vector<Vec3> bitangents(outModel.vertices.size(), Vec3::sZero());
 
             if (outModel.indices.size() >= 3)
             {
@@ -545,7 +545,7 @@ namespace Chicane
                 tangent            = tangent - normal * normal.dot(tangent);
                 if (tangent.dot(tangent) < 1.0e-10f)
                 {
-                    const Vec3 axis = std::fabs(normal.z) < 0.9f ? Vec3::Up() : Vec3::Right();
+                    const Vec3 axis = std::fabs(normal.z) < 0.9f ? Vec3::sUp() : Vec3::sRight();
                     tangent         = normal.cross(axis);
                 }
 
@@ -562,7 +562,7 @@ namespace Chicane
             for (const auto& [name, model] : inValue)
             {
                 result[name] = model;
-                Model::generateTangents(result[name]);
+                Model::sGenerateTangents(result[name]);
             }
 
             return result;

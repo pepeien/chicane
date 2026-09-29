@@ -10,17 +10,17 @@ namespace Chicane
         ButtonRadio::ButtonRadio(const XmlNode& inNode)
             : Container(inNode),
               isChecked(false),
-              group(String::empty()),
-              value(String::empty()),
+              group(String::sEmpty()),
+              value(String::sEmpty()),
               checkState(STATE_IDLE),
               m_bIsEdited(false)
         {
-            load("Assets/Engine/UI/Components/Button/Radio.grid", "Assets/Engine/UI/Components/Button/Radio.decal");
-        }
+            load(
+                "Assets/Engine/UI/Components/Button/Radio/Index.grid",
+                "Assets/Engine/UI/Components/Button/Radio/Index.decal"
+            );
 
-        bool ButtonRadio::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool ButtonRadio::onEvent(const WindowEvent& inEvent)

@@ -15,9 +15,9 @@ namespace Chicane
             using List = std::vector<FontGlyphCurve>;
 
         public:
-            Vec2 start   = Vec2::Zero();
-            Vec2 control = Vec2::Zero();
-            Vec2 end     = Vec2::Zero();
+            Vec2 start   = Vec2::sZero();
+            Vec2 control = Vec2::sZero();
+            Vec2 end     = Vec2::sZero();
         };
     }
 }

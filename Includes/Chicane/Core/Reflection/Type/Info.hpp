@@ -35,8 +35,8 @@ namespace Chicane
             const Constructors& inConstructors,
             const Methods&      inMethods,
             const Fields&       inFields,
-            String              inGroup       = String::empty(),
-            String              inDescription = String::empty()
+            String              inGroup       = String::sEmpty(),
+            String              inDescription = String::sEmpty()
         );
         ReflectionTypeInfo();
 

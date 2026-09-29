@@ -1,0 +1,41 @@
+$consoleHeaderHeight: 1.65em;
+
+Editor::Console {
+    escape: true;
+}
+
+.console {
+    width: 72%;
+    height: 38%;
+    min-width: 28em;
+    min-height: 12em;
+    margin-top: 13.4em;
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    overflow: hidden;
+    background-color: $--light-gray;
+    border: 1px solid $--lighter-gray;
+
+    .window {
+        &__title {
+            color: $--gray;
+        }
+
+        &__body {
+            padding: 0.35em;
+        }
+    }
+
+    &__log {
+        width: 100%;
+        height: 100%;
+        padding: 0.4em 0.5em;
+        background-color: $--dark-gray;
+
+        Text {     
+            font-size: 0.7em;
+        }
+    }
+}

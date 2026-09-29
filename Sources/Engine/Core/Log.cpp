@@ -85,5 +85,11 @@ namespace Chicane
         {
             emmit(Color::HEX_COLOR_RED, "CRITICAL", inMessage);
         }
+
+        void clear()
+        {
+            g_history.clear();
+            g_observable.next(g_history);
+        }
     }
 }

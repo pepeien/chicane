@@ -1,11 +1,14 @@
 #pragma once
 
+#include <memory>
+
+#include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Controller.hpp>
 
-class Application
+class Application : public Chicane::Application
 {
 public:
-    Application();
+    Application(int inArgCount, char* inArgValues[]);
 
 private:
     void initController();

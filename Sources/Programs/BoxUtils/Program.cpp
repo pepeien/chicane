@@ -116,7 +116,7 @@ void Program::onExec(const Chicane::ProgramParam& inParam)
             for (const Chicane::String& positional : positionals)
             {
                 const Chicane::FileSystem::Path path(positional);
-                if (Chicane::Box::Model::parseVendor(path.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
+                if (Chicane::Box::Model::sParseVendor(path.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
                 {
                     continue;
                 }
@@ -331,7 +331,7 @@ void Program::createMesh(
     {
         textureImage = data;
 
-        if (Chicane::Box::AssetPreview::write(texture.getXML(), Chicane::Box::AssetType::Texture, *data))
+        if (Chicane::Box::AssetPreview::sWrite(texture.getXML(), Chicane::Box::AssetType::Texture, *data))
         {
             texture.saveXML();
         }
@@ -391,11 +391,11 @@ void Program::createMesh(
     }
 
     if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
-            Chicane::Box::AssetPreview::createFromGeometry(output, batches))
+            Chicane::Box::AssetPreview::sCreateFromGeometry(output, batches))
     {
         if (preview->image)
         {
-            Chicane::Box::AssetPreview::write(asset.getXML(), Chicane::Box::AssetType::Mesh, *preview->image);
+            Chicane::Box::AssetPreview::sWrite(asset.getXML(), Chicane::Box::AssetType::Mesh, *preview->image);
         }
     }
 
@@ -458,7 +458,7 @@ namespace
     {
         if (Chicane::Image::Instance data = inTexture.getData().lock())
         {
-            if (Chicane::Box::AssetPreview::write(inTexture.getXML(), Chicane::Box::AssetType::Texture, *data))
+            if (Chicane::Box::AssetPreview::sWrite(inTexture.getXML(), Chicane::Box::AssetType::Texture, *data))
             {
                 inTexture.saveXML();
             }
@@ -774,11 +774,11 @@ void Program::createSky(
     }
 
     if (std::unique_ptr<Chicane::Box::AssetPreview> preview =
-            Chicane::Box::AssetPreview::createFromSky(output, vertices, indices, faces))
+            Chicane::Box::AssetPreview::sCreateFromSky(output, vertices, indices, faces))
     {
         if (preview->image)
         {
-            Chicane::Box::AssetPreview::write(asset.getXML(), Chicane::Box::AssetType::Sky, *preview->image);
+            Chicane::Box::AssetPreview::sWrite(asset.getXML(), Chicane::Box::AssetType::Sky, *preview->image);
         }
     }
 
@@ -912,7 +912,7 @@ void Program::createSkeleton(
     for (const Chicane::String& source : inSources)
     {
         const Chicane::FileSystem::Path path(source);
-        if (Chicane::Box::Model::parseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
+        if (Chicane::Box::Model::sParseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
         {
             gltf = path;
 
@@ -975,7 +975,7 @@ void Program::createAnimation(
     for (const Chicane::String& source : inSources)
     {
         const Chicane::FileSystem::Path path(source);
-        if (Chicane::Box::Model::parseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
+        if (Chicane::Box::Model::sParseVendor(path.extension().toString()) == Chicane::Box::ModelVendor::Gltf)
         {
             gltf = path;
 
@@ -1112,7 +1112,7 @@ void Program::createFromGltf(
         throw std::runtime_error("The glTF/GLB source file doesn't exist");
     }
 
-    if (Chicane::Box::Model::parseVendor(inSource.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
+    if (Chicane::Box::Model::sParseVendor(inSource.extension().toString()) != Chicane::Box::ModelVendor::Gltf)
     {
         throw std::runtime_error("The source file must be a glTF or GLB file");
     }
@@ -1201,14 +1201,23 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
 
     auto bakeCpu = [](const Chicane::FileSystem::Path& inPath)
     {
-        if (Chicane::Box::embedPreview(inPath))
+        try
         {
-            std::cout << "Generated a preview for [" << inPath.toString() << "]" << std::endl;
+            if (Chicane::Box::embedPreview(inPath))
+            {
+                std::cout << "Generated a preview for [" << inPath.toString() << "]" << std::endl;
 
-            return;
+                return;
+            }
+
+            std::cerr << "Failed to generate a preview for [" << inPath.toString() << "]: CPU embed returned false"
+                      << std::endl;
         }
-
-        std::cerr << "Failed to generated a preview for[" << inPath.toString() << "]" << std::endl;
+        catch (const std::exception& exception)
+        {
+            std::cerr << "Failed to generate a preview for [" << inPath.toString() << "]: " << exception.what()
+                      << std::endl;
+        }
     };
 
     for (const Chicane::FileSystem::Path& path : cpuAssets)

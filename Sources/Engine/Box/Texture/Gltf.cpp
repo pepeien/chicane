@@ -57,7 +57,7 @@ namespace Chicane
                 }
 
                 const String      uri     = toString(inImage.uri);
-                const ImageVendor fromUri = Chicane::Image::parseVendor(uri);
+                const ImageVendor fromUri = Chicane::Image::sParseVendor(uri);
                 if (fromUri != ImageVendor::Undefined)
                 {
                     return fromUri;
@@ -94,7 +94,7 @@ namespace Chicane
                     }
                 }
 
-                return String::sprint("Image_%u", inIndex);
+                return String::sSprint("Image_%u", inIndex);
             }
 
             static Image::Raw readBufferView(const tg3_model& inModel, std::int32_t inView)
@@ -299,7 +299,6 @@ namespace Chicane
                         material.pbr_metallic_roughness.base_color_texture.index
                     );
                     assignMap(maps, TextureMaterial::Normal, model, material.normal_texture.index);
-                    // glTF packs AO in R (when shared), roughness in G, metalness in B.
                     assignMap(
                         maps,
                         TextureMaterial::Roughness,

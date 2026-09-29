@@ -13,12 +13,12 @@ namespace Chicane
     }
 
     Bounds3D::Bounds3D()
-        : m_min(Vec3(FLT_MAX), Vec3::Zero()),
-          m_max(Vec3(-FLT_MAX), Vec3::Zero()),
-          m_top(Vec3::Zero()),
-          m_center(Vec3::Zero()),
-          m_bottom(Vec3::Zero()),
-          m_size(Vec3::One()),
+        : m_min(Vec3(FLT_MAX), Vec3::sZero()),
+          m_max(Vec3(-FLT_MAX), Vec3::sZero()),
+          m_top(Vec3::sZero()),
+          m_center(Vec3::sZero()),
+          m_bottom(Vec3::sZero()),
+          m_size(Vec3::sOne()),
           m_corners({}),
           m_indices({})
     {
@@ -250,6 +250,33 @@ namespace Chicane
         m_size = m_max.transformed - m_min.transformed;
 
         refreshCorners(m_corners, m_min.transformed, m_max.transformed);
+    }
+
+    bool Bounds3D::isEmpty() const
+    {
+        return m_baseCorners.empty();
+    }
+
+    Bounds3D Bounds3D::sBox(float inSize)
+    {
+        return sBox(Vec3(inSize));
+    }
+
+    Bounds3D Bounds3D::sBox(const Vec3& inSize)
+    {
+        const Vec3 half(
+            std::max(inSize.x, 0.0f) * 0.5f,
+            std::max(inSize.y, 0.0f) * 0.5f,
+            std::max(inSize.z, 0.0f) * 0.5f
+        );
+
+        Vertex min;
+        min.position = Vec3(-half.x, -half.y, -half.z);
+
+        Vertex max;
+        max.position = Vec3(half.x, half.y, half.z);
+
+        return Bounds3D({min, max});
     }
 
     void Bounds3D::refreshCorners(Vertex::List& outValue, const Vec3& inMin, const Vec3& inMax) const

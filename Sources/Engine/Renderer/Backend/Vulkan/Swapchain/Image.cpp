@@ -138,7 +138,7 @@ namespace Chicane
                 targetImage.view = nullptr;
             }
 
-            VulkanAllocator::destroyImage(targetImage);
+            VulkanAllocator::sDestroyImage(targetImage);
         }
 
         void VulkanSwapchainImage::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)
@@ -204,7 +204,7 @@ namespace Chicane
                 logicalDevice.destroySampler(depthImage.sampler);
                 depthImage.sampler = nullptr;
             }
-            VulkanAllocator::destroyImage(depthImage);
+            VulkanAllocator::sDestroyImage(depthImage);
         }
 
         void VulkanSwapchainImage::addFramebuffer(const String& inId, const vk::Framebuffer& inFramebuffer)

@@ -10,14 +10,17 @@ namespace Editor
           bShouldShowChevron(false),
           bHasShortcut(false),
           bIsChecked(false),
-          label(Chicane::String::empty()),
-          shortcut(Chicane::String::empty()),
+          label(Chicane::String::sEmpty()),
+          shortcut(Chicane::String::sEmpty()),
           checkState("idle"),
           m_bHasSubmenuList(false)
     {
         import <HeaderMenu>();
 
-        load("Assets/Editor/UI/Components/Header/Menu.grid", "Assets/Editor/UI/Components/Header/Menu.decal");
+        load(
+            "Assets/Editor/UI/Components/Header/Menu/Index.grid",
+            "Assets/Editor/UI/Components/Header/Menu/Index.decal"
+        );
     }
 
     void HeaderMenu::refresh()
@@ -285,7 +288,7 @@ namespace Editor
 
         m_bHasSubmenuList = true;
 
-        load("Assets/Editor/UI/Components/Header/Menu/List.grid");
+        load("Assets/Editor/UI/Components/Header/Menu/List/Index.grid");
         bindSubmenu();
     }
 
@@ -297,8 +300,8 @@ namespace Editor
         bHasShortcut       = item && !item->shortcut.isEmpty();
         bIsChecked         = item && item->isChecked;
         checkState         = bIsChecked ? "checked" : "idle";
-        label              = item ? item->label : Chicane::String::empty();
-        shortcut           = item ? item->shortcut : Chicane::String::empty();
+        label              = item ? item->label : Chicane::String::sEmpty();
+        shortcut           = item ? item->shortcut : Chicane::String::sEmpty();
 
         if (m_bHasSubmenuList)
         {

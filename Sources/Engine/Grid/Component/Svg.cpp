@@ -170,14 +170,14 @@ namespace Chicane
 
                 if (key.equals(SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME))
                 {
-                    outPaint.lineCap = SvgPaint::parseLineCap(value);
+                    outPaint.lineCap = SvgPaint::sParseLineCap(value);
 
                     continue;
                 }
 
                 if (key.equals(SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME))
                 {
-                    outPaint.lineJoin = SvgPaint::parseLineJoin(value);
+                    outPaint.lineJoin = SvgPaint::sParseLineJoin(value);
 
                     continue;
                 }
@@ -253,14 +253,15 @@ namespace Chicane
 
                 if (name.equals(Svg::TRANSFORM_MATRIX) && params.size() >= Svg::MATRIX_PARAM_COUNT)
                 {
-                    local[0] = glm::vec3(params[0], params[1], 0.0f);
-                    local[1] = glm::vec3(params[2], params[3], 0.0f);
-                    local[2] = glm::vec3(params[4], params[5], Svg::HOMOGENEOUS);
+                    local[0] = Vec3(params[0], params[1], 0.0f);
+                    local[1] = Vec3(params[2], params[3], 0.0f);
+                    local[2] = Vec3(params[4], params[5], Svg::HOMOGENEOUS);
                 }
                 else if (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty())
                 {
                     const Vec2 offset(params[0], params.size() > 1 ? params[1] : 0.0f);
-                    local[2] = glm::vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
+
+                    local[2] = Vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
                 }
                 else if (name.equals(Svg::TRANSFORM_SCALE) && !params.empty())
                 {
@@ -329,13 +330,13 @@ namespace Chicane
             const String strokeLinecap = attribute(inNode, SvgPaint::STROKE_LINECAP_ATTRIBUTE_NAME);
             if (!strokeLinecap.isEmpty())
             {
-                paint.lineCap = SvgPaint::parseLineCap(strokeLinecap);
+                paint.lineCap = SvgPaint::sParseLineCap(strokeLinecap);
             }
 
             const String strokeLinejoin = attribute(inNode, SvgPaint::STROKE_LINEJOIN_ATTRIBUTE_NAME);
             if (!strokeLinejoin.isEmpty())
             {
-                paint.lineJoin = SvgPaint::parseLineJoin(strokeLinejoin);
+                paint.lineJoin = SvgPaint::sParseLineJoin(strokeLinejoin);
             }
 
             const String opacity = attribute(inNode, SvgPaint::OPACITY_ATTRIBUTE_NAME);
@@ -377,8 +378,7 @@ namespace Chicane
 
         static Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
         {
-            const glm::vec3 mapped =
-                static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
+            const Vec3 mapped = inTransform * Vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
 
             return {mapped.x, mapped.y};
         }
@@ -389,7 +389,7 @@ namespace Chicane
 
             if (extent <= 0.0f)
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             const Vec2 local = ((inPoint - inView.origin) - (Svg::HALF * inView.size)) * (1.0f / extent);
@@ -668,10 +668,10 @@ namespace Chicane
             Curve curve;
             curve.setSegmentCount(Svg::BEZIER_SEGMENTS);
 
-            Vec2 current   = Vec2::Zero();
-            Vec2 start     = Vec2::Zero();
-            Vec2 lastCubic = Vec2::Zero();
-            Vec2 lastQuad  = Vec2::Zero();
+            Vec2 current   = Vec2::sZero();
+            Vec2 start     = Vec2::sZero();
+            Vec2 lastCubic = Vec2::sZero();
+            Vec2 lastQuad  = Vec2::sZero();
             char command   = 0;
             bool hasCubic  = false;
             bool hasQuad   = false;
@@ -1057,7 +1057,7 @@ namespace Chicane
             String key = inKind;
             key.append('|');
             key.append(
-                String::sprint(
+                String::sSprint(
                     "%.3f,%.3f,%.3f,%.3f|%.3f|%d|",
                     inView.origin.x,
                     inView.origin.y,
@@ -1072,7 +1072,7 @@ namespace Chicane
             {
                 for (const Vec2& point : contour.getPoints())
                 {
-                    key.append(String::sprint("%.3f,%.3f;", point.x, point.y));
+                    key.append(String::sSprint("%.3f,%.3f;", point.x, point.y));
                 }
 
                 key.append('#');
@@ -1088,7 +1088,7 @@ namespace Chicane
             static Primitive empty;
 
             const std::string key  = makeGeometryKey("fill", inContours, inPaint, inView).toStandard();
-            SvgTessellation&  tess = SvgTessellation::getInstance();
+            SvgTessellation&  tess = SvgTessellation::sInstance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
@@ -1201,7 +1201,7 @@ namespace Chicane
 
                 if (length < Svg::MIN_LENGTH)
                 {
-                    return Vec2::Zero();
+                    return Vec2::sZero();
                 }
 
                 return Vec2(-inDelta.y / length, inDelta.x / length);
@@ -1246,7 +1246,7 @@ namespace Chicane
 
                 if (length < Svg::MIN_LENGTH)
                 {
-                    return Vec2::Zero();
+                    return Vec2::sZero();
                 }
 
                 return Vec2(inValue.x / length, inValue.y / length);
@@ -1447,9 +1447,9 @@ namespace Chicane
                 const float startLen = vecLength(startDir);
                 const float endLen   = vecLength(endDir);
                 const Vec2  startOut =
-                    startLen >= Svg::MIN_LENGTH ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::Zero();
+                    startLen >= Svg::MIN_LENGTH ? Vec2(-startDir.x / startLen, -startDir.y / startLen) : Vec2::sZero();
                 const Vec2 endOut =
-                    endLen >= Svg::MIN_LENGTH ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::Zero();
+                    endLen >= Svg::MIN_LENGTH ? Vec2(endDir.x / endLen, endDir.y / endLen) : Vec2::sZero();
 
                 emitCap(points.front(), startOut, sideNormal(startDir));
                 emitCap(points.back(), endOut, sideNormal(endDir));
@@ -1465,7 +1465,7 @@ namespace Chicane
             static Primitive empty;
 
             const std::string key  = makeGeometryKey("stroke", inContours, inPaint, inView).toStandard();
-            SvgTessellation&  tess = SvgTessellation::getInstance();
+            SvgTessellation&  tess = SvgTessellation::sInstance();
             if (const Primitive* hit = tess.find(key))
             {
                 return *hit;
@@ -1504,11 +1504,11 @@ namespace Chicane
 
         Svg::Svg(const XmlNode& inNode)
             : Component(inNode),
-              m_intrinsic(Vec2::Zero()),
+              m_intrinsic(Vec2::sZero()),
               m_viewBox({}),
               m_signature(""),
-              m_syncedSize(Vec2::Zero()),
-              m_syncedPosition(Vec2::Zero()),
+              m_syncedSize(Vec2::sZero()),
+              m_syncedPosition(Vec2::sZero()),
               m_syncedScale(UNSYNCED_SCALE),
               m_tessVersion(0),
               m_shapes({})
@@ -1531,18 +1531,18 @@ namespace Chicane
 
         void Svg::refresh()
         {
-            SvgTessellation& tess           = SvgTessellation::getInstance();
+            SvgTessellation& tess           = SvgTessellation::sInstance();
             bool             bNeedsTessSync = tess.pump();
             if (bNeedsTessSync || m_tessVersion != tess.generation())
             {
                 m_tessVersion  = tess.generation();
-                m_signature    = String::empty();
+                m_signature    = String::sEmpty();
                 bNeedsTessSync = true;
             }
 
             Component::refresh();
 
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
@@ -1576,7 +1576,7 @@ namespace Chicane
 
         void Svg::onRefresh()
         {
-            if (m_style.isDisplay(StyleDisplay::None))
+            if (style.isDisplay(StyleDisplay::None))
             {
                 return;
             }
@@ -1609,8 +1609,8 @@ namespace Chicane
 
         void Svg::refreshSize()
         {
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = style.width.isAuto();
+            const bool bIsHeightAuto = style.height.isAuto();
 
             Component::refreshSize();
 
@@ -1639,37 +1639,37 @@ namespace Chicane
 
         void Svg::invalidateGeometry()
         {
-            m_signature   = String::empty();
+            m_signature   = String::sEmpty();
             m_syncedScale = UNSYNCED_SCALE;
         }
 
         void Svg::applySizeAttributes()
         {
-            if (m_style.width.value.getRaw().isEmpty())
+            if (style.width.value.getRaw().isEmpty())
             {
                 const String width = parseText(getAttribute(WIDTH_ATTRIBUTE_NAME)).trim();
 
                 if (!width.isEmpty())
                 {
-                    m_style.width.value.setRaw(width);
+                    style.width.value.setRaw(width);
                 }
             }
 
-            if (m_style.height.value.getRaw().isEmpty())
+            if (style.height.value.getRaw().isEmpty())
             {
                 const String height = parseText(getAttribute(HEIGHT_ATTRIBUTE_NAME)).trim();
 
                 if (!height.isEmpty())
                 {
-                    m_style.height.value.setRaw(height);
+                    style.height.value.setRaw(height);
                 }
             }
         }
 
         void Svg::rebuildShapes()
         {
-            const Color::Rgba current   = m_style.foregroundColor.get();
-            const String      signature = String::sprint(
+            const Color::Rgba current   = style.foregroundColor.get();
+            const String      signature = String::sSprint(
                 "%d,%d,%d,%d",
                 static_cast<int>(current.r),
                 static_cast<int>(current.g),

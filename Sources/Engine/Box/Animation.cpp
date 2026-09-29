@@ -30,7 +30,7 @@ namespace Chicane
 
         static String toAttribute(const Vec3& inValue)
         {
-            return String::sprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
+            return String::sSprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
         }
 
         static Vec3 readVec3Attribute(const XmlNode& inNode, const char* inName, const Vec3& inFallback)
@@ -62,9 +62,9 @@ namespace Chicane
         static Transform readTransform(const XmlNode& inNode)
         {
             Transform transform;
-            transform.setTranslation(readVec3Attribute(inNode, Animation::TRANSLATION_ATTRIBUTE_NAME, Vec3::Zero()));
-            transform.setRotation(readVec3Attribute(inNode, Animation::ROTATION_ATTRIBUTE_NAME, Vec3::Zero()));
-            transform.setScale(readVec3Attribute(inNode, Animation::SCALE_ATTRIBUTE_NAME, Vec3::One()));
+            transform.setTranslation(readVec3Attribute(inNode, Animation::TRANSLATION_ATTRIBUTE_NAME, Vec3::sZero()));
+            transform.setRotation(readVec3Attribute(inNode, Animation::ROTATION_ATTRIBUTE_NAME, Vec3::sZero()));
+            transform.setScale(readVec3Attribute(inNode, Animation::SCALE_ATTRIBUTE_NAME, Vec3::sOne()));
 
             return transform;
         }
@@ -161,7 +161,7 @@ namespace Chicane
                 return;
             }
 
-            m_clip.duration   = Time::fromSeconds(clipNode.parseFloat(AnimationClip::DURATION_ATTRIBUTE_NAME, 0.0f));
+            m_clip.duration   = Time::sFromSeconds(clipNode.parseFloat(AnimationClip::DURATION_ATTRIBUTE_NAME, 0.0f));
             m_clip.loop       = parseLoop(Xml::getAttribute(AnimationClip::LOOP_ATTRIBUTE_NAME, clipNode));
             m_clip.iterations = Xml::parseInt(Xml::getAttribute(AnimationClip::ITERATIONS_ATTRIBUTE_NAME, clipNode), 1);
 
@@ -184,7 +184,7 @@ namespace Chicane
 
                     AnimationKeyframe keyframe;
                     keyframe.time =
-                        Time::fromSeconds(keyframeNode.parseFloat(AnimationKeyframe::TIME_ATTRIBUTE_NAME, 0.0f));
+                        Time::sFromSeconds(keyframeNode.parseFloat(AnimationKeyframe::TIME_ATTRIBUTE_NAME, 0.0f));
                     keyframe.easing    = Xml::getAttribute(AnimationKeyframe::EASING_ATTRIBUTE_NAME, keyframeNode);
                     keyframe.transform = readTransform(keyframeNode);
                     track.addKeyframe(keyframe);
@@ -219,13 +219,13 @@ namespace Chicane
             Xml::addAttribute(
                 clipNode,
                 AnimationClip::DURATION_ATTRIBUTE_NAME,
-                String::sprint("%f", m_clip.duration.seconds())
+                String::sSprint("%f", m_clip.duration.seconds())
             );
             Xml::addAttribute(clipNode, AnimationClip::LOOP_ATTRIBUTE_NAME, toString(m_clip.loop));
             Xml::addAttribute(
                 clipNode,
                 AnimationClip::ITERATIONS_ATTRIBUTE_NAME,
-                String::sprint("%d", m_clip.iterations)
+                String::sSprint("%d", m_clip.iterations)
             );
 
             for (const AnimationTrack& track : m_clip.tracks)
@@ -239,7 +239,7 @@ namespace Chicane
                     Xml::addAttribute(
                         keyframeNode,
                         AnimationKeyframe::TIME_ATTRIBUTE_NAME,
-                        String::sprint("%f", keyframe.time.seconds())
+                        String::sSprint("%f", keyframe.time.seconds())
                     );
 
                     if (!keyframe.easing.isEmpty())

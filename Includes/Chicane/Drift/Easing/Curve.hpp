@@ -49,13 +49,13 @@ namespace Chicane
             static constexpr inline int         SOLVE_BISECTION_ITERATIONS = 16;
 
         public:
-            static EasingCurve linear();
-            static EasingCurve ease();
-            static EasingCurve easeIn();
-            static EasingCurve easeOut();
-            static EasingCurve easeInOut();
-            static EasingCurve cubicBezier(float inX1, float inY1, float inX2, float inY2);
-            static EasingCurve fromString(const String& inValue);
+            static EasingCurve sLinear();
+            static EasingCurve sEase();
+            static EasingCurve sEaseIn();
+            static EasingCurve sEaseOut();
+            static EasingCurve sEaseInOut();
+            static EasingCurve sCubicBezier(float inX1, float inY1, float inX2, float inY2);
+            static EasingCurve sFromString(const String& inValue);
 
         public:
             EasingCurve();

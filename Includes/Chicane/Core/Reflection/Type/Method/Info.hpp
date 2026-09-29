@@ -33,7 +33,8 @@ namespace Chicane
             TypeIndex               inElementIndex,
             std::size_t             inReturnSize,
             ReflectionFieldIterable inIterable,
-            ContainerResolver       inContainerResolver
+            ContainerResolver       inContainerResolver,
+            bool                    bInIsStatic = false
         );
         ReflectionTypeMethodInfo();
 
@@ -49,6 +50,7 @@ namespace Chicane
         String                  returnType;
         std::vector<String>     paramTypes;
         bool                    bIsIterable;
+        bool                    bIsStatic;
         TypeIndex               returnTypeIndex;
         TypeIndex               elementIndex;
         std::size_t             returnSize;

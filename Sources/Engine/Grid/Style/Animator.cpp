@@ -77,7 +77,7 @@ namespace Chicane
             const Drift::EasingCurve& inEasing
         )
         {
-            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+            const StylePropertyEntry& entry = StylePropertyTable::sGet(inId);
             const std::size_t         slot  = m_slots.at(static_cast<std::size_t>(inId));
 
             const std::vector<float> to(inTo, inTo + entry.arity);
@@ -136,7 +136,7 @@ namespace Chicane
             }
 
             const std::vector<float> value = m_tweens.at(slot).tween.getValue();
-            const std::uint8_t       arity = StylePropertyTable::get(inId).arity;
+            const std::uint8_t       arity = StylePropertyTable::sGet(inId).arity;
 
             if (value.size() < static_cast<std::size_t>(arity))
             {
@@ -202,7 +202,7 @@ namespace Chicane
             {
                 StylePropertyId id = StylePropertyId::Count;
 
-                if (!StylePropertyTable::find(track.name, id))
+                if (!StylePropertyTable::sFind(track.name, id))
                 {
                     continue;
                 }
@@ -268,12 +268,12 @@ namespace Chicane
 
             for (const StyleAnimatorTween& entry : m_tweens)
             {
-                m_dirty |= StylePropertyTable::get(entry.id).dirty;
+                m_dirty |= StylePropertyTable::sGet(entry.id).dirty;
             }
 
             for (const StyleAnimatorTrack& track : m_playerTracks)
             {
-                m_dirty |= StylePropertyTable::get(track.id).dirty;
+                m_dirty |= StylePropertyTable::sGet(track.id).dirty;
             }
         }
     }

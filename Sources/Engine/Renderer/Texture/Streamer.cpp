@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <glm/glm.hpp>
-
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Worker.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
@@ -21,9 +19,7 @@ namespace Chicane
 
         static float columnLength(const Mat4& inModel, int inColumn)
         {
-            const glm::vec3 axis = glm::vec3(inModel[inColumn]);
-
-            return glm::length(axis);
+            return Vec3(inModel[inColumn]).length();
         }
 
         static std::uint32_t mipFromScreen(const DrawTexture& inTexture, float inScreenPx)
@@ -201,9 +197,9 @@ namespace Chicane
                     target = want;
                 }
 
-                const std::size_t nextBytes = Image::mipChainBytes(
-                    Image::mipDimension(texture->width, target),
-                    Image::mipDimension(texture->height, target)
+                const std::size_t nextBytes = Image::sMipChainBytes(
+                    Image::sMipDimension(texture->width, target),
+                    Image::sMipDimension(texture->height, target)
                 );
                 const std::size_t currentBytes = texture->getResidentBytes();
                 if (inBudgetBytes > 0 && promotions > 0 && used - currentBytes + nextBytes > inBudgetBytes)
@@ -315,7 +311,7 @@ namespace Chicane
             const std::shared_ptr<TextureStreamerMailbox> mailbox = m_mailbox;
             m_inFlight.insert(key);
 
-            Worker::submit(
+            Worker::sSubmit(
                 [mailbox, mips, id, inMip]()
                 {
                     if (!mailbox || !mips || inMip >= mips->levels.size())

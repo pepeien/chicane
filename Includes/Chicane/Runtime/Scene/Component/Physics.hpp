@@ -49,10 +49,15 @@ namespace Chicane
 
         void setMotion(Kerb::MotionType inType);
 
+        CH_FUNCTION()
         void setMass(float inMass);
+
         void setMassScale(float inScale);
 
+        CH_FUNCTION()
         void setGravityFactor(float inFactor);
+
+        CH_FUNCTION()
         float getGravityFactor() const;
 
         void setObjectLayer(Kerb::ObjectLayer inLayer);
@@ -60,13 +65,21 @@ namespace Chicane
         void setCollisionGroup(const Kerb::CollisionGroup& inGroup);
         void setSensor(bool bInSensor);
 
+        CH_FUNCTION()
         void moveTo(const Vec3& inLocation);
+
+        CH_FUNCTION()
         void moveBy(const Vec3& inOffset);
 
+        CH_FUNCTION()
         Vec3 getLinearVelocity() const;
+
+        CH_FUNCTION()
         void setLinearVelocity(const Vec3& inVelocity);
+
         void setHorizontalVelocity(const Vec3& inVelocity);
 
+        CH_FUNCTION()
         void addImpulse(const Vec3& inDirection, float inForce, const Vec3& inLocation);
 
     protected:

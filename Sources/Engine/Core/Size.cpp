@@ -84,7 +84,7 @@ namespace Chicane
         const std::size_t keyword = inValue.find(CALCULATION_KEYWORD);
         if (keyword == String::npos)
         {
-            return String::empty();
+            return String::sEmpty();
         }
 
         std::size_t open = keyword;
@@ -95,7 +95,7 @@ namespace Chicane
 
         if (open >= inValue.size() || inValue.at(open) != FUNCTION_PARAMS_OPENING)
         {
-            return String::empty();
+            return String::sEmpty();
         }
 
         std::uint32_t depth = 0;

@@ -7,8 +7,8 @@ namespace Chicane
     namespace Box
     {
         FontFamily::FontFamily()
-            : m_name(String::empty()),
-              m_family(String::empty()),
+            : m_name(String::sEmpty()),
+              m_family(String::sEmpty()),
               m_glyphs(),
               m_ascender(0.0f),
               m_descender(0.0f),
@@ -18,7 +18,7 @@ namespace Chicane
               m_kernings({})
         {}
 
-        std::uint64_t FontFamily::kerningKey(char32_t inLeft, char32_t inRight)
+        std::uint64_t FontFamily::sKerningKey(char32_t inLeft, char32_t inRight)
         {
             return (static_cast<std::uint64_t>(inLeft) << 32) | static_cast<std::uint64_t>(inRight);
         }
@@ -46,7 +46,7 @@ namespace Chicane
 
         float FontFamily::getKerning(char32_t inLeft, char32_t inRight) const
         {
-            const auto it = m_kernings.find(kerningKey(inLeft, inRight));
+            const auto it = m_kernings.find(sKerningKey(inLeft, inRight));
 
             if (it == m_kernings.end())
             {
@@ -63,7 +63,7 @@ namespace Chicane
                 return;
             }
 
-            m_kernings[kerningKey(inLeft, inRight)] = inValue;
+            m_kernings[sKerningKey(inLeft, inRight)] = inValue;
         }
 
         float FontFamily::getWeight() const
@@ -141,7 +141,7 @@ namespace Chicane
         {
             if (!hasGlyph(inCode))
             {
-                return FontGlyph::empty();
+                return FontGlyph::sEmpty();
             }
 
             return m_glyphs.at(inCode);

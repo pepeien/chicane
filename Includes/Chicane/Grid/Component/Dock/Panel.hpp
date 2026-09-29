@@ -48,7 +48,7 @@ namespace Chicane
             static constexpr inline const char* ORIENTATION_LANDSCAPE = "landscape";
             static constexpr inline const char* ORIENTATION_PORTRAIT  = "portrait";
 
-            static DockPanel* findFrom(Component* inComponent);
+            static DockPanel* sFindFrom(Component* inComponent);
 
         public:
             CH_CONSTRUCTOR()

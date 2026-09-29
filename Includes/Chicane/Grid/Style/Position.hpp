@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Core/String.hpp"
 

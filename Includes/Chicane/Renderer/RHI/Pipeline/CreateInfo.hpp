@@ -28,10 +28,10 @@ namespace Chicane
             public:
                 // Shader
                 bool                         bHasPushVertex = false;
-                String                       vertexPath     = String::empty();
+                String                       vertexPath     = String::sEmpty();
 
                 bool                         bHasPushFragment = false;
-                String                       fragmentPath     = String::empty();
+                String                       fragmentPath     = String::sEmpty();
 
                 // Primitive
                 std::uint32_t                vertexStride     = 0;

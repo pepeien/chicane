@@ -36,6 +36,7 @@ target_include_directories(
         $<INSTALL_INTERFACE:${CHICANE_INSTALL_INTERFACE_DIR}>
     PRIVATE
         ${CHICANE_SOURCES_DIR}
+        ${CHICANE_PROGRAMS_BOX_UTILS_SOURCES_DIR}
 )
 
 target_link_libraries(

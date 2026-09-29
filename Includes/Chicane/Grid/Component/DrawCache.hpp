@@ -14,24 +14,24 @@ namespace Chicane
         struct CHICANE_GRID DrawCache
         {
         public:
-            Vec2     position = Vec2::Zero();
+            Vec2     position = Vec2::sZero();
             Mat3     matrix   = Mat3(1.0f);
             Bounds2D bounds   = {};
-            Bounds2D clip     = Bounds2D::unconstrained();
+            Bounds2D clip     = Bounds2D::sUnconstrained();
 
             float    opacity    = 1.0f;
             float    filterBlur = 0.0f;
             float    depth      = 0.0f;
 
-            Vec4     radiusX = Vec4::Zero();
-            Vec4     radiusY = Vec4::Zero();
+            Vec4     radiusX = Vec4::sZero();
+            Vec4     radiusY = Vec4::sZero();
 
-            Vec4     innerClip        = Vec4::Sentinel();
-            Vec4     innerClipRadiusX = Vec4::Zero();
-            Vec4     innerClipRadiusY = Vec4::Zero();
-            Vec4     outerClip        = Vec4::Sentinel();
-            Vec4     outerClipRadiusX = Vec4::Zero();
-            Vec4     outerClipRadiusY = Vec4::Zero();
+            Vec4     innerClip        = Vec4::sSentinel();
+            Vec4     innerClipRadiusX = Vec4::sZero();
+            Vec4     innerClipRadiusY = Vec4::sZero();
+            Vec4     outerClip        = Vec4::sSentinel();
+            Vec4     outerClipRadiusX = Vec4::sZero();
+            Vec4     outerClipRadiusY = Vec4::sZero();
         };
     }
 }

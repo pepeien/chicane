@@ -62,7 +62,7 @@ namespace Chicane
         {
             if (m_variables.find(inName) == m_variables.end())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             return m_variables.at(inName);
@@ -97,7 +97,7 @@ namespace Chicane
 
         void StyleFile::addRuleset(const String& inValue)
         {
-            addRuleset(extractRulesets(StyleRuleset::normalizeData(inValue)));
+            addRuleset(extractRulesets(StyleRuleset::sNormalizeData(inValue)));
         }
 
         void StyleFile::addRuleset(const StyleRuleset::List& inValue)
@@ -390,9 +390,7 @@ namespace Chicane
                     {
                         const String suffix = trimmedSelector.substr(1);
 
-                        const bool bParentHasPseudo = inSelector.contains(Style::PSEUDO_CLASS_HOVER) ||
-                                                      inSelector.contains(Style::PSEUDO_CLASS_FOCUS) ||
-                                                      inSelector.contains(Style::PSEUDO_CLASS_DRAG);
+                        const bool bParentHasPseudo       = Style::sHasPseudoClass(inSelector);
                         const bool isCompoundContinuation = !suffix.isEmpty() && !suffix.startsWithChars(
                                                                                      Style::PSEUDO_CLASS_SELECTOR,
                                                                                      Style::CLASS_SELECTOR,
@@ -402,31 +400,20 @@ namespace Chicane
 
                         if (bParentHasPseudo && isCompoundContinuation)
                         {
-                            auto stripPseudo = [](String& ioValue, const char* inToken)
+                            String accumulated = inSelector.trim();
+                            const std::size_t split = accumulated.lastOf(Style::SELECTOR_SEPARATOR_SPACE);
+                            if (split != String::npos)
                             {
-                                while (true)
-                                {
-                                    const std::size_t at = ioValue.find(inToken);
-                                    if (at == String::npos)
-                                    {
-                                        break;
-                                    }
+                                accumulated = accumulated.substr(split + 1).trim();
+                            }
 
-                                    const std::size_t tokenSize = std::strlen(inToken);
-                                    ioValue = ioValue.substr(0, at) + ioValue.substr(at + tokenSize);
-                                }
-                            };
-
-                            String base = inSelector;
-                            stripPseudo(base, Style::PSEUDO_CLASS_HOVER);
-                            stripPseudo(base, Style::PSEUDO_CLASS_FOCUS);
-                            stripPseudo(base, Style::PSEUDO_CLASS_DRAG);
-                            base = base.trim();
+                            Style::sConsumePseudoClasses(accumulated);
+                            accumulated = accumulated.trim();
+                            accumulated.append(suffix);
 
                             resolvedSelector = inSelector;
                             resolvedSelector.append(' ');
-                            resolvedSelector.append(base);
-                            resolvedSelector.append(suffix);
+                            resolvedSelector.append(accumulated);
                         }
                         else
                         {

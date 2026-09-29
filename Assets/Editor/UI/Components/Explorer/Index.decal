@@ -1,0 +1,322 @@
+$explorerHeaderHeight: 1.65em;
+$explorerToolbarHeight: 2.15em;
+$explorerFooterHeight: 2.4em;
+$explorerChromeHeight: 5.25em;
+$explorerTreeWidth: 15em;
+$explorerSearchFilterWidth: 11.5em;
+$explorerPortraitTreeHeight: 11.5em;
+$explorerPortraitToolbarHeight: 4.7em;
+$explorerPortraitFooterHeight: 4.2em;
+$explorerSliderThumb: 0.72em;
+
+.explorer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &__body {
+        width: 100%;
+        height: calc(100% - $explorerHeaderHeight);
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+    }
+
+    &__tree {
+        width: $explorerTreeWidth;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0.35em;
+        overflow: hidden;
+        overflow-y: auto;
+        gap: 0.25em;
+        border-right: 1px solid $--light-gray;
+
+        &__item {
+            width: calc(100% - ref(entry.indent));
+            height: 1.55em;
+            display: flex;
+            flex-direction: row;
+            gap: 0.2em;
+            padding: 0 0.25em;
+            background-color: transparent;
+            border-radius: 3px;
+            overflow: hidden;
+            transition: background-color 300ms ease-in-out;
+            margin-left: ref(entry.indent);
+
+            &:hover {
+                cursor: pointer;
+                background-color: $--light-gray;
+            }
+
+            &.--selected {
+                background-color: $--light-gray;
+            }
+
+            &__icon {
+                width: 0.95em;
+                height: 0.95em;
+                margin: auto 0;
+                color: $--orange;
+            }
+
+            &__name {
+                font-size: 0.72em;
+                margin: auto 0;
+                color: $--gray;
+            }
+
+            &__caret {
+                width: 0.55em;
+                height: 0.55em;
+                margin: auto 0;
+                color: $--gray;
+                transform: rotate(0deg);
+                transform-origin: center;
+                transition: transform 200ms ease-in-out;
+
+                &.--expanded {
+                    transform: rotate(180deg);
+                }
+
+                &.--leaf {
+                    opacity: 0;
+                    cursor: default;
+                }
+            }
+        }
+    }
+
+    &__main {
+        width: calc(100% - $explorerTreeWidth);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35em;
+        padding: 0.35em 0.45em 0.25em 0.35em;
+    }
+
+    &__toolbar {
+        width: 100%;
+        height: $explorerToolbarHeight;
+        display: flex;
+        flex-direction: row;
+        gap: 0.4em;
+    }
+
+    &__search {
+        width: calc(100% - $explorerSearchFilterWidth);
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.35em;
+        padding: 0 0.55em;
+        background-color: $--dark-gray;
+        border-radius: 4px;
+        overflow: hidden;
+
+        &__icon {
+            width: 0.85em;
+            height: 0.85em;
+            margin: auto 0;
+            color: $--gray;
+        }
+
+        Input::Text {
+            width: calc(100% - 1.4em);
+            height: 1em;
+            margin: auto 0;
+            color: $--black;
+        }
+    }
+
+    &__filter {
+        width: $explorerSearchFilterWidth;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.35em;
+        padding: 0 0.7em;
+        background-color: $--green;
+        border-radius: 4px;
+        cursor: pointer;
+        overflow: hidden;
+
+        Icon {
+            width: 0.85em;
+            height: 0.85em;
+            margin: auto 0;
+            color: $--black;
+        }
+
+        Text {
+            font-size: 0.78em;
+            margin: auto 0;
+            color: $--black;
+        }
+    }
+
+    &__grid {
+        width: 100%;
+        height: calc(100% - $explorerToolbarHeight - $explorerFooterHeight);
+
+        &__content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 0.55em;
+            overflow: auto;
+
+            &.--vertical {
+                flex-direction: column;
+                flex-wrap: nowrap;
+                gap: 0.2em;
+            }
+        }
+    }
+
+    &__footer {
+        width: 100%;
+        height: $explorerFooterHeight;
+        display: flex;
+        flex-direction: row;
+        gap: 1.2em;
+        padding: 0 0.15em;
+
+        &__group {
+            display: flex;
+            flex-direction: row;
+            gap: 0.35em;
+            margin: auto 0;
+
+            &.--grow {
+                width: 18em;
+            }
+        }
+
+        &__label {
+            font-size: 0.7em;
+            margin: auto 0.2em auto 0;
+            color: $--black;
+        }
+    }
+
+    &__toggle {
+        height: 1.55em;
+        display: flex;
+        padding: 0 0.7em;
+        background-color: $--light-gray;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 300ms ease-in-out;
+
+        Text {
+            font-size: 0.7em;
+            margin: auto;
+            color: $--black;
+        }
+
+        &.--active {
+            background-color: $--green;
+
+            Text {
+                color: $--white;
+            }
+        }
+    }
+
+    &__slider {
+        width: 12em;
+        height: 2em;
+
+        .input-slider {
+            &__track {
+                background-color: $--light-gray;
+            }
+
+            &__fill {
+                background-color: $--green;
+            }
+
+            &__thumb {
+                width: $explorerSliderThumb;
+                height: $explorerSliderThumb;
+                background-color: $--green;
+                border-radius: 50%;
+                transform: translateY(-25%);
+            }
+        }
+    }
+
+    &.--portrait {
+        .explorer {
+            &__body {
+                flex-direction: column;
+            }
+
+            &__tree {
+                width: calc(100% - 0.5em);
+                height: $explorerPortraitTreeHeight;
+                border-right: none;
+                border-bottom: 1px solid $--light-gray;
+                margin: 0 auto;
+            }
+
+            &__main {
+                width: 100%;
+                height: 100%;
+            }
+
+            &__toolbar {
+                flex-direction: row;
+                height: $explorerToolbarHeight;
+            }
+
+            &__search {
+                width: 60%;
+            }
+
+            &__filter {
+                width: 40%;
+            }
+
+            &__grid {
+                height: calc(100% - $explorerPortraitToolbarHeight - $explorerPortraitFooterHeight);
+            }
+
+            &__footer {
+                flex-direction: column;
+                gap: 0.25em;
+                height: $explorerPortraitFooterHeight;
+                padding: 0.5em;
+
+                &__group {
+                    width: 100%;
+                    margin: 0;
+
+                    &.--grow {
+                        width: 100%;
+                    }
+                }
+
+                &__label {
+                    display: none;
+                }
+            }
+
+            &__slider {
+                width: 100%;
+            }
+
+            &__toggle {
+                padding: 0 0.5em;
+            }
+        }
+    }
+}

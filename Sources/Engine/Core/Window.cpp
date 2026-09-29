@@ -173,7 +173,7 @@ namespace Chicane
             // Gamepad
             case WindowEventType::GamepadAdded:
             case WindowEventType::GamepadRemoved:
-                deviceEvent = Input::DeviceEvent::fromGamepad(&data.gdevice);
+                deviceEvent = Input::DeviceEvent::sFromGamepad(&data.gdevice);
                 event.data  = &deviceEvent;
 
                 break;
@@ -194,7 +194,7 @@ namespace Chicane
             // Keyboard
             case WindowEventType::KeyboardAdded:
             case WindowEventType::KeyboardRemoved:
-                deviceEvent = Input::DeviceEvent::fromKeyboard(&data.kdevice);
+                deviceEvent = Input::DeviceEvent::sFromKeyboard(&data.kdevice);
                 event.data  = &deviceEvent;
 
                 break;
@@ -215,7 +215,7 @@ namespace Chicane
             // Mouse
             case WindowEventType::MouseAdded:
             case WindowEventType::MouseRemoved:
-                deviceEvent = Input::DeviceEvent::fromMouse(&data.mdevice);
+                deviceEvent = Input::DeviceEvent::sFromMouse(&data.mdevice);
                 event.data  = &deviceEvent;
 
                 break;
@@ -590,7 +590,7 @@ namespace Chicane
         m_instance = nullptr;
     }
 
-    Window* Window::getCurrent()
+    Window* Window::sGetCurrent()
     {
         return g_current;
     }
@@ -1114,6 +1114,6 @@ namespace Chicane
         String message = inMessage.trim();
         message.append(" [%s]");
 
-        throw std::runtime_error(String::sprint(message, SDL_GetError()).toChar());
+        throw std::runtime_error(String::sSprint(message, SDL_GetError()).toChar());
     }
 }

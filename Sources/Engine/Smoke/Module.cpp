@@ -8,20 +8,19 @@ namespace Chicane
 {
     namespace Smoke
     {
-        Module* Module::create(const XmlNode& inNode)
+        Module* Module::sCreate(const XmlNode& inNode)
         {
             if (inNode.isEmpty() || !inNode.isElement())
             {
                 return nullptr;
             }
 
-            const String              tag = inNode.getName();
-            const ReflectionTypeInfo* type =
-                ReflectionTypeRegistry::getInstance().find(String("Chicane::Smoke::") + tag);
+            const String              tag  = inNode.getName();
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(String("Chicane::Smoke::") + tag);
 
             if (!type)
             {
-                type = ReflectionTypeRegistry::getInstance().find(tag);
+                type = ReflectionTypeRegistry::sInstance().find(tag);
             }
 
             if (!type && !tag.isEmpty())
@@ -29,7 +28,7 @@ namespace Chicane
                 const String pascal = tag.substr(0, 1).toUpper() + tag.substr(1);
                 if (!pascal.equals(tag))
                 {
-                    type = ReflectionTypeRegistry::getInstance().find(String("Chicane::Smoke::") + pascal);
+                    type = ReflectionTypeRegistry::sInstance().find(String("Chicane::Smoke::") + pascal);
                 }
             }
 
@@ -86,7 +85,7 @@ namespace Chicane
             Serializable::onAttributeSync();
             m_bIsRefreshing = false;
 
-            m_tag = getSource().isEmpty() ? String::empty() : getSource().getName();
+            m_tag = getSource().isEmpty() ? String::sEmpty() : getSource().getName();
             onAttributeRefresh();
         }
 

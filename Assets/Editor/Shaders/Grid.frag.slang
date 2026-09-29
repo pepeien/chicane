@@ -1,4 +1,4 @@
-import CameraInstance;
+import "Camera/Instance";
 import Grid;
 
 [vk::binding(0, 0)] ConstantBuffer<CameraInstance> gCamera;

@@ -246,7 +246,7 @@ namespace Chicane
                 return {};
             }
 
-            return track->sample(Time::fromMilliseconds(playbackTime()));
+            return track->sample(Time::sFromMilliseconds(playbackTime()));
         }
 
         Player::CompleteSubscription Player::watchComplete(

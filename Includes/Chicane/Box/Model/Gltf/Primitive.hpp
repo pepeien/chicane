@@ -17,7 +17,7 @@ namespace Chicane
             struct CHICANE_BOX Primitive
             {
             public:
-                String             name = String::empty();
+                String             name = String::sEmpty();
 
                 std::int32_t       material = -1;
 

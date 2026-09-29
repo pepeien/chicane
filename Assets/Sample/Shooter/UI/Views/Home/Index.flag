@@ -1,0 +1,20 @@
+Instance.onLoad(function()
+    local score = Instance.find(".score")
+    local banner = Instance.find(".victory")
+
+    Instance.subscribe("score", function(data)
+        if score then
+            score:setText("Score " .. data)
+        end
+    end)
+
+    Instance.subscribe("victory", function()
+        if banner then
+            banner.classList:add("--shown")
+        end
+    end)
+end)
+
+function onFire()
+    Instance.send("hud:fire", "")
+end

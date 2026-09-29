@@ -66,21 +66,23 @@ namespace Editor
               {ViewerScene::PREVIEW_SHAPE_SHADER_BALL,
                ViewerScene::PREVIEW_SHAPE_SPHERE,
                ViewerScene::PREVIEW_SHAPE_TORUS,
-               ViewerScene::PREVIEW_SHAPE_CUBE,
-               ViewerScene::PREVIEW_SHAPE_KNOB}
+               ViewerScene::PREVIEW_SHAPE_CUBE}
           ),
-          assetPath(Chicane::String::empty()),
-          assetId(Chicane::String::empty()),
-          assetSource(Chicane::String::empty()),
-          assetType(Chicane::String::empty()),
-          selectedFolderPath(Chicane::String::empty()),
-          selectedAssetName(Chicane::String::empty()),
-          m_viewerAsset(Chicane::String::empty()),
+          assetPath(Chicane::String::sEmpty()),
+          assetId(Chicane::String::sEmpty()),
+          assetSource(Chicane::String::sEmpty()),
+          assetType(Chicane::String::sEmpty()),
+          selectedFolderPath(Chicane::String::sEmpty()),
+          selectedAssetName(Chicane::String::sEmpty()),
+          m_viewerAsset(Chicane::String::sEmpty()),
           m_bEditSource(false)
     {
         import <DockHeader>();
 
-        load("Assets/Editor/UI/Components/Asset/Manager.grid", "Assets/Editor/UI/Components/Asset/Manager.decal");
+        load(
+            "Assets/Editor/UI/Components/Asset/Manager/Index.grid",
+            "Assets/Editor/UI/Components/Asset/Manager/Index.decal"
+        );
 
         Prop::bind(this, SELECTED_FOLDER_ATTRIBUTE, selectedFolderPath);
         Prop::bind(this, SELECTED_ASSET_ATTRIBUTE, selectedAssetName);
@@ -158,7 +160,7 @@ namespace Editor
 
         if (bIsMeshAsset)
         {
-            if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+            if (std::shared_ptr<ViewerScene> viewer = Application::sInstance().getViewerScene())
             {
                 viewer->commitGroups();
             }
@@ -203,7 +205,7 @@ namespace Editor
                     }
 
                     const Chicane::FileSystem::Path source = item.path;
-                    Chicane::WorkerPool::submit(
+                    Chicane::WorkerPool::sSubmit(
                         [source]()
                         {
                             try
@@ -244,7 +246,7 @@ namespace Editor
             return;
         }
 
-        if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+        if (std::shared_ptr<ViewerScene> viewer = Application::sInstance().getViewerScene())
         {
             viewer->setPreviewShape(previewShape);
         }
@@ -351,9 +353,9 @@ namespace Editor
                 bIsMeshAsset     = false;
                 bHasStage        = false;
                 bHasPreviewShape = false;
-                assetId          = Chicane::String::empty();
-                assetSource      = Chicane::String::empty();
-                assetType        = Chicane::String::empty();
+                assetId          = Chicane::String::sEmpty();
+                assetSource      = Chicane::String::sEmpty();
+                assetType        = Chicane::String::sEmpty();
                 m_bEditSource    = false;
                 syncViewer();
             }
@@ -382,7 +384,7 @@ namespace Editor
         {
             m_bEditSource          = false;
             const double megabytes = static_cast<double>(payload.size()) / (1024.0 * 1024.0);
-            assetSource            = Chicane::String::sprint("%.1f MB", megabytes);
+            assetSource            = Chicane::String::sSprint("%.1f MB", megabytes);
         }
         else
         {
@@ -395,7 +397,7 @@ namespace Editor
 
     void AssetManager::syncViewer()
     {
-        std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene();
+        std::shared_ptr<ViewerScene> viewer = Application::sInstance().getViewerScene();
         if (!viewer)
         {
             return;
@@ -406,7 +408,7 @@ namespace Editor
             if (!m_viewerAsset.isEmpty())
             {
                 viewer->clearAsset();
-                m_viewerAsset = Chicane::String::empty();
+                m_viewerAsset = Chicane::String::sEmpty();
             }
 
             return;

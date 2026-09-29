@@ -1,5 +1,8 @@
 #include "Chicane/Runtime/Scene/Component/View.reflected.hpp"
 
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
+
 namespace Chicane
 {
     CView::CView()
@@ -7,9 +10,21 @@ namespace Chicane
           m_settings({}),
           m_frustum({}),
           m_data({}),
-          m_focusPoint(Vec3::Zero()),
+          m_focusPoint(Vec3::sZero()),
           m_target("")
-    {}
+    {
+        applyDefaultBounds();
+    }
+
+    void CView::onAttachment(Object* inParent)
+    {
+        if (!inParent)
+        {
+            return;
+        }
+
+        inParent->addBounds(getBounds());
+    }
 
     void CView::onTransform()
     {
@@ -161,7 +176,7 @@ namespace Chicane
         switch (m_settings.projection)
         {
         case ViewProjectionType::Orthographic:
-            m_data.projection = glm::ortho(
+            m_data.projection = Mat4::sOrtho(
                 -static_cast<float>(m_settings.viewport.x),
                 static_cast<float>(m_settings.viewport.x),
                 -static_cast<float>(m_settings.viewport.y),
@@ -173,8 +188,9 @@ namespace Chicane
             break;
 
         case ViewProjectionType::Perspective:
-            m_data.projection =
-                glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
+            m_data.projection = Mat4::sPerspective(
+                getFieldOfView() * Math::DEG_TO_RAD, m_settings.aspectRatio, m_data.clip.x, m_data.clip.y
+            );
 
             break;
 
@@ -187,11 +203,9 @@ namespace Chicane
 
     void CView::updateView()
     {
-        m_data.view = glm::lookAt(
-            static_cast<glm::vec3>(getTranslation()),
-            static_cast<glm::vec3>(m_focusPoint),
-            static_cast<glm::vec3>(getUp())
-        );
+        static const Mat4 viewBasis = QuatFloat::sFromEuler(Vec3(90.0f, 0.0f, 0.0f)).toMatrix();
+
+        m_data.view = (getMatrix() * viewBasis).inverse();
 
         m_frustum.update(this, m_settings);
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
@@ -25,8 +26,13 @@ namespace Chicane
             void tick(float inDelta) override;
             bool onEvent(const WindowEvent& inEvent) override;
 
+        public:
+            bool isScrollPinned(const Component* inChild) const;
+
         protected:
             void refreshPeripherals();
+            void setPinnedPeripherals(const std::vector<Component*>& inPeripherals);
+            void setPeripherals(const std::vector<Component*>& inPeripherals);
 
         public:
             const Vec2& getScroll() const;
@@ -74,15 +80,17 @@ namespace Chicane
             );
 
         protected:
-            Vec2                m_currentPosition;
+            Vec2                    m_currentPosition;
 
-            Vec2                m_virtualContentSize;
-            bool                m_bHasVirtualContent;
-            bool                m_bReserveHorizontalBar;
-            bool                m_bReserveVerticalBar;
+            Vec2                    m_virtualContentSize;
+            bool                    m_bHasVirtualContent;
+            bool                    m_bReserveHorizontalBar;
+            bool                    m_bReserveVerticalBar;
 
-            ScrollBarProperties m_horizontalBar;
-            ScrollBarProperties m_verticalBar;
+            ScrollBarProperties     m_horizontalBar;
+            ScrollBarProperties     m_verticalBar;
+
+            std::vector<Component*> m_pinnedPeripherals;
         };
     }
 }

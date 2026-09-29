@@ -10,7 +10,7 @@ namespace Chicane
     struct CHICANE_CORE Bounds2D
     {
     public:
-        static inline const Bounds2D& unconstrained()
+        static inline const Bounds2D& sUnconstrained()
         {
             static Bounds2D result = {};
             result.top             = -1.0e9f;

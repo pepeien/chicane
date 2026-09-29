@@ -1,14 +1,12 @@
 #include "Chicane/Grid/Style/Ruleset.hpp"
 
-#include <cstring>
-
 #include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        String StyleRuleset::normalizeData(const String& inValue)
+        String StyleRuleset::sNormalizeData(const String& inValue)
         {
             String result = inValue;
             // Remove online comments
@@ -62,47 +60,8 @@ namespace Chicane
                     }
 
                     StyleSelectorPart compiledPart;
-
-                    while (true)
-                    {
-                        const std::size_t hoverAt = part.find(Style::PSEUDO_CLASS_HOVER);
-                        const std::size_t focusAt = part.find(Style::PSEUDO_CLASS_FOCUS);
-                        const std::size_t dragAt  = part.find(Style::PSEUDO_CLASS_DRAG);
-
-                        const char* token = nullptr;
-                        std::size_t at    = String::npos;
-                        bool*       flag  = nullptr;
-
-                        auto consider = [&](std::size_t inAt, const char* inToken, bool& inFlag)
-                        {
-                            if (inAt != String::npos && (at == String::npos || inAt < at))
-                            {
-                                at    = inAt;
-                                token = inToken;
-                                flag  = &inFlag;
-                            }
-                        };
-
-                        consider(hoverAt, Style::PSEUDO_CLASS_HOVER, compiledPart.bCanHover);
-                        consider(focusAt, Style::PSEUDO_CLASS_FOCUS, compiledPart.bCanFocus);
-                        consider(dragAt, Style::PSEUDO_CLASS_DRAG, compiledPart.bCanDrag);
-
-                        if (!token)
-                        {
-                            break;
-                        }
-
-                        const std::size_t tokenSize = std::strlen(token);
-                        if (at + tokenSize > part.size())
-                        {
-                            break;
-                        }
-
-                        *flag = true;
-                        part  = part.substr(0, at) + part.substr(at + tokenSize);
-                    }
-
-                    part = part.trim();
+                    compiledPart.status = Style::sConsumePseudoClasses(part, &compiledPart.siblings);
+                    part                = part.trim();
                     if (part.isEmpty() || part.equals(Style::INCLUSIVE_SELECTOR))
                     {
                         entry.chain.push_back(compiledPart);

@@ -548,6 +548,9 @@ namespace Reflector
             var constructors = new List<ConstructorModel>();
             var methods = new List<FunctionModel>();
             var fields = new List<FieldModel>();
+            var bases = new List<string>();
+            var ownMethods = new List<FunctionModel>();
+            var ownFields = new List<FieldModel>();
             string typeGroup = MacroArgs.Group(parsed);
             string typeDescription = MacroArgs.Description(parsed);
 
@@ -569,7 +572,10 @@ namespace Reflector
                         case CXCursorKind.CXCursor_CXXMethod:
                             if (HasAnnotation(child, Annotation.Function))
                             {
-                                methods.Add(ParseMethod(child));
+                                FunctionModel method = ParseMethod(child);
+
+                                methods.Add(method);
+                                ownMethods.Add(method);
                             }
 
                             break;
@@ -578,7 +584,10 @@ namespace Reflector
                         case CXCursorKind.CXCursor_FieldDecl:
                             if (HasAnnotation(child, Annotation.Field) || (isAutomatic && isPublic))
                             {
-                                fields.Add(WithDefaultGroup(ParseField(child), typeGroup));
+                                FieldModel field = WithDefaultGroup(ParseField(child), typeGroup);
+
+                                fields.Add(field);
+                                ownFields.Add(field);
                             }
 
                             break;
@@ -587,6 +596,8 @@ namespace Reflector
                             var baseDecl = clang.getTypeDeclaration(child.Type.CanonicalType);
                             if (baseDecl.Kind != CXCursorKind.CXCursor_NoDeclFound && baseDecl.IsDefinition)
                             {
+                                bases.Add(QualifiedName(baseDecl));
+
                                 CollectMembers(baseDecl, args, methods, fields);
                             }
 
@@ -605,7 +616,25 @@ namespace Reflector
                 default
             );
 
-            return new(kind, names, constructors, methods, fields, typeGroup, typeDescription);
+            return new(
+                kind,
+                names,
+                constructors,
+                methods,
+                fields,
+                typeGroup,
+                typeDescription,
+                bases,
+                ownMethods,
+                ownFields
+            );
+        }
+
+        static string QualifiedName(CXCursor cursor)
+        {
+            string ns = GetNamespace(cursor);
+
+            return (string.IsNullOrWhiteSpace(ns) ? "" : $"{ns}::") + cursor.Spelling.CString;
         }
 
         static unsafe ConstructorModel ParseConstructor(CXCursor cursor)
@@ -644,6 +673,7 @@ namespace Reflector
             bool isIterable = IsIterableType(resultType);
             string elementName = isIterable ? GetTemplateParam(resultType) : "";
             bool isElementPointer = elementName.EndsWith('*');
+            bool isStatic = clang.CXXMethod_isStatic(cursor) != 0;
 
             if (isElementPointer)
             {
@@ -656,7 +686,8 @@ namespace Reflector
                 paramTypes,
                 isIterable,
                 elementName,
-                isElementPointer
+                isElementPointer,
+                isStatic
             );
         }
 

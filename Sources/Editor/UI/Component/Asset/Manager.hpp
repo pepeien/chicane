@@ -65,29 +65,40 @@ namespace Editor
     public:
         CH_FIELD()
         bool bHasAsset;
+
         CH_FIELD()
         bool bIsAssetEmpty;
+
         CH_FIELD()
         bool bIsMeshAsset;
+
         CH_FIELD()
         bool bHasStage;
+
         CH_FIELD()
         bool bHasPreviewShape;
+
         CH_FIELD()
         Chicane::String previewShape;
+
         CH_FIELD()
         std::vector<Chicane::String> previewShapes;
+
         CH_FIELD()
         Chicane::String assetPath;
+
         CH_FIELD()
         Chicane::String assetId;
+
         CH_FIELD()
         Chicane::String assetSource;
+
         CH_FIELD()
         Chicane::String assetType;
 
         CH_FIELD()
         Chicane::String selectedFolderPath;
+
         CH_FIELD()
         Chicane::String selectedAssetName;
 

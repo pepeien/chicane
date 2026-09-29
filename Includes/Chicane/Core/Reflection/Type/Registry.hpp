@@ -15,7 +15,7 @@ namespace Chicane
         using Names   = std::unordered_map<String, ReflectionTypeInfo>;
 
     public:
-        static ReflectionTypeRegistry& getInstance();
+        static ReflectionTypeRegistry& sInstance();
 
     private:
         ReflectionTypeRegistry();

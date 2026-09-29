@@ -14,7 +14,7 @@ namespace Chicane
         struct CHICANE_BOX FontGlyph
         {
         public:
-            static inline const FontGlyph& empty()
+            static inline const FontGlyph& sEmpty()
             {
                 static const FontGlyph result;
 
@@ -29,13 +29,13 @@ namespace Chicane
             float                advance   = 0.0f;
             float                ascender  = 0.0f;
             float                descender = 0.0f;
-            Vec2                 bearing   = Vec2::Zero();
+            Vec2                 bearing   = Vec2::sZero();
             Vertex::List         vertices  = {};
             Vertex::Indices      indices   = {};
 
             FontGlyphCurve::List curves    = {};
-            Vec2                 boundsMin = Vec2::Zero();
-            Vec2                 boundsMax = Vec2::Zero();
+            Vec2                 boundsMin = Vec2::sZero();
+            Vec2                 boundsMax = Vec2::sZero();
         };
     }
 }

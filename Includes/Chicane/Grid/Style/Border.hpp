@@ -26,8 +26,8 @@ namespace Chicane
             using TypeParser  = StyleProperty<StyleBorderType>::Parser;
 
         private:
-            static bool isTypeToken(const String& inValue);
-            static bool isColorToken(const String& inValue);
+            static bool sIsTypeToken(const String& inValue);
+            static bool sIsColorToken(const String& inValue);
 
         public:
             StyleBorder();

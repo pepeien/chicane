@@ -72,10 +72,10 @@ namespace Editor
 
     Toolbar::Toolbar(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          orientation(Chicane::String::empty()),
-          translateState(Chicane::String::empty()),
-          rotateState(Chicane::String::empty()),
-          scaleState(Chicane::String::empty()),
+          orientation(Chicane::String::sEmpty()),
+          translateState(Chicane::String::sEmpty()),
+          rotateState(Chicane::String::sEmpty()),
+          scaleState(Chicane::String::sEmpty()),
           isSettingsOpen(false),
           showSettingsHint(true),
           settingsState("idle"),
@@ -87,7 +87,9 @@ namespace Editor
         import <ViewportSettings>();
         import <HeaderMenu>();
 
-        load("Assets/Editor/UI/Components/Toolbar.grid", "Assets/Editor/UI/Components/Toolbar.decal");
+        load("Assets/Editor/UI/Components/Toolbar/Index.grid", "Assets/Editor/UI/Components/Toolbar/Index.decal");
+
+        setAttribute(Chicane::Grid::Component::FOCUSABLE_ATTRIBUTE_NAME, "true");
 
         initAddMenu();
 
@@ -95,16 +97,6 @@ namespace Editor
         Prop::bind(this, TRANSLATE_STATE_ATTRIBUTE, translateState);
         Prop::bind(this, ROTATE_STATE_ATTRIBUTE, rotateState);
         Prop::bind(this, SCALE_STATE_ATTRIBUTE, scaleState);
-    }
-
-    bool Toolbar::isFocusable() const
-    {
-        return true;
-    }
-
-    bool Toolbar::escapesOverflow() const
-    {
-        return true;
     }
 
     bool Toolbar::onEvent(const Chicane::WindowEvent& inEvent)
@@ -122,9 +114,14 @@ namespace Editor
         }
 
         Chicane::Grid::Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+        if (containsNode(hit))
+        {
+            return false;
+        }
+
         for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
         {
-            if (node == this || node->getId().equals(ADD_ANCHOR_ID))
+            if (node->getId().equals(ADD_ANCHOR_ID))
             {
                 return false;
             }
@@ -230,7 +227,7 @@ namespace Editor
 
         std::unordered_set<std::type_index> seen;
 
-        for (const auto& [name, type] : Chicane::ReflectionTypeRegistry::getInstance().getAll())
+        for (const auto& [name, type] : Chicane::ReflectionTypeRegistry::sInstance().getAll())
         {
             if (type.group.isEmpty() || type.constructors.empty())
             {

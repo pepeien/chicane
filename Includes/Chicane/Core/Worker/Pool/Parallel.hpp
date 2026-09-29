@@ -19,7 +19,7 @@ namespace Chicane
         using Job = std::function<void(std::size_t)>;
 
     public:
-        static bool isWorker();
+        static bool sIsWorker();
 
     public:
         WorkerPoolParallel() = default;

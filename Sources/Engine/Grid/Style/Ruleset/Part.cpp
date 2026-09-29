@@ -18,20 +18,13 @@ namespace Chicane
                 result += 1U;
             }
 
-            if (bCanHover)
+            for (std::uint8_t flags = static_cast<std::uint8_t>(status); flags != 0;
+                 flags              = static_cast<std::uint8_t>(flags & static_cast<std::uint8_t>(flags - 1U)))
             {
                 result += 10U;
             }
 
-            if (bCanFocus)
-            {
-                result += 10U;
-            }
-
-            if (bCanDrag)
-            {
-                result += 10U;
-            }
+            result += static_cast<std::uint32_t>(siblings.size()) * 10U;
 
             return result;
         }

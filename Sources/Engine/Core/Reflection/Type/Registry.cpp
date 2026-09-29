@@ -3,7 +3,7 @@
 namespace Chicane
 {
 
-    ReflectionTypeRegistry& ReflectionTypeRegistry::getInstance()
+    ReflectionTypeRegistry& ReflectionTypeRegistry::sInstance()
     {
         static ReflectionTypeRegistry result;
 

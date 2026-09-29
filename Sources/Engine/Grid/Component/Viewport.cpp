@@ -10,7 +10,7 @@ namespace Chicane
     {
         Viewport::Viewport(const XmlNode& inNode)
             : Container(inNode),
-              target(String::empty())
+              target(String::sEmpty())
         {}
 
         void Viewport::onRefresh()
@@ -55,7 +55,7 @@ namespace Chicane
                     m_parent->getPosition().x + parentStyle.insetLeft(),
                     m_parent->getPosition().y + parentStyle.insetTop()
                 );
-                addCursor(m_style.insetLeft(), m_style.insetTop());
+                addCursor(style.insetLeft(), style.insetTop());
 
                 return;
             }
@@ -72,7 +72,7 @@ namespace Chicane
                 target = DEFAULT_TARGET;
             }
 
-            m_style.background.image.setRaw(target);
+            style.background.image.setRaw(target);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Chicane
         struct CHICANE_CORE DeviceEvent
         {
         public:
-            static DeviceEvent fromMouse(void* inData);    // From `SDL_MouseDeviceEvent`
-            static DeviceEvent fromKeyboard(void* inData); // From `SDL_KeyboardDeviceEvent`
-            static DeviceEvent fromGamepad(void* inData);  // From `SDL_GamepadDeviceEvent`
+            static DeviceEvent sFromMouse(void* inData);    // From `SDL_MouseDeviceEvent`
+            static DeviceEvent sFromKeyboard(void* inData); // From `SDL_KeyboardDeviceEvent`
+            static DeviceEvent sFromGamepad(void* inData);  // From `SDL_GamepadDeviceEvent`
 
         public:
             DeviceEvent();

@@ -14,27 +14,27 @@ namespace Chicane
         : point(Clock::now())
     {}
 
-    float Time::miliseconds(Clock::duration inDuration)
+    float Time::sMiliseconds(Clock::duration inDuration)
     {
         return std::chrono::duration<float, std::milli>(inDuration).count();
     }
 
-    float Time::seconds(Clock::duration inTime)
+    float Time::sSeconds(Clock::duration inTime)
     {
-        return Time::miliseconds(inTime) * 0.001f;
+        return Time::sMiliseconds(inTime) * 0.001f;
     }
 
-    float Time::minutes(Clock::duration inTime)
+    float Time::sMinutes(Clock::duration inTime)
     {
-        return Time::seconds(inTime) / 60.0f;
+        return Time::sSeconds(inTime) / 60.0f;
     }
 
-    float Time::hours(Clock::duration inTime)
+    float Time::sHours(Clock::duration inTime)
     {
-        return Time::minutes(inTime) / 60.0f;
+        return Time::sMinutes(inTime) / 60.0f;
     }
 
-    Time Time::fromMilliseconds(float inValue)
+    Time Time::sFromMilliseconds(float inValue)
     {
         return Time(
             std::chrono::duration_cast<Clock::duration>(
@@ -43,38 +43,38 @@ namespace Chicane
         );
     }
 
-    Time Time::fromSeconds(float inValue)
+    Time Time::sFromSeconds(float inValue)
     {
-        return Time::fromMilliseconds(inValue * 1000.0f);
+        return Time::sFromMilliseconds(inValue * 1000.0f);
     }
 
-    Time Time::fromMinutes(float inValue)
+    Time Time::sFromMinutes(float inValue)
     {
-        return Time::fromSeconds(inValue * 60.0f);
+        return Time::sFromSeconds(inValue * 60.0f);
     }
 
-    Time Time::fromHours(float inValue)
+    Time Time::sFromHours(float inValue)
     {
-        return Time::fromMinutes(inValue * 60.0f);
+        return Time::sFromMinutes(inValue * 60.0f);
     }
 
     float Time::miliseconds() const
     {
-        return Time::miliseconds(point.time_since_epoch());
+        return Time::sMiliseconds(point.time_since_epoch());
     }
 
     float Time::seconds() const
     {
-        return Time::seconds(point.time_since_epoch());
+        return Time::sSeconds(point.time_since_epoch());
     }
 
     float Time::minutes() const
     {
-        return Time::minutes(point.time_since_epoch());
+        return Time::sMinutes(point.time_since_epoch());
     }
 
     float Time::hours() const
     {
-        return Time::hours(point.time_since_epoch());
+        return Time::sHours(point.time_since_epoch());
     }
 }

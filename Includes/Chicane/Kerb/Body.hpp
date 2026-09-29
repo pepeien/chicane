@@ -11,7 +11,7 @@ namespace Chicane
         struct CHICANE_KERB Body
         {
         public:
-            static Body invalid() { return {}; }
+            static Body sInvalid() { return {}; }
 
         public:
             Body() = default;

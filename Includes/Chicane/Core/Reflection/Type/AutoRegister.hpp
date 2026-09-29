@@ -11,7 +11,7 @@ namespace Chicane
     {
         explicit ReflectionTypeAutoRegister(const ReflectionTypeInfo& inValue)
         {
-            ReflectionTypeRegistry::getInstance().add(std::move(inValue));
+            ReflectionTypeRegistry::sInstance().add(std::move(inValue));
         }
     };
 }

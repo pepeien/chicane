@@ -1,9 +1,10 @@
-#include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/Style.reflected.hpp"
 
 #include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <cstdlib>
+#include <cstring>
 #include <utility>
 
 #include "Chicane/Box/Font.hpp"
@@ -16,6 +17,351 @@ namespace Chicane
 {
     namespace Grid
     {
+        static bool parseInteger(const String& inValue, int& outValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return false;
+            }
+
+            const char* begin = inValue.toChar();
+            char*       end   = nullptr;
+            const long  value = std::strtol(begin, &end, 10);
+            if (end == begin || *end != '\0')
+            {
+                return false;
+            }
+
+            outValue = static_cast<int>(value);
+
+            return true;
+        }
+
+        static bool parseAnPlusB(String inArgument, int& outStep, int& outOffset)
+        {
+            String compact;
+            for (std::size_t index = 0; index < inArgument.size(); index++)
+            {
+                const char character = inArgument.at(index);
+                if (character != Style::SELECTOR_SEPARATOR_SPACE && character != Style::PSEUDO_ARGUMENT_TAB)
+                {
+                    compact.append(character);
+                }
+            }
+
+            if (compact.equals(Style::PSEUDO_ODD_KEYWORD))
+            {
+                outStep   = Style::PSEUDO_ODD_STEP;
+                outOffset = Style::PSEUDO_ODD_OFFSET;
+
+                return true;
+            }
+
+            if (compact.equals(Style::PSEUDO_EVEN_KEYWORD))
+            {
+                outStep   = Style::PSEUDO_EVEN_STEP;
+                outOffset = Style::PSEUDO_EVEN_OFFSET;
+
+                return true;
+            }
+
+            if (compact.isEmpty())
+            {
+                return false;
+            }
+
+            const std::size_t stepMark = compact.find(Style::PSEUDO_STEP_MARK);
+            if (stepMark == String::npos)
+            {
+                outStep = Style::PSEUDO_ZERO_STEP;
+
+                return parseInteger(compact, outOffset);
+            }
+
+            const String head = compact.substr(0, stepMark);
+            const String tail = compact.substr(stepMark + 1);
+
+            if (head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS))
+            {
+                outStep = Style::PSEUDO_SINGLE_STEP;
+            }
+            else if (head.equals(Style::PSEUDO_STEP_MINUS))
+            {
+                outStep = Style::PSEUDO_NEGATIVE_STEP;
+            }
+            else if (!parseInteger(head, outStep))
+            {
+                return false;
+            }
+
+            if (tail.isEmpty())
+            {
+                outOffset = Style::PSEUDO_ZERO_OFFSET;
+
+                return true;
+            }
+
+            return parseInteger(tail, outOffset);
+        }
+
+        static bool startsWithToken(const String& inValue, std::size_t inAt, const char* inToken)
+        {
+            const std::size_t length = std::strlen(inToken);
+            if (inAt + length > inValue.size() || !inValue.substr(inAt, length).equals(inToken))
+            {
+                return false;
+            }
+
+            if (inAt + length == inValue.size())
+            {
+                return true;
+            }
+
+            const char next = inValue.at(inAt + length);
+
+            return next == Style::PSEUDO_CLASS_SELECTOR || next == Style::CLASS_SELECTOR || next == Style::ID_SELECTOR ||
+                   next == Style::SELECTOR_SEPARATOR_SPACE || next == Style::SELECTOR_SEPARATOR_COMMA;
+        }
+
+        static bool findSiblingPseudo(
+            const String& inSelector, std::size_t& outAt, std::size_t& outLength, StyleSiblingSelector& outSelector
+        )
+        {
+            outAt = String::npos;
+
+            const auto consider = [&](std::size_t inAt, std::size_t inLength, const StyleSiblingSelector& inSelector)
+            {
+                if (inAt < outAt)
+                {
+                    outAt        = inAt;
+                    outLength    = inLength;
+                    outSelector  = inSelector;
+                }
+            };
+
+            for (std::size_t index = 0; index < inSelector.size(); index++)
+            {
+                if (inSelector.at(index) != Style::PSEUDO_CLASS_SELECTOR)
+                {
+                    continue;
+                }
+
+                StyleSiblingSelector selector;
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_FIRST_CHILD))
+                {
+                    consider(index, std::strlen(Style::PSEUDO_FIRST_CHILD), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_LAST_CHILD))
+                {
+                    selector.bFromEnd = true;
+                    consider(index, std::strlen(Style::PSEUDO_LAST_CHILD), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_FIRST_OF_TYPE))
+                {
+                    selector.bOfType = true;
+                    consider(index, std::strlen(Style::PSEUDO_FIRST_OF_TYPE), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_LAST_OF_TYPE))
+                {
+                    selector.bOfType  = true;
+                    selector.bFromEnd = true;
+                    consider(index, std::strlen(Style::PSEUDO_LAST_OF_TYPE), selector);
+                    continue;
+                }
+
+                const char* nthTokens[] = {Style::PSEUDO_NTH_CHILD, Style::PSEUDO_NTH_OF_TYPE};
+                const bool  ofType[]    = {false, true};
+
+                for (std::size_t token = 0; token < 2; token++)
+                {
+                    const std::size_t tokenLength = std::strlen(nthTokens[token]);
+                    if (index + tokenLength > inSelector.size() ||
+                        !inSelector.substr(index, tokenLength).equals(nthTokens[token]))
+                    {
+                        continue;
+                    }
+
+                    const std::size_t close =
+                        inSelector.toStandard().find(Style::PSEUDO_ARGUMENT_CLOSE, index + tokenLength);
+                    if (close == std::string::npos)
+                    {
+                        continue;
+                    }
+
+                    const String argument = inSelector.substr(index + tokenLength, close - (index + tokenLength));
+                    if (!parseAnPlusB(argument, selector.step, selector.offset))
+                    {
+                        continue;
+                    }
+
+                    selector.bOfType = ofType[token];
+                    consider(index, close - index + 1, selector);
+                }
+            }
+
+            return outAt != String::npos;
+        }
+
+        ComponentStatus Style::sConsumePseudoClasses(String& ioSelector, std::vector<StyleSiblingSelector>* outSiblings)
+        {
+            ComponentStatus status = ComponentStatus::None;
+
+            while (true)
+            {
+                const StylePseudoClass* stateMatch = nullptr;
+                std::size_t             stateAt    = String::npos;
+
+                for (const StylePseudoClass& entry : PSEUDO_CLASSES)
+                {
+                    const std::size_t found = ioSelector.find(entry.token);
+                    if (found != String::npos && (stateAt == String::npos || found < stateAt))
+                    {
+                        stateAt    = found;
+                        stateMatch = &entry;
+                    }
+                }
+
+                std::size_t          siblingAt     = String::npos;
+                std::size_t          siblingLength = 0;
+                StyleSiblingSelector sibling;
+                const bool           bSibling = findSiblingPseudo(ioSelector, siblingAt, siblingLength, sibling);
+
+                if (!stateMatch && !bSibling)
+                {
+                    break;
+                }
+
+                if (stateMatch && (!bSibling || stateAt <= siblingAt))
+                {
+                    status |= stateMatch->status;
+                    ioSelector = ioSelector.substr(0, stateAt) +
+                                 ioSelector.substr(stateAt + std::strlen(stateMatch->token));
+                    continue;
+                }
+
+                if (outSiblings)
+                {
+                    outSiblings->push_back(sibling);
+                }
+
+                ioSelector = ioSelector.substr(0, siblingAt) + ioSelector.substr(siblingAt + siblingLength);
+            }
+
+            return status;
+        }
+
+        bool Style::sHasPseudoClass(const String& inSelector)
+        {
+            for (const StylePseudoClass& entry : PSEUDO_CLASSES)
+            {
+                if (inSelector.contains(entry.token))
+                {
+                    return true;
+                }
+            }
+
+            return inSelector.contains(Style::PSEUDO_FIRST_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_LAST_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_FIRST_OF_TYPE) ||
+                   inSelector.contains(Style::PSEUDO_LAST_OF_TYPE) ||
+                   inSelector.contains(Style::PSEUDO_NTH_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_NTH_OF_TYPE);
+        }
+
+        bool Style::sCoversProperty(const String& inProperty, const String& inTarget)
+        {
+            auto contains = [](const String& inProperty, const String& inTarget) -> bool
+            {
+                if (inProperty.equals(inTarget))
+                {
+                    return true;
+                }
+
+                if (inProperty.equals(PADDING_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(PADDING_TOP_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_BOTTOM_ATTRIBUTE_NAME) ||
+                           inTarget.equals(PADDING_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(GAP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(GAP_TOP_ATTRIBUTE_NAME) || inTarget.equals(GAP_RIGHT_ATTRIBUTE_NAME) ||
+                           inTarget.equals(GAP_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(GAP_LEFT_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_WIDTH_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_COLOR_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_TOP_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_RIGHT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_BOTTOM_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_LEFT_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                if (inProperty.equals(BORDER_ATTRIBUTE_NAME))
+                {
+                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
+                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
+                }
+
+                return false;
+            };
+
+            return contains(inProperty, inTarget);
+        }
+
         Style::Style(const StyleRuleset::Properties& inProperties, Component* inParent)
             : Style()
         {
@@ -37,6 +383,7 @@ namespace Chicane
               gap({}),
               overflowX(StyleOverflow::Visible),
               overflowY(StyleOverflow::Visible),
+              escape(false),
               radius({}),
               background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
@@ -44,10 +391,10 @@ namespace Chicane
               filter({}),
               backdrop({}),
               transform({}),
-              translate(Vec2::Zero()),
+              translate(Vec2::sZero()),
               rotate(0.0f),
-              scale(Vec2::One()),
-              transformOrigin(Vec2::Zero()),
+              scale(Vec2::sOne()),
+              transformOrigin(Vec2::sZero()),
               font({}),
               letterSpacing(0.0f),
               wordBreak(StyleWordBreak::Normal),
@@ -240,10 +587,19 @@ namespace Chicane
 
             overflowY.parseWith([this](const String& inValue) { return parseOverflow(inValue); });
 
+            escape.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    return value.equals("true", "1");
+                }
+            );
+
             radius.parseWith(
                 [this](const String& inValue, SizeDirection inDirection)
                 {
-                    Vec2 box = hasParent() ? m_parent->getSize() : Vec2::Zero();
+                    Vec2 box = hasParent() ? m_parent->getSize() : Vec2::sZero();
 
                     return parseSize(inValue, inDirection, &box);
                 }
@@ -303,6 +659,14 @@ namespace Chicane
             cursor.parseWith([this](const String& inValue) { return parseCursor(inValue); });
         }
 
+        void Style::set(const String& inKey, const String& inValue)
+        {
+            StyleRuleset::Properties properties;
+            properties[inKey] = inValue;
+
+            applyProperties(properties);
+        }
+
         bool Style::isDisplay(StyleDisplay inValue) const
         {
             return display.get() == inValue;
@@ -354,6 +718,26 @@ namespace Chicane
         }
 
         void Style::setProperties(const StyleRuleset::Properties& inProperties)
+        {
+            if (inProperties.find(WIDTH_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                width.value.setRaw(Size::AUTO_KEYWORD);
+            }
+
+            if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                height.value.setRaw(Size::AUTO_KEYWORD);
+            }
+
+            if (inProperties.find(CURSOR_ATTRIBUTE_NAME) == inProperties.end())
+            {
+                cursor.setRaw("");
+            }
+
+            applyProperties(inProperties);
+        }
+
+        void Style::applyProperties(const StyleRuleset::Properties& inProperties)
         {
             if (inProperties.find(DISPLAY_ATTRIBUTE_NAME) != inProperties.end())
             {
@@ -502,13 +886,14 @@ namespace Chicane
                 overflowY.setRaw(inProperties.at(OVERFLOW_Y_ATTRIBUTE_NAME));
             }
 
+            if (inProperties.find(ESCAPE_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                escape.setRaw(inProperties.at(ESCAPE_ATTRIBUTE_NAME));
+            }
+
             if (inProperties.find(CURSOR_ATTRIBUTE_NAME) != inProperties.end())
             {
                 cursor.setRaw(inProperties.at(CURSOR_ATTRIBUTE_NAME));
-            }
-            else
-            {
-                cursor.setRaw("");
             }
 
             parseTransitions(inProperties);
@@ -560,6 +945,7 @@ namespace Chicane
 
             overflowX.copyValue(inStyle.overflowX);
             overflowY.copyValue(inStyle.overflowY);
+            escape.copyValue(inStyle.escape);
 
             radius.x.top.copyValue(inStyle.radius.x.top);
             radius.x.bottom.copyValue(inStyle.radius.x.bottom);
@@ -613,7 +999,7 @@ namespace Chicane
             {
                 const StylePropertyId id = static_cast<StylePropertyId>(i);
 
-                if (readAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id)))
+                if (readAnimated(id, m_snapshot.data() + StylePropertyTable::sOffset(id)))
                 {
                     m_snapshotMask.set(i);
                 }
@@ -637,7 +1023,7 @@ namespace Chicane
                     continue;
                 }
 
-                writeAnimated(id, m_snapshot.data() + StylePropertyTable::offset(id));
+                writeAnimated(id, m_snapshot.data() + StylePropertyTable::sOffset(id));
             }
         }
 
@@ -731,7 +1117,7 @@ namespace Chicane
 
         bool Style::readAnimated(StylePropertyId inId, float* outValues) const
         {
-            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+            const StylePropertyEntry& entry = StylePropertyTable::sGet(inId);
 
             if (!entry.read)
             {
@@ -743,7 +1129,7 @@ namespace Chicane
 
         void Style::writeAnimated(StylePropertyId inId, const float* inValues)
         {
-            const StylePropertyEntry& entry = StylePropertyTable::get(inId);
+            const StylePropertyEntry& entry = StylePropertyTable::sGet(inId);
 
             if (!entry.write)
             {
@@ -759,7 +1145,7 @@ namespace Chicane
 
             for (std::size_t i = 0; i < StylePropertyTable::COUNT; i++)
             {
-                const String target = StylePropertyTable::get(static_cast<StylePropertyId>(i)).name;
+                const String target = StylePropertyTable::sGet(static_cast<StylePropertyId>(i)).name;
 
                 const StyleTransition* all       = nullptr;
                 const StyleTransition* shorthand = nullptr;
@@ -776,7 +1162,7 @@ namespace Chicane
                     {
                         specific = &transition;
                     }
-                    else if (coversProperty(transition.property, target))
+                    else if (sCoversProperty(transition.property, target))
                     {
                         shorthand = &transition;
                     }
@@ -789,93 +1175,6 @@ namespace Chicane
         const StyleTransition* Style::findTransition(StylePropertyId inId) const
         {
             return m_transitionLookup.at(static_cast<std::size_t>(inId));
-        }
-
-        bool Style::coversProperty(const String& inProperty, const String& inTarget)
-        {
-            auto contains = [](const String& inProperty, const String& inTarget) -> bool
-            {
-                if (inProperty.equals(inTarget))
-                {
-                    return true;
-                }
-
-                if (inProperty.equals(PADDING_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(PADDING_TOP_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_BOTTOM_ATTRIBUTE_NAME) ||
-                           inTarget.equals(PADDING_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(MARGIN_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(MARGIN_TOP_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(MARGIN_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(MARGIN_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(GAP_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(GAP_TOP_ATTRIBUTE_NAME) || inTarget.equals(GAP_RIGHT_ATTRIBUTE_NAME) ||
-                           inTarget.equals(GAP_BOTTOM_ATTRIBUTE_NAME) || inTarget.equals(GAP_LEFT_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_WIDTH_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_COLOR_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_TOP_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_RIGHT_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_BOTTOM_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_LEFT_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                if (inProperty.equals(BORDER_ATTRIBUTE_NAME))
-                {
-                    return inTarget.equals(BORDER_TOP_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_WIDTH_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_TOP_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_RIGHT_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_BOTTOM_COLOR_ATTRIBUTE_NAME) ||
-                           inTarget.equals(BORDER_LEFT_COLOR_ATTRIBUTE_NAME);
-                }
-
-                return false;
-            };
-
-            return contains(inProperty, inTarget);
         }
 
         bool Style::hasParent() const
@@ -975,6 +1274,7 @@ namespace Chicane
         {
             overflowX.refresh();
             overflowY.refresh();
+            escape.refresh();
 
             if (overflowX.get() == StyleOverflow::Visible && overflowY.get() != StyleOverflow::Visible)
             {
@@ -1042,11 +1342,11 @@ namespace Chicane
             const String colorRaw = parseText(background.color.getRaw());
             const String imageRaw = parseText(background.image.getRaw());
 
-            if (StyleGradient::isDeclaration(imageRaw))
+            if (StyleGradient::sIsDeclaration(imageRaw))
             {
                 background.gradients = parseGradients(imageRaw);
             }
-            else if (StyleGradient::isDeclaration(colorRaw))
+            else if (StyleGradient::sIsDeclaration(colorRaw))
             {
                 background.gradients = parseGradients(colorRaw);
             }
@@ -1098,7 +1398,7 @@ namespace Chicane
 
         Vec2 Style::getTransformOrigin() const
         {
-            return getTransformOrigin(hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
+            return getTransformOrigin(hasParent() ? m_parent->getBorderSize() : Vec2::sZero());
         }
 
         Vec2 Style::getTransformOrigin(const Vec2& inBox) const
@@ -1156,7 +1456,7 @@ namespace Chicane
                 return result;
             }
 
-            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::sZero();
 
             for (const String& block : splitOneliner(value))
             {
@@ -1245,7 +1545,7 @@ namespace Chicane
 
             if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             std::vector<String> tokens = value.split(METHOD_PARAMS_SEPARATOR);
@@ -1257,10 +1557,10 @@ namespace Chicane
 
             if (tokens.empty())
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
-            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::Zero();
+            Vec2 selfBox = hasParent() ? m_parent->getBorderSize() : Vec2::sZero();
 
             const float x = parseSize(tokens.at(0).trim(), SizeDirection::Horizontal, &selfBox);
             const float y =
@@ -1302,7 +1602,7 @@ namespace Chicane
 
             if (value.isEmpty() || value.equals(TRANSFORM_TYPE_NONE))
             {
-                return Vec2::One();
+                return Vec2::sOne();
             }
 
             auto parseFactor = [this](const String& inFactor, SizeDirection inDirection) -> float
@@ -1351,12 +1651,12 @@ namespace Chicane
                 return {factor, factor};
             }
 
-            return Vec2::One();
+            return Vec2::sOne();
         }
 
         Vec2 Style::parseTransformOrigin(const String& inValue) const
         {
-            return parseTransformOrigin(inValue, hasParent() ? m_parent->getBorderSize() : Vec2::Zero());
+            return parseTransformOrigin(inValue, hasParent() ? m_parent->getBorderSize() : Vec2::sZero());
         }
 
         Vec2 Style::parseTransformOrigin(const String& inValue, const Vec2& inBox) const
@@ -1593,7 +1893,7 @@ namespace Chicane
 
         StyleGradient::List Style::parseGradients(const String& inValue) const
         {
-            return StyleGradient::parseList(
+            return StyleGradient::sParseList(
                 parseText(inValue),
                 [this](const String& inColor) { return parseColor(inColor); }
             );
@@ -1603,7 +1903,7 @@ namespace Chicane
         {
             if (!inBox)
             {
-                return Vec2::Zero();
+                return Vec2::sZero();
             }
 
             Vec2 size = inBox->getInnerLayoutSize();
@@ -2056,8 +2356,9 @@ namespace Chicane
                 {
                     bool bHasDurationToken = false;
 
-                    for (const String& token : splitOneliner(items.at(0)))
+                    for (const String& raw : splitOneliner(items.at(0)))
                     {
+                        const String token = parseText(raw);
                         if (isTime(token))
                         {
                             if (!bHasDurationToken)
@@ -2134,14 +2435,14 @@ namespace Chicane
 
             if (bHasName)
             {
-                const String name = inProperties.at(ANIMATION_NAME_ATTRIBUTE_NAME).trim();
+                const String name = parseText(inProperties.at(ANIMATION_NAME_ATTRIBUTE_NAME)).trim();
 
                 animation.name = name.equals(ANIMATION_NAME_NONE) ? "" : name;
             }
 
             if (bHasDuration)
             {
-                animation.duration = parseTime(inProperties.at(ANIMATION_DURATION_ATTRIBUTE_NAME));
+                animation.duration = parseTime(parseText(inProperties.at(ANIMATION_DURATION_ATTRIBUTE_NAME)));
             }
 
             if (bHasEasing)
@@ -2151,7 +2452,7 @@ namespace Chicane
 
             if (bHasDelay)
             {
-                animation.delay = parseTime(inProperties.at(ANIMATION_DELAY_ATTRIBUTE_NAME));
+                animation.delay = parseTime(parseText(inProperties.at(ANIMATION_DELAY_ATTRIBUTE_NAME)));
             }
 
             if (bHasIterations)

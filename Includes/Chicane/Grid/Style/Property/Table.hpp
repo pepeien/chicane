@@ -17,14 +17,14 @@ namespace Chicane
         public:
             static constexpr inline const std::size_t COUNT = static_cast<std::size_t>(StylePropertyId::Count);
 
-            static constexpr inline const std::size_t VALUE_COUNT = 64;
+            static constexpr inline const std::size_t VALUE_COUNT = 65;
 
         public:
-            static const StylePropertyEntry& get(StylePropertyId inId);
+            static const StylePropertyEntry& sGet(StylePropertyId inId);
 
-            static bool find(const String& inName, StylePropertyId& outId);
+            static bool sFind(const String& inName, StylePropertyId& outId);
 
-            static std::size_t offset(StylePropertyId inId);
+            static std::size_t sOffset(StylePropertyId inId);
         };
     }
 }

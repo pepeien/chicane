@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL.h>
 
-#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Instance.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
 
 namespace Chicane
@@ -26,7 +26,7 @@ namespace Chicane
 
     void Controller::activate()
     {
-        Application::getInstance().setController(this);
+        Instance::sInstance().setController(this);
 
         onActivation();
     }
@@ -173,7 +173,7 @@ namespace Chicane
 
             if (!SDL_OpenGamepad(inId))
             {
-                throw std::runtime_error(String::sprint("Failed to open the [%d] gamepad", inId));
+                throw std::runtime_error(String::sSprint("Failed to open the [%d] gamepad", inId));
             }
         }
 
@@ -269,7 +269,7 @@ namespace Chicane
 
     void Controller::setupEvents()
     {
-        Application::getInstance().getWindow()->watchEvent(
+        Instance::sInstance().getWindow()->watchEvent(
             [this](WindowEvent inEvent)
             {
                 if (!isAttached())

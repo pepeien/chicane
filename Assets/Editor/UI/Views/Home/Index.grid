@@ -1,0 +1,74 @@
+<View path="home" class="home --{{ theme }}">
+    <Editor::Header
+        theme="{{ theme }}"
+        viewportTabState="{{ viewportTabState }}"
+        assetsTabState="{{ assetsTabState }}"
+        onWorkspaceViewport="{{ onWorkspaceViewport }}"
+        onWorkspaceAssets="{{ onWorkspaceAssets }}"
+    />
+    <Editor::Console />
+    <Dock dir:if="{{ bIsViewportWorkspace }}" class="home__content">
+        <DockPanel isGrabbable="false">
+            <Editor::Toolbar
+                orientation="{{ orientation }}"
+                translateState="{{ translateState }}"
+                rotateState="{{ rotateState }}"
+                scaleState="{{ scaleState }}"
+                onTrackSave="{{ onTrackSave }}"
+                onGizmoTranslate="{{ onGizmoTranslate }}"
+                onGizmoRotate="{{ onGizmoRotate }}"
+                onGizmoScale="{{ onGizmoScale }}"
+                onSpawn="{{ onSpawn }}"
+            />
+            <Editor::Telemetry />
+            <Viewport />
+        </DockPanel>
+        <DockPanel side="left" size="15%" handle="outlinerHeader">
+            <Editor::Outliner
+                onItemSelection="{{ onItemSelection }}"
+                onItemToggle="{{ onItemToggle }}"
+                onItemEdit="{{ onItemEdit }}"
+                onItemIdInput="{{ onItemIdInput }}"
+                onItemIdCommit="{{ onItemIdCommit }}"
+            />
+        </DockPanel>
+        <DockPanel side="right" size="20%" handle="attributesHeader">
+            <Editor::Attributes
+                onAttributeCommit="{{ onAttributeCommit }}"
+            />
+        </DockPanel>
+        <DockPanel side="bottom" size="35%" handle="explorerHeader">
+            <Editor::Explorer
+                orientation="{{ orientation }}"
+                onFolder="{{ onExplorerFolder }}"
+                onAsset="{{ onExplorerAsset }}"
+                onAssetDrop="{{ onExplorerAssetDrop }}"
+            />
+        </DockPanel>
+    </Dock>
+    <Dock dir:if="{{ bIsAssetsWorkspace }}" class="home__content">
+        <DockPanel isGrabbable="false" handle="assetManagerHeader">
+            <Editor::AssetManager
+                selectedFolderPath="{{ selectedFolderPath }}"
+                selectedAssetName="{{ selectedAssetName }}"
+            />
+        </DockPanel>
+        <DockPanel side="left" size="18%" handle="explorerHeader">
+            <Editor::Explorer
+                orientation="{{ orientation }}"
+                onFolder="{{ onExplorerFolder }}"
+                onAsset="{{ onExplorerAsset }}"
+                onAssetDrop="{{ onExplorerAssetDrop }}"
+            />
+        </DockPanel>
+        <DockPanel side="right" size="15%" handle="outlinerHeader">
+            <Editor::Outliner
+                onItemSelection="{{ onItemSelection }}"
+                onItemToggle="{{ onItemToggle }}"
+                onItemEdit="{{ onItemEdit }}"
+                onItemIdInput="{{ onItemIdInput }}"
+                onItemIdCommit="{{ onItemIdCommit }}"
+            />
+        </DockPanel>
+    </Dock>
+</View>

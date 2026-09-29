@@ -11,6 +11,10 @@ namespace Chicane
     struct CHICANE_CORE Bounds3D
     {
     public:
+        static Bounds3D sBox(float inSize);
+        static Bounds3D sBox(const Vec3& inSize);
+
+    public:
         Bounds3D(const Vertex::List& inVertices);
         Bounds3D();
 
@@ -35,6 +39,8 @@ namespace Chicane
         void add(const Vertex::List& inVertices);
 
         void transform(const Mat4& inModel);
+
+        bool isEmpty() const;
 
     private:
         void refreshCorners(Vertex::List& outValue, const Vec3& inMin, const Vec3& inMax) const;

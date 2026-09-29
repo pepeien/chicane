@@ -1,10 +1,13 @@
 #pragma once
 
 #include <atomic>
+#include <cstdint>
+#include <functional>
 #include <memory>
 
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Script/Bus.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
 
@@ -17,6 +20,8 @@ namespace Chicane
 {
     namespace Grid
     {
+        class ViewScript;
+
         CH_TYPE(Manual)
         class CHICANE_GRID View : public Container
         {
@@ -48,6 +53,13 @@ namespace Chicane
 
             // Event
             void focusOn(Component* inComponent);
+            std::uint64_t subscribe(const String& inName, std::function<void(const String&)> inCallback);
+            void unsubscribe(std::uint64_t inToken);
+            void send(const String& inName, const String& inData = {});
+            void receive(const String& inName, const String& inData);
+            void pumpEvents();
+            bool callLuaGlobal(const String& inName, const std::vector<String>& inArgs = {});
+            void loadViewScript(const FileSystem::Path& inTemplate);
 
             // Hierarchy
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
@@ -59,7 +71,7 @@ namespace Chicane
             void collectDrawables(std::vector<Component*>& outComponents);
 
         protected:
-            static void appendDrawables(Component* inComponent, std::vector<Component*>& outComponents);
+            static void sAppendDrawables(Component* inComponent, std::vector<Component*>& outComponents);
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
             void handle(const WindowEvent& inEvent);
@@ -85,6 +97,10 @@ namespace Chicane
             std::atomic<WindowCursor>       m_pointer;
 
             std::vector<const Component*>   m_roundedAncestors;
+
+            // Script
+            Script::Bus                     m_bus;
+            std::unique_ptr<ViewScript>     m_viewScript;
         };
     }
 }

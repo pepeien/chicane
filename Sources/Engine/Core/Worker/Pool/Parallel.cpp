@@ -4,7 +4,7 @@ namespace Chicane
 {
     static thread_local bool g_bWorkerPoolParallel = false;
 
-    bool WorkerPoolParallel::isWorker()
+    bool WorkerPoolParallel::sIsWorker()
     {
         return g_bWorkerPoolParallel;
     }

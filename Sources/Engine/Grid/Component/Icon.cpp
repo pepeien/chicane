@@ -37,10 +37,10 @@ namespace Chicane
             : Svg(inNode),
               m_nameBinding(getAttribute(NAME_ATTRIBUTE_NAME)),
               m_sourceBinding(getAttribute(SOURCE_ATTRIBUTE_NAME)),
-              m_resolvedName(String::empty()),
+              m_resolvedName(String::sEmpty()),
               m_usageAttributes(m_attributes)
         {
-            importStyleFile("Assets/Engine/UI/Components/Icon.decal");
+            importStyleFile("Assets/Engine/UI/Components/Icon/Index.decal");
 
             refreshSource();
         }

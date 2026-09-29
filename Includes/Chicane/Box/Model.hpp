@@ -29,9 +29,9 @@ namespace Chicane
             static constexpr inline const char* SPHERE_REFERENCE  = "Sphere_Body";
 
         public:
-            static ModelVendor parseVendor(const String& inValue);
-            static const String& getVendorExtension(ModelVendor inValue);
-            static const Model* getDefault();
+            static ModelVendor sParseVendor(const String& inValue);
+            static const String& sGetVendorExtension(ModelVendor inValue);
+            static const Model* sGetDefault();
 
         public:
             Model(const FileSystem::Path& inFilepath);
@@ -47,7 +47,7 @@ namespace Chicane
             void setData(const ModelRaw& inData);
             void setCooked(const ModelParsed::Map& inData);
 
-            static void generateTangents(ModelParsed& outModel);
+            static void sGenerateTangents(ModelParsed& outModel);
 
             const ModelParsed& getModel(const String& inId) const;
 

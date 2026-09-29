@@ -13,12 +13,12 @@ namespace Chicane
               checkState(STATE_IDLE),
               m_bIsEdited(false)
         {
-            load("Assets/Engine/UI/Components/Button/Check.grid", "Assets/Engine/UI/Components/Button/Check.decal");
-        }
+            load(
+                "Assets/Engine/UI/Components/Button/Check/Index.grid",
+                "Assets/Engine/UI/Components/Button/Check/Index.decal"
+            );
 
-        bool ButtonCheck::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool ButtonCheck::onEvent(const WindowEvent& inEvent)

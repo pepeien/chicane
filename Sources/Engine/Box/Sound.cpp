@@ -58,13 +58,13 @@ namespace Chicane
                 return;
             }
 
-            const std::unique_ptr<AssetPreview> preview = AssetPreview::createFromSound(getFilepath(), m_data);
+            const std::unique_ptr<AssetPreview> preview = AssetPreview::sCreateFromSound(getFilepath(), m_data);
             if (!preview || !preview->image)
             {
                 return;
             }
 
-            AssetPreview::write(getXML(), AssetType::Sound, *preview->image);
+            AssetPreview::sWrite(getXML(), AssetType::Sound, *preview->image);
         }
     }
 }

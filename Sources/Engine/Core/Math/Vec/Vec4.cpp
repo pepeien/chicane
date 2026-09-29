@@ -4,6 +4,6 @@ namespace Chicane
 {
     String Vec4::toString() const
     {
-        return String::sprint("[%.2f, %.2f, %.2f, %2f]", x, y, z, w);
+        return String::sSprint("[%.2f, %.2f, %.2f, %2f]", x, y, z, w);
     }
 }

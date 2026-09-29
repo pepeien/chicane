@@ -15,7 +15,8 @@ namespace Chicane
             Hovered  = 1 << 0,
             Focused  = 1 << 1,
             Dragging = 1 << 2,
-            Culled   = 1 << 3
+            Culled   = 1 << 3,
+            Selected = 1 << 4
         };
 
         inline constexpr ComponentStatus operator|(ComponentStatus inLeft, ComponentStatus inRight)
@@ -50,6 +51,11 @@ namespace Chicane
         inline constexpr bool has(ComponentStatus inStatus, ComponentStatus inFlag)
         {
             return (inStatus & inFlag) != ComponentStatus::None;
+        }
+
+        inline constexpr bool hasAll(ComponentStatus inStatus, ComponentStatus inFlags)
+        {
+            return (inStatus & inFlags) == inFlags;
         }
     }
 

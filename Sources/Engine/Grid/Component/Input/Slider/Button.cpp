@@ -27,20 +27,17 @@ namespace Chicane
               step(0.0f),
               percentage(0.0f),
               precision(3),
-              label(String::empty()),
-              valueText(String::empty()),
+              label(String::sEmpty()),
+              valueText(String::sEmpty()),
               m_bIsSliding(false),
               m_bIsEdited(false)
         {
             load(
-                "Assets/Engine/UI/Components/Input/Slider/Button.grid",
-                "Assets/Engine/UI/Components/Input/Slider/Button.decal"
+                "Assets/Engine/UI/Components/Input/Slider/Button/Index.grid",
+                "Assets/Engine/UI/Components/Input/Slider/Button/Index.decal"
             );
-        }
 
-        bool InputButtonSlider::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputButtonSlider::onEvent(const WindowEvent& inEvent)

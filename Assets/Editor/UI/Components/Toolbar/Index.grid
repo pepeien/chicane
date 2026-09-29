@@ -1,0 +1,58 @@
+<Container class="toolbar --{{ orientation }}">
+    <Container class="toolbar__items">
+        <Button id="toolbarSave" class="toolbar__item --idle" onClick="{{ onTrackSave() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="FloppyDisk" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="FloppyDisk" class="toolbar__icon --fill"/>
+            <Tooltip title="Save">
+                <Text>Save the current scene changes</Text>
+            </Tooltip>
+        </Button>
+    </Container>
+    <Container class="toolbar__items">
+        <Container class="toolbar__add">
+            <Button id="toolbarAdd" class="toolbar__item --{{ addState }}" onClick="{{ onAddToggle() }}">
+                <Icon source="Assets/Editor/UI/Icons/Regular" name="Plus" class="toolbar__icon --regular"/>
+                <Icon source="Assets/Editor/UI/Icons/Fill" name="Plus" class="toolbar__icon --fill"/>
+                <Tooltip title="Add">
+                    <Text>Add a new object to the scene</Text>
+                </Tooltip>
+            </Button>
+            <Container class="toolbar__add-list header-menu__list" dir:if="{{ isAddOpen }}">
+                <Editor::HeaderMenu dir:for="menu : menus" />
+            </Container>
+        </Container>
+    </Container>
+    <Container class="toolbar__items">
+        <Button id="toolbarMove" class="toolbar__item --{{ translateState }}" onClick="{{ onGizmoTranslate() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOutCardinal" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOutCardinal" class="toolbar__icon --fill"/>
+            <Tooltip title="Move">
+                <Text>Move the selected items</Text>
+            </Tooltip>
+        </Button>
+        <Button id="toolbarRotate" class="toolbar__item --{{ rotateState }}" onClick="{{ onGizmoRotate() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowClockwise" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowClockwise" class="toolbar__icon --fill"/>
+            <Tooltip title="Rotate">
+                <Text>Rotate the selected items</Text>
+            </Tooltip>
+        </Button>
+        <Button id="toolbarScale" class="toolbar__item --{{ scaleState }}" onClick="{{ onGizmoScale() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="ArrowsOut" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="ArrowsOut" class="toolbar__icon --fill"/>
+            <Tooltip title="Scale">
+                <Text>Scale the selected items</Text>
+            </Tooltip>
+        </Button>
+    </Container>
+    <Container class="toolbar__items">
+        <Button id="toolbarSettings" class="toolbar__item --{{ settingsState }}" onClick="{{ onSettingsToggle() }}">
+            <Icon source="Assets/Editor/UI/Icons/Regular" name="Gear" class="toolbar__icon --regular"/>
+            <Icon source="Assets/Editor/UI/Icons/Fill" name="Gear" class="toolbar__icon --fill"/>
+            <Tooltip title="Settings">
+                <Text>Settings to the viewport</Text>
+            </Tooltip>
+        </Button>
+        <Editor::ViewportSettings dir:if="{{ isSettingsOpen }}" isOpen="{{ isSettingsOpen }}" onClose="{{ closeSettings() }}" />
+    </Container>
+</Container>

@@ -29,34 +29,31 @@ namespace Chicane
               lowPercent(0.0f),
               spanPercent(100.0f),
               precision(3),
-              lowText(String::empty()),
-              highText(String::empty()),
-              m_drag(Drag::None),
+              lowText(String::sEmpty()),
+              highText(String::sEmpty()),
+              m_drag(InputRangeSliderDrag::None),
               m_spanWidth(0.0f),
               m_grabOffset(0.0f),
               m_bIsEdited(false)
         {
             load(
-                "Assets/Engine/UI/Components/Input/Slider/Range.grid",
-                "Assets/Engine/UI/Components/Input/Slider/Range.decal"
+                "Assets/Engine/UI/Components/Input/Slider/Range/Index.grid",
+                "Assets/Engine/UI/Components/Input/Slider/Range/Index.decal"
             );
-        }
 
-        bool InputRangeSlider::isFocusable() const
-        {
-            return true;
+            setAttribute(FOCUSABLE_ATTRIBUTE_NAME, "true");
         }
 
         bool InputRangeSlider::onEvent(const WindowEvent& inEvent)
         {
             if (inEvent.type == WindowEventType::MouseButtonUp)
             {
-                if (m_drag == Drag::None)
+                if (m_drag == InputRangeSliderDrag::None)
                 {
                     return false;
                 }
 
-                m_drag = Drag::None;
+                m_drag = InputRangeSliderDrag::None;
 
                 return true;
             }
@@ -82,12 +79,12 @@ namespace Chicane
                 }
 
                 m_drag = hitDrag(event.location);
-                if (m_drag == Drag::None)
+                if (m_drag == InputRangeSliderDrag::None)
                 {
                     return false;
                 }
 
-                if (m_drag == Drag::Span)
+                if (m_drag == InputRangeSliderDrag::Span)
                 {
                     Component*     track   = SliderMath::findChildId(this, "rangeTrack");
                     const Bounds2D box     = track ? track->getDrawBounds() : getDrawBounds();
@@ -105,7 +102,7 @@ namespace Chicane
 
             if (inEvent.type == WindowEventType::MouseMotion)
             {
-                if (m_drag == Drag::None || !inEvent.data)
+                if (m_drag == InputRangeSliderDrag::None || !inEvent.data)
                 {
                     return false;
                 }
@@ -163,13 +160,13 @@ namespace Chicane
 
             case Input::KeyboardButton::Home:
                 m_spanWidth = high - low;
-                applyRange(min, min + m_spanWidth, Drag::Span);
+                applyRange(min, min + m_spanWidth, InputRangeSliderDrag::Span);
 
                 return true;
 
             case Input::KeyboardButton::End:
                 m_spanWidth = high - low;
-                applyRange(max - m_spanWidth, max, Drag::Span);
+                applyRange(max - m_spanWidth, max, InputRangeSliderDrag::Span);
 
                 return true;
 
@@ -187,12 +184,12 @@ namespace Chicane
 
         void InputRangeSlider::setLow(float inValue)
         {
-            applyRange(inValue, high, Drag::Low);
+            applyRange(inValue, high, InputRangeSliderDrag::Low);
         }
 
         void InputRangeSlider::setHigh(float inValue)
         {
-            applyRange(low, inValue, Drag::High);
+            applyRange(low, inValue, InputRangeSliderDrag::High);
         }
 
         void InputRangeSlider::commitLowText()
@@ -264,16 +261,16 @@ namespace Chicane
             Component*     track = SliderMath::findChildId(this, "rangeTrack");
             const Bounds2D box   = track ? track->getDrawBounds() : getDrawBounds();
 
-            if (m_drag == Drag::Span)
+            if (m_drag == InputRangeSliderDrag::Span)
             {
                 const float pointer = SliderMath::fromLocation(inLocation, box, min, max, 0.0f);
-                applyRange(pointer - m_grabOffset, pointer - m_grabOffset + m_spanWidth, Drag::Span);
+                applyRange(pointer - m_grabOffset, pointer - m_grabOffset + m_spanWidth, InputRangeSliderDrag::Span);
 
                 return;
             }
 
             const float next = SliderMath::fromLocation(inLocation, box, min, max, step);
-            if (m_drag == Drag::High)
+            if (m_drag == InputRangeSliderDrag::High)
             {
                 setHigh(next);
 
@@ -283,7 +280,7 @@ namespace Chicane
             setLow(next);
         }
 
-        void InputRangeSlider::applyRange(float inLow, float inHigh, Drag inMode)
+        void InputRangeSlider::applyRange(float inLow, float inHigh, InputRangeSliderDrag inMode)
         {
             float nextLow  = SliderMath::snapValue(inLow, min, max, step);
             float nextHigh = SliderMath::snapValue(inHigh, min, max, step);
@@ -293,19 +290,19 @@ namespace Chicane
             }
 
             const float minimum = gap();
-            if (inMode == Drag::Span)
+            if (inMode == InputRangeSliderDrag::Span)
             {
                 const float width = std::max(minimum, m_spanWidth);
                 nextLow           = SliderMath::clampValue(nextLow, min, max - width);
                 nextHigh          = SliderMath::snapValue(nextLow + width, min, max, step);
                 nextLow           = SliderMath::snapValue(nextHigh - width, min, max, step);
             }
-            else if (inMode == Drag::High)
+            else if (inMode == InputRangeSliderDrag::High)
             {
                 nextHigh = std::max(nextHigh, SliderMath::snapValue(low + minimum, min, max, step));
                 nextLow  = low;
             }
-            else if (inMode == Drag::Low)
+            else if (inMode == InputRangeSliderDrag::Low)
             {
                 nextLow  = std::min(nextLow, SliderMath::snapValue(high - minimum, min, max, step));
                 nextHigh = high;
@@ -336,7 +333,7 @@ namespace Chicane
         {
             const float amount = SliderMath::stepSize(step, min, max) * static_cast<float>(inSteps) * inScale;
             m_spanWidth        = high - low;
-            applyRange(low + amount, high + amount, Drag::Span);
+            applyRange(low + amount, high + amount, InputRangeSliderDrag::Span);
         }
 
         void InputRangeSlider::commit()
@@ -377,7 +374,7 @@ namespace Chicane
             }
         }
 
-        InputRangeSlider::Drag InputRangeSlider::hitDrag(const Vec2& inLocation) const
+        InputRangeSliderDrag InputRangeSlider::hitDrag(const Vec2& inLocation) const
         {
             const Component* handleLow  = SliderMath::findChildId(this, "rangeHandleLow");
             const Component* handleHigh = SliderMath::findChildId(this, "rangeHandleHigh");
@@ -393,33 +390,36 @@ namespace Chicane
                 const float    lowMid  = (lowBox.left + lowBox.right) * 0.5f;
                 const float    highMid = (highBox.left + highBox.right) * 0.5f;
 
-                return std::fabs(inLocation.x - lowMid) <= std::fabs(inLocation.x - highMid) ? Drag::Low : Drag::High;
+                return std::fabs(inLocation.x - lowMid) <= std::fabs(inLocation.x - highMid)
+                           ? InputRangeSliderDrag::Low
+                           : InputRangeSliderDrag::High;
             }
 
             if (bHitLow)
             {
-                return Drag::Low;
+                return InputRangeSliderDrag::Low;
             }
 
             if (bHitHigh)
             {
-                return Drag::High;
+                return InputRangeSliderDrag::High;
             }
 
             if (span && span->containsPoint(inLocation))
             {
-                return Drag::Span;
+                return InputRangeSliderDrag::Span;
             }
 
             if (track && !track->containsPoint(inLocation))
             {
-                return Drag::None;
+                return InputRangeSliderDrag::None;
             }
 
             const Bounds2D box  = track ? track->getDrawBounds() : getDrawBounds();
             const float    next = SliderMath::fromLocation(inLocation, box, min, max, 0.0f);
 
-            return std::fabs(next - low) <= std::fabs(next - high) ? Drag::Low : Drag::High;
+            return std::fabs(next - low) <= std::fabs(next - high) ? InputRangeSliderDrag::Low
+                                                                   : InputRangeSliderDrag::High;
         }
 
         bool InputRangeSlider::isEditing() const

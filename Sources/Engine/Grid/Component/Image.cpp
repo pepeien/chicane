@@ -72,8 +72,8 @@ namespace Chicane
 
         void Image::refreshSize()
         {
-            const bool bIsWidthAuto  = m_style.width.isAuto();
-            const bool bIsHeightAuto = m_style.height.isAuto();
+            const bool bIsWidthAuto  = style.width.isAuto();
+            const bool bIsHeightAuto = style.height.isAuto();
 
             Container::refreshSize();
 
@@ -210,19 +210,19 @@ namespace Chicane
         {
             if (m_previewImage)
             {
-                m_style.background.image.setRaw(m_previewId);
+                style.background.image.setRaw(m_previewId);
 
                 return;
             }
 
             if (!m_texture)
             {
-                m_style.background.image.setRaw("");
+                style.background.image.setRaw("");
 
                 return;
             }
 
-            m_style.background.image.setRaw(m_texture->getFrameId(m_frame));
+            style.background.image.setRaw(m_texture->getFrameId(m_frame));
         }
 
         void Image::advanceFrame(float inDeltaTime)

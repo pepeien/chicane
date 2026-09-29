@@ -67,7 +67,7 @@ namespace Chicane
             }
 
             const Time::Point now = Time::Clock::now();
-            float             dt  = Time::seconds(now - m_lastInputTime);
+            float             dt  = Time::sSeconds(now - m_lastInputTime);
             m_lastInputTime       = now;
             if (dt <= 0.0f || dt > 0.25f)
             {
@@ -81,7 +81,7 @@ namespace Chicane
 
         if (!bHasMove)
         {
-            m_physics->setHorizontalVelocity(Vec3::Zero());
+            m_physics->setHorizontalVelocity(Vec3::sZero());
             m_bMoving = false;
 
             return;

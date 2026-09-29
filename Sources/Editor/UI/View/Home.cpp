@@ -9,13 +9,20 @@
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
+#include <Chicane/Core/Input/Keyboard/Button.hpp>
+#include <Chicane/Core/Input/Mouse/Button.hpp>
+#include <Chicane/Core/Input/Mouse/Motion/Event.hpp>
+#include <Chicane/Core/Input/Status.hpp>
 #include <Chicane/Core/Math/Rotator.hpp>
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Core/Reflection/Enum/Registry.hpp>
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
 #include <Chicane/Core/Reflection/Type/Info.hpp>
 #include <Chicane/Core/Reflection/Type/Registry.hpp>
-#include <Chicane/Runtime/Application.hpp>
+#include <Chicane/Core/Window.hpp>
+#include <Chicane/Grid/Component/Viewport.hpp>
+#include <Chicane/Runtime/Instance.hpp>
+#include <Chicane/Runtime/Scene/Trace/Request.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 #include <Chicane/Runtime/Scene/Actor/Light.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn.hpp>
@@ -36,17 +43,21 @@
 #include "Editor/Viewer/Scene.hpp"
 #include "Editor/UI/Component/Asset/Manager.hpp"
 #include "Editor/UI/Component/Attributes.hpp"
+#include "Editor/UI/Component/Console.hpp"
 #include "Editor/UI/Component/Explorer.hpp"
 #include "Editor/UI/Component/Header.hpp"
 #include "Editor/UI/Component/Outliner.hpp"
 #include "Editor/UI/Component/Toolbar.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
+#include <SDL3/SDL.h>
+
 namespace Editor
 {
     static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
     static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
     static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
+    static constexpr inline const char* OUTLINER_SELECTED         = "selected";
 
     static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
     static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
@@ -92,7 +103,7 @@ namespace Editor
 
     static const Chicane::ReflectionEnumInfo* findEnum(const Chicane::String& inTypeName)
     {
-        Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::getInstance();
+        Chicane::ReflectionEnumRegistry& registry = Chicane::ReflectionEnumRegistry::sInstance();
         if (const Chicane::ReflectionEnumInfo* found = registry.find(inTypeName))
         {
             return found;
@@ -103,7 +114,7 @@ namespace Editor
 
     static Chicane::String formatVec3(const Chicane::Vec3& inValue)
     {
-        return Chicane::String::sprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
+        return Chicane::String::sSprint("%g,%g,%g", inValue.x, inValue.y, inValue.z);
     }
 
     static Chicane::Vec3 parseVec3(const Chicane::String& inValue, const Chicane::Vec3& inFallback)
@@ -155,17 +166,17 @@ namespace Editor
 
     static std::shared_ptr<Scene> editorScene()
     {
-        return Application::getInstance().getHomeScene();
+        return Application::sInstance().getHomeScene();
     }
 
     static std::shared_ptr<Scene> workspaceScene(bool bIsAssetsWorkspace)
     {
         if (bIsAssetsWorkspace)
         {
-            return Application::getInstance().getViewerScene();
+            return Application::sInstance().getViewerScene();
         }
 
-        return Application::getInstance().getHomeScene();
+        return Application::sInstance().getHomeScene();
     }
 
     static Chicane::String outlinerIcon(const Chicane::Object* inObject)
@@ -258,7 +269,7 @@ namespace Editor
             return false;
         }
 
-        for (Chicane::Component* attachment : inObject->getAttachments())
+        for (Chicane::Object* attachment : inObject->getAttachments())
         {
             if (attachment && !attachment->isTransient())
             {
@@ -284,7 +295,7 @@ namespace Editor
         const bool bIsRelative = inSpace == CoordinateSpace::Relative;
         if (ioField.name.equals("translation"))
         {
-            ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getAbsoluteTranslation();
+            ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getTranslation();
         }
         else if (ioField.name.equals("rotation"))
         {
@@ -310,7 +321,7 @@ namespace Editor
             }
             else
             {
-                inItem.setAbsoluteTranslation(inField.vector);
+                inItem.setTranslation(inField.vector);
             }
         }
         else if (inField.name.equals("rotation"))
@@ -455,7 +466,7 @@ namespace Editor
         if (accessor.isType<Chicane::FileSystem::Path>())
         {
             const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-            ioField.text                          = path ? path->toString() : Chicane::String::empty();
+            ioField.text                          = path ? path->toString() : Chicane::String::sEmpty();
 
             return;
         }
@@ -487,26 +498,38 @@ namespace Editor
           translateState(STATE_ACTIVE),
           rotateState(STATE_IDLE),
           scaleState(STATE_IDLE),
-          selectedFolderPath(Chicane::String::empty()),
-          selectedAssetName(Chicane::String::empty()),
-          m_collapsedOutlinerItems({}),
+          selectedFolderPath(Chicane::String::sEmpty()),
+          selectedAssetName(Chicane::String::sEmpty()),
+          m_activeWorkspace(WORKSPACE_VIEWPORT),
+          m_expandedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
-          m_outlinerEditId(Chicane::String::empty()),
+          m_outlinerEditId(Chicane::String::sEmpty()),
           m_coordinateSpace(CoordinateSpace::Absolute),
+          m_attributesType(nullptr),
           m_bOutlinerDirty(false),
-          m_bAttributesDirty(false)
+          m_bAttributesDirty(false),
+          m_bIsListening(nullptr),
+          m_pawnSubscription({}),
+          m_cursor(Chicane::Vec2::sZero())
     {
         import <AssetManager>();
         import <Attributes>();
+        import <Console>();
         import <Explorer>();
         import <Header>();
         import <Outliner>();
         import <Telemetry>();
         import <Toolbar>();
 
-        load("Assets/Editor/UI/Views/Home.grid", "Assets/Editor/UI/Views/Home.decal");
+        load("Assets/Editor/UI/Views/Home/Index.grid", "Assets/Editor/UI/Views/Home/Index.decal");
 
         bindScene();
+        bindController();
+    }
+
+    HomeView::~HomeView()
+    {
+        unbindController();
     }
 
     void HomeView::tick(float inDeltaTime)
@@ -546,8 +569,104 @@ namespace Editor
             scene->watchComponents([this](std::vector<Chicane::Component*>) { requestOutlinerRebuild(); });
         };
 
-        bind(Application::getInstance().getHomeScene());
-        bind(Application::getInstance().getViewerScene());
+        bind(Application::sInstance().getHomeScene());
+        bind(Application::sInstance().getViewerScene());
+    }
+
+    void HomeView::bindController()
+    {
+        unbindController();
+
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
+        if (!controller)
+        {
+            return;
+        }
+
+        m_bIsListening                  = std::make_shared<bool>(true);
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        m_pawnSubscription = controller->watchAttachment(
+            [this, listening](Chicane::APawn* inPawn)
+            {
+                if (!listening || !*listening || !inPawn)
+                {
+                    return;
+                }
+
+                bindInput(Chicane::Instance::sInstance().getController());
+            }
+        );
+    }
+
+    void HomeView::unbindController()
+    {
+        if (m_bIsListening)
+        {
+            *m_bIsListening = false;
+        }
+
+        m_pawnSubscription.complete();
+    }
+
+    void HomeView::bindInput(Chicane::Controller* inController)
+    {
+        if (!inController)
+        {
+            return;
+        }
+
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        inController->bindEvent(
+            [this, listening](const Chicane::Input::MouseMotionEvent& inEvent)
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                m_cursor = inEvent.location;
+            }
+        );
+        inController->bindEvent(
+            Chicane::Input::MouseButton::Left,
+            Chicane::Input::Status::Pressed,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                pickAt(m_cursor);
+            }
+        );
+
+        inController->bindEvent(
+            Chicane::Input::KeyboardButton::Delete,
+            Chicane::Input::Status::Pressed,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+                if (window && window->isTextInputActive())
+                {
+                    return;
+                }
+
+                if (m_editingOutlinerItem)
+                {
+                    return;
+                }
+
+                onItemDelete();
+            }
+        );
     }
 
     void HomeView::onAssetImport()
@@ -588,11 +707,92 @@ namespace Editor
         theme = inValue;
     }
 
+    bool HomeView::isViewportAt(const Chicane::Vec2& inLocation) const
+    {
+        Chicane::Grid::Component* hit = getHitAt(inLocation);
+        for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
+        {
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
+            {
+                return true;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    bool HomeView::hasSelectedItem() const
+    {
+        return selectedItem != nullptr;
+    }
+
+    void HomeView::pickAt(const Chicane::Vec2& inLocation)
+    {
+        if (!bIsViewportWorkspace || !isViewportAt(inLocation))
+        {
+            return;
+        }
+
+        if ((SDL_GetModState() & SDL_KMOD_ALT) != 0)
+        {
+            return;
+        }
+
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+        if (!window || window->isFocused() || window->isTextInputActive())
+        {
+            return;
+        }
+
+        std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
+        if (!scene)
+        {
+            return;
+        }
+
+        const std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
+        if (cameras.empty())
+        {
+            return;
+        }
+
+        Chicane::SceneTraceRequest trace;
+        if (!scene->trace(
+                trace,
+                inLocation,
+                Chicane::Instance::sInstance().getScreenViewportRect(),
+                cameras.back()
+            ))
+        {
+            return;
+        }
+
+        if (Gizmo* gizmo = scene->getGizmo())
+        {
+            if (gizmo->isDragging() || gizmo->hitsHandle(trace))
+            {
+                return;
+            }
+        }
+
+        onItemSelection(scene->pickObject(trace));
+    }
+
     void HomeView::onItemSelection(Chicane::Object* inItem)
     {
         if (m_editingOutlinerItem && m_editingOutlinerItem != inItem)
         {
             commitOutlinerEdit(false);
+        }
+
+        if (selectedItem == inItem)
+        {
+            return;
         }
 
         selectedItem    = inItem;
@@ -603,8 +803,18 @@ namespace Editor
             scene->setSelection(selectedItem);
         }
 
-        requestOutlinerRebuild();
-        requestAttributesRebuild();
+        const std::size_t expanded = m_expandedOutlinerItems.size();
+        expandOutlinerAncestors(selectedItem);
+        if (m_expandedOutlinerItems.size() != expanded)
+        {
+            requestOutlinerRebuild();
+        }
+        else
+        {
+            syncOutlinerSelection();
+        }
+
+        refreshAttributesForSelection();
     }
 
     void HomeView::onItemToggle(Chicane::Object* inItem)
@@ -614,9 +824,9 @@ namespace Editor
             return;
         }
 
-        if (m_collapsedOutlinerItems.erase(inItem) == 0)
+        if (m_expandedOutlinerItems.erase(inItem) == 0)
         {
-            m_collapsedOutlinerItems.insert(inItem);
+            m_expandedOutlinerItems.insert(inItem);
         }
 
         requestOutlinerRebuild();
@@ -702,23 +912,25 @@ namespace Editor
 
     void HomeView::setWorkspace(const Chicane::String& inValue)
     {
-        if (workspace.equals(inValue))
-        {
-            return;
-        }
-
         workspace            = inValue;
         bIsViewportWorkspace = workspace.equals(WORKSPACE_VIEWPORT);
         bIsAssetsWorkspace   = workspace.equals(WORKSPACE_ASSETS);
         viewportTabState     = bIsViewportWorkspace ? STATE_ACTIVE : STATE_IDLE;
         assetsTabState       = bIsAssetsWorkspace ? STATE_ACTIVE : STATE_IDLE;
 
-        if (std::shared_ptr<Scene> home = Application::getInstance().getHomeScene())
+        if (m_activeWorkspace.equals(inValue))
+        {
+            return;
+        }
+
+        m_activeWorkspace = inValue;
+
+        if (std::shared_ptr<Scene> home = Application::sInstance().getHomeScene())
         {
             home->setSelection(nullptr);
         }
 
-        if (std::shared_ptr<ViewerScene> viewer = Application::getInstance().getViewerScene())
+        if (std::shared_ptr<ViewerScene> viewer = Application::sInstance().getViewerScene())
         {
             viewer->setSelection(nullptr);
         }
@@ -728,15 +940,15 @@ namespace Editor
 
         if (bIsAssetsWorkspace)
         {
-            Application::getInstance().activateViewerScene();
+            Application::sInstance().activateViewerScene();
         }
         else
         {
-            Application::getInstance().activateHomeScene();
+            Application::sInstance().activateHomeScene();
         }
 
         requestOutlinerRebuild();
-        requestAttributesRebuild();
+        refreshAttributesForSelection();
     }
 
     void HomeView::onTrackNew()
@@ -747,7 +959,7 @@ namespace Editor
 
             onItemSelection(nullptr);
 
-            Application::getInstance().possess(scene);
+            Application::sInstance().possess(scene);
         }
     }
 
@@ -778,7 +990,7 @@ namespace Editor
 
                     onItemSelection(nullptr);
 
-                    Application::getInstance().possess(scene);
+                    Application::sInstance().possess(scene);
 
                     return;
                 }
@@ -1039,7 +1251,7 @@ namespace Editor
     void HomeView::onExplorerFolder(Chicane::String inPath)
     {
         selectedFolderPath = inPath;
-        selectedAssetName  = Chicane::String::empty();
+        selectedAssetName  = Chicane::String::sEmpty();
     }
 
     void HomeView::onExplorerAsset(Chicane::String inName)
@@ -1089,9 +1301,9 @@ namespace Editor
         std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
         if (!scene)
         {
-            m_collapsedOutlinerItems.clear();
+            m_expandedOutlinerItems.clear();
             m_editingOutlinerItem = nullptr;
-            m_outlinerEditId      = Chicane::String::empty();
+            m_outlinerEditId      = Chicane::String::sEmpty();
 
             return;
         }
@@ -1107,11 +1319,11 @@ namespace Editor
             appendOutlinerNode(actor, 0, true, live);
         }
 
-        for (auto it = m_collapsedOutlinerItems.begin(); it != m_collapsedOutlinerItems.end();)
+        for (auto it = m_expandedOutlinerItems.begin(); it != m_expandedOutlinerItems.end();)
         {
             if (live.find(*it) == live.end())
             {
-                it = m_collapsedOutlinerItems.erase(it);
+                it = m_expandedOutlinerItems.erase(it);
 
                 continue;
             }
@@ -1126,13 +1338,13 @@ namespace Editor
 
             scene->setSelection(nullptr);
 
-            rebuildAttributes();
+            refreshAttributesForSelection();
         }
 
         if (m_editingOutlinerItem && live.find(m_editingOutlinerItem) == live.end())
         {
             m_editingOutlinerItem = nullptr;
-            m_outlinerEditId      = Chicane::String::empty();
+            m_outlinerEditId      = Chicane::String::sEmpty();
         }
     }
 
@@ -1148,34 +1360,34 @@ namespace Editor
         outLive.insert(inObject);
 
         const bool bHasChildren = hasOutlinerChildren(inObject);
-        const bool bIsCollapsed = m_collapsedOutlinerItems.find(inObject) != m_collapsedOutlinerItems.end();
+        const bool bIsExpanded  = m_expandedOutlinerItems.find(inObject) != m_expandedOutlinerItems.end();
 
         if (inIsVisible)
         {
             OutlinerNode node;
-            node.item          = inObject;
-            node.label         = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
-            node.icon          = outlinerIcon(inObject);
-            node.indent        = Chicane::String::sprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
-            node.expandState   = !bHasChildren  ? OUTLINER_EXPAND_LEAF
-                                 : bIsCollapsed ? OUTLINER_EXPAND_COLLAPSED
-                                                : OUTLINER_EXPAND_EXPANDED;
-            node.selectedState = inObject == selectedItem ? "selected" : "idle";
+            node.item         = inObject;
+            node.label        = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
+            node.icon         = outlinerIcon(inObject);
+            node.indent       = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
+            node.expandState   = !bHasChildren ? OUTLINER_EXPAND_LEAF
+                                : bIsExpanded  ? OUTLINER_EXPAND_EXPANDED
+                                               : OUTLINER_EXPAND_COLLAPSED;
             node.bHasChildren  = bHasChildren;
             node.bIsLeaf       = !bHasChildren;
             node.bIsEditing    = inObject == m_editingOutlinerItem;
             node.bShowLabel    = !node.bIsEditing;
+            node.selectedState = inObject == selectedItem ? OUTLINER_SELECTED : STATE_IDLE;
             outlinerNodes.push_back(node);
         }
 
-        for (Chicane::Component* attachment : inObject->getAttachments())
+        for (Chicane::Object* attachment : inObject->getAttachments())
         {
             if (!attachment || attachment->isTransient())
             {
                 continue;
             }
 
-            appendOutlinerNode(attachment, inDepth + 1, inIsVisible && !bIsCollapsed, outLive);
+            appendOutlinerNode(attachment, inDepth + 1, inIsVisible && bIsExpanded, outLive);
         }
     }
 
@@ -1184,18 +1396,45 @@ namespace Editor
         Chicane::Object* current = inItem;
         while (current)
         {
-            if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(current))
+            if (hasOutlinerChildren(current))
             {
-                current = component->getParent();
-                if (current)
-                {
-                    m_collapsedOutlinerItems.erase(current);
-                }
-
-                continue;
+                m_expandedOutlinerItems.insert(current);
             }
 
-            break;
+            current = current->getParent();
+        }
+    }
+
+    void HomeView::syncOutlinerSelection()
+    {
+        bool bFound = selectedItem == nullptr;
+        for (OutlinerNode& node : outlinerNodes)
+        {
+            const bool            bIsSelected = node.item == selectedItem;
+            const Chicane::String next        = bIsSelected ? OUTLINER_SELECTED : STATE_IDLE;
+            if (bIsSelected)
+            {
+                bFound = true;
+            }
+
+            if (!node.selectedState.equals(next))
+            {
+                node.selectedState = next;
+            }
+        }
+
+        if (selectedItem && !bFound)
+        {
+            requestOutlinerRebuild();
+            return;
+        }
+
+        for (Chicane::Grid::Component* child : getChildrenFlat())
+        {
+            if (Outliner* outliner = dynamic_cast<Outliner*>(child))
+            {
+                outliner->syncRowSelection();
+            }
         }
     }
 
@@ -1209,7 +1448,7 @@ namespace Editor
 
         const Chicane::String id = m_outlinerEditId.trim();
         m_editingOutlinerItem    = nullptr;
-        m_outlinerEditId         = Chicane::String::empty();
+        m_outlinerEditId         = Chicane::String::sEmpty();
 
         if (!id.isEmpty() && !id.equals(item->getId()))
         {
@@ -1231,7 +1470,7 @@ namespace Editor
         if (bShouldRebuild)
         {
             requestOutlinerRebuild();
-            requestAttributesRebuild();
+            refreshAttributesForSelection();
         }
     }
 
@@ -1281,7 +1520,7 @@ namespace Editor
             return nullptr;
         }
 
-        return Chicane::ReflectionTypeRegistry::getInstance().find(inInfo.typeIndex.value());
+        return Chicane::ReflectionTypeRegistry::sInstance().find(inInfo.typeIndex.value());
     }
 
     static void pushAttributeField(AttributeGroup::List& ioGroups, AttributeField inField)
@@ -1445,7 +1684,7 @@ namespace Editor
                 if (accessor.isType<Chicane::FileSystem::Path>())
                 {
                     const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-                    field.text                            = path ? path->toString() : Chicane::String::empty();
+                    field.text                            = path ? path->toString() : Chicane::String::sEmpty();
                     field.type                            = AttributeFieldType::Asset;
                     field.kind                            = name;
                 }
@@ -1467,21 +1706,44 @@ namespace Editor
     {
         attributeFields.clear();
         attributeGroups.clear();
+        m_attributesType = selectedAttributeType();
 
+        if (!selectedItem || !m_attributesType)
+        {
+            return;
+        }
+
+        collectAttributeFields(
+            attributeGroups,
+            *selectedItem,
+            *m_attributesType,
+            *m_attributesType,
+            {},
+            {},
+            m_coordinateSpace
+        );
+        insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
+    }
+
+    const Chicane::ReflectionTypeInfo* HomeView::selectedAttributeType() const
+    {
         if (!selectedItem)
         {
-            return;
+            return nullptr;
         }
 
-        const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
-        if (!type)
+        return Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
+    }
+
+    void HomeView::refreshAttributesForSelection()
+    {
+        const Chicane::ReflectionTypeInfo* type = selectedAttributeType();
+        if (!type || type == m_attributesType)
         {
             return;
         }
 
-        collectAttributeFields(attributeGroups, *selectedItem, *type, *type, {}, {}, m_coordinateSpace);
-        insertCoordinateSpaceField(attributeGroups, m_coordinateSpace);
+        requestAttributesRebuild();
     }
 
     void HomeView::syncAttributeValues()
@@ -1492,7 +1754,7 @@ namespace Editor
         }
 
         const Chicane::ReflectionTypeInfo* type =
-            Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*selectedItem));
+            Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*selectedItem));
         if (!type)
         {
             return;
@@ -1510,11 +1772,6 @@ namespace Editor
                 syncAttributeField(*selectedItem, *type, field, m_coordinateSpace);
             }
         }
-    }
-
-    bool HomeView::hasSelectedItem() const
-    {
-        return selectedItem != nullptr;
     }
 
     CoordinateSpace HomeView::getCoordinateSpace() const

@@ -3,6 +3,7 @@
 #include <Chicane/Core/Math/Rotator.hpp>
 #include <Chicane/Core/Math/Transform/Spatial.hpp>
 #include <Chicane/Grid.hpp>
+#include <Chicane/Runtime/Scene/Object.hpp>
 
 namespace Editor
 {
@@ -40,9 +41,9 @@ namespace Editor
 
     Vec3::Vec3(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),
-          value(Chicane::Vec3::Zero())
+          value(Chicane::Vec3::sZero())
     {
-        load("Assets/Editor/UI/Components/Vec/Vec3.grid", "Assets/Editor/UI/Components/Vec/Vec3.decal");
+        load("Assets/Editor/UI/Components/Vec/Vec3/Index.grid", "Assets/Editor/UI/Components/Vec/Vec3/Index.decal");
     }
 
     void Vec3::onTick(float inDeltaTime)
@@ -148,7 +149,14 @@ namespace Editor
             const Chicane::String name = accessor.getName();
             if (name.equals("translation"))
             {
-                spatial->setAbsoluteTranslation(value);
+                if (Chicane::Object* object = dynamic_cast<Chicane::Object*>(spatial))
+                {
+                    object->setTranslation(value);
+                }
+                else
+                {
+                    spatial->setAbsoluteTranslation(value);
+                }
 
                 return;
             }

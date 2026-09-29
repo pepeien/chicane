@@ -1,5 +1,5 @@
 import Target;
-import LightInstance;
+import "Light/Instance";
 import Poly3D;
 
 [vk::binding(1, 0)] StructuredBuffer<LightInstance> gLights;

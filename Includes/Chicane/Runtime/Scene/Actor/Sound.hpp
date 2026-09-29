@@ -19,7 +19,10 @@ namespace Chicane
         void onLoad() override;
 
     public:
+        CH_FUNCTION()
         void load(const FileSystem::Path& inFilePath);
+
+        CH_FUNCTION()
         void play() const;
 
     protected:

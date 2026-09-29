@@ -17,7 +17,7 @@ namespace Chicane
         class CHICANE_BOX PreviewService
         {
         public:
-            static inline PreviewService& getInstance()
+            static inline PreviewService& sInstance()
             {
                 static PreviewService service;
 

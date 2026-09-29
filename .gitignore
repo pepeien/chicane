@@ -1,6 +1,7 @@
 # User-specific files
 *.env.*
 .[Cc]ache/*
+.luarc.json
 
 # Documentation
 .docs/*

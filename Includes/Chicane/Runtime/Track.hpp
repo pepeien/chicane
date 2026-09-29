@@ -41,6 +41,7 @@ namespace Chicane
         CHICANE_RUNTIME void applyAttributes(Object& inObject, const XmlNode& inNode);
         CHICANE_RUNTIME bool applyField(Object& inObject, const String& inName, const String& inValue);
 
+        CHICANE_RUNTIME Object* spawnObject(Scene& inScene, const XmlNode& inNode, Object* inParent);
         CHICANE_RUNTIME Actor* spawnActor(Scene& inScene, const XmlNode& inNode);
         CHICANE_RUNTIME Component* spawnComponent(Scene& inScene, const XmlNode& inNode, Object* inParent);
 

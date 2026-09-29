@@ -17,7 +17,7 @@ namespace Chicane
             if (!outDraw.mips && inData.image)
             {
                 outDraw.mips =
-                    std::make_shared<ImageMipChain>(Image::makeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
+                    std::make_shared<ImageMipChain>(Image::sMakeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
             }
 
             if (outDraw.mips && !outDraw.mips->isEmpty())
@@ -80,7 +80,7 @@ namespace Chicane
 
             if (id <= Draw::InvalidId)
             {
-                return DrawTexture::empty();
+                return DrawTexture::sEmpty();
             }
 
             return getDraw(id);
@@ -98,7 +98,7 @@ namespace Chicane
                 return draw;
             }
 
-            return DrawTexture::empty();
+            return DrawTexture::sEmpty();
         }
 
         DrawTexture* DrawTextureResource::getDrawMutable(Draw::Id inId)

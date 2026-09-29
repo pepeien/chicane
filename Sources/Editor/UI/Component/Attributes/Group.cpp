@@ -3,7 +3,7 @@
 namespace Editor
 {
     AttributeGroup::AttributeGroup()
-        : label(Chicane::String::empty()),
+        : label(Chicane::String::sEmpty()),
           fields({})
     {}
 }

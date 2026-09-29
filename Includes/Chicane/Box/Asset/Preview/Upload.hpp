@@ -14,8 +14,8 @@ namespace Chicane
         struct CHICANE_BOX PreviewUpload
         {
         public:
-            static void enqueue(const String& inReference, const Image::Instance& inImage);
-            static void drain(std::vector<PreviewUpload>& outPending);
+            static void sEnqueue(const String& inReference, const Image::Instance& inImage);
+            static void sDrain(std::vector<PreviewUpload>& outPending);
 
         public:
             String          reference;

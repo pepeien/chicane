@@ -21,7 +21,7 @@ namespace Chicane
             {FontVendor::TrueType,  "TTF"},
         };
 
-        FontVendor Font::parseVendor(const String& inValue)
+        FontVendor Font::sParseVendor(const String& inValue)
         {
             if (inValue.isEmpty())
             {
@@ -43,7 +43,7 @@ namespace Chicane
             return FontVendor::Undefined;
         }
 
-        const String& Font::getVendorExtension(FontVendor inValue)
+        const String& Font::sGetVendorExtension(FontVendor inValue)
         {
             const auto& found = EXTENSIONS.find(inValue);
 
@@ -73,14 +73,14 @@ namespace Chicane
 
         void Font::setVendor(const String& inValue)
         {
-            setVendor(parseVendor(inValue));
+            setVendor(sParseVendor(inValue));
         }
 
         void Font::setVendor(FontVendor inValue)
         {
             m_vendor = inValue;
 
-            setAttribute(VENDOR_ATTRIBUTE_NAME, getVendorExtension(m_vendor));
+            setAttribute(VENDOR_ATTRIBUTE_NAME, sGetVendorExtension(m_vendor));
         }
 
         const FontFamily& Font::getData() const
@@ -174,7 +174,7 @@ namespace Chicane
                 return;
             }
 
-            m_vendor = parseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
+            m_vendor = sParseVendor(getAttribute(VENDOR_ATTRIBUTE_NAME));
         }
 
         void Font::fetchDataFromXML()
@@ -212,13 +212,13 @@ namespace Chicane
                 label = getId();
             }
 
-            const std::unique_ptr<AssetPreview> preview = AssetPreview::createFromFont(getFilepath(), m_data, label);
+            const std::unique_ptr<AssetPreview> preview = AssetPreview::sCreateFromFont(getFilepath(), m_data, label);
             if (!preview || !preview->image)
             {
                 return;
             }
 
-            AssetPreview::write(getXML(), AssetType::Font, *preview->image);
+            AssetPreview::sWrite(getXML(), AssetType::Font, *preview->image);
         }
 
         FontFamily Font::parseData(const FontRaw& inValue) const

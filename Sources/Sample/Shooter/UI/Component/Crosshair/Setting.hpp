@@ -12,13 +12,16 @@ public:
 public:
     CH_FIELD()
     float size;
+
     CH_FIELD()
     float thickness;
+
     CH_FIELD()
     float gap;
 
     CH_FIELD()
     Chicane::String color;
+
     CH_FIELD()
     Chicane::String dot;
 };

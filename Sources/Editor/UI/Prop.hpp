@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
 #include <Chicane/Core/Reflection/Type/Method.hpp>
@@ -9,6 +10,7 @@
 #include <Chicane/Core/String.hpp>
 #include <Chicane/Grid.hpp>
 #include <Chicane/Grid/Component.hpp>
+#include <Chicane/Grid/Component/View.hpp>
 
 namespace Editor
 {
@@ -109,6 +111,34 @@ namespace Editor
             );
         }
 
+        inline Chicane::Grid::View* findView(Chicane::Grid::Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return nullptr;
+            }
+
+            if (Chicane::Grid::View* view = dynamic_cast<Chicane::Grid::View*>(inComponent->getRoot()))
+            {
+                return view;
+            }
+
+            for (Chicane::Grid::Component* node = inComponent; node != nullptr; node = node->getParent())
+            {
+                if (Chicane::Grid::View* view = dynamic_cast<Chicane::Grid::View*>(node))
+                {
+                    return view;
+                }
+
+                if (node->isRoot())
+                {
+                    break;
+                }
+            }
+
+            return nullptr;
+        }
+
         template <typename T>
         inline void pushParam(Chicane::ReflectionTypeMethod& ioMethod, T&& inValue)
         {
@@ -138,10 +168,29 @@ namespace Editor
                 return;
             }
 
+            if (Chicane::Grid::View* view = findView(inComponent))
+            {
+                if constexpr (sizeof...(Args) == 0)
+                {
+                    if (view->callLuaGlobal(name))
+                    {
+                        return;
+                    }
+                }
+                else if constexpr ((std::is_same_v<std::decay_t<Args>, Chicane::String> && ...))
+                {
+                    const std::vector<Chicane::String> args{inArgs...};
+                    if (view->callLuaGlobal(name, args))
+                    {
+                        return;
+                    }
+                }
+            }
+
             for (Chicane::Grid::Component* node = inComponent->getParent(); node != nullptr; node = node->getParent())
             {
                 const Chicane::ReflectionTypeInfo* type =
-                    Chicane::ReflectionTypeRegistry::getInstance().find(typeid(*node));
+                    Chicane::ReflectionTypeRegistry::sInstance().find(typeid(*node));
                 if (type)
                 {
                     if (const Chicane::ReflectionTypeMethodInfo* method = type->findMethod(name))

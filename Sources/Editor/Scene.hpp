@@ -11,6 +11,7 @@
 #include <Chicane/Runtime/Scene/Object.hpp>
 
 #include "Editor/Component/Gizmo.hpp"
+#include "Editor/Scene/Helper.hpp"
 
 namespace Editor
 {
@@ -28,8 +29,11 @@ namespace Editor
         void onTick(float inDeltaTime) override;
 
     public:
-        void setSelection(Chicane::Object* inItem);
         virtual void destroyObject(Chicane::Object* inObject);
+
+    public:
+        void setSelection(Chicane::Object* inItem);
+        Chicane::Object* pickObject(const Chicane::SceneTraceRequest& inRequest) const;
 
         Gizmo* getGizmo() const;
         void setGizmoType(GizmoType inType);
@@ -44,25 +48,26 @@ namespace Editor
 
     private:
         void destroyObjectTree(Chicane::Object* inObject);
+
         void syncHelpers();
         void poseHelper(Chicane::Object* inTarget);
         void poseHelper(Chicane::CMesh* inMesh, Chicane::Object* inTarget);
-        void pushLightTraces();
-        bool shouldVisualize(const Chicane::Component* inComponent) const;
-        bool helperBelongsTo(Chicane::Object* inTarget, const Chicane::Object* inItem) const;
         Chicane::CMesh* createHelper(const Chicane::FileSystem::Path& inMesh);
 
-    private:
-        struct Helper
-        {
-            Chicane::CMesh*              mesh = nullptr;
-            Chicane::EventSubscription<> subscription;
-        };
+        void pushLightTraces();
+
+        bool shouldVisualize(const Chicane::Component* inComponent) const;
+        bool isSelectedVisual(const Chicane::Object* inTarget) const;
+        bool helperBelongsTo(const Chicane::Object* inTarget, const Chicane::Object* inItem) const;
+        Chicane::Object* helperTarget(const Chicane::Object* inObject) const;
+        Chicane::Object* selectableFromHit(Chicane::Object* inObject) const;
 
     private:
-        Gizmo*                                       m_gizmo;
-        ComponentsSubscription                       m_helperSubscription;
-        std::unordered_map<Chicane::Object*, Helper> m_helpers;
-        bool                                         m_bSyncingHelpers;
+        Gizmo*           m_gizmo;
+        Chicane::Object* m_selected;
+
+        ComponentsSubscription                            m_helperSubscription;
+        std::unordered_map<Chicane::Object*, SceneHelper> m_helpers;
+        bool                                              m_bSyncingHelpers;
     };
 }

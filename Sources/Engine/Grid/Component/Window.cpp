@@ -1,29 +1,46 @@
 #include "Chicane/Grid/Component/Window.reflected.hpp"
 
+#include <algorithm>
+#include <cstdint>
+
 #include "Chicane/Core/Input/Mouse/Button.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Size.hpp"
+#include "Chicane/Core/Window/Cursor.hpp"
 #include "Chicane/Core/Window/Event/Type.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 #include "Chicane/Grid/Component/Button.hpp"
+#include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/Style/Display.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
+        constexpr std::uint8_t WINDOW_RESIZE_LEFT   = 1 << 0;
+        constexpr std::uint8_t WINDOW_RESIZE_RIGHT  = 1 << 1;
+        constexpr std::uint8_t WINDOW_RESIZE_TOP    = 1 << 2;
+        constexpr std::uint8_t WINDOW_RESIZE_BOTTOM = 1 << 3;
+
         Window::Window(const XmlNode& inNode)
             : Container(inNode),
               bIsVisible(true),
               hasTitle(false),
-              title(String::empty()),
-              m_handleId(String::empty()),
+              title(String::sEmpty()),
+              m_handleId(String::sEmpty()),
               m_bIsGrabbable(true),
+              m_bIsResizable(false),
               m_bIsMoving(false),
-              m_move(Vec2::Zero()),
-              m_moveCursor(Vec2::Zero())
+              m_bHasExtent(false),
+              m_move(Vec2::sZero()),
+              m_moveCursor(Vec2::sZero()),
+              m_extent(Vec2::sZero()),
+              m_resizeEdge(0),
+              m_resizeCursor(Vec2::sZero())
         {
-            load("Assets/Engine/UI/Components/Window.grid", "Assets/Engine/UI/Components/Window.decal");
+            load("Assets/Engine/UI/Components/Window/Index.grid", "Assets/Engine/UI/Components/Window/Index.decal");
 
             watchAttribute(
                 IS_OPEN_ATTRIBUTE_NAME,
@@ -62,9 +79,14 @@ namespace Chicane
                 IS_GRABBABLE_ATTRIBUTE_NAME,
                 [this](const String& inValue) { m_bIsGrabbable = Xml::parseBool(parseText(inValue).trim(), true); }
             );
+
+            watchAttribute(
+                IS_RESIZABLE_ATTRIBUTE_NAME,
+                [this](const String& inValue) { m_bIsResizable = Xml::parseBool(parseText(inValue).trim(), false); }
+            );
         }
 
-        Window* Window::findFrom(Component* inComponent)
+        Window* Window::sFindFrom(Component* inComponent)
         {
             Component* node = inComponent;
             while (node)
@@ -85,20 +107,17 @@ namespace Chicane
             return nullptr;
         }
 
-        bool Window::isFocusable() const
-        {
-            return false;
-        }
-
-        bool Window::escapesOverflow() const
-        {
-            return true;
-        }
-
         bool Window::onEvent(const WindowEvent& inEvent)
         {
             if (inEvent.type == WindowEventType::MouseButtonUp)
             {
+                if (m_resizeEdge != 0)
+                {
+                    endResize();
+
+                    return true;
+                }
+
                 if (!m_bIsMoving)
                 {
                     return false;
@@ -123,6 +142,19 @@ namespace Chicane
                 }
 
                 Component* hit = hasRoot() ? getRoot()->getHitAt(event.location) : nullptr;
+                if (hit && hit->getTag().equals(Button::TAG_ID) && !isAssignedHandle(hit))
+                {
+                    return false;
+                }
+
+                const std::uint8_t edge = hitResize(event.location);
+                if (edge != 0)
+                {
+                    beginResize(edge, event.location);
+
+                    return true;
+                }
+
                 if (!canMoveFrom(hit))
                 {
                     return false;
@@ -135,15 +167,30 @@ namespace Chicane
 
             if (inEvent.type == WindowEventType::MouseMotion)
             {
-                if (!m_bIsMoving || !inEvent.data)
+                if (!inEvent.data)
                 {
                     return false;
                 }
 
                 const Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
-                updateMove(event.location);
 
-                return true;
+                if (m_resizeEdge != 0)
+                {
+                    updateResize(event.location);
+
+                    return true;
+                }
+
+                if (m_bIsMoving)
+                {
+                    updateMove(event.location);
+
+                    return true;
+                }
+
+                refreshResizeCursor(event.location);
+
+                return false;
             }
 
             return false;
@@ -153,6 +200,30 @@ namespace Chicane
         {
             refreshOpenState();
             Container::tick(inDeltaTime);
+
+            if (!bIsVisible)
+            {
+                style.display.set(StyleDisplay::None);
+            }
+        }
+
+        void Window::refreshSize()
+        {
+            if (m_bHasExtent)
+            {
+                float width  = m_extent.x;
+                float height = m_extent.y;
+                style.width.clamp(width);
+                style.height.clamp(height);
+                m_extent.x = width;
+                m_extent.y = height;
+                setSize(width, height);
+                setFlag(ComponentDirty::Insets);
+
+                return;
+            }
+
+            Container::refreshSize();
         }
 
         void Window::refreshPosition()
@@ -163,6 +234,7 @@ namespace Chicane
 
         void Window::dismiss()
         {
+            endResize();
             endMove();
             bIsVisible = false;
             getMethod(getAttribute(ON_CLOSE_ATTRIBUTE_NAME)).invoke();
@@ -177,6 +249,17 @@ namespace Chicane
         {
             m_bIsGrabbable = inValue;
             setAttribute(IS_GRABBABLE_ATTRIBUTE_NAME, inValue ? "true" : "false");
+        }
+
+        bool Window::isResizable() const
+        {
+            return m_bIsResizable;
+        }
+
+        void Window::setResizable(bool inValue)
+        {
+            m_bIsResizable = inValue;
+            setAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inValue ? "true" : "false");
         }
 
         bool Window::hasAssignedHandle() const
@@ -281,15 +364,36 @@ namespace Chicane
         {
             m_bIsMoving  = true;
             m_moveCursor = inLocation;
-            setDragging(true);
+            setDragging(true, false);
         }
 
         void Window::updateMove(const Vec2& inLocation)
         {
-            m_move.x += inLocation.x - m_moveCursor.x;
-            m_move.y += inLocation.y - m_moveCursor.y;
+            const Vec2 delta(inLocation.x - m_moveCursor.x, inLocation.y - m_moveCursor.y);
+            m_move.x += delta.x;
+            m_move.y += delta.y;
             m_moveCursor = inLocation;
-            markLayoutDirtySubtree();
+            shift(delta);
+        }
+
+        void Window::shift(const Vec2& inDelta)
+        {
+            if (inDelta.x == 0.0f && inDelta.y == 0.0f)
+            {
+                return;
+            }
+
+            addPosition(inDelta);
+
+            for (Component* child : getChildrenFlat())
+            {
+                if (child)
+                {
+                    child->addPosition(inDelta);
+                }
+            }
+
+            markPaintDirtySubtree();
         }
 
         void Window::endMove()
@@ -301,6 +405,180 @@ namespace Chicane
 
             m_bIsMoving = false;
             setDragging(false);
+        }
+
+        std::uint8_t Window::hitResize(const Vec2& inLocation) const
+        {
+            if (!isResizable() || !containsPoint(inLocation))
+            {
+                return 0;
+            }
+
+            const Bounds2D box  = getDrawBounds();
+            const float    grip = resizeGrip();
+            std::uint8_t   edge = 0;
+
+            if (inLocation.x <= box.left + grip)
+            {
+                edge |= WINDOW_RESIZE_LEFT;
+            }
+            else if (inLocation.x >= box.right - grip)
+            {
+                edge |= WINDOW_RESIZE_RIGHT;
+            }
+
+            if (inLocation.y <= box.top + grip)
+            {
+                edge |= WINDOW_RESIZE_TOP;
+            }
+            else if (inLocation.y >= box.bottom - grip)
+            {
+                edge |= WINDOW_RESIZE_BOTTOM;
+            }
+
+            return edge;
+        }
+
+        void Window::beginResize(std::uint8_t inEdge, const Vec2& inLocation)
+        {
+            m_resizeEdge   = inEdge;
+            m_resizeCursor = inLocation;
+            m_extent       = getSize();
+            m_bHasExtent   = true;
+            setDragging(true, false);
+            applyResizeCursor(inEdge);
+        }
+
+        void Window::updateResize(const Vec2& inLocation)
+        {
+            const Vec2 delta = Vec2(inLocation.x - m_resizeCursor.x, inLocation.y - m_resizeCursor.y);
+            m_resizeCursor   = inLocation;
+
+            float width  = m_size.x;
+            float height = m_size.y;
+
+            if (m_resizeEdge & WINDOW_RESIZE_LEFT)
+            {
+                const float previous = width;
+                width -= delta.x;
+                style.width.clamp(width);
+                m_move.x += previous - width;
+            }
+            else if (m_resizeEdge & WINDOW_RESIZE_RIGHT)
+            {
+                width += delta.x;
+                style.width.clamp(width);
+            }
+
+            if (m_resizeEdge & WINDOW_RESIZE_TOP)
+            {
+                const float previous = height;
+                height -= delta.y;
+                style.height.clamp(height);
+                m_move.y += previous - height;
+            }
+            else if (m_resizeEdge & WINDOW_RESIZE_BOTTOM)
+            {
+                height += delta.y;
+                style.height.clamp(height);
+            }
+
+            applyExtent(width, height);
+        }
+
+        void Window::endResize()
+        {
+            if (m_resizeEdge == 0)
+            {
+                return;
+            }
+
+            m_resizeEdge = 0;
+            setDragging(false);
+            clearCursor();
+        }
+
+        void Window::applyExtent(float inWidth, float inHeight)
+        {
+            float width  = std::max(0.0f, inWidth);
+            float height = std::max(0.0f, inHeight);
+            style.width.clamp(width);
+            style.height.clamp(height);
+
+            m_extent.x   = width;
+            m_extent.y   = height;
+            m_bHasExtent = true;
+
+            style.width.value.setRaw(String::sSprint("%.0fpx", width));
+            style.width.value.set(width);
+            style.height.value.setRaw(String::sSprint("%.0fpx", height));
+            style.height.value.set(height);
+
+            setSize(width, height);
+            markLayoutDirtySubtree();
+        }
+
+        void Window::applyResizeCursor(std::uint8_t inEdge)
+        {
+            const bool bLeft   = (inEdge & WINDOW_RESIZE_LEFT) != 0;
+            const bool bRight  = (inEdge & WINDOW_RESIZE_RIGHT) != 0;
+            const bool bTop    = (inEdge & WINDOW_RESIZE_TOP) != 0;
+            const bool bBottom = (inEdge & WINDOW_RESIZE_BOTTOM) != 0;
+
+            if ((bLeft && bTop) || (bRight && bBottom))
+            {
+                style.cursor.setRaw(Style::CURSOR_TYPE_NWSE_RESIZE);
+                style.cursor.set(WindowCursor::NwseResize);
+
+                return;
+            }
+
+            if ((bRight && bTop) || (bLeft && bBottom))
+            {
+                style.cursor.setRaw(Style::CURSOR_TYPE_NESW_RESIZE);
+                style.cursor.set(WindowCursor::NeswResize);
+
+                return;
+            }
+
+            if (bLeft || bRight)
+            {
+                style.cursor.setRaw(Style::CURSOR_TYPE_EW_RESIZE);
+                style.cursor.set(WindowCursor::EwResize);
+
+                return;
+            }
+
+            style.cursor.setRaw(Style::CURSOR_TYPE_NS_RESIZE);
+            style.cursor.set(WindowCursor::NsResize);
+        }
+
+        void Window::refreshResizeCursor(const Vec2& inLocation)
+        {
+            const std::uint8_t edge = hitResize(inLocation);
+            if (edge != 0)
+            {
+                applyResizeCursor(edge);
+
+                return;
+            }
+
+            if (style.cursor.get() == WindowCursor::NsResize || style.cursor.get() == WindowCursor::EwResize ||
+                style.cursor.get() == WindowCursor::NeswResize || style.cursor.get() == WindowCursor::NwseResize)
+            {
+                clearCursor();
+            }
+        }
+
+        void Window::clearCursor()
+        {
+            style.cursor.setRaw("");
+            style.cursor.set(WindowCursor::Default);
+        }
+
+        float Window::resizeGrip() const
+        {
+            return std::max(6.0f, style.font.size.get() * 0.45f);
         }
     }
 }

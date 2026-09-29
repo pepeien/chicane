@@ -54,7 +54,7 @@ namespace Chicane
         }
 
         const QuatFloat current(ioValue.at(3), ioValue.at(4), ioValue.at(5), ioValue.at(6));
-        const float align = glm::dot(static_cast<const glm::quat&>(inPrevious), static_cast<const glm::quat&>(current));
+        const float align = inPrevious.dot(current);
         if (align >= 0.0f)
         {
             return;
@@ -135,8 +135,8 @@ namespace Chicane
                 converted.addKeyframe(
                     keyframe.time,
                     packed,
-                    keyframe.easing.isEmpty() ? Drift::EasingCurve::linear()
-                                              : Drift::EasingCurve::fromString(keyframe.easing)
+                    keyframe.easing.isEmpty() ? Drift::EasingCurve::sLinear()
+                                              : Drift::EasingCurve::sFromString(keyframe.easing)
                 );
             }
 
@@ -166,6 +166,7 @@ namespace Chicane
           mesh(),
           m_bIsVisible(false),
           m_flags(Renderer::DrawPoly3DFlag::Lit | Renderer::DrawPoly3DFlag::Shadow),
+          m_emissiveStrength(1.0f),
           m_asset(nullptr),
           m_skeleton(nullptr),
           m_animations({}),
@@ -680,6 +681,16 @@ namespace Chicane
         setFlag(Renderer::DrawPoly3DFlag::Outlined, inValue);
     }
 
+    float CMesh::getEmissiveStrength() const
+    {
+        return m_emissiveStrength;
+    }
+
+    void CMesh::setEmissiveStrength(float inValue)
+    {
+        m_emissiveStrength = std::max(0.0f, inValue);
+    }
+
     void CMesh::setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue)
     {
         if (inValue)
@@ -712,7 +723,7 @@ namespace Chicane
 
                 if (!model)
                 {
-                    model = Box::Model::getDefault();
+                    model = Box::Model::sGetDefault();
                 }
 
                 if (!model)

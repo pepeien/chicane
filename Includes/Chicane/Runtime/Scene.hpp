@@ -2,18 +2,26 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <functional>
+#include <memory>
 #include <mutex>
+#include <type_traits>
 #include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Math/Bounds/2D.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Script/Bus.hpp"
+#include "Chicane/Core/View.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
+#include "Chicane/Runtime/Scene/Component/View.hpp"
 #include "Chicane/Runtime/Scene/SpatialCell.hpp"
 #include "Chicane/Runtime/Scene/Trace/Request.hpp"
 #include "Chicane/Runtime/Scene/Trace/Response.hpp"
@@ -21,6 +29,8 @@
 
 namespace Chicane
 {
+    class SceneScript;
+
     class CHICANE_RUNTIME Scene
     {
         friend Object;
@@ -48,6 +58,13 @@ namespace Chicane
         void unload();
 
         void tick(float inDeltaTime);
+
+        std::uint64_t subscribe(const String& inName, std::function<void(const String&)> inCallback);
+        void unsubscribe(std::uint64_t inToken);
+        void send(const String& inName, const String& inData = {});
+        void receive(const String& inName, const String& inData);
+        void pumpEvents();
+        void loadSceneScript(const FileSystem::Path& inTrack);
 
         void open(const FileSystem::Path& inFilepath);
         void save(const FileSystem::Path& inFilepath) const;
@@ -253,15 +270,40 @@ namespace Chicane
         void setObjectId(Object* inObject, const String& inId);
 
         // Helper
-        template <typename T = Actor>
         inline bool trace(
-            SceneTraceResponse&        outResponse,
-            const SceneTraceRequest&   inRequest,
-            const std::vector<Actor*>& inIgnoredActors = {}
+            SceneTraceRequest& outRequest, const Vec2& inLocation, const Bounds2D& inViewport, const CView* inView
+        ) const
+        {
+            if (inViewport.isEmpty() || !inView)
+            {
+                return false;
+            }
+
+            const Vec2  size(inViewport.right - inViewport.left, inViewport.bottom - inViewport.top);
+            const Vec2  local(inLocation.x - inViewport.left, inLocation.y - inViewport.top);
+
+            const View& data = inView->getData();
+            Vec3        nearPoint;
+            Vec3        farPoint;
+            if (!Mat4::sFromPosition(local, data.view, data.projection, size, nearPoint, farPoint))
+            {
+                return false;
+            }
+
+            outRequest = SceneTraceRequest::sLine(nearPoint, farPoint);
+
+            return outRequest.isValid();
+        }
+
+        template <typename T = Object>
+        inline bool trace(
+            SceneTraceResponse&               outResponse,
+            const SceneTraceRequest&          inRequest,
+            const std::vector<const Object*>& inIgnored = {}
         ) const
         {
             std::vector<SceneTraceResponse> responses;
-            if (!traceMulti<T>(responses, inRequest, inIgnoredActors) || responses.empty())
+            if (!traceMulti<T>(responses, inRequest, inIgnored) || responses.empty())
             {
                 return false;
             }
@@ -271,36 +313,80 @@ namespace Chicane
             return true;
         }
 
-        template <typename T = Actor>
-        inline bool traceMulti(
-            std::vector<SceneTraceResponse>& outResponses,
-            const SceneTraceRequest&         inRequest,
-            const std::vector<Actor*>&       inIgnoredActors = {}
+        template <typename T = Object>
+        inline bool trace(
+            SceneTraceResponse&               outResponse,
+            const Vec2&                       inLocation,
+            const Bounds2D&                   inViewport,
+            const CView*                      inView,
+            const std::vector<const Object*>& inIgnored = {}
         ) const
         {
-            outResponses.clear();
-
-            auto found = m_actors.find(std::type_index(typeid(T)));
-            if (found == m_actors.end() || found->second.empty() || !inRequest.isValid())
+            std::vector<SceneTraceResponse> responses;
+            if (!traceMulti<T>(responses, inLocation, inViewport, inView, inIgnored) || responses.empty())
             {
                 return false;
             }
 
-            std::unordered_set<const Actor*> ignored(inIgnoredActors.begin(), inIgnoredActors.end());
+            outResponse = responses.front();
 
-            outResponses.reserve(found->second.size());
+            return true;
+        }
 
-            for (Actor* actor : found->second)
+        template <typename T = Object>
+        inline bool traceMulti(
+            std::vector<SceneTraceResponse>&  outResponses,
+            const Vec2&                       inLocation,
+            const Bounds2D&                   inViewport,
+            const CView*                      inView,
+            const std::vector<const Object*>& inIgnored = {}
+        ) const
+        {
+            SceneTraceRequest request;
+            if (!trace(request, inLocation, inViewport, inView))
             {
-                if (!actor || ignored.find(actor) != ignored.end())
+                return false;
+            }
+
+            return traceMulti<T>(outResponses, request, inIgnored);
+        }
+
+        template <typename T = Object>
+        inline bool traceMulti(
+            std::vector<SceneTraceResponse>&  outResponses,
+            const SceneTraceRequest&          inRequest,
+            const std::vector<const Object*>& inIgnored = {}
+        ) const
+        {
+            outResponses.clear();
+            if (!inRequest.isValid())
+            {
+                return false;
+            }
+
+            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
+            std::unordered_set<const Object*>     ignored(inIgnored.begin(), inIgnored.end());
+
+            auto                                  append = [&](Object* object)
+            {
+                if (!object || ignored.find(object) != ignored.end())
                 {
-                    continue;
+                    return;
+                }
+
+                if (const Component* component = dynamic_cast<const Component*>(object))
+                {
+                    if (!component->isActive())
+                    {
+                        return;
+                    }
                 }
 
                 float enter = 0.0f;
-                if (!inRequest.intersects(actor->getBounds(), enter))
+                if (!inRequest.intersects(object->getBounds(), enter))
                 {
-                    continue;
+                    return;
                 }
 
                 SceneTraceResponse response;
@@ -308,11 +394,76 @@ namespace Chicane
                     response,
                     inRequest.origin,
                     inRequest.destination,
-                    actor->getBounds(),
+                    object->getBounds(),
                     enter
                 );
-                response.actor = actor;
+                response.object = object;
                 outResponses.push_back(response);
+            };
+
+            if constexpr (std::is_same_v<T, Object>)
+            {
+                for (const auto& entry : m_actors)
+                {
+                    for (Actor* actor : entry.second)
+                    {
+                        append(actor);
+                    }
+                }
+
+                for (const auto& entry : m_components)
+                {
+                    for (Component* component : entry.second)
+                    {
+                        append(component);
+                    }
+                }
+            }
+            else if constexpr (std::is_same_v<T, Actor>)
+            {
+                for (const auto& entry : m_actors)
+                {
+                    for (Actor* actor : entry.second)
+                    {
+                        append(actor);
+                    }
+                }
+            }
+            else if constexpr (std::is_same_v<T, Component>)
+            {
+                for (const auto& entry : m_components)
+                {
+                    for (Component* component : entry.second)
+                    {
+                        append(component);
+                    }
+                }
+            }
+            else if constexpr (std::is_base_of_v<Actor, T>)
+            {
+                auto found = m_actors.find(std::type_index(typeid(T)));
+                if (found == m_actors.end() || found->second.empty())
+                {
+                    return false;
+                }
+
+                for (Actor* actor : found->second)
+                {
+                    append(actor);
+                }
+            }
+            else if constexpr (std::is_base_of_v<Component, T>)
+            {
+                auto found = m_components.find(std::type_index(typeid(T)));
+                if (found == m_components.end() || found->second.empty())
+                {
+                    return false;
+                }
+
+                for (Component* component : found->second)
+                {
+                    append(component);
+                }
             }
 
             if (outResponses.empty())
@@ -365,9 +516,17 @@ namespace Chicane
         }
 
         template <class Function>
+        inline void withObjectLock(Function&& inFunction) const
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+            inFunction();
+        }
+
+        template <class Function>
         inline void forEachInFrustum(const ViewFrustum& inFrustum, Function&& inFunction) const
         {
-            std::unordered_set<Object*> seen;
+            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+            std::unordered_set<Object*>           seen;
 
             for (const auto& [key, cell] : m_cells)
             {
@@ -378,7 +537,7 @@ namespace Chicane
 
                 for (Object* object : cell.objects)
                 {
-                    if (!seen.insert(object).second)
+                    if (!object || !seen.insert(object).second)
                     {
                         continue;
                     }
@@ -432,6 +591,9 @@ namespace Chicane
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
 
-        std::recursive_mutex                                         m_objectMutex;
+        mutable std::recursive_mutex                                 m_objectMutex;
+
+        Script::Bus                                                  m_bus;
+        std::unique_ptr<SceneScript>                                 m_sceneScript;
     };
 }

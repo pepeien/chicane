@@ -139,7 +139,7 @@ namespace Chicane
 
             if (found == TAGS.end())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             return found->second;
@@ -184,7 +184,7 @@ namespace Chicane
 
             if (found == EXTENSIONS.end())
             {
-                return String::empty();
+                return String::sEmpty();
             }
 
             return found->second;

@@ -14,7 +14,7 @@ namespace Chicane
         {
         public:
             DockPanel* panel       = nullptr;
-            Vec2       cursor      = Vec2::Zero();
+            Vec2       cursor      = Vec2::sZero();
             float      startExtent = 0.0f;
         };
     }

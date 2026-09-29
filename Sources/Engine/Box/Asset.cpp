@@ -106,7 +106,7 @@ namespace Chicane
             }
 
             m_header.version = inVersion;
-            setAttribute(VERSION_ATTRIBUTE_NAME, String::sprint("%u", inVersion));
+            setAttribute(VERSION_ATTRIBUTE_NAME, String::sSprint("%u", inVersion));
         }
 
         const String& Asset::getId() const
@@ -231,7 +231,7 @@ namespace Chicane
             }
 
             createRoot(TAG);
-            setAttribute(VERSION_ATTRIBUTE_NAME, String::sprint("%u", CURRENT_VERSION));
+            setAttribute(VERSION_ATTRIBUTE_NAME, String::sSprint("%u", CURRENT_VERSION));
             setFilepath(inFilepath);
         }
 
@@ -251,7 +251,7 @@ namespace Chicane
             if (!root.getName().equals(TAG))
             {
                 throw std::runtime_error(
-                    String::sprint("Asset files root element must be have [%s] as a tag", TAG).toStandard()
+                    String::sSprint("Asset files root element must be have [%s] as a tag", TAG).toStandard()
                 );
             }
         }

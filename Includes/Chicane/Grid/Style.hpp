@@ -7,6 +7,7 @@
 
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Cursor.hpp"
@@ -43,6 +44,13 @@ namespace Chicane
     {
         class Component;
 
+        struct StylePseudoClass
+        {
+            const char*     token;
+            ComponentStatus status;
+        };
+
+        CH_TYPE(Manual)
         struct CHICANE_GRID Style
         {
         public:
@@ -52,40 +60,68 @@ namespace Chicane
 
         public:
             // Extension
-            static constexpr inline const char* FILE_EXTENSION_NAME = "decal";
+            static constexpr inline const char*      FILE_EXTENSION_NAME = "decal";
 
             // Attribute
-            static constexpr inline const char* ATTRIBUTE_NAME = "style";
+            static constexpr inline const char*      ATTRIBUTE_NAME = "style";
 
             // Reference
-            static constexpr inline const char* REFERENCE_KEYWORD = "ref";
+            static constexpr inline const char*      REFERENCE_KEYWORD = "ref";
 
             // Import
-            static constexpr inline const char* IMPORT_KEYWORD = "@import";
-            static constexpr inline const char* URL_KEYWORD    = "url";
+            static constexpr inline const char*      IMPORT_KEYWORD = "@import";
+            static constexpr inline const char*      URL_KEYWORD    = "url";
 
             // Ruleset
-            static constexpr inline const char  COMMAND_ENDING   = ';';
-            static constexpr inline const char  VARIABLE_KEYWORD = '$';
-            static constexpr inline const char  RULESET_OPENING  = '{';
-            static constexpr inline const char  RULESET_CLOSING  = '}';
+            static constexpr inline const char       COMMAND_ENDING   = ';';
+            static constexpr inline const char       VARIABLE_KEYWORD = '$';
+            static constexpr inline const char       RULESET_OPENING  = '{';
+            static constexpr inline const char       RULESET_CLOSING  = '}';
 
             // Separator
-            static constexpr inline const char  ONELINE_SEPARATOR  = ' ';
-            static constexpr inline const char  SELECTOR_SEPARATOR = ',';
-            static constexpr inline const char  CLASS_SEPARATOR    = ' ';
+            static constexpr inline const char       ONELINE_SEPARATOR  = ' ';
+            static constexpr inline const char       SELECTOR_SEPARATOR = ',';
+            static constexpr inline const char       CLASS_SEPARATOR    = ' ';
 
             // Selectors
-            static constexpr inline const char  ID_SELECTOR              = '#';
-            static constexpr inline const char  CLASS_SELECTOR           = '.';
-            static constexpr inline const char  INCLUSIVE_SELECTOR       = '*';
-            static constexpr inline const char  SELECTOR_INHERITANCE     = '&';
-            static constexpr inline const char  SELECTOR_SEPARATOR_COMMA = ',';
-            static constexpr inline const char  SELECTOR_SEPARATOR_SPACE = ' ';
-            static constexpr inline const char  PSEUDO_CLASS_SELECTOR    = ':';
-            static constexpr inline const char* PSEUDO_CLASS_HOVER       = ":hover";
-            static constexpr inline const char* PSEUDO_CLASS_FOCUS       = ":focus";
-            static constexpr inline const char* PSEUDO_CLASS_DRAG        = ":drag";
+            static constexpr inline const char       ID_SELECTOR              = '#';
+            static constexpr inline const char       CLASS_SELECTOR           = '.';
+            static constexpr inline const char       INCLUSIVE_SELECTOR       = '*';
+            static constexpr inline const char       SELECTOR_INHERITANCE     = '&';
+            static constexpr inline const char       SELECTOR_SEPARATOR_COMMA = ',';
+            static constexpr inline const char       SELECTOR_SEPARATOR_SPACE = ' ';
+            static constexpr inline const char       PSEUDO_CLASS_SELECTOR    = ':';
+
+            static constexpr inline StylePseudoClass PSEUDO_CLASSES[] = {
+                {":hover",    ComponentStatus::Hovered },
+                {":focus",    ComponentStatus::Focused },
+                {":drag",     ComponentStatus::Dragging},
+                {":selected", ComponentStatus::Selected}
+            };
+
+            static constexpr inline const char* PSEUDO_FIRST_CHILD   = ":first-child";
+            static constexpr inline const char* PSEUDO_LAST_CHILD    = ":last-child";
+            static constexpr inline const char* PSEUDO_FIRST_OF_TYPE = ":first-of-type";
+            static constexpr inline const char* PSEUDO_LAST_OF_TYPE  = ":last-of-type";
+            static constexpr inline const char* PSEUDO_NTH_CHILD     = ":nth-child(";
+            static constexpr inline const char* PSEUDO_NTH_OF_TYPE   = ":nth-of-type(";
+
+            static constexpr inline const char* PSEUDO_ODD_KEYWORD    = "odd";
+            static constexpr inline const char* PSEUDO_EVEN_KEYWORD   = "even";
+            static constexpr inline const char  PSEUDO_STEP_MARK      = 'n';
+            static constexpr inline const char* PSEUDO_STEP_PLUS      = "+";
+            static constexpr inline const char* PSEUDO_STEP_MINUS     = "-";
+            static constexpr inline const char  PSEUDO_ARGUMENT_TAB   = '\t';
+            static constexpr inline const char  PSEUDO_ARGUMENT_CLOSE = ')';
+
+            static constexpr inline int         PSEUDO_ZERO_STEP     = 0;
+            static constexpr inline int         PSEUDO_ODD_STEP      = 2;
+            static constexpr inline int         PSEUDO_ODD_OFFSET    = 1;
+            static constexpr inline int         PSEUDO_EVEN_STEP     = 2;
+            static constexpr inline int         PSEUDO_EVEN_OFFSET   = 0;
+            static constexpr inline int         PSEUDO_SINGLE_STEP   = 1;
+            static constexpr inline int         PSEUDO_NEGATIVE_STEP = -1;
+            static constexpr inline int         PSEUDO_ZERO_OFFSET   = 0;
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
@@ -102,6 +138,7 @@ namespace Chicane
             static constexpr inline const char* OVERFLOW_TYPE_HIDDEN      = "hidden";
             static constexpr inline const char* OVERFLOW_TYPE_SCROLL      = "scroll";
             static constexpr inline const char* OVERFLOW_TYPE_AUTO        = "auto";
+            static constexpr inline const char* ESCAPE_ATTRIBUTE_NAME     = "escape";
 
             // Z-Index
             static constexpr inline const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
@@ -242,8 +279,18 @@ namespace Chicane
             static constexpr inline const char* TRANSITION_DELAY_ATTRIBUTE_NAME = "transition-delay";
             static constexpr inline const char* TRANSITION_PROPERTY_ALL         = "all";
 
+            /*
+             * Template 1: "`NAME` `DURATION`"
+             * Template 2: "`NAME` `DURATION` `TIMING_FUNCTION`"
+             * Template 3: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY`"
+             * Template 4: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT`"
+             * Template 5: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION`"
+             * Template 6: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION` `FILL_MODE`"
+             * Template 7: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION` `FILL_MODE` `PLAY_STATE`"
+             */
+            static constexpr inline const char* ANIMATION_ATTRIBUTE_NAME = "animation";
+
             // Animation
-            static constexpr inline const char* ANIMATION_ATTRIBUTE_NAME                 = "animation";
             static constexpr inline const char* ANIMATION_NAME_ATTRIBUTE_NAME            = "animation-name";
             static constexpr inline const char* ANIMATION_DURATION_ATTRIBUTE_NAME        = "animation-duration";
             static constexpr inline const char* ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME = "animation-timing-function";
@@ -252,18 +299,23 @@ namespace Chicane
             static constexpr inline const char* ANIMATION_DIRECTION_ATTRIBUTE_NAME       = "animation-direction";
             static constexpr inline const char* ANIMATION_FILL_MODE_ATTRIBUTE_NAME       = "animation-fill-mode";
             static constexpr inline const char* ANIMATION_PLAY_STATE_ATTRIBUTE_NAME      = "animation-play-state";
-            static constexpr inline const char* ANIMATION_NAME_NONE                      = "none";
-            static constexpr inline const char* ANIMATION_ITERATION_INFINITE             = "infinite";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_NORMAL          = "normal";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_REVERSE         = "reverse";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE       = "alternate";
+
+            static constexpr inline const char* ANIMATION_NAME_NONE = "none";
+
+            static constexpr inline const char* ANIMATION_ITERATION_INFINITE = "infinite";
+
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_NORMAL            = "normal";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_REVERSE           = "reverse";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE         = "alternate";
             static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE = "alternate-reverse";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_NONE                   = "none";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_FORWARDS               = "forwards";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_BACKWARDS              = "backwards";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_BOTH                   = "both";
-            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_RUNNING          = "running";
-            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED           = "paused";
+
+            static constexpr inline const char* ANIMATION_FILL_TYPE_NONE      = "none";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_FORWARDS  = "forwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BACKWARDS = "backwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BOTH      = "both";
+
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_RUNNING = "running";
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED  = "paused";
 
             // Easing
             static constexpr inline const char* EASING_TYPE_LINEAR          = Drift::EasingCurve::TYPE_LINEAR;
@@ -386,8 +438,21 @@ namespace Chicane
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
         public:
+            static ComponentStatus sConsumePseudoClasses(
+                String& ioSelector, std::vector<StyleSiblingSelector>* outSiblings = nullptr
+            );
+            static bool sHasPseudoClass(const String& inSelector);
+
+        private:
+            static bool sCoversProperty(const String& inProperty, const String& inTarget);
+
+        public:
             Style(const StyleRuleset::Properties& inProperties, Component* inParent);
             Style();
+
+        public:
+            CH_FUNCTION()
+            void set(const String& inKey, const String& inValue);
 
         public:
             bool isDisplay(StyleDisplay inValue) const;
@@ -395,7 +460,9 @@ namespace Chicane
             bool isPositioned() const;
             bool isClippingOverflow() const;
             bool isFillPercent(const String& inRaw) const;
+
             void resolveFillPercent(const Vec2& inRemaining);
+
             void clampSize(float& outWidth, float& outHeight) const;
 
             float insetLeft() const;
@@ -431,8 +498,7 @@ namespace Chicane
             void refresh();
 
         private:
-            static bool coversProperty(const String& inProperty, const String& inTarget);
-
+            void applyProperties(const StyleRuleset::Properties& inProperties);
             void refreshTransitionLookup();
             bool canKeepFillPercent(SizeDirection inDirection) const;
             float preservedFillPercent(float inParsed, float inLaidOut) const;
@@ -503,6 +569,7 @@ namespace Chicane
             StyleCorners                  gap;
             StyleProperty<StyleOverflow>  overflowX;
             StyleProperty<StyleOverflow>  overflowY;
+            StyleProperty<bool>           escape;
             StyleRadius                   radius;
 
             // Background

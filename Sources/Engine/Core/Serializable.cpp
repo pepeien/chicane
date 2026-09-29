@@ -14,7 +14,7 @@ namespace Chicane
     {
         setFilepath(inFilepath);
 
-        m_document = XmlDocument::load(inFilepath);
+        m_document = XmlDocument::sLoad(inFilepath);
 
         bindSource(m_document.getFirstChild());
 
@@ -104,7 +104,7 @@ namespace Chicane
         const auto found = m_attributes.find(inName);
         if (found == m_attributes.end())
         {
-            return String::empty();
+            return String::sEmpty();
         }
 
         return found->second;
@@ -145,7 +145,7 @@ namespace Chicane
             m_source.removeAttribute(inName);
         }
 
-        emitAttribute(inName, String::empty());
+        emitAttribute(inName, String::sEmpty());
     }
 
     float Serializable::getFloat(const String& inName, float inFallback) const
@@ -234,7 +234,7 @@ namespace Chicane
                 continue;
             }
 
-            emitAttribute(name, String::empty());
+            emitAttribute(name, String::sEmpty());
         }
 
         for (const auto& [name, value] : next)

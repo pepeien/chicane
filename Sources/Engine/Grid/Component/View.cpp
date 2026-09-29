@@ -4,14 +4,17 @@
 #include <stdexcept>
 #include <unordered_set>
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 #include "Chicane/Core/Input/Text/Event.hpp"
+#include "Chicane/Core/Script/Channel.hpp"
 
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
 #include "Chicane/Grid/Component/View/InputQueue/Event.hpp"
+#include "Chicane/Grid/Component/View/Script.hpp"
 
 namespace Chicane
 {
@@ -25,7 +28,9 @@ namespace Chicane
               m_dragging(nullptr),
               m_inputs(std::make_unique<ViewInputQueue>()),
               m_pointer(WindowCursor::Default),
-              m_roundedAncestors({})
+              m_roundedAncestors({}),
+              m_bus(),
+              m_viewScript()
         {
             m_root   = this;
             m_parent = this;
@@ -41,6 +46,13 @@ namespace Chicane
 
         void View::tick(float inDelta)
         {
+            pumpEvents();
+
+            if (m_viewScript)
+            {
+                m_viewScript->tick(inDelta);
+            }
+
             Container::tick(inDelta);
 
             m_roundedAncestors.clear();
@@ -59,10 +71,10 @@ namespace Chicane
         {
             outComponents.clear();
 
-            appendDrawables(this, outComponents);
+            sAppendDrawables(this, outComponents);
         }
 
-        void View::appendDrawables(Component* inComponent, std::vector<Component*>& outComponents)
+        void View::sAppendDrawables(Component* inComponent, std::vector<Component*>& outComponents)
         {
             if (!inComponent)
             {
@@ -111,6 +123,62 @@ namespace Chicane
             m_path = getAttribute(PATH_ATTRIBUTE_NAME);
         }
 
+        std::uint64_t View::subscribe(const String& inName, std::function<void(const String&)> inCallback)
+        {
+            return m_bus.subscribe(inName, std::move(inCallback));
+        }
+
+        void View::unsubscribe(std::uint64_t inToken)
+        {
+            m_bus.unsubscribe(inToken);
+        }
+
+        void View::send(const String& inName, const String& inData)
+        {
+            receive(inName, inData);
+            Script::Channel::sToScene().push({inName, inData});
+        }
+
+        void View::receive(const String& inName, const String& inData)
+        {
+            m_bus.send(inName, inData);
+        }
+
+        void View::pumpEvents()
+        {
+            for (const Script::Event& event : Script::Channel::sToView().drain())
+            {
+                receive(event.name, event.data);
+            }
+        }
+
+        bool View::callLuaGlobal(const String& inName, const std::vector<String>& inArgs)
+        {
+            return m_viewScript && m_viewScript->callGlobal(inName, inArgs);
+        }
+
+        void View::loadViewScript(const FileSystem::Path& inTemplate)
+        {
+            m_viewScript.reset();
+
+            if (inTemplate.isEmpty())
+            {
+                return;
+            }
+
+            const FileSystem::Path script = inTemplate.withExtension(ViewScript::EXTENSION);
+            if (!FileSystem::exists(script))
+            {
+                return;
+            }
+
+            m_viewScript = std::make_unique<ViewScript>(this);
+            if (!m_viewScript->load(script))
+            {
+                m_viewScript.reset();
+            }
+        }
+
         std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const
         {
             std::vector<Component*> contenders;
@@ -150,7 +218,7 @@ namespace Chicane
                 return *m_styles;
             }
 
-            return StyleFile::empty();
+            return StyleFile::sEmpty();
         }
 
         Component* View::resolveHit(Component* inHit) const
@@ -242,7 +310,7 @@ namespace Chicane
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
                 Component*              hit   = resolveHit(getHitAt(event.location));
                 syncHovered(hit);
-                bubbleEvent(inEvent, event.location);
+                const bool consumed = bubbleEvent(inEvent, event.location);
 
                 Component* node = hit;
                 while (node && node != this)
@@ -262,6 +330,11 @@ namespace Chicane
                 if (event.button == Input::MouseButton::Left)
                 {
                     syncDragging(hit);
+                }
+
+                if (!consumed)
+                {
+                    onEvent(inEvent);
                 }
             }
 

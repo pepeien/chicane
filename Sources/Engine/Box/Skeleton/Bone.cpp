@@ -28,7 +28,7 @@ namespace Chicane
 
         static String toAttribute(const Vec3& inValue)
         {
-            return String::sprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
+            return String::sSprint("%f,%f,%f", inValue.x, inValue.y, inValue.z);
         }
 
         static Vec3 readVec3Attribute(const XmlNode& inNode, const char* inName, const Vec3& inFallback)
@@ -59,9 +59,9 @@ namespace Chicane
             id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode);
 
             Transform rest;
-            rest.setTranslation(readVec3Attribute(inNode, TRANSLATION_ATTRIBUTE_NAME, Vec3::Zero()));
-            rest.setRotation(readVec3Attribute(inNode, ROTATION_ATTRIBUTE_NAME, Vec3::Zero()));
-            rest.setScale(readVec3Attribute(inNode, SCALE_ATTRIBUTE_NAME, Vec3::One()));
+            rest.setTranslation(readVec3Attribute(inNode, TRANSLATION_ATTRIBUTE_NAME, Vec3::sZero()));
+            rest.setRotation(readVec3Attribute(inNode, ROTATION_ATTRIBUTE_NAME, Vec3::sZero()));
+            rest.setScale(readVec3Attribute(inNode, SCALE_ATTRIBUTE_NAME, Vec3::sOne()));
             transform.setTransform(rest);
 
             children.clear();

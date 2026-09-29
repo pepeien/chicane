@@ -12,16 +12,11 @@ namespace Editor
     class Attributes : public Chicane::Grid::Container
     {
     public:
-        static constexpr inline const char* ITEM_SELECTED_ATTRIBUTE       = "bIsItemSelected";
-        static constexpr inline const char* GROUPS_ATTRIBUTE              = "attributeGroups";
         static constexpr inline const char* ON_ATTRIBUTE_COMMIT_ATTRIBUTE = "onAttributeCommit";
 
     public:
         CH_CONSTRUCTOR()
         Attributes(const Chicane::XmlNode& inNode);
-
-    protected:
-        void onTick(float inDeltaTime) override;
 
     public:
         CH_FUNCTION()
@@ -30,11 +25,7 @@ namespace Editor
         CH_FUNCTION()
         Chicane::String getFieldDescription(Chicane::String inName);
 
-    public:
-        CH_FIELD()
-        bool bIsItemSelected;
-
-        CH_FIELD()
-        AttributeGroup::List attributeGroups;
+    private:
+        const AttributeGroup::List* groups() const;
     };
 }

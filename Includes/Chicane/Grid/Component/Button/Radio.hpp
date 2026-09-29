@@ -33,7 +33,6 @@ namespace Chicane
             ButtonRadio(const XmlNode& inNode);
 
         public:
-            bool isFocusable() const override;
             bool onEvent(const WindowEvent& inEvent) override;
 
         protected:

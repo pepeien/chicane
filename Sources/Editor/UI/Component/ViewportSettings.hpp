@@ -25,7 +25,6 @@ namespace Editor
         ViewportSettings(const Chicane::XmlNode& inNode);
 
     public:
-        bool escapesOverflow() const override;
         bool onEvent(const Chicane::WindowEvent& inEvent) override;
 
     protected:
@@ -114,58 +113,79 @@ namespace Editor
 
         CH_FIELD()
         bool bShowFill;
+
         CH_FIELD()
         bool bShowLit;
+
         CH_FIELD()
         bool bShowHdr;
 
         CH_FIELD()
         bool bGridEnabled;
+
         CH_FIELD()
         bool bGridAxisX;
+
         CH_FIELD()
         bool bGridAxisY;
+
         CH_FIELD()
         bool bGridAxisZ;
+
         CH_FIELD()
         Chicane::String axisXState;
+
         CH_FIELD()
         Chicane::String axisYState;
+
         CH_FIELD()
         Chicane::String axisZState;
+
         CH_FIELD()
         Chicane::Vec3 gridColor;
+
         CH_FIELD()
         float gridScale;
+
         CH_FIELD()
         float gridDivisions;
+
         CH_FIELD()
         Chicane::String gridScaleText;
+
         CH_FIELD()
         Chicane::String gridDivisionsText;
 
         CH_FIELD()
         bool bShowWireframe;
+
         CH_FIELD()
         bool bShowBounds;
+
         CH_FIELD()
         Chicane::Vec4 geometryColor;
+
         CH_FIELD()
         bool bShowOutline;
+
         CH_FIELD()
         Chicane::Vec3 outlinerColor;
 
         CH_FIELD()
         bool bShowCollider;
+
         CH_FIELD()
         Chicane::Vec4 physicsColor;
 
         CH_FIELD()
         bool bShowBones;
+
         CH_FIELD()
         Chicane::Vec3 boneColor;
+
         CH_FIELD()
         bool bShowTracer;
+
         CH_FIELD()
         Chicane::Vec4 tracerColor;
     };

@@ -1,12 +1,14 @@
 #include "Chicane/Core/Math/Transform/2D/Spatial.reflected.hpp"
 
+#include <cmath>
+
 namespace Chicane
 {
     static Vec2 rotate(const Vec2& inValue, float inDegrees)
     {
-        const float radians = glm::radians(inDegrees);
-        const float cosine  = glm::cos(radians);
-        const float sine    = glm::sin(radians);
+        const float radians = inDegrees * 0.01745329251994329576923690768489f;
+        const float cosine  = std::cos(radians);
+        const float sine    = std::sin(radians);
 
         return Vec2((inValue.x * cosine) - (inValue.y * sine), (inValue.x * sine) + (inValue.y * cosine));
     }
