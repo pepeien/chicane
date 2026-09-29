@@ -1,5 +1,5 @@
 import Target;
-import CameraInstance;
+import "Camera/Instance";
 
 [vk::binding(0, 0)] ConstantBuffer<CameraInstance> gCamera;
 

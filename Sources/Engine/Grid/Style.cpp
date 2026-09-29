@@ -17,32 +17,241 @@ namespace Chicane
 {
     namespace Grid
     {
-        ComponentStatus Style::sConsumePseudoClasses(String& ioSelector)
+        static bool parseInteger(const String& inValue, int& outValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return false;
+            }
+
+            const char* begin = inValue.toChar();
+            char*       end   = nullptr;
+            const long  value = std::strtol(begin, &end, 10);
+            if (end == begin || *end != '\0')
+            {
+                return false;
+            }
+
+            outValue = static_cast<int>(value);
+
+            return true;
+        }
+
+        static bool parseAnPlusB(String inArgument, int& outStep, int& outOffset)
+        {
+            String compact;
+            for (std::size_t index = 0; index < inArgument.size(); index++)
+            {
+                const char character = inArgument.at(index);
+                if (character != Style::SELECTOR_SEPARATOR_SPACE && character != Style::PSEUDO_ARGUMENT_TAB)
+                {
+                    compact.append(character);
+                }
+            }
+
+            if (compact.equals(Style::PSEUDO_ODD_KEYWORD))
+            {
+                outStep   = Style::PSEUDO_ODD_STEP;
+                outOffset = Style::PSEUDO_ODD_OFFSET;
+
+                return true;
+            }
+
+            if (compact.equals(Style::PSEUDO_EVEN_KEYWORD))
+            {
+                outStep   = Style::PSEUDO_EVEN_STEP;
+                outOffset = Style::PSEUDO_EVEN_OFFSET;
+
+                return true;
+            }
+
+            if (compact.isEmpty())
+            {
+                return false;
+            }
+
+            const std::size_t stepMark = compact.find(Style::PSEUDO_STEP_MARK);
+            if (stepMark == String::npos)
+            {
+                outStep = Style::PSEUDO_ZERO_STEP;
+
+                return parseInteger(compact, outOffset);
+            }
+
+            const String head = compact.substr(0, stepMark);
+            const String tail = compact.substr(stepMark + 1);
+
+            if (head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS))
+            {
+                outStep = Style::PSEUDO_SINGLE_STEP;
+            }
+            else if (head.equals(Style::PSEUDO_STEP_MINUS))
+            {
+                outStep = Style::PSEUDO_NEGATIVE_STEP;
+            }
+            else if (!parseInteger(head, outStep))
+            {
+                return false;
+            }
+
+            if (tail.isEmpty())
+            {
+                outOffset = Style::PSEUDO_ZERO_OFFSET;
+
+                return true;
+            }
+
+            return parseInteger(tail, outOffset);
+        }
+
+        static bool startsWithToken(const String& inValue, std::size_t inAt, const char* inToken)
+        {
+            const std::size_t length = std::strlen(inToken);
+            if (inAt + length > inValue.size() || !inValue.substr(inAt, length).equals(inToken))
+            {
+                return false;
+            }
+
+            if (inAt + length == inValue.size())
+            {
+                return true;
+            }
+
+            const char next = inValue.at(inAt + length);
+
+            return next == Style::PSEUDO_CLASS_SELECTOR || next == Style::CLASS_SELECTOR || next == Style::ID_SELECTOR ||
+                   next == Style::SELECTOR_SEPARATOR_SPACE || next == Style::SELECTOR_SEPARATOR_COMMA;
+        }
+
+        static bool findSiblingPseudo(
+            const String& inSelector, std::size_t& outAt, std::size_t& outLength, StyleSiblingSelector& outSelector
+        )
+        {
+            outAt = String::npos;
+
+            const auto consider = [&](std::size_t inAt, std::size_t inLength, const StyleSiblingSelector& inSelector)
+            {
+                if (inAt < outAt)
+                {
+                    outAt        = inAt;
+                    outLength    = inLength;
+                    outSelector  = inSelector;
+                }
+            };
+
+            for (std::size_t index = 0; index < inSelector.size(); index++)
+            {
+                if (inSelector.at(index) != Style::PSEUDO_CLASS_SELECTOR)
+                {
+                    continue;
+                }
+
+                StyleSiblingSelector selector;
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_FIRST_CHILD))
+                {
+                    consider(index, std::strlen(Style::PSEUDO_FIRST_CHILD), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_LAST_CHILD))
+                {
+                    selector.bFromEnd = true;
+                    consider(index, std::strlen(Style::PSEUDO_LAST_CHILD), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_FIRST_OF_TYPE))
+                {
+                    selector.bOfType = true;
+                    consider(index, std::strlen(Style::PSEUDO_FIRST_OF_TYPE), selector);
+                    continue;
+                }
+
+                if (startsWithToken(inSelector, index, Style::PSEUDO_LAST_OF_TYPE))
+                {
+                    selector.bOfType  = true;
+                    selector.bFromEnd = true;
+                    consider(index, std::strlen(Style::PSEUDO_LAST_OF_TYPE), selector);
+                    continue;
+                }
+
+                const char* nthTokens[] = {Style::PSEUDO_NTH_CHILD, Style::PSEUDO_NTH_OF_TYPE};
+                const bool  ofType[]    = {false, true};
+
+                for (std::size_t token = 0; token < 2; token++)
+                {
+                    const std::size_t tokenLength = std::strlen(nthTokens[token]);
+                    if (index + tokenLength > inSelector.size() ||
+                        !inSelector.substr(index, tokenLength).equals(nthTokens[token]))
+                    {
+                        continue;
+                    }
+
+                    const std::size_t close =
+                        inSelector.toStandard().find(Style::PSEUDO_ARGUMENT_CLOSE, index + tokenLength);
+                    if (close == std::string::npos)
+                    {
+                        continue;
+                    }
+
+                    const String argument = inSelector.substr(index + tokenLength, close - (index + tokenLength));
+                    if (!parseAnPlusB(argument, selector.step, selector.offset))
+                    {
+                        continue;
+                    }
+
+                    selector.bOfType = ofType[token];
+                    consider(index, close - index + 1, selector);
+                }
+            }
+
+            return outAt != String::npos;
+        }
+
+        ComponentStatus Style::sConsumePseudoClasses(String& ioSelector, std::vector<StyleSiblingSelector>* outSiblings)
         {
             ComponentStatus status = ComponentStatus::None;
 
             while (true)
             {
-                const StylePseudoClass* match = nullptr;
-                std::size_t             at    = String::npos;
+                const StylePseudoClass* stateMatch = nullptr;
+                std::size_t             stateAt    = String::npos;
 
                 for (const StylePseudoClass& entry : PSEUDO_CLASSES)
                 {
                     const std::size_t found = ioSelector.find(entry.token);
-                    if (found != String::npos && (at == String::npos || found < at))
+                    if (found != String::npos && (stateAt == String::npos || found < stateAt))
                     {
-                        at    = found;
-                        match = &entry;
+                        stateAt    = found;
+                        stateMatch = &entry;
                     }
                 }
 
-                if (!match)
+                std::size_t          siblingAt     = String::npos;
+                std::size_t          siblingLength = 0;
+                StyleSiblingSelector sibling;
+                const bool           bSibling = findSiblingPseudo(ioSelector, siblingAt, siblingLength, sibling);
+
+                if (!stateMatch && !bSibling)
                 {
                     break;
                 }
 
-                status |= match->status;
-                ioSelector = ioSelector.substr(0, at) + ioSelector.substr(at + std::strlen(match->token));
+                if (stateMatch && (!bSibling || stateAt <= siblingAt))
+                {
+                    status |= stateMatch->status;
+                    ioSelector = ioSelector.substr(0, stateAt) +
+                                 ioSelector.substr(stateAt + std::strlen(stateMatch->token));
+                    continue;
+                }
+
+                if (outSiblings)
+                {
+                    outSiblings->push_back(sibling);
+                }
+
+                ioSelector = ioSelector.substr(0, siblingAt) + ioSelector.substr(siblingAt + siblingLength);
             }
 
             return status;
@@ -58,7 +267,12 @@ namespace Chicane
                 }
             }
 
-            return false;
+            return inSelector.contains(Style::PSEUDO_FIRST_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_LAST_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_FIRST_OF_TYPE) ||
+                   inSelector.contains(Style::PSEUDO_LAST_OF_TYPE) ||
+                   inSelector.contains(Style::PSEUDO_NTH_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_NTH_OF_TYPE);
         }
 
         bool Style::sCoversProperty(const String& inProperty, const String& inTarget)
@@ -2142,8 +2356,9 @@ namespace Chicane
                 {
                     bool bHasDurationToken = false;
 
-                    for (const String& token : splitOneliner(items.at(0)))
+                    for (const String& raw : splitOneliner(items.at(0)))
                     {
+                        const String token = parseText(raw);
                         if (isTime(token))
                         {
                             if (!bHasDurationToken)
@@ -2220,14 +2435,14 @@ namespace Chicane
 
             if (bHasName)
             {
-                const String name = inProperties.at(ANIMATION_NAME_ATTRIBUTE_NAME).trim();
+                const String name = parseText(inProperties.at(ANIMATION_NAME_ATTRIBUTE_NAME)).trim();
 
                 animation.name = name.equals(ANIMATION_NAME_NONE) ? "" : name;
             }
 
             if (bHasDuration)
             {
-                animation.duration = parseTime(inProperties.at(ANIMATION_DURATION_ATTRIBUTE_NAME));
+                animation.duration = parseTime(parseText(inProperties.at(ANIMATION_DURATION_ATTRIBUTE_NAME)));
             }
 
             if (bHasEasing)
@@ -2237,7 +2452,7 @@ namespace Chicane
 
             if (bHasDelay)
             {
-                animation.delay = parseTime(inProperties.at(ANIMATION_DELAY_ATTRIBUTE_NAME));
+                animation.delay = parseTime(parseText(inProperties.at(ANIMATION_DELAY_ATTRIBUTE_NAME)));
             }
 
             if (bHasIterations)

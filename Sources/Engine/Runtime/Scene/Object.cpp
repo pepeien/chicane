@@ -275,8 +275,7 @@ namespace Chicane
         const Vec3 parentWorld = getAbsoluteTranslation();
         const Vec3 parentScale = getAbsoluteScale();
         const Vec3 delta       = inValue - parentWorld;
-        const Vec3 local       = glm::inverse(static_cast<const glm::quat&>(getAbsoluteRotation().get())) *
-                           glm::vec3(delta.x, delta.y, delta.z);
+        const Vec3 local = getAbsoluteRotation().get().inverse() * delta;
 
         const auto divide = [](float inValue, float inScale) -> float
         { return std::fabs(inScale) > 1e-8f ? inValue / inScale : inValue; };

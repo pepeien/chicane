@@ -9,16 +9,16 @@ namespace Chicane
     {
         static std::mutex& mutex()
         {
-            static std::mutex result;
+            static std::mutex* result = new std::mutex();
 
-            return result;
+            return *result;
         }
 
         static std::unordered_set<const void*>& values()
         {
-            static std::unordered_set<const void*> result;
+            static std::unordered_set<const void*>* result = new std::unordered_set<const void*>();
 
-            return result;
+            return *result;
         }
 
         void Handle::add(const void* inValue)

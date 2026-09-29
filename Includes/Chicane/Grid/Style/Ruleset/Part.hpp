@@ -7,6 +7,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component/Status.hpp"
+#include "Chicane/Grid/Style/Ruleset/Sibling.hpp"
 
 namespace Chicane
 {
@@ -18,10 +19,11 @@ namespace Chicane
             std::uint32_t specificity() const;
 
         public:
-            ComponentStatus     status  = ComponentStatus::None;
-            String              tag     = String::sEmpty();
-            String              id      = String::sEmpty();
-            std::vector<String> classes = {};
+            ComponentStatus                    status   = ComponentStatus::None;
+            std::vector<StyleSiblingSelector>  siblings = {};
+            String                             tag      = String::sEmpty();
+            String                             id       = String::sEmpty();
+            std::vector<String>                classes  = {};
         };
     }
 }

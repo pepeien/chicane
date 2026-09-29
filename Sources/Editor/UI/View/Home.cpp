@@ -9,13 +9,20 @@
 #include <Chicane/Core/FileSystem.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
+#include <Chicane/Core/Input/Keyboard/Button.hpp>
+#include <Chicane/Core/Input/Mouse/Button.hpp>
+#include <Chicane/Core/Input/Mouse/Motion/Event.hpp>
+#include <Chicane/Core/Input/Status.hpp>
 #include <Chicane/Core/Math/Rotator.hpp>
 #include <Chicane/Core/Math/Vec/Vec3.hpp>
 #include <Chicane/Core/Reflection/Enum/Registry.hpp>
 #include <Chicane/Core/Reflection/Type/Field/Acessor.hpp>
 #include <Chicane/Core/Reflection/Type/Info.hpp>
 #include <Chicane/Core/Reflection/Type/Registry.hpp>
+#include <Chicane/Core/Window.hpp>
+#include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Runtime/Instance.hpp>
+#include <Chicane/Runtime/Scene/Trace/Request.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 #include <Chicane/Runtime/Scene/Actor/Light.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn.hpp>
@@ -43,11 +50,14 @@
 #include "Editor/UI/Component/Toolbar.hpp"
 #include "Editor/UI/Component/Telemetry.hpp"
 
+#include <SDL3/SDL.h>
+
 namespace Editor
 {
     static constexpr inline const char* OUTLINER_EXPAND_LEAF      = "leaf";
     static constexpr inline const char* OUTLINER_EXPAND_COLLAPSED = "collapsed";
     static constexpr inline const char* OUTLINER_EXPAND_EXPANDED  = "expanded";
+    static constexpr inline const char* OUTLINER_SELECTED         = "selected";
 
     static constexpr inline const char* OUTLINER_ICON_ACTOR     = "Person";
     static constexpr inline const char* OUTLINER_ICON_PAWN      = "PersonSimpleRun";
@@ -491,13 +501,16 @@ namespace Editor
           selectedFolderPath(Chicane::String::sEmpty()),
           selectedAssetName(Chicane::String::sEmpty()),
           m_activeWorkspace(WORKSPACE_VIEWPORT),
-          m_collapsedOutlinerItems({}),
+          m_expandedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
           m_outlinerEditId(Chicane::String::sEmpty()),
           m_coordinateSpace(CoordinateSpace::Absolute),
           m_attributesType(nullptr),
           m_bOutlinerDirty(false),
-          m_bAttributesDirty(false)
+          m_bAttributesDirty(false),
+          m_bIsListening(nullptr),
+          m_pawnSubscription({}),
+          m_cursor(Chicane::Vec2::sZero())
     {
         import <AssetManager>();
         import <Attributes>();
@@ -511,6 +524,12 @@ namespace Editor
         load("Assets/Editor/UI/Views/Home/Index.grid", "Assets/Editor/UI/Views/Home/Index.decal");
 
         bindScene();
+        bindController();
+    }
+
+    HomeView::~HomeView()
+    {
+        unbindController();
     }
 
     void HomeView::tick(float inDeltaTime)
@@ -554,6 +573,102 @@ namespace Editor
         bind(Application::sInstance().getViewerScene());
     }
 
+    void HomeView::bindController()
+    {
+        unbindController();
+
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
+        if (!controller)
+        {
+            return;
+        }
+
+        m_bIsListening                  = std::make_shared<bool>(true);
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        m_pawnSubscription = controller->watchAttachment(
+            [this, listening](Chicane::APawn* inPawn)
+            {
+                if (!listening || !*listening || !inPawn)
+                {
+                    return;
+                }
+
+                bindInput(Chicane::Instance::sInstance().getController());
+            }
+        );
+    }
+
+    void HomeView::unbindController()
+    {
+        if (m_bIsListening)
+        {
+            *m_bIsListening = false;
+        }
+
+        m_pawnSubscription.complete();
+    }
+
+    void HomeView::bindInput(Chicane::Controller* inController)
+    {
+        if (!inController)
+        {
+            return;
+        }
+
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        inController->bindEvent(
+            [this, listening](const Chicane::Input::MouseMotionEvent& inEvent)
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                m_cursor = inEvent.location;
+            }
+        );
+        inController->bindEvent(
+            Chicane::Input::MouseButton::Left,
+            Chicane::Input::Status::Pressed,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                pickAt(m_cursor);
+            }
+        );
+
+        inController->bindEvent(
+            Chicane::Input::KeyboardButton::Delete,
+            Chicane::Input::Status::Pressed,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+                if (window && window->isTextInputActive())
+                {
+                    return;
+                }
+
+                if (m_editingOutlinerItem)
+                {
+                    return;
+                }
+
+                onItemDelete();
+            }
+        );
+    }
+
     void HomeView::onAssetImport()
     {
         Chicane::FileSystem::FileDialog dialog;
@@ -592,6 +707,82 @@ namespace Editor
         theme = inValue;
     }
 
+    bool HomeView::isViewportAt(const Chicane::Vec2& inLocation) const
+    {
+        Chicane::Grid::Component* hit = getHitAt(inLocation);
+        for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
+        {
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
+            {
+                return true;
+            }
+
+            if (node->isRoot())
+            {
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    bool HomeView::hasSelectedItem() const
+    {
+        return selectedItem != nullptr;
+    }
+
+    void HomeView::pickAt(const Chicane::Vec2& inLocation)
+    {
+        if (!bIsViewportWorkspace || !isViewportAt(inLocation))
+        {
+            return;
+        }
+
+        if ((SDL_GetModState() & SDL_KMOD_ALT) != 0)
+        {
+            return;
+        }
+
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+        if (!window || window->isFocused() || window->isTextInputActive())
+        {
+            return;
+        }
+
+        std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
+        if (!scene)
+        {
+            return;
+        }
+
+        const std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
+        if (cameras.empty())
+        {
+            return;
+        }
+
+        Chicane::SceneTraceRequest trace;
+        if (!scene->trace(
+                trace,
+                inLocation,
+                Chicane::Instance::sInstance().getScreenViewportRect(),
+                cameras.back()
+            ))
+        {
+            return;
+        }
+
+        if (Gizmo* gizmo = scene->getGizmo())
+        {
+            if (gizmo->isDragging() || gizmo->hitsHandle(trace))
+            {
+                return;
+            }
+        }
+
+        onItemSelection(scene->pickObject(trace));
+    }
+
     void HomeView::onItemSelection(Chicane::Object* inItem)
     {
         if (m_editingOutlinerItem && m_editingOutlinerItem != inItem)
@@ -612,9 +803,9 @@ namespace Editor
             scene->setSelection(selectedItem);
         }
 
-        const std::size_t collapsed = m_collapsedOutlinerItems.size();
+        const std::size_t expanded = m_expandedOutlinerItems.size();
         expandOutlinerAncestors(selectedItem);
-        if (m_collapsedOutlinerItems.size() != collapsed)
+        if (m_expandedOutlinerItems.size() != expanded)
         {
             requestOutlinerRebuild();
         }
@@ -633,9 +824,9 @@ namespace Editor
             return;
         }
 
-        if (m_collapsedOutlinerItems.erase(inItem) == 0)
+        if (m_expandedOutlinerItems.erase(inItem) == 0)
         {
-            m_collapsedOutlinerItems.insert(inItem);
+            m_expandedOutlinerItems.insert(inItem);
         }
 
         requestOutlinerRebuild();
@@ -1110,7 +1301,7 @@ namespace Editor
         std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
         if (!scene)
         {
-            m_collapsedOutlinerItems.clear();
+            m_expandedOutlinerItems.clear();
             m_editingOutlinerItem = nullptr;
             m_outlinerEditId      = Chicane::String::sEmpty();
 
@@ -1128,11 +1319,11 @@ namespace Editor
             appendOutlinerNode(actor, 0, true, live);
         }
 
-        for (auto it = m_collapsedOutlinerItems.begin(); it != m_collapsedOutlinerItems.end();)
+        for (auto it = m_expandedOutlinerItems.begin(); it != m_expandedOutlinerItems.end();)
         {
             if (live.find(*it) == live.end())
             {
-                it = m_collapsedOutlinerItems.erase(it);
+                it = m_expandedOutlinerItems.erase(it);
 
                 continue;
             }
@@ -1169,7 +1360,7 @@ namespace Editor
         outLive.insert(inObject);
 
         const bool bHasChildren = hasOutlinerChildren(inObject);
-        const bool bIsCollapsed = m_collapsedOutlinerItems.find(inObject) != m_collapsedOutlinerItems.end();
+        const bool bIsExpanded  = m_expandedOutlinerItems.find(inObject) != m_expandedOutlinerItems.end();
 
         if (inIsVisible)
         {
@@ -1178,13 +1369,14 @@ namespace Editor
             node.label        = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
             node.icon         = outlinerIcon(inObject);
             node.indent       = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
-            node.expandState  = !bHasChildren  ? OUTLINER_EXPAND_LEAF
-                                : bIsCollapsed ? OUTLINER_EXPAND_COLLAPSED
-                                               : OUTLINER_EXPAND_EXPANDED;
-            node.bHasChildren = bHasChildren;
-            node.bIsLeaf      = !bHasChildren;
-            node.bIsEditing   = inObject == m_editingOutlinerItem;
-            node.bShowLabel   = !node.bIsEditing;
+            node.expandState   = !bHasChildren ? OUTLINER_EXPAND_LEAF
+                                : bIsExpanded  ? OUTLINER_EXPAND_EXPANDED
+                                               : OUTLINER_EXPAND_COLLAPSED;
+            node.bHasChildren  = bHasChildren;
+            node.bIsLeaf       = !bHasChildren;
+            node.bIsEditing    = inObject == m_editingOutlinerItem;
+            node.bShowLabel    = !node.bIsEditing;
+            node.selectedState = inObject == selectedItem ? OUTLINER_SELECTED : STATE_IDLE;
             outlinerNodes.push_back(node);
         }
 
@@ -1195,7 +1387,7 @@ namespace Editor
                 continue;
             }
 
-            appendOutlinerNode(attachment, inDepth + 1, inIsVisible && !bIsCollapsed, outLive);
+            appendOutlinerNode(attachment, inDepth + 1, inIsVisible && bIsExpanded, outLive);
         }
     }
 
@@ -1204,25 +1396,30 @@ namespace Editor
         Chicane::Object* current = inItem;
         while (current)
         {
-            current = current->getParent();
-            if (!current)
+            if (hasOutlinerChildren(current))
             {
-                break;
+                m_expandedOutlinerItems.insert(current);
             }
 
-            m_collapsedOutlinerItems.erase(current);
+            current = current->getParent();
         }
     }
 
     void HomeView::syncOutlinerSelection()
     {
         bool bFound = selectedItem == nullptr;
-        for (const OutlinerNode& node : outlinerNodes)
+        for (OutlinerNode& node : outlinerNodes)
         {
-            if (node.item == selectedItem)
+            const bool            bIsSelected = node.item == selectedItem;
+            const Chicane::String next        = bIsSelected ? OUTLINER_SELECTED : STATE_IDLE;
+            if (bIsSelected)
             {
                 bFound = true;
-                break;
+            }
+
+            if (!node.selectedState.equals(next))
+            {
+                node.selectedState = next;
             }
         }
 
@@ -1575,11 +1772,6 @@ namespace Editor
                 syncAttributeField(*selectedItem, *type, field, m_coordinateSpace);
             }
         }
-    }
-
-    bool HomeView::hasSelectedItem() const
-    {
-        return selectedItem != nullptr;
     }
 
     CoordinateSpace HomeView::getCoordinateSpace() const

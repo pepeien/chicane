@@ -13,19 +13,25 @@ namespace Chicane
     namespace Grid
     {
         CH_TYPE(Manual)
-        class CHICANE_GRID ToolTip : public Container
+        class CHICANE_GRID Tooltip : public Container
         {
         public:
-            static constexpr inline const char* TAG_ID = "ToolTip";
+            // Tag
+            static constexpr inline const char* TAG_ID = "Tooltip";
 
-            static constexpr inline const char* ANCHOR_ID_ATTRIBUTE_NAME = "anchorId";
-            static constexpr inline const char* TITLE_ATTRIBUTE_NAME     = "title";
-            static constexpr inline const char* IS_OPEN_ATTRIBUTE_NAME   = "isOpen";
-            static constexpr inline const char* ON_CLOSE_ATTRIBUTE_NAME  = "onClose";
+            // Attributes
+            static constexpr inline const char* ANCHOR_ID_ATTRIBUTE_NAME         = "anchorId";
+            static constexpr inline const char* TITLE_ATTRIBUTE_NAME             = "title";
+            static constexpr inline const char* IS_OPEN_ATTRIBUTE_NAME           = "isOpen";
+            static constexpr inline const char* ON_CLOSE_ATTRIBUTE_NAME          = "onClose";
+            static constexpr inline const char* DESCRIPTION_DELAY_ATTRIBUTE_NAME = "contentDelay";
+
+            // Values
+            static constexpr inline float       DEFAULT_CONTENT_DELAY_IN_MS = 400.0f;
 
         public:
             CH_CONSTRUCTOR()
-            ToolTip(const XmlNode& inNode);
+            Tooltip(const XmlNode& inNode);
 
         public:
             bool onEvent(const WindowEvent& inEvent) override;
@@ -33,6 +39,7 @@ namespace Chicane
         protected:
             void onTick(float inDeltaTime) override;
             void onRefresh() override;
+
             void refreshPosition() override;
 
         public:
@@ -64,6 +71,9 @@ namespace Chicane
 
             CH_FIELD()
             String panelState;
+
+            CH_FIELD()
+            float contentDelay;
         };
     }
 }

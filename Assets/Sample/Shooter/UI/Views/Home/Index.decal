@@ -10,19 +10,43 @@ $grayColor: rgba(51, 51, 51, 0.25);
     display: none;
     width: 100%;
     height: 100vh;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(15px);
     background-color: $grayColor;
     z-index: 2;
     opacity: 0;
 
     &.--shown {
         display: flex;
+        flex-direction: column;
+        gap: 0.65em;
         animation: fade-in 300ms ease-in-out forwards;
     }
 
-    Text {
+    &__prompt {
         font-size: 8vw;
-        margin: auto;
+        margin: 35% auto 0 auto;
+    }
+
+    Button {
+        padding: 0.5em 4em;
+        background-color: gray;
+        margin: 0 auto;
+        transition: background-color 200ms ease-in-out;
+
+        Text {
+            font-size: 2em;
+            color: white;
+            transition: color 200ms ease-in-out;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: white;
+
+            Text {
+                color: gray;
+            }
+        }
     }
 }
 

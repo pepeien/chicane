@@ -292,8 +292,6 @@ namespace Chicane
             outWidth.setRaw(widthValue);
             outType.setRaw(bHasType ? typeValue : Style::BORDER_STYLE_TYPE_NONE);
             outColor.setRaw(colorValue);
-
-            (void)bHasColor;
         }
 
         void StyleBorder::applyTypeOneliner(const String& inValue)

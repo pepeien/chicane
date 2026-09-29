@@ -9,6 +9,7 @@
 namespace Chicane
 {
     class Actor;
+    class Object;
 
     CH_TYPE(Type = (Manual), Alias = (Trace))
     struct CHICANE_RUNTIME SceneTraceResponse
@@ -30,6 +31,9 @@ namespace Chicane
         const Vec3& getEnd() const { return end; }
 
         CH_FUNCTION()
+        Object* getObject() const;
+
+        CH_FUNCTION()
         Actor* getActor() const;
 
     public:
@@ -49,7 +53,7 @@ namespace Chicane
         Vec3 end = Vec3::sZero();
 
         CH_FIELD()
-        Actor* actor = nullptr;
+        Object* object = nullptr;
 
     public:
         Time::Point timestamp = {};

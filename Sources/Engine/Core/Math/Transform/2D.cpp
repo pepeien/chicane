@@ -121,16 +121,16 @@ namespace Chicane
     {
         const Vec2 delta = inTarget - translation;
 
-        rotation = glm::degrees(std::atan2(delta.y, delta.x));
+        rotation = std::atan2(delta.y, delta.x) * 57.295779513082320876798154814105f;
 
         refresh();
     }
 
     void Transform2D::refresh()
     {
-        const float radians = glm::radians(rotation);
-        const float cosine  = glm::cos(radians);
-        const float sine    = glm::sin(radians);
+        const float radians = rotation * 0.01745329251994329576923690768489f;
+        const float cosine  = std::cos(radians);
+        const float sine    = std::sin(radians);
 
         m_matrix = Mat3(
             cosine * scale.x,

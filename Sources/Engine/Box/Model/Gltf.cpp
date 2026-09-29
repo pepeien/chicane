@@ -109,17 +109,16 @@ namespace Chicane
                 {
                     const std::size_t offset = index * static_cast<std::size_t>(inPrimitive.positionComponents);
 
-                    glm::vec3 normal(0.0f, 0.0f, 1.0f);
+                    Vec3 normal(0.0f, 0.0f, 1.0f);
                     if (inPrimitive.bHasNormals)
                     {
                         const std::size_t normalOffset = index * static_cast<std::size_t>(inPrimitive.normalComponents);
-                        normal                         = glm::normalize(
-                            glm::vec3(
-                                inPrimitive.normals[normalOffset],
-                                inPrimitive.normals[normalOffset + 1],
-                                inPrimitive.normals[normalOffset + 2]
-                            )
+                        normal                          = Vec3(
+                            inPrimitive.normals[normalOffset],
+                            inPrimitive.normals[normalOffset + 1],
+                            inPrimitive.normals[normalOffset + 2]
                         );
+                        normal                          = normal.normalize();
                     }
 
                     float u = 0.0f;
@@ -171,8 +170,8 @@ namespace Chicane
                 }
 
                 const std::vector<std::int32_t> parents = document.parents();
-                std::vector<glm::mat4>          locals(model.nodes_count, glm::mat4(1.0f));
-                std::vector<glm::mat4>          worlds(model.nodes_count, glm::mat4(1.0f));
+                std::vector<Mat4> locals(model.nodes_count, Mat4(1.0f));
+                std::vector<Mat4> worlds(model.nodes_count, Mat4(1.0f));
                 std::vector<char>               computed(model.nodes_count, 0);
 
                 for (std::uint32_t index = 0; index < model.nodes_count; index++)
@@ -265,7 +264,7 @@ namespace Chicane
                     const std::vector<std::int32_t> instances = nodes.empty() ? std::vector<std::int32_t>{-1} : nodes;
                     for (const std::int32_t node : instances)
                     {
-                        const glm::mat4 world = node >= 0 ? worlds[static_cast<std::size_t>(node)] : glm::mat4(1.0f);
+                        const Mat4 world = node >= 0 ? worlds[static_cast<std::size_t>(node)] : Mat4(1.0f);
                         const Transform transform = transformFromMatrix(BASIS4 * world * BASIS4_INVERSE);
                         const String    bone      = node >= 0 ? document.nodeName(node) : String();
 

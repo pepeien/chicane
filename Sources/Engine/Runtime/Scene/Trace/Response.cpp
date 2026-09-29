@@ -1,17 +1,23 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
+#include "Chicane/Runtime/Scene/Object.hpp"
 #include "Chicane/Runtime/Scene/Trace/Response.reflected.hpp"
 
 #include "Chicane/Core/Script/Handle.hpp"
 
 namespace Chicane
 {
-    Actor* SceneTraceResponse::getActor() const
+    Object* SceneTraceResponse::getObject() const
     {
-        if (!actor || !Script::Handle::contains(actor))
+        if (!object || !Script::Handle::contains(object))
         {
             return nullptr;
         }
 
-        return actor;
+        return object;
+    }
+
+    Actor* SceneTraceResponse::getActor() const
+    {
+        return dynamic_cast<Actor*>(getObject());
     }
 }

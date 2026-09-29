@@ -21,4 +21,9 @@ namespace Editor
     };
 
     Chicane::String toString(Editor::GizmoAxis inValue);
+
+    inline bool isPlaneAxis(GizmoAxis inAxis)
+    {
+        return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
+    }
 }

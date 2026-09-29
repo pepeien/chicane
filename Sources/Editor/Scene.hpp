@@ -33,6 +33,7 @@ namespace Editor
 
     public:
         void setSelection(Chicane::Object* inItem);
+        Chicane::Object* pickObject(const Chicane::SceneTraceRequest& inRequest) const;
 
         Gizmo* getGizmo() const;
         void setGizmoType(GizmoType inType);
@@ -58,6 +59,8 @@ namespace Editor
         bool shouldVisualize(const Chicane::Component* inComponent) const;
         bool isSelectedVisual(const Chicane::Object* inTarget) const;
         bool helperBelongsTo(const Chicane::Object* inTarget, const Chicane::Object* inItem) const;
+        Chicane::Object* helperTarget(const Chicane::Object* inObject) const;
+        Chicane::Object* selectableFromHit(Chicane::Object* inObject) const;
 
     private:
         Gizmo*           m_gizmo;

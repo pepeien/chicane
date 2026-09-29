@@ -253,15 +253,15 @@ namespace Chicane
 
                 if (name.equals(Svg::TRANSFORM_MATRIX) && params.size() >= Svg::MATRIX_PARAM_COUNT)
                 {
-                    local[0] = glm::vec3(params[0], params[1], 0.0f);
-                    local[1] = glm::vec3(params[2], params[3], 0.0f);
-                    local[2] = glm::vec3(params[4], params[5], Svg::HOMOGENEOUS);
+                    local[0] = Vec3(params[0], params[1], 0.0f);
+                    local[1] = Vec3(params[2], params[3], 0.0f);
+                    local[2] = Vec3(params[4], params[5], Svg::HOMOGENEOUS);
                 }
                 else if (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty())
                 {
                     const Vec2 offset(params[0], params.size() > 1 ? params[1] : 0.0f);
 
-                    local[2] = glm::vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
+                    local[2] = Vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
                 }
                 else if (name.equals(Svg::TRANSFORM_SCALE) && !params.empty())
                 {
@@ -378,8 +378,7 @@ namespace Chicane
 
         static Vec2 transformPoint(const Mat3& inTransform, const Vec2& inPoint)
         {
-            const glm::vec3 mapped =
-                static_cast<glm::mat3>(inTransform) * glm::vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
+            const Vec3 mapped = inTransform * Vec3(inPoint.x, inPoint.y, Svg::HOMOGENEOUS);
 
             return {mapped.x, mapped.y};
         }

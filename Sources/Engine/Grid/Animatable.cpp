@@ -28,8 +28,16 @@ namespace Chicane
               m_lastTransformRaw(String::sEmpty()),
               m_lastTranslateRaw(String::sEmpty()),
               m_animationDelta(0.0f),
-              m_bIsAnimationReady(false)
+              m_bIsAnimationReady(false),
+              m_bIsReplayingAnimation(false)
         {}
+
+        void Animatable::replayAnimation()
+        {
+            m_animator.stopPlayer();
+            m_animationClip         = String::sEmpty();
+            m_bIsReplayingAnimation = true;
+        }
 
         void Animatable::tickAnimation(Style& outStyle, float inDeltaTime)
         {
@@ -48,7 +56,7 @@ namespace Chicane
                 return;
             }
 
-            if (!canPlayAnimation())
+            if (!canPlayAnimation() && !m_bIsReplayingAnimation && !m_animator.hasPlayer())
             {
                 m_animator.stop();
                 m_animationClip = "";
@@ -57,6 +65,8 @@ namespace Chicane
 
                 return;
             }
+
+            m_bIsReplayingAnimation = false;
 
             const Style::AnimatedValues& visual     = outStyle.getSnapshotValues();
             const Style::AnimatedMask&   visualMask = outStyle.getSnapshotMask();

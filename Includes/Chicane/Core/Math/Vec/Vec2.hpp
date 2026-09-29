@@ -20,14 +20,26 @@ namespace Chicane
         inline static constexpr Vec2 sUp() { return Vec2(0.0f, 1.0f); }
 
     public:
-        template <typename... A>
-        inline constexpr Vec2(A... args)
-        {
-            glm::vec2 value(std::forward<A>(args)...);
+        inline constexpr Vec2()
+            : x(0.0f),
+              y(0.0f)
+        {}
 
-            x = value.x;
-            y = value.y;
-        }
+        inline constexpr Vec2(float inValue)
+            : x(inValue),
+              y(inValue)
+        {}
+
+        inline constexpr Vec2(float inX, float inY)
+            : x(inX),
+              y(inY)
+        {}
+
+        template <typename T, glm::qualifier Q>
+        inline constexpr Vec2(const glm::vec<2, T, Q>& inValue)
+            : x(static_cast<float>(inValue.x)),
+              y(static_cast<float>(inValue.y))
+        {}
 
     public:
         // Conversion
@@ -38,11 +50,7 @@ namespace Chicane
         // Comparassion
         friend inline bool operator==(Vec2 inLeft, Vec2 inRight)
         {
-            return glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.x,
-                       inRight.x
-                   ) &&
-                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(inLeft.y, inRight.y);
+            return inLeft.x == inRight.x && inLeft.y == inRight.y;
         }
 
         // Addition

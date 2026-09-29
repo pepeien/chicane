@@ -4,13 +4,12 @@
 #include <cmath>
 #include <cstdlib>
 
-#include <glm/gtc/matrix_inverse.hpp>
-
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Input/Text/Event.hpp"
+#include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Window.hpp"
 
@@ -644,7 +643,7 @@ namespace Chicane
 
         Vec2 InputText::toContentPoint(const Vec2& inLocation) const
         {
-            const Mat3 inverse  = glm::inverse(static_cast<glm::mat3>(getPaintMatrix()));
+            const Mat3 inverse  = getPaintMatrix().inverse();
             const Vec3 mapped   = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
             const Vec2 position = getDrawPosition();
 

@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <glm/glm.hpp>
-
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Worker.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
@@ -21,9 +19,7 @@ namespace Chicane
 
         static float columnLength(const Mat4& inModel, int inColumn)
         {
-            const glm::vec3 axis = glm::vec3(inModel[inColumn]);
-
-            return glm::length(axis);
+            return Vec3(inModel[inColumn]).length();
         }
 
         static std::uint32_t mipFromScreen(const DrawTexture& inTexture, float inScreenPx)

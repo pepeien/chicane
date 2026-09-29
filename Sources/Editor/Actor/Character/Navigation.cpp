@@ -10,6 +10,8 @@
 #include <Chicane/Grid/Component/Viewport.hpp>
 #include <Chicane/Runtime/Instance.hpp>
 
+#include "Editor/Scene.hpp"
+
 namespace Editor
 {
     static constexpr inline const float ORBIT_SPEED     = 0.4f;
@@ -304,6 +306,18 @@ namespace Editor
         if (m_type != NavigationType::None || !isViewportHovered())
         {
             return;
+        }
+
+        if (std::shared_ptr<Scene> scene =
+                std::dynamic_pointer_cast<Scene>(Chicane::Instance::sInstance().getScene()))
+        {
+            if (Gizmo* gizmo = scene->getGizmo())
+            {
+                if (gizmo->isDragging() || (m_bLeft && gizmo->isHandleHovered()))
+                {
+                    return;
+                }
+            }
         }
 
         if (m_bMiddle)

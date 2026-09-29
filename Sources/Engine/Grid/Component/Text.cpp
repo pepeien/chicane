@@ -200,7 +200,10 @@ namespace Chicane
                 return;
             }
 
-            if (!isReference(m_text) && !hasFlag(ComponentDirty::LaidOut) && !m_layoutSignature.isEmpty())
+            const bool bIsTextDirty = hasFlag(ComponentDirty::Text);
+
+            if (!isReference(m_text) && !hasFlag(ComponentDirty::LaidOut) && !bIsTextDirty &&
+                !m_layoutSignature.isEmpty())
             {
                 return;
             }

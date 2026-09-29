@@ -909,6 +909,10 @@ namespace Chicane
         CCamera*                    activeCamera       = nullptr;
         const Vec<2, std::uint32_t> screenViewport     = getScreenViewport();
         const Vec<2, std::uint32_t> rendererResolution = getRendererResolution();
+
+        inScene->withObjectLock(
+            [&]()
+            {
         for (CCamera* camera : inScene->getActiveComponents<CCamera>())
         {
             camera->onResize(screenViewport);
@@ -945,7 +949,7 @@ namespace Chicane
                 subcommand.model                     = resolveModelDrawId(group.getModel());
                 subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
                 subcommand.instance.flags            = mesh->getFlags();
-                subcommand.instance.emissiveStrength = group.getEmissiveStrength();
+                subcommand.instance.emissiveStrength = group.getEmissiveStrength() * mesh->getEmissiveStrength();
                 subcommand.instance.tileSize         = group.getTileSize();
 
                 const Box::Material* material = nullptr;
@@ -977,7 +981,7 @@ namespace Chicane
                 activeCamera->getFrustum(),
                 [&submitMesh](Object* object)
                 {
-                    if (typeid(*object) != typeid(CMesh))
+                    if (!object || typeid(*object) != typeid(CMesh))
                     {
                         return;
                     }
@@ -1083,8 +1087,7 @@ namespace Chicane
                 const float clip      = activeCamera ? std::max(activeCamera->getFarClip(), 1.0f) : 1000.0f;
                 const float scale     = clip * (0.99f / std::sqrt(3.0f));
 
-                Mat4 transform = glm::translate(Mat4::One, static_cast<glm::vec3>(cameraPos));
-                transform      = glm::scale(transform, glm::vec3(scale));
+                Mat4 transform = Mat4::sTranslate(cameraPos) * Mat4::sScale(Vec3(scale));
                 transform      = transform * parsed.transform.getMatrix();
 
                 Renderer::Debug::appendMesh(
@@ -1130,6 +1133,8 @@ namespace Chicane
         {
             command.polys.push_back(makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground));
         }
+            }
+        );
 
         m_sceneReadIndex.store(index, std::memory_order_release);
         m_sceneWriteIndex.store(

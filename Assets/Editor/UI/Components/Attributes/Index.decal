@@ -32,7 +32,7 @@ $attributesHeaderHeight: 1.65em;
                 flex-grow: 1;
             }
 
-            ToolTip {
+            Tooltip {
                 max-width: 12em;
             }
         }

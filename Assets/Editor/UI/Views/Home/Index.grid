@@ -8,7 +8,7 @@
     />
     <Editor::Console />
     <Dock dir:if="{{ bIsViewportWorkspace }}" class="home__content">
-        <DockPanel side="top" max-size="6em" handle="toolbarHeader" isResizable="false">
+        <DockPanel isGrabbable="false">
             <Editor::Toolbar
                 orientation="{{ orientation }}"
                 translateState="{{ translateState }}"
@@ -20,10 +20,8 @@
                 onGizmoScale="{{ onGizmoScale }}"
                 onSpawn="{{ onSpawn }}"
             />
-        </DockPanel>
-        <DockPanel isGrabbable="false">
-            <Viewport />
             <Editor::Telemetry />
+            <Viewport />
         </DockPanel>
         <DockPanel side="left" size="15%" handle="outlinerHeader">
             <Editor::Outliner
@@ -39,7 +37,7 @@
                 onAttributeCommit="{{ onAttributeCommit }}"
             />
         </DockPanel>
-        <DockPanel side="bottom" size="18em" handle="explorerHeader">
+        <DockPanel side="bottom" size="35%" handle="explorerHeader">
             <Editor::Explorer
                 orientation="{{ orientation }}"
                 onFolder="{{ onExplorerFolder }}"

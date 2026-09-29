@@ -1,0 +1,32 @@
+@keyframes show-up {
+    from { display: none; }
+    to   { display: block; }
+}
+
+Tooltip {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 120;
+}
+
+.tooltip {
+    display: flex;
+    flex-direction: column;
+    padding: 0.35em 0.55em;
+    gap: 0.35em;
+
+    &__title {
+        color: white;
+        font-size: 0.65em;
+        word-break: break-word;
+    }
+
+    &__content {
+        display: none;
+        animation: show-up 1ms ease-in-out ref(contentDelay)ms forwards;
+    }
+}

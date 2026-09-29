@@ -658,6 +658,26 @@ namespace Chicane
                 [](Style& outStyle, const float* inValues) { outStyle.gap.right.set(inValues[0]); }
             );
 
+            set(
+                StylePropertyId::Display,
+                Style::DISPLAY_ATTRIBUTE_NAME,
+                1,
+                StylePropertyDirty::Layout,
+                [](const Style& inStyle, float* outValues)
+                {
+                    outValues[0] = static_cast<float>(static_cast<std::uint8_t>(inStyle.display.get()));
+
+                    return true;
+                },
+                [](Style& outStyle, const float* inValues)
+                {
+                    const int count = static_cast<int>(StyleDisplay::None) + 1;
+                    const int index = std::clamp(static_cast<int>(std::lround(inValues[0])), 0, count - 1);
+
+                    outStyle.display.set(static_cast<StyleDisplay>(index));
+                }
+            );
+
             return entries;
         }
 
@@ -682,6 +702,8 @@ namespace Chicane
                     values.at(i) = cursor;
                     cursor += entries().at(i).arity;
                 }
+
+                assert(cursor <= StylePropertyTable::VALUE_COUNT);
 
                 return values;
             }();

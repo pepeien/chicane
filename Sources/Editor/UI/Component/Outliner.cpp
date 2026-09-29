@@ -165,8 +165,7 @@ namespace Editor
                 continue;
             }
 
-            const Chicane::String& className = row->getClassName();
-            if (!className.equals("outliner__item") && !className.startsWith("outliner__item "))
+            if (!row->classList.contains("outliner__item"))
             {
                 continue;
             }

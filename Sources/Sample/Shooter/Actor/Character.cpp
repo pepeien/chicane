@@ -291,7 +291,7 @@ void Character::onShoot()
 
     for (const Chicane::SceneTraceResponse& hit : response)
     {
-        if (Apple* apple = static_cast<Apple*>(hit.actor))
+        if (Apple* apple = static_cast<Apple*>(hit.object))
         {
             apple->onHit(this);
         }

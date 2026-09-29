@@ -30,6 +30,7 @@ $outlinerHeaderHeight: 1.65em;
             background-color: $--lighter-gray;
         }
 
+        &.--selected,
         &:selected {
             background-color: $--light-gray;
         }

@@ -5,8 +5,6 @@
 #include <cmath>
 #include <limits>
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Renderer/Light/Type.hpp"
@@ -107,11 +105,7 @@ namespace Chicane
                     radius = std::max(radius, 8.0f);
 
                     const Vec3 eye       = center - inLightDirection * (radius * kDepthPaddingFactor);
-                    const Mat4 lightView = glm::lookAt(
-                        static_cast<glm::vec3>(eye),
-                        static_cast<glm::vec3>(center),
-                        static_cast<glm::vec3>(up)
-                    );
+                    const Mat4 lightView = Mat4::sLookAt(eye, center, up);
 
                     const float diameter            = radius * 2.0f;
                     const float worldUnitsPerTexelX = diameter / static_cast<float>(SHADOW_MAP_WIDTH);
@@ -144,7 +138,7 @@ namespace Chicane
                     const float farPlane  = std::max(nearPlane + 0.01f, -minZ);
 
                     outLight.views[cascade]       = lightView;
-                    outLight.projections[cascade] = glm::ortho(minX, maxX, minY, maxY, nearPlane, farPlane);
+                    outLight.projections[cascade] = Mat4::sOrtho(minX, maxX, minY, maxY, nearPlane, farPlane);
 
                     lastSplit = split;
                 }

@@ -139,8 +139,22 @@ namespace Chicane
 
     void Transform::refresh()
     {
-        m_matrix = glm::translate(Mat4::One, static_cast<glm::vec3>(translation));
-        m_matrix *= glm::toMat4(rotation.get());
-        m_matrix = glm::scale(m_matrix, static_cast<glm::vec3>(scale));
+        m_matrix = rotation.get().toMatrix();
+
+        m_matrix[0][0] *= scale.x;
+        m_matrix[0][1] *= scale.x;
+        m_matrix[0][2] *= scale.x;
+
+        m_matrix[1][0] *= scale.y;
+        m_matrix[1][1] *= scale.y;
+        m_matrix[1][2] *= scale.y;
+
+        m_matrix[2][0] *= scale.z;
+        m_matrix[2][1] *= scale.z;
+        m_matrix[2][2] *= scale.z;
+
+        m_matrix[3][0] = translation.x;
+        m_matrix[3][1] = translation.y;
+        m_matrix[3][2] = translation.z;
     }
 }

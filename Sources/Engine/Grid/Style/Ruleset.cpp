@@ -60,7 +60,7 @@ namespace Chicane
                     }
 
                     StyleSelectorPart compiledPart;
-                    compiledPart.status = Style::sConsumePseudoClasses(part);
+                    compiledPart.status = Style::sConsumePseudoClasses(part, &compiledPart.siblings);
                     part                = part.trim();
                     if (part.isEmpty() || part.equals(Style::INCLUSIVE_SELECTOR))
                     {

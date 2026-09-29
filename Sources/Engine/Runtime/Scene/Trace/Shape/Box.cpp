@@ -28,7 +28,7 @@ namespace Chicane
         }
 
         Bounds3D box = Bounds3D::sBox(halfExtents * 2.0f);
-        box.transform(glm::translate(Mat4::One, static_cast<glm::vec3>(inOrigin)));
+        box.transform(Mat4::sTranslate(inOrigin));
         if (!box.intersects(inBounds))
         {
             return false;

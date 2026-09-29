@@ -1,4 +1,6 @@
-#include "Chicane/Grid/Component/ToolTip.reflected.hpp"
+#include "Chicane/Grid/Component/Tooltip.reflected.hpp"
+
+#include <algorithm>
 
 #include "Chicane/Core/Input/Mouse/Button.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
@@ -11,14 +13,15 @@ namespace Chicane
 {
     namespace Grid
     {
-        ToolTip::ToolTip(const XmlNode& inNode)
+        Tooltip::Tooltip(const XmlNode& inNode)
             : Container(inNode),
               anchorId(String::sEmpty()),
               title(String::sEmpty()),
               hasTitle(false),
               hasContent(false),
               isVisible(false),
-              panelState("hint")
+              panelState("hint"),
+              contentDelay(DEFAULT_CONTENT_DELAY_IN_MS)
         {
             for (const auto& child : inNode.getChildren())
             {
@@ -32,7 +35,7 @@ namespace Chicane
 
             panelState = hasContent ? "panel" : "hint";
 
-            load("Assets/Engine/UI/Components/ToolTip/Index.grid", "Assets/Engine/UI/Components/ToolTip/Index.decal");
+            load("Assets/Engine/UI/Components/Tooltip/Index.grid", "Assets/Engine/UI/Components/Tooltip/Index.decal");
 
             watchAttribute(
                 ANCHOR_ID_ATTRIBUTE_NAME,
@@ -49,7 +52,7 @@ namespace Chicane
             );
         }
 
-        bool ToolTip::onEvent(const WindowEvent& inEvent)
+        bool Tooltip::onEvent(const WindowEvent& inEvent)
         {
             if (!isPinned() || !isVisible || inEvent.type != WindowEventType::MouseButtonUp || !inEvent.data)
             {
@@ -86,7 +89,7 @@ namespace Chicane
             return false;
         }
 
-        void ToolTip::onTick(float inDeltaTime)
+        void Tooltip::onTick(float inDeltaTime)
         {
             refreshAttributes();
             refreshVisibility();
@@ -99,7 +102,7 @@ namespace Chicane
             Container::onTick(inDeltaTime);
         }
 
-        void ToolTip::refreshPosition()
+        void Tooltip::refreshPosition()
         {
             Container::refreshPosition();
 
@@ -114,8 +117,14 @@ namespace Chicane
                 return;
             }
 
+            const float marginLeft = style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get();
+            const float marginTop  = style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get();
+
             const Vec2 current = getPosition();
-            const Vec2 target(anchor->getPosition().x, anchor->getPosition().y + anchor->getSize().y + 6.0f);
+            const Vec2 target(
+                anchor->getPosition().x + marginLeft,
+                anchor->getPosition().y + anchor->getSize().y + 6.0f + marginTop
+            );
 
             if (current.x != target.x || current.y != target.y)
             {
@@ -125,7 +134,7 @@ namespace Chicane
             reflowChildPositions();
         }
 
-        void ToolTip::dismiss()
+        void Tooltip::dismiss()
         {
             if (!isVisible)
             {
@@ -136,7 +145,7 @@ namespace Chicane
             getMethod(getAttribute(ON_CLOSE_ATTRIBUTE_NAME)).invoke();
         }
 
-        void ToolTip::refreshAttributes()
+        void Tooltip::refreshAttributes()
         {
             const Component* context = hasParent() ? getParent() : this;
 
@@ -154,9 +163,14 @@ namespace Chicane
 
             hasTitle   = !title.isEmpty();
             panelState = hasContent ? "panel" : "hint";
+
+            const String delayRaw  = getAttribute(DESCRIPTION_DELAY_ATTRIBUTE_NAME);
+            const String delayText = hasParent() ? getParent()->parseText(delayRaw).trim() : parseText(delayRaw).trim();
+
+            contentDelay = std::max(0.0f, Xml::parseFloat(delayText, DEFAULT_CONTENT_DELAY_IN_MS));
         }
 
-        void ToolTip::refreshVisibility()
+        void Tooltip::refreshVisibility()
         {
             bool bReveal = false;
 
@@ -182,12 +196,12 @@ namespace Chicane
             markLayoutDirtySubtree();
         }
 
-        void ToolTip::onRefresh()
+        void Tooltip::onRefresh()
         {
             setEscapesOverflow(isVisible);
         }
 
-        bool ToolTip::isPinned() const
+        bool Tooltip::isPinned() const
         {
             return !getAttribute(IS_OPEN_ATTRIBUTE_NAME).isEmpty();
         }
@@ -215,7 +229,7 @@ namespace Chicane
             return nullptr;
         }
 
-        Component* ToolTip::findAnchor() const
+        Component* Tooltip::findAnchor() const
         {
             if (!anchorId.isEmpty())
             {
@@ -236,7 +250,7 @@ namespace Chicane
             return hasParent() ? getParent() : nullptr;
         }
 
-        bool ToolTip::isAnchorHovered(const Component* inAnchor) const
+        bool Tooltip::isAnchorHovered(const Component* inAnchor) const
         {
             if (!inAnchor)
             {

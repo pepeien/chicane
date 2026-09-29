@@ -1,10 +1,12 @@
 #include "Chicane/Runtime/Scene/Script.hpp"
 
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Script/Channel.hpp"
 #include "Chicane/Core/Script/Types.hpp"
 
 #include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/View.hpp"
 #include "Chicane/Runtime/Script/Types.hpp"
 
 #include "../Script/Types/ReflectedValue.hpp"
@@ -27,9 +29,9 @@ namespace Chicane
         return static_cast<SceneScript*>(context->getUser());
     }
 
-    static std::vector<Actor*> readIgnored(lua_State* inState, int inIndex)
+    static std::vector<const Object*> readIgnored(lua_State* inState, int inIndex)
     {
-        std::vector<Actor*> ignored;
+        std::vector<const Object*> ignored;
         if (lua_isnoneornil(inState, inIndex))
         {
             return ignored;
@@ -43,7 +45,7 @@ namespace Chicane
         for (lua_Integer i = 1; i <= count; i++)
         {
             lua_rawgeti(inState, inIndex, i);
-            ignored.push_back(Types::checkActor(inState, -1));
+            ignored.push_back(Types::checkObject(inState, -1));
             lua_pop(inState, 1);
         }
 
@@ -69,7 +71,36 @@ namespace Chicane
             return true;
         }
 
-        luaL_error(inState, "trace expects a TraceRequest or origin and destination Vec3");
+        if (Script::Types::isVec2(inState, 1))
+        {
+            if (!Script::Types::isVec4(inState, 2))
+            {
+                luaL_error(inState, "trace from a Vec2 expects a Vec4 viewport (left, top, right, bottom)");
+
+                return false;
+            }
+
+            SceneScript* host      = hostFrom(inState);
+            CView*       view      = dynamic_cast<CView*>(Types::checkComponent(inState, 3));
+            const Vec4   rectangle = Script::Types::checkVec4(inState, 2);
+            Bounds2D     viewport;
+            viewport.set(rectangle.y, rectangle.x, rectangle.w, rectangle.z);
+
+            if (!host || !host->scene() ||
+                !host->scene()->trace(outRequest, Script::Types::checkVec2(inState, 1), viewport, view))
+            {
+                return false;
+            }
+
+            outIgnoredIndex = 4;
+
+            return true;
+        }
+
+        luaL_error(
+            inState,
+            "trace expects a TraceRequest, origin and destination Vec3, or a Vec2 location with viewport and view"
+        );
 
         return false;
     }

@@ -40,8 +40,7 @@ namespace Chicane
             return false;
         }
 
-        Mat4 model = glm::translate(Mat4::One, static_cast<glm::vec3>(inOrigin));
-        model      = glm::scale(model, glm::vec3(scale));
+        const Mat4 model = Mat4::sTranslate(inOrigin) * Mat4::sScale(Vec3(scale));
 
         Bounds3D bounds = getBounds();
         bounds.transform(model);

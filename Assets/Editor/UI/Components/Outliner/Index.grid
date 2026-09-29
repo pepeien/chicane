@@ -3,7 +3,7 @@
     <Container class="outliner__items">
         <Container
             dir:for="node : outlinerNodes"
-            class="outliner__item"
+            class="outliner__item --{{ node.selectedState }}"
         >
             <Button
                 dir:if="{{ node.bHasChildren }}"

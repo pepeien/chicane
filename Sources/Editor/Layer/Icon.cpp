@@ -131,15 +131,11 @@ namespace Editor
 
     bool LIcon::onBeginRender(const Chicane::Renderer::Frame& inFrame)
     {
-        (void)inFrame;
-
         return dynamic_cast<ViewerScene*>(Chicane::Instance::sInstance().getScene().get()) == nullptr;
     }
 
     void LIcon::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        (void)inFrame;
-
         Chicane::Scene* scene = Chicane::Instance::sInstance().getScene().get();
         if (!scene)
         {

@@ -51,9 +51,16 @@ $contentPaddingDouble: calc($contentPadding * 2);
             overflow: hidden;
         }
 
+        Editor::Toolbar {
+            position: absolute;
+            margin: 0.5em 0 0 0.5em;
+            width: auto;
+            height: auto;
+        }
+
         Editor::Telemetry {
             position: absolute;
-            padding: 0.2em;
+            margin: 0.5em 0.5em 0 auto;
         }
 
         Viewport {
@@ -82,11 +89,6 @@ $contentPaddingDouble: calc($contentPadding * 2);
         }
 
         Editor::AssetManager {
-            width: 100%;
-            height: 100%;
-        }
-
-        Editor::Toolbar {
             width: 100%;
             height: 100%;
         }

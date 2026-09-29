@@ -2,63 +2,49 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 
-#include <Chicane/Core/FileSystem.hpp>
-#include <Chicane/Core/Input/Keyboard/Event.hpp>
-#include <Chicane/Core/Input/Mouse/Button/Event.hpp>
+#include <Chicane/Core/Input/Mouse/Button.hpp>
 #include <Chicane/Core/Input/Mouse/Motion/Event.hpp>
+#include <Chicane/Core/Input/Status.hpp>
 #include <Chicane/Core/Math/Quat/QuatFloat.hpp>
+#include <Chicane/Core/Math/Rotator.hpp>
+#include <Chicane/Core/Math/Transform.hpp>
 #include <Chicane/Core/Window.hpp>
 #include <Chicane/Grid/Component.hpp>
 #include <Chicane/Grid/Component/View.hpp>
 #include <Chicane/Grid/Component/Viewport.hpp>
-#include <Chicane/Renderer/Feature.hpp>
 #include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene.hpp>
-#include <Chicane/Runtime/Scene/Actor.hpp>
-#include <Chicane/Runtime/Scene/Component.hpp>
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
-#include <Chicane/Runtime/Scene/Component/Mesh.hpp>
+#include <Chicane/Runtime/Scene/Trace/Request.hpp>
 
-#include "Editor/Component/Gizmo/PlaneHandle.hpp"
 #include "Editor/UI/View/Home.hpp"
-#include "Editor/Viewport/Overlay.hpp"
+
+#include <SDL3/SDL.h>
 
 namespace Editor
 {
-    constexpr float AXIS_LENGTH    = 1.5f;
-    constexpr float AXIS_RADIUS    = 0.08f;
-    constexpr float RING_RADIUS    = 1.0f;
-    constexpr float RING_THICKNESS = 0.07f;
-    constexpr float CENTER_RADIUS  = 0.12f;
-    constexpr float ORIGIN_RADIUS  = 0.165f;
-    constexpr float ORIGIN_TUBE    = 0.012f;
-    constexpr float ORIGIN_OUTER   = ORIGIN_RADIUS + ORIGIN_TUBE;
-    constexpr float PLANE_INNER    = 0.18f;
-    constexpr float PLANE_OUTER    = 0.40f;
-    constexpr float MIN_SCALE      = 0.01f;
-    constexpr float HANDLE_SCALE   = 0.10f;
-    constexpr float MIN_HANDLE     = 0.25f;
-    constexpr float MAX_HANDLE     = 250.0f;
-
-    static Chicane::FileSystem::Path meshPath(GizmoType inType)
+    static Chicane::FileSystem::Path axisMesh(GizmoType inType, const char* inAxis)
     {
+        const char* folder = "Translation";
         switch (inType)
         {
         case GizmoType::Rotation:
-            return "Assets/Editor/Meshes/Gizmo/Rotation.bmsh";
+            folder = "Rotation";
+
+            break;
 
         case GizmoType::Scale:
-            return "Assets/Editor/Meshes/Gizmo/Scale.bmsh";
+            folder = "Scale";
+
+            break;
 
         default:
-            return "Assets/Editor/Meshes/Gizmo/Translation.bmsh";
+            break;
         }
-    }
 
-    static float length(const Chicane::Vec3& inValue)
-    {
-        return std::sqrt(inValue.dot(inValue));
+        return Chicane::String("Assets/Editor/Meshes/Gizmo/") + folder + "/" + inAxis + ".bmsh";
     }
 
     static bool closestOnAxis(
@@ -101,7 +87,7 @@ namespace Editor
         const Chicane::Vec3 delta = (inOrigin + inDirection * ray) - (inAxisOrigin + inAxis * axis);
         outRay                    = ray;
         outAxis                   = axis;
-        outDistance               = length(delta);
+        outDistance               = delta.length();
 
         return true;
     }
@@ -131,6 +117,57 @@ namespace Editor
         return true;
     }
 
+    static bool closestOnRing(
+        const Chicane::Vec3& inOrigin,
+        const Chicane::Vec3& inDirection,
+        const Chicane::Vec3& inCenter,
+        const Chicane::Vec3& inAxis,
+        float                inRadius,
+        float                inTube,
+        float&               outRay,
+        float&               outDistance
+    )
+    {
+        const Chicane::Vec3 axis = inAxis.normalize();
+        Chicane::Vec3       hit  = Chicane::Vec3::sZero();
+        if (intersectPlane(inOrigin, inDirection, inCenter, axis, hit))
+        {
+            const float distance = std::fabs((hit - inCenter).length() - inRadius);
+            if (distance <= inTube)
+            {
+                outRay      = (hit - inOrigin).length();
+                outDistance = distance;
+
+                return true;
+            }
+        }
+
+        const float         along  = std::max(0.0f, (inCenter - inOrigin).dot(inDirection));
+        const Chicane::Vec3 query  = inOrigin + inDirection * along;
+        Chicane::Vec3       planar = query - inCenter;
+        planar                     = planar - axis * planar.dot(axis);
+        const float   planarLength = planar.length();
+        Chicane::Vec3 tangent      = axis.cross(Chicane::Vec3::sUp());
+        if (tangent.dot(tangent) < 0.0001f)
+        {
+            tangent = axis.cross(Chicane::Vec3::sRight());
+        }
+
+        const Chicane::Vec3 onRing   = planarLength > 0.0001f ? inCenter + planar * (inRadius / planarLength)
+                                                              : inCenter + tangent.normalize() * inRadius;
+        const float         ray      = std::max(0.0f, (onRing - inOrigin).dot(inDirection));
+        const float         distance = (inOrigin + inDirection * ray - onRing).length();
+        if (distance > inTube)
+        {
+            return false;
+        }
+
+        outRay      = ray;
+        outDistance = distance;
+
+        return true;
+    }
+
     static float angleOnPlane(const Chicane::Vec3& inPoint, const Chicane::Vec3& inOrigin, const Chicane::Vec3& inAxis)
     {
         Chicane::Vec3 tangent = inAxis.cross(Chicane::Vec3::sUp());
@@ -146,16 +183,6 @@ namespace Editor
         return std::atan2(offset.dot(bitangent), offset.dot(tangent));
     }
 
-    static bool isPlaneAxis(GizmoAxis inAxis)
-    {
-        return inAxis == GizmoAxis::XY || inAxis == GizmoAxis::XZ || inAxis == GizmoAxis::YZ;
-    }
-
-    static Chicane::QuatFloat inverseQuat(const Chicane::QuatFloat& inValue)
-    {
-        return glm::inverse(static_cast<const glm::quat&>(inValue));
-    }
-
     static float safeDivide(float inValue, float inScale)
     {
         return std::fabs(inScale) > 0.0001f ? inValue / inScale : inValue;
@@ -163,7 +190,7 @@ namespace Editor
 
     static Chicane::Vec3 toRelativeDelta(const Chicane::Object& inItem, const Chicane::Vec3& inWorldDelta)
     {
-        const Chicane::Vec3 local = inverseQuat(inItem.getAbsoluteRotation().get()) * inWorldDelta;
+        const Chicane::Vec3 local = inItem.getAbsoluteRotation().get().inverse() * inWorldDelta;
         const Chicane::Vec3 scale = inItem.getAbsoluteScale();
 
         return Chicane::Vec3(safeDivide(local.x, scale.x), safeDivide(local.y, scale.y), safeDivide(local.z, scale.z));
@@ -175,12 +202,19 @@ namespace Editor
 
     Gizmo::Gizmo(GizmoType inType)
         : Chicane::Component(),
-          m_type(inType),
-          m_mesh(nullptr),
-          m_origin(nullptr),
-          m_target(nullptr),
-          m_targetSubscription({}),
           m_bIsDragging(false),
+          m_bIsListening(nullptr),
+          m_type(inType),
+          m_target(nullptr),
+          m_origin(nullptr),
+          m_x(nullptr),
+          m_y(nullptr),
+          m_z(nullptr),
+          m_xy(nullptr),
+          m_xz(nullptr),
+          m_yz(nullptr),
+          m_center(nullptr),
+          m_hovered(nullptr),
           m_dragAxis(GizmoAxis::None),
           m_dragStartT(0.0f),
           m_dragStartAngle(0.0f),
@@ -190,15 +224,45 @@ namespace Editor
           m_dragStartTranslation(Chicane::Vec3::sZero()),
           m_dragStartScale(Chicane::Vec3::sOne()),
           m_dragStartRotation({}),
-          m_bIsListening(nullptr),
-          m_windowSubscription({})
+          m_cursor(Chicane::Vec2::sZero()),
+          m_pawnSubscription()
     {
         setCanTick(true);
     }
 
     Gizmo::~Gizmo()
     {
-        unbindWindow();
+        setHoveredHandle(nullptr);
+        unbindController();
+    }
+
+    void Gizmo::onLoad()
+    {
+        m_origin = createHandle("Assets/Editor/Meshes/Gizmo/Origin.bmsh");
+
+        m_x      = createHandle(axisMesh(m_type, "X"));
+        m_y      = createHandle(axisMesh(m_type, "Y"));
+        m_z      = createHandle(axisMesh(m_type, "Z"));
+        m_xy     = createHandle("Assets/Editor/Meshes/Gizmo/Handle/XY.bmsh");
+        m_xz     = createHandle("Assets/Editor/Meshes/Gizmo/Handle/XZ.bmsh");
+        m_yz     = createHandle("Assets/Editor/Meshes/Gizmo/Handle/YZ.bmsh");
+        m_center = createHandle("Assets/Editor/Meshes/Gizmo/Scale/Center.bmsh");
+
+        applyMeshes();
+        bindController();
+        syncTransform();
+    }
+
+    void Gizmo::onUnload()
+    {
+        endDrag();
+        setHoveredHandle(nullptr);
+        unbindController();
+    }
+
+    void Gizmo::onTick(float inDeltaTime)
+    {
+        syncTransform();
     }
 
     GizmoType Gizmo::getType() const
@@ -216,8 +280,7 @@ namespace Editor
         endDrag();
 
         m_type = inType;
-
-        applyMesh();
+        applyMeshes();
     }
 
     Chicane::Object* Gizmo::getTarget() const
@@ -233,19 +296,8 @@ namespace Editor
         }
 
         endDrag();
-        m_targetSubscription.complete();
         m_target = inTarget;
-
-        if (!m_target)
-        {
-            deactivate();
-
-            return;
-        }
-
-        m_targetSubscription = m_target->watchChanges([this]() { syncTransform(); });
         syncTransform();
-        activate();
     }
 
     bool Gizmo::isDragging() const
@@ -253,209 +305,775 @@ namespace Editor
         return m_bIsDragging;
     }
 
-    bool Gizmo::pick(const Chicane::Vec3& inOrigin, const Chicane::Vec3& inDirection)
+    bool Gizmo::isHandleHovered() const
     {
-        if (!isActive() || !m_target)
+        return m_hovered != nullptr;
+    }
+
+    bool Gizmo::isHandle(const Chicane::Object* inObject) const
+    {
+        return inObject && (inObject == m_origin || inObject == m_x || inObject == m_y || inObject == m_z ||
+                            inObject == m_xy || inObject == m_xz || inObject == m_yz || inObject == m_center);
+    }
+
+    bool Gizmo::hitsHandle(const Chicane::SceneTraceRequest& inTrace) const
+    {
+        return hoveredHandle(inTrace) != nullptr;
+    }
+
+    bool Gizmo::isViewportHovered() const
+    {
+        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
+        if (!view)
+        {
+            return true;
+        }
+
+        Chicane::Grid::Component* hovered = view->getHovered();
+
+        if (!hovered)
         {
             return false;
         }
 
-        const Chicane::Vec3 origin = getTranslation();
-        const float         scale  = handleScale();
-        const GizmoAxis     axes[] = {GizmoAxis::X, GizmoAxis::Y, GizmoAxis::Z};
-
-        GizmoAxis     hit      = GizmoAxis::None;
-        float         best     = (m_type == GizmoType::Rotation ? RING_THICKNESS : AXIS_RADIUS) * scale;
-        float         startT   = 0.0f;
-        float         startAng = 0.0f;
-        Chicane::Vec3 hitAxis  = Chicane::Vec3::sRight();
-        Chicane::Vec3 startHit = origin;
-
-        if (m_type == GizmoType::Translation)
+        for (Chicane::Grid::Component* node = hovered; node != nullptr; node = node->getParent())
         {
-            Chicane::CCamera* camera = activeCamera();
-            if (camera)
+            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
             {
-                const Chicane::Vec3 view  = camera->getForward().normalize();
-                Chicane::Vec3       point = Chicane::Vec3::sZero();
-                if (intersectPlane(inOrigin, inDirection, origin, view, point))
-                {
-                    const float dist = length(point - origin) / scale;
-                    if (dist <= ORIGIN_OUTER)
-                    {
-                        m_bIsDragging    = true;
-                        m_dragAxis       = GizmoAxis::Center;
-                        m_dragStartT     = std::max(length(point - origin), MIN_SCALE);
-                        m_dragStartAngle = startAng;
-                        m_dragOrigin     = origin;
-                        m_dragAxisDir    = view;
-                        m_dragStartHit   = point;
-                        captureDragStart();
-
-                        return true;
-                    }
-                }
-            }
-        }
-
-        if (m_type == GizmoType::Translation || m_type == GizmoType::Scale)
-        {
-            const PlaneHandle planes[] = {
-                {GizmoAxis::XY, getRight().normalize(),   getForward().normalize(), getUp().normalize()     },
-                {GizmoAxis::XZ, getRight().normalize(),   getUp().normalize(),      getForward().normalize()},
-                {GizmoAxis::YZ, getForward().normalize(), getUp().normalize(),      getRight().normalize()  }
-            };
-
-            float bestRay = 1.0e9f;
-
-            for (const PlaneHandle& plane : planes)
-            {
-                Chicane::Vec3 point = Chicane::Vec3::sZero();
-                if (!intersectPlane(inOrigin, inDirection, origin, plane.n, point))
-                {
-                    continue;
-                }
-
-                const Chicane::Vec3 offset = point - origin;
-                const float         u      = offset.dot(plane.u) / scale;
-                const float         v      = offset.dot(plane.v) / scale;
-                if (u < PLANE_INNER || u > PLANE_OUTER || v < PLANE_INNER || v > PLANE_OUTER)
-                {
-                    continue;
-                }
-
-                const float ray = length(point - inOrigin);
-                if (ray >= bestRay)
-                {
-                    continue;
-                }
-
-                bestRay  = ray;
-                hit      = plane.axis;
-                hitAxis  = plane.n;
-                startHit = point;
-            }
-
-            if (hit != GizmoAxis::None)
-            {
-                m_bIsDragging    = true;
-                m_dragAxis       = hit;
-                m_dragStartT     = std::max(length(startHit - origin), MIN_SCALE);
-                m_dragStartAngle = startAng;
-                m_dragOrigin     = origin;
-                m_dragAxisDir    = hitAxis;
-                m_dragStartHit   = startHit;
-                captureDragStart();
-
                 return true;
             }
-        }
 
-        if (m_type == GizmoType::Scale)
-        {
-            const float ray      = std::max(0.0f, (origin - inOrigin).dot(inDirection));
-            const float distance = length((inOrigin + inDirection * ray) - origin);
-            if (distance < CENTER_RADIUS * scale)
+            if (node->isRoot())
             {
-                hit     = GizmoAxis::Center;
-                best    = distance;
-                startT  = std::max(distance, MIN_SCALE);
-                hitAxis = Chicane::Vec3::sOne();
+                break;
             }
         }
 
-        for (GizmoAxis axis : axes)
-        {
-            const Chicane::Vec3 direction = axisDirection(axis);
+        return false;
+    }
 
+    bool Gizmo::isRelativeSpace() const
+    {
+        if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
+        {
+            return home->getCoordinateSpace() == CoordinateSpace::Relative;
+        }
+
+        return false;
+    }
+
+    void Gizmo::onCursor(const Chicane::Vec2& inLocation)
+    {
+        if (getScene() != Chicane::Instance::sInstance().getScene().get())
+        {
+            if (!m_bIsDragging)
+            {
+                setHoveredHandle(nullptr);
+            }
+
+            return;
+        }
+
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+        if (!window)
+        {
+            if (!m_bIsDragging)
+            {
+                setHoveredHandle(nullptr);
+            }
+
+            return;
+        }
+
+        if (m_bIsDragging)
+        {
+            Chicane::SceneTraceRequest trace;
+            if (cursorTrace(inLocation, trace))
+            {
+                drag(trace);
+            }
+
+            window->setCursor(Chicane::WindowCursor::Pointer);
+
+            return;
+        }
+
+        bool overHandle = false;
+
+        if (!window->isFocused() && !window->isTextInputActive() && isViewportHovered())
+        {
+            Chicane::SceneTraceRequest trace;
+            if (cursorTrace(inLocation, trace))
+            {
+                setHoveredHandle(hoveredHandle(trace));
+                overHandle = m_hovered != nullptr;
+            }
+            else
+            {
+                setHoveredHandle(nullptr);
+            }
+        }
+        else
+        {
+            setHoveredHandle(nullptr);
+        }
+
+        if (overHandle)
+        {
+            window->setCursor(Chicane::WindowCursor::Pointer);
+
+            return;
+        }
+
+        if (std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView())
+        {
+            window->setCursor(view->getPointer());
+
+            return;
+        }
+
+        window->setCursor(Chicane::WindowCursor::Default);
+    }
+
+    void Gizmo::onPress()
+    {
+        if (m_bIsDragging || !m_target)
+        {
+            return;
+        }
+
+        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
+        if (!window || window->isFocused() || window->isTextInputActive() || !isViewportHovered())
+        {
+            return;
+        }
+
+        Chicane::SceneTraceRequest trace;
+        if (!cursorTrace(m_cursor, trace))
+        {
+            return;
+        }
+
+        beginDrag(trace);
+    }
+
+    void Gizmo::onRelease()
+    {
+        const bool bWasDragging = m_bIsDragging;
+        endDrag();
+
+        if (bWasDragging)
+        {
+            onCursor(m_cursor);
+        }
+    }
+
+    void Gizmo::syncTransform()
+    {
+        if (!m_target)
+        {
+            endDrag();
+            setHoveredHandle(nullptr);
+            refreshHandleVisibility();
+
+            return;
+        }
+
+        if (m_bIsDragging)
+        {
+            setAbsoluteScale(Chicane::Vec3(handleScale()));
+            if (m_type == GizmoType::Translation)
+            {
+                setAbsoluteTranslation(m_target->getTranslation());
+            }
+
+            syncOrigin();
+
+            return;
+        }
+
+        Chicane::Transform pose;
+        pose.setTranslation(m_target->getTranslation());
+        pose.setRotation(isRelativeSpace() ? m_target->getRotation() : Chicane::Rotator());
+        pose.setScale(Chicane::Vec3(handleScale()));
+        setAbsolute(pose);
+
+        syncOrigin();
+        refreshHandleVisibility();
+    }
+
+    void Gizmo::syncOrigin()
+    {
+        if (!m_origin)
+        {
+            return;
+        }
+
+        Chicane::CCamera* camera = activeCamera();
+        if (!camera)
+        {
+            return;
+        }
+
+        m_origin->lookAt(camera->getTranslation());
+    }
+
+    void Gizmo::applyMeshes()
+    {
+        if (m_x)
+        {
+            m_x->setMesh(axisMesh(m_type, "X"));
+        }
+
+        if (m_y)
+        {
+            m_y->setMesh(axisMesh(m_type, "Y"));
+        }
+
+        if (m_z)
+        {
+            m_z->setMesh(axisMesh(m_type, "Z"));
+        }
+
+        const float gap = m_type == GizmoType::Translation ? AXIS_GAP : 0.0f;
+        if (m_x)
+        {
+            m_x->setRelativeTranslation(Chicane::Vec3(gap, 0.0f, 0.0f));
+        }
+
+        if (m_y)
+        {
+            m_y->setRelativeTranslation(Chicane::Vec3(0.0f, gap, 0.0f));
+        }
+
+        if (m_z)
+        {
+            m_z->setRelativeTranslation(Chicane::Vec3(0.0f, 0.0f, gap));
+        }
+
+        refreshHandleVisibility();
+    }
+
+    Chicane::CCamera* Gizmo::activeCamera() const
+    {
+        Chicane::Scene* scene = getScene();
+        if (!scene)
+        {
+            return nullptr;
+        }
+
+        std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
+        if (cameras.empty())
+        {
+            return nullptr;
+        }
+
+        return cameras.back();
+    }
+
+    void Gizmo::bindController()
+    {
+        unbindController();
+
+        Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
+        if (!controller)
+        {
+            return;
+        }
+
+        m_bIsListening                  = std::make_shared<bool>(true);
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        m_pawnSubscription = controller->watchAttachment(
+            [this, listening](Chicane::APawn* inPawn)
+            {
+                if (!listening || !*listening || !inPawn)
+                {
+                    return;
+                }
+
+                bindInput(Chicane::Instance::sInstance().getController());
+            }
+        );
+    }
+
+    void Gizmo::unbindController()
+    {
+        if (m_bIsListening)
+        {
+            *m_bIsListening = false;
+        }
+
+        m_pawnSubscription.complete();
+    }
+
+    void Gizmo::bindInput(Chicane::Controller* inController)
+    {
+        if (!inController)
+        {
+            return;
+        }
+
+        std::shared_ptr<bool> listening = m_bIsListening;
+
+        inController->bindEvent(
+            [this, listening](const Chicane::Input::MouseMotionEvent& inEvent)
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                m_cursor = inEvent.location;
+                onCursor(m_cursor);
+            }
+        );
+
+        inController->bindEvent(
+            Chicane::Input::MouseButton::Left,
+            Chicane::Input::Status::Pressed,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                onPress();
+            }
+        );
+        inController->bindEvent(
+            Chicane::Input::MouseButton::Left,
+            Chicane::Input::Status::Released,
+            [this, listening]()
+            {
+                if (!listening || !*listening)
+                {
+                    return;
+                }
+
+                onRelease();
+            }
+        );
+    }
+
+    void Gizmo::setHandleActive(Chicane::CMesh* inMesh, bool inValue)
+    {
+        if (!inMesh)
+        {
+            return;
+        }
+
+        if (!inValue && m_hovered == inMesh)
+        {
+            setHoveredHandle(nullptr);
+        }
+
+        if (inValue)
+        {
+            inMesh->activate();
+
+            return;
+        }
+
+        inMesh->deactivate();
+    }
+
+    void Gizmo::refreshHandleVisibility()
+    {
+        const bool bShow       = m_target != nullptr;
+        const bool bShowPlanes = bShow && m_type != GizmoType::Rotation;
+
+        setHandleActive(m_xy, bShowPlanes);
+        setHandleActive(m_xz, bShowPlanes);
+        setHandleActive(m_yz, bShowPlanes);
+        setHandleActive(m_center, bShow && m_type == GizmoType::Scale);
+        setHandleActive(m_origin, bShow);
+        setHandleActive(m_x, bShow);
+        setHandleActive(m_y, bShow);
+        setHandleActive(m_z, bShow);
+    }
+
+    GizmoAxis Gizmo::axisFromHandle(const Chicane::CMesh* inHandle) const
+    {
+        if (!inHandle)
+        {
+            return GizmoAxis::None;
+        }
+
+        if (inHandle == m_x)
+        {
+            return GizmoAxis::X;
+        }
+
+        if (inHandle == m_y)
+        {
+            return GizmoAxis::Y;
+        }
+
+        if (inHandle == m_z)
+        {
+            return GizmoAxis::Z;
+        }
+
+        if (inHandle == m_xy)
+        {
+            return GizmoAxis::XY;
+        }
+
+        if (inHandle == m_xz)
+        {
+            return GizmoAxis::XZ;
+        }
+
+        if (inHandle == m_yz)
+        {
+            return GizmoAxis::YZ;
+        }
+
+        if (inHandle == m_center)
+        {
+            return GizmoAxis::Center;
+        }
+
+        if (inHandle == m_origin && m_type != GizmoType::Rotation)
+        {
+            return GizmoAxis::Center;
+        }
+
+        return GizmoAxis::None;
+    }
+
+    Chicane::CMesh* Gizmo::createHandle(const Chicane::FileSystem::Path& inMesh)
+    {
+        Chicane::CMesh* mesh = getScene()->createComponent<Chicane::CMesh>();
+        mesh->setCanCastShadows(false);
+        mesh->setIsLit(false);
+        mesh->setIsForeground(true);
+        mesh->setIsTransient(true);
+        mesh->setMesh(inMesh);
+        mesh->attachTo(this);
+        mesh->activate();
+
+        return mesh;
+    }
+
+    Chicane::CMesh* Gizmo::hoveredHandle(const Chicane::SceneTraceRequest& inTrace) const
+    {
+        if (!m_target || !inTrace.isValid())
+        {
+            return nullptr;
+        }
+
+        const Chicane::Vec3 origin = getTranslation();
+        const Chicane::Vec3 rayO   = inTrace.getOrigin();
+        const Chicane::Vec3 rayD   = inTrace.getDirection();
+        const float         scale  = handleScale();
+        if (scale <= 0.0f)
+        {
+            return nullptr;
+        }
+
+        Chicane::CMesh* bestHandle   = nullptr;
+        float           bestRay      = 1.0e9f;
+        float           bestDistance = 1.0e9f;
+
+        const auto consider = [&](Chicane::CMesh* inMesh, float inDistance, float inRay)
+        {
+            if (!inMesh || !inMesh->isActive() || inRay < 0.0f)
+            {
+                return;
+            }
+
+            if (inRay > bestRay + 0.0001f)
+            {
+                return;
+            }
+
+            if (std::fabs(inRay - bestRay) <= 0.0001f && inDistance >= bestDistance)
+            {
+                return;
+            }
+
+            bestHandle   = inMesh;
+            bestRay      = inRay;
+            bestDistance = inDistance;
+        };
+
+        const auto pickAxis = [&](Chicane::CMesh* inMesh, GizmoAxis inAxis)
+        {
             if (m_type == GizmoType::Rotation)
             {
-                Chicane::Vec3 point = Chicane::Vec3::sZero();
-                if (!intersectPlane(inOrigin, inDirection, origin, direction, point))
+                float ray      = 0.0f;
+                float distance = 0.0f;
+                if (closestOnRing(
+                        rayO,
+                        rayD,
+                        origin,
+                        axisDirection(inAxis),
+                        RING_RADIUS * scale,
+                        RING_TUBE * scale,
+                        ray,
+                        distance
+                    ))
                 {
-                    continue;
+                    consider(inMesh, distance, ray);
                 }
 
-                const float distance = std::fabs(length(point - origin) - RING_RADIUS * scale);
-                if (distance >= best)
-                {
-                    continue;
-                }
-
-                hit      = axis;
-                best     = distance;
-                startAng = angleOnPlane(point, origin, direction);
-                hitAxis  = direction;
-
-                continue;
+                return;
             }
 
             float ray      = 0.0f;
             float along    = 0.0f;
             float distance = 0.0f;
             closestOnAxis(
-                inOrigin,
-                inDirection,
+                rayO,
+                rayD,
                 origin,
-                direction,
-                ORIGIN_OUTER * scale,
-                AXIS_LENGTH * scale,
+                axisDirection(inAxis),
+                AXIS_START * scale,
+                AXIS_END * scale,
                 ray,
                 along,
                 distance
             );
-
-            if (distance >= best)
+            if (distance <= AXIS_PICK * scale)
             {
-                continue;
+                consider(inMesh, distance, ray);
+            }
+        };
+
+        const auto pickPlane = [&](Chicane::CMesh* inMesh, const Chicane::Vec3& inU, const Chicane::Vec3& inV)
+        {
+            const Chicane::Vec3 normal = inU.cross(inV).normalize();
+            Chicane::Vec3       point  = Chicane::Vec3::sZero();
+            if (!intersectPlane(rayO, rayD, origin, normal, point))
+            {
+                return;
             }
 
-            if (along < ORIGIN_OUTER * scale)
+            const Chicane::Vec3 offset = point - origin;
+            const float         u      = offset.dot(inU.normalize()) / scale;
+            const float         v      = offset.dot(inV.normalize()) / scale;
+            if (u < PLANE_INNER || u > PLANE_OUTER || v < PLANE_INNER || v > PLANE_OUTER)
             {
-                continue;
+                return;
             }
 
-            hit     = axis;
-            best    = distance;
-            startT  = along;
-            hitAxis = direction;
+            consider(inMesh, 0.0f, (point - rayO).length());
+        };
+
+        pickAxis(m_x, GizmoAxis::X);
+        pickAxis(m_y, GizmoAxis::Y);
+        pickAxis(m_z, GizmoAxis::Z);
+
+        if (m_type != GizmoType::Rotation)
+        {
+            pickPlane(m_xy, getRight(), getForward());
+            pickPlane(m_xz, getRight(), getUp());
+            pickPlane(m_yz, getForward(), getUp());
         }
 
-        if (hit == GizmoAxis::None)
+        if (m_origin && m_type != GizmoType::Rotation)
+        {
+            Chicane::CCamera* camera = activeCamera();
+            if (camera)
+            {
+                Chicane::Vec3 point = Chicane::Vec3::sZero();
+                if (intersectPlane(rayO, rayD, origin, camera->getForward().normalize(), point))
+                {
+                    const float distance = std::fabs((point - origin).length() - ORIGIN_RADIUS * scale);
+                    if (distance <= ORIGIN_PICK * scale)
+                    {
+                        consider(m_origin, distance, (point - rayO).length());
+                    }
+                }
+            }
+        }
+
+        if (m_center && m_type == GizmoType::Scale)
+        {
+            const float ray      = std::max(0.0f, (origin - rayO).dot(rayD));
+            const float distance = (rayO + rayD * ray - origin).length();
+            if (distance <= CENTER_PICK * scale)
+            {
+                consider(m_center, distance, ray);
+            }
+        }
+
+        return bestHandle;
+    }
+
+    void Gizmo::setHoveredHandle(Chicane::CMesh* inHandle)
+    {
+        if (m_hovered == inHandle)
+        {
+            return;
+        }
+
+        if (m_hovered)
+        {
+            m_hovered->setEmissiveStrength(1.0f);
+        }
+
+        m_hovered = inHandle;
+
+        if (m_hovered)
+        {
+            m_hovered->setEmissiveStrength(HANDLE_GLOW);
+        }
+    }
+
+    Chicane::Vec3 Gizmo::axisDirection(GizmoAxis inAxis) const
+    {
+        switch (inAxis)
+        {
+        case GizmoAxis::Y:
+            return getForward().normalize();
+
+        case GizmoAxis::Z:
+            return getUp().normalize();
+
+        default:
+            return getRight().normalize();
+        }
+    }
+
+    Chicane::Vec3 Gizmo::planeNormal(GizmoAxis inAxis) const
+    {
+        switch (inAxis)
+        {
+        case GizmoAxis::XY:
+            return getUp().normalize();
+
+        case GizmoAxis::XZ:
+            return getForward().normalize();
+
+        case GizmoAxis::YZ:
+            return getRight().normalize();
+
+        default:
+            return getUp().normalize();
+        }
+    }
+
+    bool Gizmo::cursorTrace(const Chicane::Vec2& inLocation, Chicane::SceneTraceRequest& outTrace) const
+    {
+        Chicane::Scene* scene = getScene();
+        if (!scene)
         {
             return false;
         }
 
-        m_bIsDragging    = true;
-        m_dragAxis       = hit;
-        m_dragStartT     = startT;
-        m_dragStartAngle = startAng;
-        m_dragOrigin     = origin;
-        m_dragAxisDir    = hitAxis;
-        m_dragStartHit   = startHit;
-        captureDragStart();
-
-        return true;
+        return scene
+            ->trace(outTrace, inLocation, Chicane::Instance::sInstance().getScreenViewportRect(), activeCamera());
     }
 
-    void Gizmo::drag(const Chicane::Vec3& inOrigin, const Chicane::Vec3& inDirection)
+    void Gizmo::beginDrag(const Chicane::SceneTraceRequest& inTrace)
+    {
+        if (!m_target)
+        {
+            return;
+        }
+
+        Chicane::CMesh* handle = hoveredHandle(inTrace);
+        const GizmoAxis axis   = axisFromHandle(handle);
+        if (axis == GizmoAxis::None)
+        {
+            return;
+        }
+
+        setHoveredHandle(handle);
+
+        const Chicane::Vec3 origin    = getTranslation();
+        const Chicane::Vec3 rayOrigin = inTrace.getOrigin();
+        const Chicane::Vec3 rayDir    = inTrace.getDirection();
+
+        m_dragAxis       = axis;
+        m_dragOrigin     = origin;
+        m_dragStartHit   = origin;
+        m_dragStartT     = MIN_SCALE;
+        m_dragStartAngle = 0.0f;
+
+        if (axis == GizmoAxis::Center)
+        {
+            if (m_type == GizmoType::Scale)
+            {
+                const float ray      = std::max(0.0f, (origin - rayOrigin).dot(rayDir));
+                const float distance = (rayOrigin + rayDir * ray - origin).length();
+                m_dragStartT         = std::max(distance, MIN_SCALE);
+                m_dragAxisDir        = Chicane::Vec3::sOne();
+            }
+            else
+            {
+                Chicane::CCamera* camera = activeCamera();
+                if (!camera)
+                {
+                    return;
+                }
+
+                m_dragAxisDir = camera->getForward().normalize();
+                if (!intersectPlane(rayOrigin, rayDir, origin, m_dragAxisDir, m_dragStartHit))
+                {
+                    return;
+                }
+            }
+        }
+        else if (isPlaneAxis(axis))
+        {
+            m_dragAxisDir = planeNormal(axis);
+            if (!intersectPlane(rayOrigin, rayDir, origin, m_dragAxisDir, m_dragStartHit))
+            {
+                return;
+            }
+
+            m_dragStartT = std::max((m_dragStartHit - origin).length(), MIN_SCALE);
+        }
+        else if (m_type == GizmoType::Rotation)
+        {
+            m_dragAxisDir = axisDirection(axis);
+            Chicane::Vec3 point;
+            if (!intersectPlane(rayOrigin, rayDir, origin, m_dragAxisDir, point))
+            {
+                return;
+            }
+
+            m_dragStartAngle = angleOnPlane(point, origin, m_dragAxisDir);
+            m_dragStartHit   = point;
+        }
+        else
+        {
+            m_dragAxisDir  = axisDirection(axis);
+            float ray      = 0.0f;
+            float along    = 0.0f;
+            float distance = 0.0f;
+            closestOnAxis(rayOrigin, rayDir, origin, m_dragAxisDir, -1000.0f, 1000.0f, ray, along, distance);
+            m_dragStartT = along;
+        }
+
+        m_bIsDragging = true;
+        captureDragStart();
+    }
+
+    void Gizmo::drag(const Chicane::SceneTraceRequest& inTrace)
     {
         if (!m_bIsDragging || !m_target)
         {
             return;
         }
 
+        const Chicane::Vec3 rayOrigin = inTrace.getOrigin();
+        const Chicane::Vec3 rayDir    = inTrace.getDirection();
+
         if (m_type == GizmoType::Rotation)
         {
             Chicane::Vec3 point = Chicane::Vec3::sZero();
-            if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
+            if (!intersectPlane(rayOrigin, rayDir, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
             }
 
-            const float delta = angleOnPlane(point, m_dragOrigin, m_dragAxisDir) - m_dragStartAngle;
-
-            applyRotationDelta(delta);
+            applyRotationDelta(angleOnPlane(point, m_dragOrigin, m_dragAxisDir) - m_dragStartAngle);
 
             return;
         }
@@ -464,18 +1082,16 @@ namespace Editor
         {
             if (m_type == GizmoType::Scale)
             {
-                const float ray      = std::max(0.0f, (m_dragOrigin - inOrigin).dot(inDirection));
-                const float distance = std::max(length((inOrigin + inDirection * ray) - m_dragOrigin), MIN_SCALE);
-                const float ratio    = distance / std::max(m_dragStartT, MIN_SCALE);
-
-                applyScaleValue(m_dragStartScale * ratio);
+                const float ray      = std::max(0.0f, (m_dragOrigin - rayOrigin).dot(rayDir));
+                const float distance = std::max((rayOrigin + rayDir * ray - m_dragOrigin).length(), MIN_SCALE);
+                applyScaleValue(m_dragStartScale * (distance / std::max(m_dragStartT, MIN_SCALE)));
                 poseHandles();
 
                 return;
             }
 
             Chicane::Vec3 point = Chicane::Vec3::sZero();
-            if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
+            if (!intersectPlane(rayOrigin, rayDir, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
             }
@@ -489,14 +1105,14 @@ namespace Editor
         if (isPlaneAxis(m_dragAxis))
         {
             Chicane::Vec3 point = Chicane::Vec3::sZero();
-            if (!intersectPlane(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, point))
+            if (!intersectPlane(rayOrigin, rayDir, m_dragOrigin, m_dragAxisDir, point))
             {
                 return;
             }
 
             if (m_type == GizmoType::Scale)
             {
-                const float   ratio = length(point - m_dragOrigin) / std::max(m_dragStartT, MIN_SCALE);
+                const float   ratio = (point - m_dragOrigin).length() / std::max(m_dragStartT, MIN_SCALE);
                 Chicane::Vec3 scale = m_dragStartScale;
 
                 if (m_dragAxis == GizmoAxis::XY || m_dragAxis == GizmoAxis::XZ)
@@ -528,7 +1144,7 @@ namespace Editor
         float ray      = 0.0f;
         float along    = 0.0f;
         float distance = 0.0f;
-        closestOnAxis(inOrigin, inDirection, m_dragOrigin, m_dragAxisDir, -1000.0f, 1000.0f, ray, along, distance);
+        closestOnAxis(rayOrigin, rayDir, m_dragOrigin, m_dragAxisDir, -1000.0f, 1000.0f, ray, along, distance);
 
         if (m_type == GizmoType::Scale)
         {
@@ -539,12 +1155,17 @@ namespace Editor
             {
             case GizmoAxis::X:
                 scale.x = std::max(MIN_SCALE, m_dragStartScale.x * ratio);
+
                 break;
+
             case GizmoAxis::Y:
                 scale.y = std::max(MIN_SCALE, m_dragStartScale.y * ratio);
+
                 break;
+
             default:
                 scale.z = std::max(MIN_SCALE, m_dragStartScale.z * ratio);
+
                 break;
             }
 
@@ -566,103 +1187,7 @@ namespace Editor
 
         m_bIsDragging = false;
         m_dragAxis    = GizmoAxis::None;
-
         syncTransform();
-    }
-
-    void Gizmo::onLoad()
-    {
-        m_mesh = getScene()->createComponent<Chicane::CMesh>();
-        m_mesh->setCanCastShadows(false);
-        m_mesh->setIsLit(false);
-        m_mesh->setIsForeground(true);
-        m_mesh->setIsTransient(true);
-        m_mesh->attachTo(this);
-
-        m_origin = getScene()->createComponent<Chicane::CMesh>();
-        m_origin->setCanCastShadows(false);
-        m_origin->setIsLit(false);
-        m_origin->setIsForeground(true);
-        m_origin->setIsTransient(true);
-        m_origin->setMesh("Assets/Editor/Meshes/Gizmo/Origin.bmsh");
-        m_origin->attachTo(this);
-        m_origin->deactivate();
-
-        applyMesh();
-
-        bindWindow();
-    }
-
-    void Gizmo::onUnload()
-    {
-        unbindWindow();
-    }
-
-    void Gizmo::onActivation()
-    {
-        if (m_mesh)
-        {
-            m_mesh->activate();
-        }
-
-        syncOrigin();
-    }
-
-    void Gizmo::onDeactivation()
-    {
-        endDrag();
-
-        if (m_mesh)
-        {
-            m_mesh->deactivate();
-        }
-
-        if (m_origin)
-        {
-            m_origin->deactivate();
-        }
-    }
-
-    void Gizmo::onTick(float inDeltaTime)
-    {
-        (void)inDeltaTime;
-
-        syncTransform();
-    }
-
-    void Gizmo::applyMesh()
-    {
-        if (!m_mesh)
-        {
-            return;
-        }
-
-        m_mesh->setMesh(meshPath(m_type));
-        syncOrigin();
-    }
-
-    void Gizmo::syncTransform()
-    {
-        Chicane::Object* target = m_target;
-        if (!target)
-        {
-            if (m_origin)
-            {
-                m_origin->deactivate();
-            }
-
-            return;
-        }
-
-        setAbsoluteScale(Chicane::Vec3(handleScale(target)));
-
-        if (!m_bIsDragging)
-        {
-            setAbsoluteTranslation(target->getTranslation());
-            setAbsoluteRotation(isRelativeSpace() ? target->getRotation() : Chicane::Rotator());
-        }
-
-        syncOrigin();
     }
 
     void Gizmo::captureDragStart()
@@ -726,7 +1251,7 @@ namespace Editor
         if (isRelativeSpace())
         {
             m_target->setRelativeRotation(m_dragStartRotation);
-            const Chicane::Vec3 localAxis = inverseQuat(m_target->getRotation().get()) * m_dragAxisDir;
+            const Chicane::Vec3 localAxis = m_target->getRotation().get().inverse() * m_dragAxisDir;
             m_target->addRelativeRotation(Chicane::QuatFloat::sFromAxis(localAxis, inDelta));
 
             return;
@@ -753,70 +1278,9 @@ namespace Editor
         m_target->setAbsoluteScale(inScale);
     }
 
-    CoordinateSpace Gizmo::coordinateSpace() const
-    {
-        if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
-        {
-            return home->getCoordinateSpace();
-        }
-
-        return CoordinateSpace::Absolute;
-    }
-
-    bool Gizmo::isRelativeSpace() const
-    {
-        return coordinateSpace() == CoordinateSpace::Relative;
-    }
-
-    void Gizmo::syncOrigin()
-    {
-        if (!m_origin)
-        {
-            return;
-        }
-
-        if (!isActive() || !m_target || m_type != GizmoType::Translation)
-        {
-            m_origin->deactivate();
-
-            return;
-        }
-
-        m_origin->activate();
-
-        Chicane::CCamera* camera = activeCamera();
-        if (!camera)
-        {
-            return;
-        }
-
-        const Chicane::Vec3 view = camera->getForward();
-        if (view.dot(view) < 0.0001f)
-        {
-            return;
-        }
-
-        Chicane::Vec3 up = camera->getUp();
-        if (up.dot(up) < 0.0001f)
-        {
-            up = Chicane::Vec3::sUp();
-        }
-
-        const Chicane::QuatFloat facing = (Chicane::QuatFloat::sLookAt(view.normalize() * -1.0f, up.normalize()) *
-                                           Chicane::QuatFloat::sFromEuler(Chicane::Vec3(-90.0f, 0.0f, 0.0f)))
-                                              .normalize();
-
-        m_origin->setRelativeRotation(inverseQuat(getRotation().get()) * facing);
-    }
-
     float Gizmo::handleScale() const
     {
-        return handleScale(m_target);
-    }
-
-    float Gizmo::handleScale(const Chicane::Object* inTarget) const
-    {
-        if (!inTarget)
+        if (!m_target)
         {
             return 1.0f;
         }
@@ -827,372 +1291,8 @@ namespace Editor
             return 1.0f;
         }
 
-        const Chicane::Vec3 offset = inTarget->getTranslation() - camera->getTranslation();
+        const Chicane::Vec3 offset = m_target->getTranslation() - camera->getTranslation();
 
-        return std::clamp(length(offset) * HANDLE_SCALE, MIN_HANDLE, MAX_HANDLE);
-    }
-
-    Chicane::CCamera* Gizmo::activeCamera() const
-    {
-        Chicane::Scene* scene = getScene();
-        if (!scene)
-        {
-            return nullptr;
-        }
-
-        std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
-        if (cameras.empty())
-        {
-            return nullptr;
-        }
-
-        return cameras.back();
-    }
-
-    Chicane::Vec3 Gizmo::axisDirection(GizmoAxis inAxis) const
-    {
-        switch (inAxis)
-        {
-        case GizmoAxis::Y:
-            return getForward().normalize();
-
-        case GizmoAxis::Z:
-            return getUp().normalize();
-
-        default:
-            return getRight().normalize();
-        }
-    }
-
-    void Gizmo::bindWindow()
-    {
-        unbindWindow();
-
-        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
-        if (!window)
-        {
-            return;
-        }
-
-        m_bIsListening                  = std::make_shared<bool>(true);
-        std::shared_ptr<bool> listening = m_bIsListening;
-
-        m_windowSubscription = window->watchEvent(
-            [this, listening](const Chicane::WindowEvent& inEvent)
-            {
-                if (!listening || !*listening)
-                {
-                    return;
-                }
-
-                onWindowEvent(inEvent);
-            }
-        );
-    }
-
-    void Gizmo::unbindWindow()
-    {
-        if (m_bIsListening)
-        {
-            *m_bIsListening = false;
-        }
-
-        m_windowSubscription.complete();
-    }
-
-    void Gizmo::onWindowEvent(const Chicane::WindowEvent& inEvent)
-    {
-        if (getScene() != Chicane::Instance::sInstance().getScene().get())
-        {
-            if (isDragging())
-            {
-                endDrag();
-            }
-
-            return;
-        }
-
-        Chicane::Window* window = Chicane::Instance::sInstance().getWindow();
-        if (!window || window->isFocused() || window->isTextInputActive())
-        {
-            if (isDragging())
-            {
-                endDrag();
-            }
-
-            return;
-        }
-
-        switch (inEvent.type)
-        {
-        case Chicane::WindowEventType::MouseButtonDown: {
-            const Chicane::Input::MouseButtonEvent event =
-                *static_cast<const Chicane::Input::MouseButtonEvent*>(inEvent.data);
-            if (event.button != Chicane::Input::MouseButton::Left)
-            {
-                break;
-            }
-
-            pickAt(event.location);
-
-            break;
-        }
-
-        case Chicane::WindowEventType::MouseButtonUp: {
-            const Chicane::Input::MouseButtonEvent event =
-                *static_cast<const Chicane::Input::MouseButtonEvent*>(inEvent.data);
-            if (event.button != Chicane::Input::MouseButton::Left)
-            {
-                break;
-            }
-
-            endDrag();
-
-            break;
-        }
-
-        case Chicane::WindowEventType::MouseMotion: {
-            if (!isDragging())
-            {
-                break;
-            }
-
-            const Chicane::Input::MouseMotionEvent event =
-                *static_cast<const Chicane::Input::MouseMotionEvent*>(inEvent.data);
-            dragAt(event.location);
-
-            break;
-        }
-
-        case Chicane::WindowEventType::KeyDown: {
-            if (!getTarget())
-            {
-                break;
-            }
-
-            const Chicane::Input::KeyboardEvent event =
-                *static_cast<const Chicane::Input::KeyboardEvent*>(inEvent.data);
-            if (event.bIsRepeating)
-            {
-                break;
-            }
-
-            switch (event.button)
-            {
-            case Chicane::Input::KeyboardButton::Number1:
-            case Chicane::Input::KeyboardButton::T:
-                setType(GizmoType::Translation);
-
-                break;
-
-            case Chicane::Input::KeyboardButton::Number2:
-            case Chicane::Input::KeyboardButton::R:
-                setType(GizmoType::Rotation);
-
-                break;
-
-            case Chicane::Input::KeyboardButton::Number3:
-            case Chicane::Input::KeyboardButton::E:
-                setType(GizmoType::Scale);
-
-                break;
-
-            case Chicane::Input::KeyboardButton::Delete: {
-                if (isDragging())
-                {
-                    endDrag();
-                }
-
-                if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
-                {
-                    home->onItemDelete();
-                }
-
-                break;
-            }
-
-            default:
-                break;
-            }
-
-            break;
-        }
-
-        default:
-            break;
-        }
-    }
-
-    bool Gizmo::makeRay(const Chicane::Vec2& inLocation, Chicane::Vec3& outOrigin, Chicane::Vec3& outDirection) const
-    {
-        const Chicane::Bounds2D viewport = Chicane::Instance::sInstance().getScreenViewportRect();
-        if (viewport.isEmpty())
-        {
-            return false;
-        }
-
-        Chicane::Scene* scene = getScene();
-        if (!scene)
-        {
-            return false;
-        }
-
-        const Chicane::Vec2 size(viewport.right - viewport.left, viewport.bottom - viewport.top);
-        const Chicane::Vec2 local(inLocation.x - viewport.left, inLocation.y - viewport.top);
-
-        std::vector<Chicane::CCamera*> cameras = scene->getActiveComponents<Chicane::CCamera>();
-        if (cameras.empty())
-        {
-            return false;
-        }
-
-        Chicane::CCamera*    camera = cameras.back();
-        const Chicane::View& data   = camera->getData();
-        Chicane::Vec3        nearPoint;
-        Chicane::Vec3        farPoint;
-        if (!Chicane::Mat4::sFromPosition(local, data.view, data.projection, size, nearPoint, farPoint))
-        {
-            return false;
-        }
-
-        outOrigin = camera->getTranslation();
-
-        const Chicane::Vec3 delta = farPoint - outOrigin;
-        if (delta.dot(delta) < 0.0001f)
-        {
-            return false;
-        }
-
-        outDirection = delta.normalize();
-
-        return true;
-    }
-
-    bool Gizmo::isOverViewport(const Chicane::Vec2& inLocation) const
-    {
-        const Chicane::Bounds2D viewport = Chicane::Instance::sInstance().getScreenViewportRect();
-        if (viewport.isEmpty() || !viewport.contains(inLocation))
-        {
-            return false;
-        }
-
-        std::shared_ptr<Chicane::Grid::View> view = Chicane::Instance::sInstance().getView();
-        if (!view)
-        {
-            return true;
-        }
-
-        Chicane::Grid::Component* hit = view->getHitAt(inLocation);
-        if (!hit)
-        {
-            return true;
-        }
-
-        for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
-        {
-            if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
-            {
-                return true;
-            }
-
-            if (node->isRoot())
-            {
-                break;
-            }
-        }
-
-        return false;
-    }
-
-    void Gizmo::pickAt(const Chicane::Vec2& inLocation)
-    {
-        if (!isOverViewport(inLocation))
-        {
-            return;
-        }
-
-        Chicane::Vec3 origin;
-        Chicane::Vec3 direction;
-        if (!makeRay(inLocation, origin, direction))
-        {
-            return;
-        }
-
-        if (pick(origin, direction))
-        {
-            return;
-        }
-
-        Chicane::Scene* scene = getScene();
-        if (!scene)
-        {
-            return;
-        }
-
-        const Chicane::Vec3        destination = origin + direction * 1000.0f;
-        Chicane::SceneTraceRequest request     = Chicane::SceneTraceRequest::sLine(origin, destination);
-        Chicane::Object*           target      = nullptr;
-        float                      best        = 1.0e9f;
-
-        Chicane::Renderer::Instance* renderer = Chicane::Instance::sInstance().getRenderer();
-        if (renderer && renderer->hasFeature(Chicane::Renderer::RendererFeature::Traces))
-        {
-            Chicane::Instance::sInstance().pushTrace(request, ViewportOverlay::sInstance().tracerColor);
-        }
-
-        for (Chicane::Actor* actor : scene->getActors())
-        {
-            if (!actor || actor->isTransient())
-            {
-                continue;
-            }
-
-            float enter = 0.0f;
-            if (!request.intersects(actor->getBounds(), enter) || enter >= best)
-            {
-                continue;
-            }
-
-            best   = enter;
-            target = actor;
-        }
-
-        for (Chicane::Component* component : scene->getComponents())
-        {
-            if (!component || component->isTransient() || dynamic_cast<Chicane::CMesh*>(component))
-            {
-                continue;
-            }
-
-            float enter = 0.0f;
-            if (!request.intersects(component->getBounds(), enter) || enter >= best)
-            {
-                continue;
-            }
-
-            best   = enter;
-            target = component;
-        }
-
-        if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
-        {
-            home->onItemSelection(target);
-
-            return;
-        }
-
-        setTarget(target);
-    }
-
-    void Gizmo::dragAt(const Chicane::Vec2& inLocation)
-    {
-        Chicane::Vec3 origin;
-        Chicane::Vec3 direction;
-        if (!makeRay(inLocation, origin, direction))
-        {
-            return;
-        }
-
-        drag(origin, direction);
+        return std::clamp(offset.length() * HANDLE_SCALE, MIN_HANDLE, MAX_HANDLE);
     }
 }

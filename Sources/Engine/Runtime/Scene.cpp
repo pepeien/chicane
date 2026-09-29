@@ -698,6 +698,8 @@ namespace Chicane
             return;
         }
 
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+
         std::vector<std::uint64_t> keys;
         collectCellKeys(inObject, keys);
 
@@ -733,6 +735,8 @@ namespace Chicane
         {
             return;
         }
+
+        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
 
         auto found = m_objectCells.find(inObject);
         if (found == m_objectCells.end())

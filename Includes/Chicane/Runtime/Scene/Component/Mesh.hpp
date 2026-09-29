@@ -103,6 +103,9 @@ namespace Chicane
         bool isOutlined() const;
         void setIsOutlined(bool inValue);
 
+        float getEmissiveStrength() const;
+        void setEmissiveStrength(float inValue);
+
     protected:
         void generateBounds();
         void bindSkeleton();
@@ -119,6 +122,7 @@ namespace Chicane
     protected:
         bool                                              m_bIsVisible;
         Renderer::DrawPoly3DFlag                          m_flags;
+        float                                             m_emissiveStrength;
 
         const Box::Mesh*                                  m_asset;
         const Box::Skeleton*                              m_skeleton;

@@ -14,6 +14,7 @@
 #include <Chicane/Runtime/Scene/Component/Light.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 #include <Chicane/Runtime/Scene/Trace/Request.hpp>
+#include <Chicane/Runtime/Scene/Trace/Response.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Cone.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Pyramid.hpp>
 #include <Chicane/Runtime/Scene/Trace/Shape/Utility.hpp>
@@ -56,8 +57,6 @@ namespace Editor
 
     void Scene::onTick(float inDeltaTime)
     {
-        (void)inDeltaTime;
-
         pushLightTraces();
     }
 
@@ -267,8 +266,6 @@ namespace Editor
 
         for (auto& [target, helper] : m_helpers)
         {
-            (void)target;
-
             helper.subscription.complete();
             if (!helper.mesh)
             {
@@ -471,5 +468,86 @@ namespace Editor
         }
 
         return false;
+    }
+
+    Chicane::Object* Scene::helperTarget(const Chicane::Object* inObject) const
+    {
+        if (!inObject)
+        {
+            return nullptr;
+        }
+
+        for (const auto& [target, helper] : m_helpers)
+        {
+            if (helper.mesh == inObject)
+            {
+                return target;
+            }
+        }
+
+        return nullptr;
+    }
+
+    Chicane::Object* Scene::selectableFromHit(Chicane::Object* inObject) const
+    {
+        if (!inObject)
+        {
+            return nullptr;
+        }
+
+        if (Chicane::Object* visual = helperTarget(inObject))
+        {
+            return visual;
+        }
+
+        if (inObject->isTransient())
+        {
+            return nullptr;
+        }
+
+        if (Chicane::Component* component = dynamic_cast<Chicane::Component*>(inObject))
+        {
+            if (Chicane::Actor* actor = dynamic_cast<Chicane::Actor*>(component->getParent()))
+            {
+                return actor;
+            }
+        }
+
+        return inObject;
+    }
+
+    Chicane::Object* Scene::pickObject(const Chicane::SceneTraceRequest& inRequest) const
+    {
+        std::vector<const Chicane::Object*> ignored;
+        if (m_gizmo)
+        {
+            ignored.push_back(m_gizmo);
+        }
+
+        std::vector<Chicane::SceneTraceResponse> hits;
+        if (!traceMulti(hits, inRequest, ignored))
+        {
+            return nullptr;
+        }
+
+        for (const Chicane::SceneTraceResponse& hit : hits)
+        {
+            if (!hit.object)
+            {
+                continue;
+            }
+
+            if (m_gizmo && (hit.object == m_gizmo || m_gizmo->isHandle(hit.object)))
+            {
+                continue;
+            }
+
+            if (Chicane::Object* selected = selectableFromHit(hit.object))
+            {
+                return selected;
+            }
+        }
+
+        return nullptr;
     }
 }

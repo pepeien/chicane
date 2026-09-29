@@ -69,8 +69,6 @@ namespace Editor
 
     bool LGrid::onBeginRender(const Chicane::Renderer::Frame& inFrame)
     {
-        (void)inFrame;
-
         if (!ViewportOverlay::sInstance().bGridEnabled)
         {
             return false;
@@ -81,7 +79,6 @@ namespace Editor
 
     void LGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        (void)inFrame;
         auto* rhi    = static_cast<Chicane::Renderer::RHI::Frame*>(inData);
         auto* device = m_backend->getRHIDevice();
 

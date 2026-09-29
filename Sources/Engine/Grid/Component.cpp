@@ -8,13 +8,12 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Size.hpp"
 #include "Chicane/Core/Time.hpp"
-
-#include <glm/gtc/matrix_inverse.hpp>
 
 #include "Chicane/Drift/Clip.hpp"
 #include "Chicane/Drift/Loop.hpp"
@@ -1564,6 +1563,8 @@ namespace Chicane
 
         void Component::refresh()
         {
+            const StyleDisplay displayBefore = style.display.get();
+
             Vec2  parentSize     = Vec2::sZero();
             float parentFont     = 0.0f;
             bool  bParentLaidOut = false;
@@ -1662,6 +1663,7 @@ namespace Chicane
                 refreshStyleRuleset();
                 setFlag(ComponentDirty::Style, false);
                 refreshStyle();
+                setFlag(ComponentDirty::Text);
 
                 if (!(before == captureLayoutMetrics(style)))
                 {
@@ -1670,25 +1672,40 @@ namespace Chicane
             }
             else
             {
-                const StyleDisplay previousDisplay = style.display.get();
+                bool bAnimatedDisplay = false;
 
-                style.display.refresh();
-
-                if (previousDisplay != style.display.get())
+                if (m_animator.hasPlayer())
                 {
-                    markLayoutDirty();
+                    for (const StyleAnimatorTrack& track : m_animator.getPlayerTracks())
+                    {
+                        if (track.id == StylePropertyId::Display)
+                        {
+                            bAnimatedDisplay = true;
+
+                            break;
+                        }
+                    }
+                }
+
+                if (!bAnimatedDisplay)
+                {
+                    const StyleDisplay previousDisplay = style.display.get();
+
+                    style.display.refresh();
+
+                    if (previousDisplay != style.display.get())
+                    {
+                        markLayoutDirty();
+                    }
                 }
             }
 
             refreshDirectives();
             refreshId();
 
-            if (style.isDisplay(StyleDisplay::None))
+            if (displayBefore == StyleDisplay::None && !style.isDisplay(StyleDisplay::None))
             {
-                setCulled(false);
-                setFlag(ComponentDirty::Layout, false);
-
-                return;
+                replayAnimations();
             }
 
             const bool bIsAnimating  = !m_animator.isIdle();
@@ -1696,7 +1713,7 @@ namespace Chicane
             const bool bIsFlowLocked = hasParent() && !isRoot() && !bParentLaidOut && !bIsAbsolute;
             const bool bHadTween     = hasLayoutTween(m_animator);
 
-            if (bIsAnimating || bStyleRefreshed || !m_bIsAnimationReady)
+            if (bIsAnimating || bStyleRefreshed || !m_bIsAnimationReady || m_bIsReplayingAnimation)
             {
                 tickAnimation(style, m_animationDelta);
 
@@ -1715,6 +1732,14 @@ namespace Chicane
                 {
                     setFlag(ComponentDirty::Text);
                 }
+            }
+
+            if (style.isDisplay(StyleDisplay::None))
+            {
+                setCulled(false);
+                setFlag(ComponentDirty::Layout, false);
+
+                return;
             }
 
             if (bHadTween || hasLayoutTween(m_animator))
@@ -1778,6 +1803,7 @@ namespace Chicane
             }
 
             onRefresh();
+            setFlag(ComponentDirty::Text, false);
         }
 
         const String& Component::getTag() const
@@ -1816,18 +1842,6 @@ namespace Chicane
         void Component::setClassList(const ClassList& inValue)
         {
             classList = inValue;
-        }
-
-        void Component::onClassListChanged()
-        {
-            const auto found = m_attributes.find(CLASS_ATTRIBUTE_NAME);
-            if (found == m_attributes.end() || !isReference(found->second))
-            {
-                m_attributes[CLASS_ATTRIBUTE_NAME] = classList.toString();
-            }
-
-            markStyleDirtySubtree();
-            markLayoutDirtySubtree();
         }
 
         void Component::refreshDirectives()
@@ -1961,6 +1975,8 @@ namespace Chicane
             }
         }
 
+        static bool matchesSiblingSelector(const Component& inComponent, const StyleSiblingSelector& inSelector);
+
         bool Component::hasLocalSelector(const String& inValue) const
         {
             if (inValue.isEmpty())
@@ -1968,12 +1984,21 @@ namespace Chicane
                 return false;
             }
 
-            String          value    = inValue.trim();
-            ComponentStatus required = Style::sConsumePseudoClasses(value);
+            String                            value = inValue.trim();
+            std::vector<StyleSiblingSelector> siblings;
+            ComponentStatus                   required = Style::sConsumePseudoClasses(value, &siblings);
 
             if (!hasAll(getStatus(), required))
             {
                 return false;
+            }
+
+            for (const StyleSiblingSelector& sibling : siblings)
+            {
+                if (!matchesSiblingSelector(*this, sibling))
+                {
+                    return false;
+                }
             }
 
             value = value.trim();
@@ -2109,6 +2134,62 @@ namespace Chicane
             return index < 0;
         }
 
+        static bool matchesSiblingSelector(const Component& inComponent, const StyleSiblingSelector& inSelector)
+        {
+            const Component* parent = inComponent.getParent();
+            if (!parent)
+            {
+                return false;
+            }
+
+            int position = 0;
+            int count    = 0;
+
+            for (Component* sibling : parent->getChildren())
+            {
+                if (!sibling)
+                {
+                    continue;
+                }
+
+                if (inSelector.bOfType && !sibling->getTag().equals(inComponent.getTag()))
+                {
+                    continue;
+                }
+
+                count++;
+
+                if (sibling == &inComponent)
+                {
+                    position = count;
+                }
+            }
+
+            if (position <= 0)
+            {
+                return false;
+            }
+
+            const int index = inSelector.bFromEnd ? (count - position + 1) : position;
+            if (index <= 0)
+            {
+                return false;
+            }
+
+            if (inSelector.step == 0)
+            {
+                return index == inSelector.offset;
+            }
+
+            const int delta = index - inSelector.offset;
+            if (delta % inSelector.step != 0)
+            {
+                return false;
+            }
+
+            return delta / inSelector.step >= 0;
+        }
+
         bool Component::matchesCompiledSelector(const StyleCompiledSelector& inSelector) const
         {
             if (inSelector.chain.empty())
@@ -2153,6 +2234,14 @@ namespace Chicane
             if (!hasAll(getStatus(), inPart.status))
             {
                 return false;
+            }
+
+            for (const StyleSiblingSelector& sibling : inPart.siblings)
+            {
+                if (!matchesSiblingSelector(*this, sibling))
+                {
+                    return false;
+                }
             }
 
             if (!inPart.tag.isEmpty() && !inPart.tag.equals(getTag()))
@@ -2665,6 +2754,21 @@ namespace Chicane
             return Vec2::sZero();
         }
 
+        void Component::replayAnimations()
+        {
+            replayAnimation();
+
+            for (Component* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                child->replayAnimations();
+            }
+        }
+
         bool Component::hideIfDirective()
         {
             const String& attribute = getAttribute(IF_DIRECTIVE_KEYWORD);
@@ -2779,9 +2883,8 @@ namespace Chicane
                 return false;
             }
 
-            Vec2             local  = inLocation;
-            const Mat3&      paint  = getPaintMatrix();
-            const glm::mat3& matrix = paint;
+            Vec2        local  = inLocation;
+            const Mat3& matrix = getPaintMatrix();
 
             const bool bIdentity = std::fabs(matrix[0][0] - 1.0f) <= 0.0001f &&
                                    std::fabs(matrix[1][1] - 1.0f) <= 0.0001f &&
@@ -2792,7 +2895,7 @@ namespace Chicane
 
             if (!bIdentity)
             {
-                const Mat3 inverse = glm::inverse(matrix);
+                const Mat3 inverse = matrix.inverse();
                 const Vec3 mapped  = inverse * Vec3(inLocation.x, inLocation.y, 1.0f);
 
                 local.x = mapped.x;
@@ -3577,9 +3680,9 @@ namespace Chicane
         Mat3 Component::computeLocalPaintMatrix(const StyleTransform& inTransform) const
         {
             const Vec2  origin  = getTransformPivot();
-            const float radians = glm::radians(inTransform.rotation);
-            const float cosine  = glm::cos(radians);
-            const float sine    = glm::sin(radians);
+            const float radians = inTransform.rotation * Math::DEG_TO_RAD;
+            const float cosine  = std::cos(radians);
+            const float sine    = std::sin(radians);
 
             const Mat3 toOrigin(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, -origin.x, -origin.y, 1.0f);
             const Mat3 fromOrigin(
@@ -3735,6 +3838,18 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        void Component::onClassListChanged()
+        {
+            const auto found = m_attributes.find(CLASS_ATTRIBUTE_NAME);
+            if (found == m_attributes.end() || !isReference(found->second))
+            {
+                m_attributes[CLASS_ATTRIBUTE_NAME] = classList.toString();
+            }
+
+            markStyleDirtySubtree();
+            markLayoutDirtySubtree();
         }
 
         void Component::load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle)

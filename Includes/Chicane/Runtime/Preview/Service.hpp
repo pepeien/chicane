@@ -32,9 +32,9 @@ namespace Chicane
     public:
         static inline PreviewService& sInstance()
         {
-            static PreviewService service;
+            static PreviewService* service = new PreviewService();
 
-            return service;
+            return *service;
         }
 
     public:

@@ -1,6 +1,6 @@
 module LightInstance;
 
-import SceneLight;
+import "../Scene/Light";
 
 public struct LightInstance
 {

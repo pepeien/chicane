@@ -290,13 +290,7 @@ namespace Chicane
                 return inCurve.rotations[index];
             }
 
-            const glm::quat mixed = glm::slerp(
-                static_cast<const glm::quat&>(inCurve.rotations[index]),
-                static_cast<const glm::quat&>(inCurve.rotations[index + 1]),
-                amount
-            );
-
-            return QuatFloat(mixed.w, mixed.x, mixed.y, mixed.z);
+            return QuatFloat::sLerp(inCurve.rotations[index], inCurve.rotations[index + 1], amount);
         }
 
         inline void collectTimes(const SamplerCurve& inCurve, std::vector<float>& outTimes)

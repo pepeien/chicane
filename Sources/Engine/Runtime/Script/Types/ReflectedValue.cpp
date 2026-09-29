@@ -257,7 +257,6 @@ namespace Chicane
             std::unordered_set<std::type_index> seen;
             for (const auto& [name, copy] : registry.getAll())
             {
-                (void)name;
                 if (!copy.typeIndex.has_value() || !seen.insert(copy.typeIndex.value()).second)
                 {
                     continue;

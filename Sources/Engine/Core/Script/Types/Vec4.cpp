@@ -200,7 +200,9 @@ namespace Chicane
             {
                 if (lua_isnumber(inState, 2))
                 {
-                    pushVec4(inState, checkVec4(inState, 1) * static_cast<float>(lua_tonumber(inState, 2)));
+                    Vec4 value = checkVec4(inState, 1);
+                    value *= static_cast<float>(lua_tonumber(inState, 2));
+                    pushVec4(inState, value);
 
                     return 1;
                 }

@@ -787,7 +787,6 @@ namespace Chicane
                 const Material* asset = addAsset<Material>(inFilePath);
                 for (const auto& [map, texture] : asset->getTextures())
                 {
-                    (void)map;
                     loadTexture(texture.getSource());
                 }
 

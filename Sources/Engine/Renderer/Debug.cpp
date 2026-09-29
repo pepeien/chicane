@@ -538,8 +538,7 @@ namespace Chicane
                     return;
                 }
 
-                Mat4 transform = glm::translate(Mat4::One, static_cast<glm::vec3>(inOrigin));
-                transform      = glm::scale(transform, glm::vec3(scale));
+                const Mat4 transform = Mat4::sTranslate(inOrigin) * Mat4::sScale(Vec3(scale));
 
                 appendMesh(outVertices, transform, inVertices, inIndices, inColor);
             }

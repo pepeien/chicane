@@ -337,6 +337,8 @@ namespace Chicane
             String parseText(const String& inValue) const;
 
         protected:
+            void onClassListChanged();
+
             template <typename T>
             inline void import()
             {
@@ -396,14 +398,15 @@ namespace Chicane
             bool adoptChild(Component* inComponent, std::size_t inIndex = SIZE_MAX);
             void rebuildPaintChildren();
             bool hideIfDirective();
+
+            void replayAnimations();
+
             Mat3 computeLocalPaintMatrix(const StyleTransform& inTransform) const;
+
             void paintRadius(const std::vector<const Component*>& inRoundedAncestors);
             void paintRoundClips(const std::vector<const Component*>& inRoundedAncestors);
 
             void setPeripherals(const std::vector<Component*>& inPeripherals);
-
-        protected:
-            void onClassListChanged();
 
         public:
             CH_FIELD()

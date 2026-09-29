@@ -10,7 +10,7 @@
                 class="attributes__field"
             >
                 <Container class="attributes__field__label">
-                    <ToolTip
+                    <Tooltip
                         dir:if="{{ attribute.description.isEmpty() }}"
                         handleId="label-{{ attribute.name }}"
                         title="{{ attribute.description }}"

@@ -310,7 +310,7 @@ namespace Chicane
                 Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
                 Component*              hit   = resolveHit(getHitAt(event.location));
                 syncHovered(hit);
-                bubbleEvent(inEvent, event.location);
+                const bool consumed = bubbleEvent(inEvent, event.location);
 
                 Component* node = hit;
                 while (node && node != this)
@@ -330,6 +330,11 @@ namespace Chicane
                 if (event.button == Input::MouseButton::Left)
                 {
                     syncDragging(hit);
+                }
+
+                if (!consumed)
+                {
+                    onEvent(inEvent);
                 }
             }
 

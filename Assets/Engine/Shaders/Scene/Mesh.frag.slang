@@ -1,5 +1,5 @@
-import LightInstance;
-import SceneLight;
+import "Light/Instance";
+import "Scene/Light";
 import Poly3D;
 import Shadow;
 import Triplanar;
@@ -106,7 +106,10 @@ float4 main(VSOut inData) : SV_Target
 
     if (inData.bIsLit == 0)
     {
-        return float4(color + emissive * inData.emissiveStrength, opacity);
+        float3 glow = selfIlluminationIndex < 0 ? color * inData.emissiveStrength
+                                                : color + emissive * inData.emissiveStrength;
+
+        return float4(glow, opacity);
     }
 
     float3 normal = geometricNormal;

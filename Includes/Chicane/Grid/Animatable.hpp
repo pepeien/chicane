@@ -24,6 +24,8 @@ namespace Chicane
         public:
             Animatable();
 
+            void replayAnimation();
+
         protected:
             inline virtual bool canPlayAnimation() const { return true; }
 
@@ -41,6 +43,7 @@ namespace Chicane
             String        m_lastTranslateRaw;
             float         m_animationDelta;
             bool          m_bIsAnimationReady;
+            bool          m_bIsReplayingAnimation;
         };
     }
 }

@@ -1,6 +1,6 @@
 import Constant;
 import Target;
-import CameraInstance;
+import "Camera/Instance";
 import Poly3D;
 
 [vk::binding(0, 0)] ConstantBuffer<CameraInstance> gCamera;

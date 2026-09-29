@@ -400,14 +400,20 @@ namespace Chicane
 
                         if (bParentHasPseudo && isCompoundContinuation)
                         {
-                            String base = inSelector;
-                            Style::sConsumePseudoClasses(base);
-                            base = base.trim();
+                            String accumulated = inSelector.trim();
+                            const std::size_t split = accumulated.lastOf(Style::SELECTOR_SEPARATOR_SPACE);
+                            if (split != String::npos)
+                            {
+                                accumulated = accumulated.substr(split + 1).trim();
+                            }
+
+                            Style::sConsumePseudoClasses(accumulated);
+                            accumulated = accumulated.trim();
+                            accumulated.append(suffix);
 
                             resolvedSelector = inSelector;
                             resolvedSelector.append(' ');
-                            resolvedSelector.append(base);
-                            resolvedSelector.append(suffix);
+                            resolvedSelector.append(accumulated);
                         }
                         else
                         {

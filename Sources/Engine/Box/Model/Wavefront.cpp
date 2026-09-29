@@ -16,6 +16,11 @@ namespace Chicane
                 std::uint32_t                              inIndex
             )
             {
+                if (!inMesh || inIndex >= inMesh->index_count)
+                {
+                    return;
+                }
+
                 const fastObjIndex& index = inMesh->indices[inIndex];
 
                 String dataSet = "";
@@ -29,6 +34,12 @@ namespace Chicane
 
                     outResult.indices.push_back(index);
 
+                    return;
+                }
+
+                if (index.p >= inMesh->position_count || index.n >= inMesh->normal_count ||
+                    index.t >= inMesh->texcoord_count)
+                {
                     return;
                 }
 
@@ -88,7 +99,12 @@ namespace Chicane
 
                     for (std::uint32_t f = 0; f < obj.face_count; f++)
                     {
-                        std::uint32_t faceIndex  = obj.face_offset + f;
+                        std::uint32_t faceIndex = obj.face_offset + f;
+                        if (faceIndex >= mesh->face_count)
+                        {
+                            break;
+                        }
+
                         std::uint32_t faceVertex = mesh->face_vertices[faceIndex];
                         std::uint32_t indexStart = faceIndexOffsets[faceIndex];
 

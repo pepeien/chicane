@@ -26,6 +26,27 @@ namespace Chicane
         inline static constexpr Vec4 sSentinel() { return Vec4(-1.0e9f, -1.0e9f, 1.0e9f, 1.0e9f); }
 
     public:
+        constexpr Vec4()
+            : x(0.0f),
+              y(0.0f),
+              z(0.0f),
+              w(0.0f)
+        {}
+
+        constexpr Vec4(float inValue)
+            : x(inValue),
+              y(inValue),
+              z(inValue),
+              w(inValue)
+        {}
+
+        constexpr Vec4(float inX, float inY, float inZ, float inW)
+            : x(inX),
+              y(inY),
+              z(inZ),
+              w(inW)
+        {}
+
         constexpr Vec4(const Vec2& inValue)
             : x(inValue.x),
               y(inValue.y),
@@ -40,20 +61,13 @@ namespace Chicane
               w(inW)
         {}
 
-        template <typename... A>
-        constexpr Vec4(A... args)
-            : x(0.0f),
-              y(0.0f),
-              z(0.0f),
-              w(0.0f)
-        {
-            glm::vec4 value(std::forward<A>(args)...);
-
-            x = value.x;
-            y = value.y;
-            z = value.z;
-            w = value.w;
-        }
+        template <typename T, glm::qualifier Q>
+        constexpr Vec4(const glm::vec<4, T, Q>& inValue)
+            : x(static_cast<float>(inValue.x)),
+              y(static_cast<float>(inValue.y)),
+              z(static_cast<float>(inValue.z)),
+              w(static_cast<float>(inValue.w))
+        {}
 
     public:
         // Conversion
@@ -64,19 +78,7 @@ namespace Chicane
         // Comparassion
         friend inline bool operator==(Vec4 inLeft, Vec4 inRight)
         {
-            return glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.x,
-                       inRight.x
-                   ) &&
-                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.y,
-                       inRight.y
-                   ) &&
-                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(
-                       inLeft.z,
-                       inRight.z
-                   ) &&
-                   glm::detail::compute_equal<float, std::numeric_limits<float>::is_iec559>::call(inLeft.w, inRight.w);
+            return inLeft.x == inRight.x && inLeft.y == inRight.y && inLeft.z == inRight.z && inLeft.w == inRight.w;
         }
 
         // Addition

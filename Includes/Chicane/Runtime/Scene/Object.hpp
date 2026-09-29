@@ -46,8 +46,8 @@ namespace Chicane
         inline virtual void onLoad() { return; }
         inline virtual void onUnload() { return; }
         inline virtual void onTick(float inDeltaTime) { return; }
-        inline virtual void onPropertyEdited(const String& inName) { (void)inName; }
-        inline virtual void onAttachment(Object* inParent) { (void)inParent; }
+        inline virtual void onPropertyEdited(const String& inName) { return; }
+        inline virtual void onAttachment(Object* inParent) { return; }
 
     public:
         CH_FUNCTION()

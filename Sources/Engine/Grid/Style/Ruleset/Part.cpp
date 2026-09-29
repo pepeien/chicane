@@ -24,6 +24,8 @@ namespace Chicane
                 result += 10U;
             }
 
+            result += static_cast<std::uint32_t>(siblings.size()) * 10U;
+
             return result;
         }
     }

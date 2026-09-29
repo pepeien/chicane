@@ -99,6 +99,30 @@ namespace Chicane
                 {":selected", ComponentStatus::Selected}
             };
 
+            static constexpr inline const char* PSEUDO_FIRST_CHILD   = ":first-child";
+            static constexpr inline const char* PSEUDO_LAST_CHILD    = ":last-child";
+            static constexpr inline const char* PSEUDO_FIRST_OF_TYPE = ":first-of-type";
+            static constexpr inline const char* PSEUDO_LAST_OF_TYPE  = ":last-of-type";
+            static constexpr inline const char* PSEUDO_NTH_CHILD     = ":nth-child(";
+            static constexpr inline const char* PSEUDO_NTH_OF_TYPE   = ":nth-of-type(";
+
+            static constexpr inline const char* PSEUDO_ODD_KEYWORD    = "odd";
+            static constexpr inline const char* PSEUDO_EVEN_KEYWORD   = "even";
+            static constexpr inline const char  PSEUDO_STEP_MARK      = 'n';
+            static constexpr inline const char* PSEUDO_STEP_PLUS      = "+";
+            static constexpr inline const char* PSEUDO_STEP_MINUS     = "-";
+            static constexpr inline const char  PSEUDO_ARGUMENT_TAB   = '\t';
+            static constexpr inline const char  PSEUDO_ARGUMENT_CLOSE = ')';
+
+            static constexpr inline int         PSEUDO_ZERO_STEP     = 0;
+            static constexpr inline int         PSEUDO_ODD_STEP      = 2;
+            static constexpr inline int         PSEUDO_ODD_OFFSET    = 1;
+            static constexpr inline int         PSEUDO_EVEN_STEP     = 2;
+            static constexpr inline int         PSEUDO_EVEN_OFFSET   = 0;
+            static constexpr inline int         PSEUDO_SINGLE_STEP   = 1;
+            static constexpr inline int         PSEUDO_NEGATIVE_STEP = -1;
+            static constexpr inline int         PSEUDO_ZERO_OFFSET   = 0;
+
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";
             static constexpr inline const char* DISPLAY_TYPE_FLEX      = "flex";
@@ -255,8 +279,18 @@ namespace Chicane
             static constexpr inline const char* TRANSITION_DELAY_ATTRIBUTE_NAME = "transition-delay";
             static constexpr inline const char* TRANSITION_PROPERTY_ALL         = "all";
 
+            /*
+             * Template 1: "`NAME` `DURATION`"
+             * Template 2: "`NAME` `DURATION` `TIMING_FUNCTION`"
+             * Template 3: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY`"
+             * Template 4: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT`"
+             * Template 5: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION`"
+             * Template 6: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION` `FILL_MODE`"
+             * Template 7: "`NAME` `DURATION` `TIMING_FUNCTION` `DELAY` `ITERATION_COUNT` `DIRECTION` `FILL_MODE` `PLAY_STATE`"
+             */
+            static constexpr inline const char* ANIMATION_ATTRIBUTE_NAME = "animation";
+
             // Animation
-            static constexpr inline const char* ANIMATION_ATTRIBUTE_NAME                 = "animation";
             static constexpr inline const char* ANIMATION_NAME_ATTRIBUTE_NAME            = "animation-name";
             static constexpr inline const char* ANIMATION_DURATION_ATTRIBUTE_NAME        = "animation-duration";
             static constexpr inline const char* ANIMATION_TIMING_FUNCTION_ATTRIBUTE_NAME = "animation-timing-function";
@@ -265,18 +299,23 @@ namespace Chicane
             static constexpr inline const char* ANIMATION_DIRECTION_ATTRIBUTE_NAME       = "animation-direction";
             static constexpr inline const char* ANIMATION_FILL_MODE_ATTRIBUTE_NAME       = "animation-fill-mode";
             static constexpr inline const char* ANIMATION_PLAY_STATE_ATTRIBUTE_NAME      = "animation-play-state";
-            static constexpr inline const char* ANIMATION_NAME_NONE                      = "none";
-            static constexpr inline const char* ANIMATION_ITERATION_INFINITE             = "infinite";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_NORMAL          = "normal";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_REVERSE         = "reverse";
-            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE       = "alternate";
+
+            static constexpr inline const char* ANIMATION_NAME_NONE = "none";
+
+            static constexpr inline const char* ANIMATION_ITERATION_INFINITE = "infinite";
+
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_NORMAL            = "normal";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_REVERSE           = "reverse";
+            static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE         = "alternate";
             static constexpr inline const char* ANIMATION_DIRECTION_TYPE_ALTERNATE_REVERSE = "alternate-reverse";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_NONE                   = "none";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_FORWARDS               = "forwards";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_BACKWARDS              = "backwards";
-            static constexpr inline const char* ANIMATION_FILL_TYPE_BOTH                   = "both";
-            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_RUNNING          = "running";
-            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED           = "paused";
+
+            static constexpr inline const char* ANIMATION_FILL_TYPE_NONE      = "none";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_FORWARDS  = "forwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BACKWARDS = "backwards";
+            static constexpr inline const char* ANIMATION_FILL_TYPE_BOTH      = "both";
+
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_RUNNING = "running";
+            static constexpr inline const char* ANIMATION_PLAY_STATE_TYPE_PAUSED  = "paused";
 
             // Easing
             static constexpr inline const char* EASING_TYPE_LINEAR          = Drift::EasingCurve::TYPE_LINEAR;
@@ -399,7 +438,9 @@ namespace Chicane
             static constexpr inline const char* BORDER_BOTTOM_LEFT_RADIUS_ATTRIBUTE_NAME = "border-bottom-left-radius";
 
         public:
-            static ComponentStatus sConsumePseudoClasses(String& ioSelector);
+            static ComponentStatus sConsumePseudoClasses(
+                String& ioSelector, std::vector<StyleSiblingSelector>* outSiblings = nullptr
+            );
             static bool sHasPseudoClass(const String& inSelector);
 
         private:

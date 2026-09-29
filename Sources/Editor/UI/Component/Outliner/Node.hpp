@@ -34,6 +34,9 @@ namespace Editor
         Chicane::String expandState;
 
         CH_FIELD()
+        Chicane::String selectedState;
+
+        CH_FIELD()
         bool bHasChildren;
 
         CH_FIELD()

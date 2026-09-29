@@ -17,7 +17,7 @@ namespace Chicane
         public:
             static constexpr inline const std::size_t COUNT = static_cast<std::size_t>(StylePropertyId::Count);
 
-            static constexpr inline const std::size_t VALUE_COUNT = 64;
+            static constexpr inline const std::size_t VALUE_COUNT = 65;
 
         public:
             static const StylePropertyEntry& sGet(StylePropertyId inId);
