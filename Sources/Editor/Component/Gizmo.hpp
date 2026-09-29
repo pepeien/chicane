@@ -25,22 +25,22 @@ namespace Editor
     class Gizmo : public Chicane::Component
     {
     public:
-        constexpr float HANDLE_SCALE  = 0.10f;
-        constexpr float MIN_HANDLE    = 0.25f;
-        constexpr float MAX_HANDLE    = 250.0f;
-        constexpr float HANDLE_GLOW   = 1.85f;
-        constexpr float MIN_SCALE     = 0.01f;
-        constexpr float AXIS_START    = 0.22f;
-        constexpr float AXIS_END      = 1.55f;
-        constexpr float AXIS_PICK     = 0.22f;
-        constexpr float AXIS_GAP      = 0.177f;
-        constexpr float RING_RADIUS   = 1.00f;
-        constexpr float RING_TUBE     = 0.10f;
-        constexpr float PLANE_INNER   = 0.16f;
-        constexpr float PLANE_OUTER   = 0.42f;
-        constexpr float ORIGIN_RADIUS = 0.165f;
-        constexpr float ORIGIN_PICK   = 0.10f;
-        constexpr float CENTER_PICK   = 0.24f;
+        static constexpr inline float HANDLE_SCALE  = 0.10f;
+        static constexpr inline float MIN_HANDLE    = 0.25f;
+        static constexpr inline float MAX_HANDLE    = 250.0f;
+        static constexpr inline float HANDLE_GLOW   = 1.85f;
+        static constexpr inline float MIN_SCALE     = 0.01f;
+        static constexpr inline float AXIS_START    = 0.22f;
+        static constexpr inline float AXIS_END      = 1.55f;
+        static constexpr inline float AXIS_PICK     = 0.22f;
+        static constexpr inline float AXIS_GAP      = 0.177f;
+        static constexpr inline float RING_RADIUS   = 1.00f;
+        static constexpr inline float RING_TUBE     = 0.10f;
+        static constexpr inline float PLANE_INNER   = 0.16f;
+        static constexpr inline float PLANE_OUTER   = 0.42f;
+        static constexpr inline float ORIGIN_RADIUS = 0.165f;
+        static constexpr inline float ORIGIN_PICK   = 0.10f;
+        static constexpr inline float CENTER_PICK   = 0.24f;
 
     public:
         Gizmo();
