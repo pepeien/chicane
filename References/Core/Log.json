@@ -488,6 +488,21 @@
                     "inline"
                 ],
                 "description": "CHICANE_LOG_CRITICAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_LOG_CLEAR_DESCRIPTION"
             }
         ],
         "members": [],

@@ -50,7 +50,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "toPosition",
+                "name": "sToPosition",
                 "parameters": [
                     {
                         "type": {
@@ -106,7 +106,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_MAT4_TOPOSITION_DESCRIPTION"
+                "description": "CHICANE_MAT4_STOPOSITION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -118,7 +118,7 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "toPosition",
+                "name": "sToPosition",
                 "parameters": [
                     {
                         "type": {
@@ -164,7 +164,252 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_MAT4_TOPOSITION_DESCRIPTION"
+                "description": "CHICANE_MAT4_STOPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "sTranslate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTranslation"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_MAT4_STRANSLATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "sScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_MAT4_SSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "sOrtho",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBottom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTop"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNear"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFar"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_MAT4_SORTHO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "sPerspective",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFieldOfView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAspect"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNear"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFar"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_MAT4_SPERSPECTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "sLookAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inEye"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inCenter"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inUp"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_MAT4_SLOOKAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -176,7 +421,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "fromPosition",
+                "name": "sFromPosition",
                 "parameters": [
                     {
                         "type": {
@@ -242,7 +487,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_MAT4_FROMPOSITION_DESCRIPTION"
+                "description": "CHICANE_MAT4_SFROMPOSITION_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -1,0 +1,998 @@
+{
+    "title": "Service",
+    "filename": "Service",
+    "path": "Runtime/Preview/Service",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Preview/Service.hpp",
+        "namespace": "Chicane::PreviewService",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PreviewService",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_PREVIEWSERVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "PreviewService",
+                    "suffix": "&",
+                    "path": "Runtime/Preview/Service",
+                    "templates": []
+                },
+                "name": "sInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_PREVIEWSERVICE_SINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "openStage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_OPENSTAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ACamera",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Actor/Camera",
+                    "templates": []
+                },
+                "name": "spawnCamera",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNCAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "activateCamera",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_ACTIVATECAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setShape",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inShape"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SETSHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setShapeModel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inModel"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SETSHAPEMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getShape",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PREVIEWSERVICE_GETSHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shapeModel",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PREVIEWSERVICE_SHAPEMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "show",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bBake"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SHOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "notify",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Box::AssetType",
+                            "suffix": "",
+                            "path": "Box/Asset/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bBake"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_NOTIFY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clear",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "detach",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Actor",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Actor",
+                            "templates": []
+                        },
+                        "name": "inActor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_DETACH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindAsset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_BINDASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FileSystem::Path",
+                    "suffix": "&",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "getAsset",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PREVIEWSERVICE_GETASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Actor",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Actor",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getActors",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_PREVIEWSERVICE_GETACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "writeTempMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Box::MeshGroup",
+                                    "suffix": "",
+                                    "path": "Box/Mesh/Group",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inGroups"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_WRITETEMPMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "writeGroupMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::Mesh",
+                            "suffix": "&",
+                            "path": "Box/Mesh",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::MeshGroup",
+                            "suffix": "&",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_WRITEGROUPMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Actor",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Actor",
+                    "templates": []
+                },
+                "name": "spawnMeshActor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bTransient"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNMESHACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "spawnMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "spawnModel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inModel"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "spawnMaterial",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMaterial"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNMATERIAL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "spawnSky",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inSky"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_SPAWNSKY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyActors",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_DESTROYACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "removeTempFiles",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_PREVIEWSERVICE_REMOVETEMPFILES_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CAMERA_ID",
+                "description": "CHICANE_PREVIEWSERVICE_CAMERA_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_SHADER_BALL",
+                "description": "CHICANE_PREVIEWSERVICE_SHAPE_SHADER_BALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_SPHERE",
+                "description": "CHICANE_PREVIEWSERVICE_SHAPE_SPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_TORUS",
+                "description": "CHICANE_PREVIEWSERVICE_SHAPE_TORUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SHAPE_CUBE",
+                "description": "CHICANE_PREVIEWSERVICE_SHAPE_CUBE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MODEL_SHADER_BALL",
+                "description": "CHICANE_PREVIEWSERVICE_MODEL_SHADER_BALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MODEL_SPHERE",
+                "description": "CHICANE_PREVIEWSERVICE_MODEL_SPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MODEL_TORUS",
+                "description": "CHICANE_PREVIEWSERVICE_MODEL_TORUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MODEL_CUBE",
+                "description": "CHICANE_PREVIEWSERVICE_MODEL_CUBE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Scene",
+                    "suffix": "*",
+                    "path": "Runtime/Scene",
+                    "templates": []
+                },
+                "name": "m_stageScene",
+                "description": "CHICANE_PREVIEWSERVICE_M_STAGESCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "m_asset",
+                "description": "CHICANE_PREVIEWSERVICE_M_ASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_shape",
+                "description": "CHICANE_PREVIEWSERVICE_M_SHAPE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_shapeModel",
+                "description": "CHICANE_PREVIEWSERVICE_M_SHAPEMODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Actor",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Actor",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_actors",
+                "description": "CHICANE_PREVIEWSERVICE_M_ACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_tempFiles",
+                "description": "CHICANE_PREVIEWSERVICE_M_TEMPFILES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_PREVIEWSERVICE_DESCRIPTION"
+    },
+    "children": []
+}

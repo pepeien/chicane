@@ -90,12 +90,12 @@
                     "path": "Box/Material",
                     "templates": []
                 },
-                "name": "getDefault",
+                "name": "sGetDefault",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_MATERIAL_GETDEFAULT_DESCRIPTION"
+                "description": "CHICANE_BOX_MATERIAL_SGETDEFAULT_DESCRIPTION"
             },
             {
                 "accessor": "public",

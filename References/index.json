@@ -2795,6 +2795,161 @@
                 ]
             },
             {
+                "title": "Script",
+                "filename": "Script",
+                "path": "Core/Script",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Bus",
+                        "filename": "Bus",
+                        "path": "Core/Script/Bus",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Bus.hpp",
+                            "namespace": "Chicane::Script::Bus",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Slot",
+                                "filename": "Slot",
+                                "path": "Core/Script/Bus/Slot",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Script/Bus/Slot.hpp",
+                                    "namespace": "Chicane::Script::Slot",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Channel",
+                        "filename": "Channel",
+                        "path": "Core/Script/Channel",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Channel.hpp",
+                            "namespace": "Chicane::Script::Channel",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Context",
+                        "filename": "Context",
+                        "path": "Core/Script/Context",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Context.hpp",
+                            "namespace": "Chicane::Script::Context",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Event",
+                        "filename": "Event",
+                        "path": "Core/Script/Event",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Event.hpp",
+                            "namespace": "Chicane::Script::Event",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Handle",
+                        "filename": "Handle",
+                        "path": "Core/Script/Handle",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Handle.hpp",
+                            "namespace": "Chicane::Script::Handle",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Queue",
+                        "filename": "Queue",
+                        "path": "Core/Script/Queue",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Queue.hpp",
+                            "namespace": "Chicane::Script::Queue",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Types",
+                        "filename": "Types",
+                        "path": "Core/Script/Types",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Script/Types.hpp",
+                            "namespace": "Chicane::Script::Types",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Serializable",
                 "filename": "Serializable",
                 "path": "Core/Serializable",
@@ -3676,6 +3831,23 @@
                         ]
                     },
                     {
+                        "title": "ClassList",
+                        "filename": "ClassList",
+                        "path": "Grid/Component/ClassList",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/ClassList.hpp",
+                            "namespace": "Chicane::Grid::ClassList",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Container",
                         "filename": "Container",
                         "path": "Grid/Component/Container",
@@ -3999,12 +4171,12 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Math",
-                                        "filename": "Math",
-                                        "path": "Grid/Component/Input/Slider/Math",
+                                        "title": "InputRangeSliderDrag",
+                                        "filename": "Range",
+                                        "path": "Grid/Component/Input/Slider/Range",
                                         "source": {
-                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Math.hpp",
-                                            "namespace": "Chicane::Grid::SliderMath",
+                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Range.hpp",
+                                            "namespace": "Chicane::Grid::InputRangeSliderDrag",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4016,12 +4188,12 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Range",
-                                        "filename": "Range",
-                                        "path": "Grid/Component/Input/Slider/Range",
+                                        "title": "Math",
+                                        "filename": "Math",
+                                        "path": "Grid/Component/Input/Slider/Math",
                                         "source": {
-                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Range.hpp",
-                                            "namespace": "Chicane::Grid::InputRangeSlider::Drag",
+                                            "header": "Includes/Chicane/Grid/Component/Input/Slider/Math.hpp",
+                                            "namespace": "Chicane::Grid::SliderMath",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -4417,12 +4589,12 @@
                         ]
                     },
                     {
-                        "title": "ToolTip",
-                        "filename": "ToolTip",
-                        "path": "Grid/Component/ToolTip",
+                        "title": "Tooltip",
+                        "filename": "Tooltip",
+                        "path": "Grid/Component/Tooltip",
                         "source": {
-                            "header": "Includes/Chicane/Grid/Component/ToolTip.hpp",
-                            "namespace": "Chicane::Grid::ToolTip",
+                            "header": "Includes/Chicane/Grid/Component/Tooltip.hpp",
+                            "namespace": "Chicane::Grid::Tooltip",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -4483,6 +4655,23 @@
                                         "children": []
                                     }
                                 ]
+                            },
+                            {
+                                "title": "Script",
+                                "filename": "Script",
+                                "path": "Grid/Component/View/Script",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/View/Script.hpp",
+                                    "namespace": "Chicane::Grid::ViewScriptSubscription",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
                             }
                         ]
                     },
@@ -4558,12 +4747,47 @@
                 "children": []
             },
             {
+                "title": "Script",
+                "filename": "Script",
+                "path": "Grid/Script",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Types",
+                        "filename": "Types",
+                        "path": "Grid/Script/Types",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Script/Types.hpp",
+                            "namespace": "Chicane::Grid::Types",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Style",
                 "filename": "Style",
                 "path": "Grid/Style",
                 "source": {
                     "header": "Includes/Chicane/Grid/Style.hpp",
-                    "namespace": "Chicane::Grid::Style",
+                    "namespace": "Chicane::Grid::StylePseudoClass",
                     "types": [],
                     "enums": [],
                     "constructors": [],
@@ -5115,6 +5339,23 @@
                                 "source": {
                                     "header": "Includes/Chicane/Grid/Style/Ruleset/Part.hpp",
                                     "namespace": "Chicane::Grid::StyleSelectorPart",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Sibling",
+                                "filename": "Sibling",
+                                "path": "Grid/Style/Ruleset/Sibling",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Style/Ruleset/Sibling.hpp",
+                                    "namespace": "Chicane::Grid::StyleSiblingSelector",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -6380,7 +6621,7 @@
                                 "path": "Renderer/Layer/Scene/Line",
                                 "source": {
                                     "header": "Includes/Chicane/Renderer/Layer/Scene/Line.hpp",
-                                    "namespace": "Chicane::Renderer::LSceneLine",
+                                    "namespace": "Chicane::Renderer::LSceneLineGeometry",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
@@ -7833,29 +8074,12 @@
                 },
                 "children": [
                     {
-                        "title": "CreateInfo",
-                        "filename": "CreateInfo",
-                        "path": "Runtime/Application/CreateInfo",
+                        "title": "Args",
+                        "filename": "Args",
+                        "path": "Runtime/Application/Args",
                         "source": {
-                            "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
-                            "namespace": "Chicane::ApplicationCreateInfo",
-                            "types": [],
-                            "enums": [],
-                            "constructors": [],
-                            "destructors": [],
-                            "functions": [],
-                            "members": [],
-                            "description": null
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Telemetry",
-                        "filename": "Telemetry",
-                        "path": "Runtime/Application/Telemetry",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Application/Telemetry.hpp",
-                            "namespace": "Chicane::ApplicationTelemetry",
+                            "header": "Includes/Chicane/Runtime/Application/Args.hpp",
+                            "namespace": "Chicane",
                             "types": [],
                             "enums": [],
                             "constructors": [],
@@ -7884,6 +8108,93 @@
                     "description": null
                 },
                 "children": []
+            },
+            {
+                "title": "Instance",
+                "filename": "Instance",
+                "path": "Runtime/Instance",
+                "source": {
+                    "header": "Includes/Chicane/Runtime/Instance.hpp",
+                    "namespace": "Chicane::Instance",
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "CreateInfo",
+                        "filename": "CreateInfo",
+                        "path": "Runtime/Instance/CreateInfo",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Instance/CreateInfo.hpp",
+                            "namespace": "Chicane::InstanceCreateInfo",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Telemetry",
+                        "filename": "Telemetry",
+                        "path": "Runtime/Instance/Telemetry",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Instance/Telemetry.hpp",
+                            "namespace": "Chicane::InstanceTelemetry",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Preview",
+                "filename": "Preview",
+                "path": "Runtime/Preview",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Service",
+                        "filename": "Service",
+                        "path": "Runtime/Preview/Service",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Preview/Service.hpp",
+                            "namespace": "Chicane::PreviewService",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "Scene",
@@ -8160,6 +8471,23 @@
                         "children": []
                     },
                     {
+                        "title": "Script",
+                        "filename": "Script",
+                        "path": "Runtime/Scene/Script",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/Script.hpp",
+                            "namespace": "Chicane::SceneScriptSubscription",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "SpatialCell",
                         "filename": "SpatialCell",
                         "path": "Runtime/Scene/SpatialCell",
@@ -8243,6 +8571,23 @@
                                 },
                                 "children": [
                                     {
+                                        "title": "Box",
+                                        "filename": "Box",
+                                        "path": "Runtime/Scene/Trace/Shape/Box",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Box.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeBox",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
                                         "title": "Cone",
                                         "filename": "Cone",
                                         "path": "Runtime/Scene/Trace/Shape/Cone",
@@ -8294,12 +8639,63 @@
                                         "children": []
                                     },
                                     {
+                                        "title": "Mesh",
+                                        "filename": "Mesh",
+                                        "path": "Runtime/Scene/Trace/Shape/Mesh",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Mesh.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeMesh",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Pyramid",
+                                        "filename": "Pyramid",
+                                        "path": "Runtime/Scene/Trace/Shape/Pyramid",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Pyramid.hpp",
+                                            "namespace": "Chicane::SceneTraceShapePyramid",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
                                         "title": "Rectangle",
                                         "filename": "Rectangle",
                                         "path": "Runtime/Scene/Trace/Shape/Rectangle",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Rectangle.hpp",
                                             "namespace": "Chicane::SceneTraceShapeRectangle",
+                                            "types": [],
+                                            "enums": [],
+                                            "constructors": [],
+                                            "destructors": [],
+                                            "functions": [],
+                                            "members": [],
+                                            "description": null
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Sphere",
+                                        "filename": "Sphere",
+                                        "path": "Runtime/Scene/Trace/Shape/Sphere",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Sphere.hpp",
+                                            "namespace": "Chicane::SceneTraceShapeSphere",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],
@@ -8330,6 +8726,41 @@
                                 ]
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "title": "Script",
+                "filename": "Script",
+                "path": "Runtime/Script",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Types",
+                        "filename": "Types",
+                        "path": "Runtime/Script/Types",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Script/Types.hpp",
+                            "namespace": "Chicane::Types",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     }
                 ]
             },

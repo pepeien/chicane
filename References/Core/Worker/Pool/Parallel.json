@@ -72,12 +72,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isWorker",
+                "name": "sIsWorker",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_WORKERPOOLPARALLEL_ISWORKER_DESCRIPTION"
+                "description": "CHICANE_WORKERPOOLPARALLEL_SISWORKER_DESCRIPTION"
             },
             {
                 "accessor": "public",

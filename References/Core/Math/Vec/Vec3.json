@@ -19,16 +19,83 @@
                     "templates": []
                 },
                 "name": "Vec3",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC3_VEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec3",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "A...",
+                            "name": "float",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "args"
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC3_VEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
                     }
                 ],
                 "modifiers": [
@@ -58,6 +125,16 @@
                             "templates": []
                         },
                         "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inZ"
                     }
                 ],
                 "modifiers": [
@@ -93,6 +170,108 @@
                     "constexpr"
                 ],
                 "description": "CHICANE_VEC3_VEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "glm::vec",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "3",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "Q",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC3_VEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "glm::vec",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "4",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "Q",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC3_VEC3_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -107,14 +286,14 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "Zero",
+                "name": "sZero",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC3_ZERO_DESCRIPTION"
+                "description": "CHICANE_VEC3_SZERO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -126,14 +305,14 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "One",
+                "name": "sOne",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC3_ONE_DESCRIPTION"
+                "description": "CHICANE_VEC3_SONE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -145,14 +324,14 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "Right",
+                "name": "sRight",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC3_RIGHT_DESCRIPTION"
+                "description": "CHICANE_VEC3_SRIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -164,14 +343,14 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "Forward",
+                "name": "sForward",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC3_FORWARD_DESCRIPTION"
+                "description": "CHICANE_VEC3_SFORWARD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -183,14 +362,14 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "Up",
+                "name": "sUp",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC3_UP_DESCRIPTION"
+                "description": "CHICANE_VEC3_SUP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -493,6 +672,7 @@
                     }
                 ],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_VEC3_MIN_DESCRIPTION"
@@ -521,6 +701,7 @@
                     }
                 ],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_VEC3_MAX_DESCRIPTION"
@@ -549,6 +730,7 @@
                     }
                 ],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_VEC3_CROSS_DESCRIPTION"
@@ -577,9 +759,28 @@
                     }
                 ],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_VEC3_DOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "length",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_VEC3_LENGTH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -594,6 +795,7 @@
                 "name": "normalize",
                 "parameters": [],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_VEC3_NORMALIZE_DESCRIPTION"

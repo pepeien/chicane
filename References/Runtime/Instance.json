@@ -1,0 +1,1902 @@
+{
+    "title": "Instance",
+    "filename": "Instance",
+    "path": "Runtime/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Instance.hpp",
+        "namespace": "Chicane::Instance",
+        "types": [
+            {
+                "name": "ControllerObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "Runtime/Controller",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_CONTROLLEROBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ControllerSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "Runtime/Controller",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_CONTROLLERSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "SceneObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_SCENEOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "SceneSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_SCENESUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "ViewObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_VIEWOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ViewSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_VIEWSUBSCRIPTION_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INSTANCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Instance",
+                    "suffix": "&",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "sInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_INSTANCE_SINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Instance",
+                    "suffix": "&",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Instance",
+                    "suffix": "&",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "run",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "InstanceCreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Instance/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_RUN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "InstanceTelemetry",
+                    "suffix": "&",
+                    "path": "Runtime/Instance/Telemetry",
+                    "templates": []
+                },
+                "name": "getTelemetry",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETTELEMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasController",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_HASCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Controller",
+                    "suffix": "*",
+                    "path": "Runtime/Controller",
+                    "templates": []
+                },
+                "name": "getController",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_GETCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setController",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "Runtime/Controller",
+                            "templates": []
+                        },
+                        "name": "inController"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SETCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ControllerSubscription",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "watchController",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_WATCHCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getScene",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INSTANCE_GETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScene",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INSTANCE_SETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setScene",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INSTANCE_SETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneSubscription",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "watchScene",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SceneSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SceneSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SceneSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_WATCHSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getView",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INSTANCE_GETVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_INSTANCE_SETVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ViewSubscription",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "watchView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_WATCHVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasWindow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_HASWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "getWindow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getScreenViewport",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETSCREENVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getScreenViewportRect",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETSCREENVIEWPORTRECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasRenderer",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_HASRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Renderer::Instance",
+                    "suffix": "*",
+                    "path": "Renderer/Instance",
+                    "templates": []
+                },
+                "name": "getRenderer",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SETRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushTrace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "inRequest"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_PUSHTRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushTrace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "inRequest"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inColor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_PUSHTRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Renderer::Settings",
+                            "suffix": "&",
+                            "path": "Renderer/Settings",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initWindow",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowSettings",
+                            "suffix": "&",
+                            "path": "Core/Window/Settings",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initModules",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "FileSystem::Path",
+                                    "suffix": "",
+                                    "path": "Core/FileSystem/Path",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inModules"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITMODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownModules",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNMODULES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initBox",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initKerb",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITKERB_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initDrift",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITDRIFT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownDrift",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNDRIFT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initScreech",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITSCREECH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initSmoke",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITSMOKE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownSmoke",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNSMOKE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "render",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_RENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "uploadPreviewTextures",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_UPLOADPREVIEWTEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "snapshotRendererState",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SNAPSHOTRENDERERSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasSceneFeature",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::RendererFeature",
+                            "suffix": "",
+                            "path": "Renderer/Feature",
+                            "templates": []
+                        },
+                        "name": "inFeature"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_HASSCENEFEATURE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getRendererResolution",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETRENDERERRESOLUTION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tickScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_TICKSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildSceneCommands",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Scene",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inScene"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_BUILDSCENECOMMANDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_RENDERSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initUI",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_INITUI_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shutdownUI",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SHUTDOWNUI_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tickUI",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_TICKUI_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "snapshotScreenViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::shared_ptr",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "Grid/Component/View",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SNAPSHOTSCREENVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildUICommands",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::shared_ptr",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "Grid/Component/View",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_BUILDUICOMMANDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderUI",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_RENDERUI_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "InstanceTelemetry",
+                    "suffix": "",
+                    "path": "Runtime/Instance/Telemetry",
+                    "templates": []
+                },
+                "name": "m_telemetry",
+                "description": "CHICANE_INSTANCE_M_TELEMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_bIsRunning",
+                "description": "CHICANE_INSTANCE_M_BISRUNNING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Controller",
+                    "suffix": "*",
+                    "path": "Runtime/Controller",
+                    "templates": []
+                },
+                "name": "m_controller",
+                "description": "CHICANE_INSTANCE_M_CONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ControllerObservable",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "m_controllerObservable",
+                "description": "CHICANE_INSTANCE_M_CONTROLLEROBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_scene",
+                "description": "CHICANE_INSTANCE_M_SCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_sceneThread",
+                "description": "CHICANE_INSTANCE_M_SCENETHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly3DCommand",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Command",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneCommandBuffers",
+                "description": "CHICANE_INSTANCE_M_SCENECOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneWriteIndex",
+                "description": "CHICANE_INSTANCE_M_SCENEWRITEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneReadIndex",
+                "description": "CHICANE_INSTANCE_M_SCENEREADINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneBusyIndex",
+                "description": "CHICANE_INSTANCE_M_SCENEBUSYINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SceneObservable",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "m_sceneObservable",
+                "description": "CHICANE_INSTANCE_M_SCENEOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::View",
+                            "suffix": "",
+                            "path": "Grid/Component/View",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_view",
+                "description": "CHICANE_INSTANCE_M_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::thread",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_viewThread",
+                "description": "CHICANE_INSTANCE_M_VIEWTHREAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly2DCommand",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/2D/Command",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewCommandBuffers",
+                "description": "CHICANE_INSTANCE_M_VIEWCOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewDrawables",
+                "description": "CHICANE_INSTANCE_M_VIEWDRAWABLES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewWriteIndex",
+                "description": "CHICANE_INSTANCE_M_VIEWWRITEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewReadIndex",
+                "description": "CHICANE_INSTANCE_M_VIEWREADINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportX",
+                "description": "CHICANE_INSTANCE_M_SCREENVIEWPORTX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportY",
+                "description": "CHICANE_INSTANCE_M_SCREENVIEWPORTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportWidth",
+                "description": "CHICANE_INSTANCE_M_SCREENVIEWPORTWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_screenViewportHeight",
+                "description": "CHICANE_INSTANCE_M_SCREENVIEWPORTHEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewObservable",
+                    "suffix": "",
+                    "path": "Runtime/Instance",
+                    "templates": []
+                },
+                "name": "m_viewObservable",
+                "description": "CHICANE_INSTANCE_M_VIEWOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Window",
+                            "suffix": "",
+                            "path": "Core/Window",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_window",
+                "description": "CHICANE_INSTANCE_M_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::Instance",
+                            "suffix": "",
+                            "path": "Renderer/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_renderer",
+                "description": "CHICANE_INSTANCE_M_RENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint16_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_featureFlags",
+                "description": "CHICANE_INSTANCE_M_FEATUREFLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_rendererWidth",
+                "description": "CHICANE_INSTANCE_M_RENDERERWIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_rendererHeight",
+                "description": "CHICANE_INSTANCE_M_RENDERERHEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

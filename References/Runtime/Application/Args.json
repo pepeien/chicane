@@ -1,0 +1,52 @@
+{
+    "title": "Args",
+    "filename": "Args",
+    "path": "Runtime/Application/Args",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Application/Args.hpp",
+        "namespace": "Chicane",
+        "types": [
+            {
+                "name": "ApplicationArgs",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATIONARGS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_DESCRIPTION"
+    },
+    "children": []
+}

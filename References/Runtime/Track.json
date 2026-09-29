@@ -123,6 +123,52 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Object",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Object",
+                    "templates": []
+                },
+                "name": "spawnObject",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "&",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        },
+                        "name": "inScene"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inParent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRACK_SPAWNOBJECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Actor",
                     "suffix": "*",
                     "path": "Runtime/Scene/Actor",

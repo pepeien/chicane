@@ -9,21 +9,133 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
-        "members": [
+        "functions": [
             {
                 "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Time::Point",
-                    "suffix": "",
-                    "path": "Core/Time",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "timestamp",
-                "description": "CHICANE_SCENETRACERESPONSE_TIMESTAMP_DESCRIPTION"
+                "name": "getLocation",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETLOCATION_DESCRIPTION"
             },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getImpact",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETIMPACT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDistance",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETDISTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getStart",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETSTART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getEnd",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Object",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Object",
+                    "templates": []
+                },
+                "name": "getObject",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETOBJECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Actor",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Actor",
+                    "templates": []
+                },
+                "name": "getActor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACERESPONSE_GETACTOR_DESCRIPTION"
+            }
+        ],
+        "members": [
             {
                 "accessor": "public",
                 "modifiers": [],
@@ -94,13 +206,26 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Actor",
+                    "name": "Object",
                     "suffix": "*",
-                    "path": "Runtime/Scene/Actor",
+                    "path": "Runtime/Scene/Object",
                     "templates": []
                 },
-                "name": "actor",
-                "description": "CHICANE_SCENETRACERESPONSE_ACTOR_DESCRIPTION"
+                "name": "object",
+                "description": "CHICANE_SCENETRACERESPONSE_OBJECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Time::Point",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "timestamp",
+                "description": "CHICANE_SCENETRACERESPONSE_TIMESTAMP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENETRACERESPONSE_DESCRIPTION"

@@ -89,13 +89,13 @@
                     "path": "Box/Font/Family",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_BOX_FONTFAMILY_EMPTY_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTFAMILY_SEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -107,7 +107,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "kerningKey",
+                "name": "sKerningKey",
                 "parameters": [
                     {
                         "type": {
@@ -133,7 +133,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_FONTFAMILY_KERNINGKEY_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTFAMILY_SKERNINGKEY_DESCRIPTION"
             },
             {
                 "accessor": "public",

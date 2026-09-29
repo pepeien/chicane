@@ -221,6 +221,233 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "subscribe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void(const String &)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_SUBSCRIBE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unsubscribe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inToken"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_UNSUBSCRIBE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "send",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_SEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "receive",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_RECEIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pumpEvents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_PUMPEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "callLuaGlobal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "Core/String",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_CALLLUAGLOBAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadViewScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inTemplate"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_LOADVIEWSCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -313,7 +540,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "appendDrawables",
+                "name": "sAppendDrawables",
                 "parameters": [
                     {
                         "type": {
@@ -347,7 +574,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_VIEW_APPENDDRAWABLES_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_SAPPENDDRAWABLES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -725,6 +952,40 @@
                 },
                 "name": "m_roundedAncestors",
                 "description": "CHICANE_GRID_VIEW_M_ROUNDEDANCESTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Script::Bus",
+                    "suffix": "",
+                    "path": "Core/Script/Bus",
+                    "templates": []
+                },
+                "name": "m_bus",
+                "description": "CHICANE_GRID_VIEW_M_BUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ViewScript",
+                            "suffix": "",
+                            "path": "Grid/Component/View/Script",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewScript",
+                "description": "CHICANE_GRID_VIEW_M_VIEWSCRIPT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_VIEW_DESCRIPTION"

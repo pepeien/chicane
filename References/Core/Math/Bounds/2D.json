@@ -36,13 +36,13 @@
                     "path": "Core/Math/Bounds/2D",
                     "templates": []
                 },
-                "name": "unconstrained",
+                "name": "sUnconstrained",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_BOUNDS2D_UNCONSTRAINED_DESCRIPTION"
+                "description": "CHICANE_BOUNDS2D_SUNCONSTRAINED_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -64,13 +64,13 @@
                     "path": "Kerb/Body",
                     "templates": []
                 },
-                "name": "invalid",
+                "name": "sInvalid",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_KERB_BODY_INVALID_DESCRIPTION"
+                "description": "CHICANE_KERB_BODY_SINVALID_DESCRIPTION"
             },
             {
                 "accessor": "public",

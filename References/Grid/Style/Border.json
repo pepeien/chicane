@@ -101,7 +101,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isTypeToken",
+                "name": "sIsTypeToken",
                 "parameters": [
                     {
                         "type": {
@@ -117,7 +117,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEBORDER_ISTYPETOKEN_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBORDER_SISTYPETOKEN_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -129,7 +129,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isColorToken",
+                "name": "sIsColorToken",
                 "parameters": [
                     {
                         "type": {
@@ -145,7 +145,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEBORDER_ISCOLORTOKEN_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBORDER_SISCOLORTOKEN_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -31,6 +31,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "class",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "::Chicane::Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -1117,19 +1132,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "friend",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Application",
-                "description": "CHICANE_RENDERER_INSTANCE_APPLICATION_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],

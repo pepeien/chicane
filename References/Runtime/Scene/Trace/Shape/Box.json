@@ -1,0 +1,149 @@
+{
+    "title": "Box",
+    "filename": "Box",
+    "path": "Runtime/Scene/Trace/Shape/Box",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Box.hpp",
+        "namespace": "Chicane::SceneTraceShapeBox",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneTraceShapeBox",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENETRACESHAPEBOX_SCENETRACESHAPEBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneTraceShapeBox",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENETRACESHAPEBOX_SCENETRACESHAPEBOX_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEBOX_ISVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intersects",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outEnter"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEBOX_INTERSECTS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "halfExtents",
+                "description": "CHICANE_SCENETRACESHAPEBOX_HALFEXTENTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCENETRACESHAPEBOX_DESCRIPTION"
+    },
+    "children": []
+}

@@ -50,7 +50,7 @@
                     "path": "Core/Math/Quat/QuatFloat",
                     "templates": []
                 },
-                "name": "fromAxis",
+                "name": "sFromAxis",
                 "parameters": [
                     {
                         "type": {
@@ -76,7 +76,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_QUATFLOAT_FROMAXIS_DESCRIPTION"
+                "description": "CHICANE_QUATFLOAT_SFROMAXIS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -88,7 +88,7 @@
                     "path": "Core/Math/Quat/QuatFloat",
                     "templates": []
                 },
-                "name": "fromEuler",
+                "name": "sFromEuler",
                 "parameters": [
                     {
                         "type": {
@@ -104,7 +104,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_QUATFLOAT_FROMEULER_DESCRIPTION"
+                "description": "CHICANE_QUATFLOAT_SFROMEULER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -116,7 +116,83 @@
                     "path": "Core/Math/Quat/QuatFloat",
                     "templates": []
                 },
-                "name": "lookAt",
+                "name": "sFromMatrix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Mat3",
+                            "suffix": "&",
+                            "path": "Core/Math/Mat/Mat3",
+                            "templates": []
+                        },
+                        "name": "inMatrix"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_QUATFLOAT_SFROMMATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "sLerp",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inFrom"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inTo"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAmount"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_QUATFLOAT_SLERP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "sLookAt",
                 "parameters": [
                     {
                         "type": {
@@ -142,7 +218,54 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_QUATFLOAT_LOOKAT_DESCRIPTION"
+                "description": "CHICANE_QUATFLOAT_SLOOKAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "dot",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_QUATFLOAT_DOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "QuatFloat",
+                    "suffix": "",
+                    "path": "Core/Math/Quat/QuatFloat",
+                    "templates": []
+                },
+                "name": "inverse",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_QUATFLOAT_INVERSE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -177,6 +300,23 @@
                     "const"
                 ],
                 "description": "CHICANE_QUATFLOAT_TOEULER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "toMatrix",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_QUATFLOAT_TOMATRIX_DESCRIPTION"
             },
             {
                 "accessor": "public",

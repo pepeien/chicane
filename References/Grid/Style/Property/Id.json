@@ -444,6 +444,17 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Display",
+                "description": "CHICANE_GRID_STYLEPROPERTYID_DISPLAY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Count",
                 "description": "CHICANE_GRID_STYLEPROPERTYID_COUNT_DESCRIPTION"
             }

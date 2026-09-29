@@ -1,10 +1,10 @@
 {
-    "title": "ToolTip",
-    "filename": "ToolTip",
-    "path": "Grid/Component/ToolTip",
+    "title": "Tooltip",
+    "filename": "Tooltip",
+    "path": "Grid/Component/Tooltip",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/ToolTip.hpp",
-        "namespace": "Chicane::Grid::ToolTip",
+        "header": "Includes/Chicane/Grid/Component/Tooltip.hpp",
+        "namespace": "Chicane::Grid::Tooltip",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "ToolTip",
+                "name": "Tooltip",
                 "parameters": [
                     {
                         "type": {
@@ -37,23 +37,6 @@
         ],
         "destructors": [],
         "functions": [
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "escapesOverflow",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_TOOLTIP_ESCAPESOVERFLOW_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "type": "override",
@@ -120,6 +103,21 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_TOOLTIP_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TOOLTIP_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -312,6 +310,38 @@
             },
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DESCRIPTION_DELAY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_TOOLTIP_DESCRIPTION_DELAY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DEFAULT_CONTENT_DELAY_IN_MS",
+                "description": "CHICANE_GRID_TOOLTIP_DEFAULT_CONTENT_DELAY_IN_MS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -387,6 +417,19 @@
                 },
                 "name": "panelState",
                 "description": "CHICANE_GRID_TOOLTIP_PANELSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contentDelay",
+                "description": "CHICANE_GRID_TOOLTIP_CONTENTDELAY_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_TOOLTIP_DESCRIPTION"

@@ -73,7 +73,7 @@
         ],
         "functions": [
             {
-                "accessor": "private",
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -82,10 +82,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Application",
+                "name": "::Chicane::Instance",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_KERB_ENGINE_APPLICATION_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_INSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -97,12 +97,12 @@
                     "path": "Kerb/Engine",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -114,12 +114,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getZeroGravity",
+                "name": "sGetZeroGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETZEROGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETZEROGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -131,12 +131,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getMercuryGravity",
+                "name": "sGetMercuryGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETMERCURYGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETMERCURYGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -148,12 +148,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getVenusGravity",
+                "name": "sGetVenusGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETVENUSGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETVENUSGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -165,12 +165,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getEarthGravity",
+                "name": "sGetEarthGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETEARTHGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETEARTHGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -182,12 +182,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getMoonGravity",
+                "name": "sGetMoonGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETMOONGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETMOONGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -199,12 +199,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getMarsGravity",
+                "name": "sGetMarsGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETMARSGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETMARSGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -216,12 +216,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getJupiterGravity",
+                "name": "sGetJupiterGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETJUPITERGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETJUPITERGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -233,12 +233,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getSaturnGravity",
+                "name": "sGetSaturnGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETSATURNGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETSATURNGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -250,12 +250,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getUranusGravity",
+                "name": "sGetUranusGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETURANUSGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETURANUSGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -267,12 +267,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getNeptuneGravity",
+                "name": "sGetNeptuneGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETNEPTUNEGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETNEPTUNEGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -284,12 +284,12 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getPlutoGravity",
+                "name": "sGetPlutoGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETPLUTOGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETPLUTOGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -301,7 +301,7 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "getPlanetGravity",
+                "name": "sGetPlanetGravity",
                 "parameters": [
                     {
                         "type": {
@@ -317,7 +317,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_GETPLANETGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SGETPLANETGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -329,12 +329,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setZeroGravity",
+                "name": "sSetZeroGravity",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_SETZEROGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SSETZEROGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -346,7 +346,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setGravity",
+                "name": "sSetGravity",
                 "parameters": [
                     {
                         "type": {
@@ -362,7 +362,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_SETGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SSETGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -374,7 +374,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setGravity",
+                "name": "sSetGravity",
                 "parameters": [
                     {
                         "type": {
@@ -390,7 +390,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_KERB_ENGINE_SETGRAVITY_DESCRIPTION"
+                "description": "CHICANE_KERB_ENGINE_SSETGRAVITY_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -66,13 +66,13 @@
                     "path": "Renderer/Draw/Poly",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_DRAWPOLY_EMPTY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DRAWPOLY_SEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "public",

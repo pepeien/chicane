@@ -301,7 +301,7 @@
                     "path": "Core/Image/Vendor",
                     "templates": []
                 },
-                "name": "parseVendor",
+                "name": "sParseVendor",
                 "parameters": [
                     {
                         "type": {
@@ -317,7 +317,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_PARSEVENDOR_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SPARSEVENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -329,7 +329,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "getVendorExtension",
+                "name": "sGetVendorExtension",
                 "parameters": [
                     {
                         "type": {
@@ -345,7 +345,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_GETVENDOREXTENSION_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SGETVENDOREXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -357,7 +357,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "floorPowerOfTwo",
+                "name": "sFloorPowerOfTwo",
                 "parameters": [
                     {
                         "type": {
@@ -373,7 +373,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_FLOORPOWEROFTWO_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SFLOORPOWEROFTWO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -385,7 +385,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "mipCount",
+                "name": "sMipCount",
                 "parameters": [
                     {
                         "type": {
@@ -411,7 +411,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_MIPCOUNT_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SMIPCOUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -423,7 +423,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "mipDimension",
+                "name": "sMipDimension",
                 "parameters": [
                     {
                         "type": {
@@ -449,7 +449,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_MIPDIMENSION_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SMIPDIMENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -461,7 +461,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "streamTailMinMip",
+                "name": "sStreamTailMinMip",
                 "parameters": [
                     {
                         "type": {
@@ -497,7 +497,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_STREAMTAILMINMIP_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SSTREAMTAILMINMIP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -509,7 +509,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "mipChainBytes",
+                "name": "sMipChainBytes",
                 "parameters": [
                     {
                         "type": {
@@ -535,7 +535,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_MIPCHAINBYTES_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SMIPCHAINBYTES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -547,7 +547,7 @@
                     "path": "Core/Image/Mip/Chain",
                     "templates": []
                 },
-                "name": "makeMipChain",
+                "name": "sMakeMipChain",
                 "parameters": [
                     {
                         "type": {
@@ -583,7 +583,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_MAKEMIPCHAIN_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SMAKEMIPCHAIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -595,7 +595,7 @@
                     "path": "Core/Image/Mip/Chain",
                     "templates": []
                 },
-                "name": "makeMipChain",
+                "name": "sMakeMipChain",
                 "parameters": [
                     {
                         "type": {
@@ -661,7 +661,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_MAKEMIPCHAIN_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SMAKEMIPCHAIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -673,7 +673,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "flipY",
+                "name": "sFlipY",
                 "parameters": [
                     {
                         "type": {
@@ -719,7 +719,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_IMAGE_FLIPY_DESCRIPTION"
+                "description": "CHICANE_IMAGE_SFLIPY_DESCRIPTION"
             },
             {
                 "accessor": "public",

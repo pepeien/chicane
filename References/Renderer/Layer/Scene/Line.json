@@ -4,7 +4,7 @@
     "path": "Renderer/Layer/Scene/Line",
     "source": {
         "header": "Includes/Chicane/Renderer/Layer/Scene/Line.hpp",
-        "namespace": "Chicane::Renderer::LSceneLine",
+        "namespace": "Chicane::Renderer::LSceneLineGeometry",
         "types": [],
         "enums": [],
         "constructors": [
@@ -241,7 +241,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ImmediateGeometry",
+                    "name": "LSceneLineGeometry",
                     "suffix": "&",
                     "path": "Renderer/Layer/Scene/Line",
                     "templates": []
@@ -340,58 +340,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "RHI::Buffer",
-                    "suffix": "",
-                    "path": "Renderer/RHI/Buffer",
-                    "templates": []
-                },
-                "name": "vertex",
-                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_VERTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "RHI::Buffer",
-                    "suffix": "",
-                    "path": "Renderer/RHI/Buffer",
-                    "templates": []
-                },
-                "name": "index",
-                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_INDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "vertexBytes",
-                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_VERTEXBYTES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "indexBytes",
-                "description": "CHICANE_RENDERER_LSCENELINE_IMMEDIATEGEOMETRY_INDEXBYTES_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -502,7 +450,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ImmediateGeometry",
+                            "name": "LSceneLineGeometry",
                             "suffix": "",
                             "path": "Renderer/Layer/Scene/Line",
                             "templates": []
@@ -511,9 +459,61 @@
                 },
                 "name": "m_immediate",
                 "description": "CHICANE_RENDERER_LSCENELINE_M_IMMEDIATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "vertex",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_VERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "index",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_INDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_VERTEXBYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_INDEXBYTES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_LSCENELINE_DESCRIPTION"
+        "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_DESCRIPTION"
     },
     "children": []
 }

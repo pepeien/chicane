@@ -20,7 +20,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "enqueue",
+                "name": "sEnqueue",
                 "parameters": [
                     {
                         "type": {
@@ -46,7 +46,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_PREVIEWUPLOAD_ENQUEUE_DESCRIPTION"
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_SENQUEUE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -58,7 +58,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "drain",
+                "name": "sDrain",
                 "parameters": [
                     {
                         "type": {
@@ -82,7 +82,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_PREVIEWUPLOAD_DRAIN_DESCRIPTION"
+                "description": "CHICANE_BOX_PREVIEWUPLOAD_SDRAIN_DESCRIPTION"
             }
         ],
         "members": [

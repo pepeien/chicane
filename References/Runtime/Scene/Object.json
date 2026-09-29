@@ -81,6 +81,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_SETID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",
@@ -109,6 +135,269 @@
                     "const"
                 ],
                 "description": "CHICANE_OBJECT_ISTRANSIENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isAttached",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_ISATTACHED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Object",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Object",
+                    "templates": []
+                },
+                "name": "getParent",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETPARENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getAttachments",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETATTACHMENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "attachTo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inParent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ATTACHTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "detach",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_DETACH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_SETTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_SETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "lookAt",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_LOOKAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETCENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getTop",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBottom",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getSize",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETSIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -161,32 +450,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_TICK_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setId",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_SETID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -280,26 +543,29 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "std::vector",
-                    "suffix": "&",
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
                     "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Component",
-                            "templates": []
-                        }
-                    ]
+                    "templates": []
                 },
-                "name": "getAttachments",
-                "parameters": [],
-                "modifiers": [
-                    "const"
+                "name": "setRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
                 ],
-                "description": "CHICANE_OBJECT_GETATTACHMENTS_DESCRIPTION"
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_OBJECT_SETRELATIVETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -444,7 +710,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "standard",
+                "type": "virtual",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -452,36 +718,23 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "applyLookTo",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_APPLYLOOKTO_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "applyLookTo",
+                "name": "onAttachment",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
                             "templates": []
                         },
-                        "name": "inTarget"
+                        "name": "inParent"
                     }
                 ],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_APPLYLOOKTO_DESCRIPTION"
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_OBJECT_ONATTACHMENT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -497,6 +750,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_BINDATTRIBUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyDefaultBounds",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_APPLYDEFAULTBOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -587,12 +855,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Component",
+                            "name": "Object",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Component",
+                            "path": "Runtime/Scene/Object",
                             "templates": []
                         },
-                        "name": "inComponent"
+                        "name": "inObject"
                     }
                 ],
                 "modifiers": [],
@@ -613,16 +881,44 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Component",
+                            "name": "Object",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Component",
+                            "path": "Runtime/Scene/Object",
                             "templates": []
                         },
-                        "name": "inComponent"
+                        "name": "inObject"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_OBJECT_REMOVEATTACHMENT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isAncestorOf",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_ISANCESTOROF_DESCRIPTION"
             }
         ],
         "members": [
@@ -638,19 +934,6 @@
                 },
                 "name": "Scene",
                 "description": "CHICANE_OBJECT_SCENE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "friend",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Component",
-                "description": "CHICANE_OBJECT_COMPONENT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -805,27 +1088,14 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "LOOK_TO_ATTRIBUTE_NAME",
-                "description": "CHICANE_OBJECT_LOOK_TO_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "lookTo",
-                "description": "CHICANE_OBJECT_LOOKTO_DESCRIPTION"
+                "name": "DEFAULT_BOUNDS_SIZE",
+                "description": "CHICANE_OBJECT_DEFAULT_BOUNDS_SIZE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -884,15 +1154,41 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Object",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Object",
+                    "templates": []
+                },
+                "name": "m_parent",
+                "description": "CHICANE_OBJECT_M_PARENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": []
+                },
+                "name": "m_parentSubscription",
+                "description": "CHICANE_OBJECT_M_PARENTSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Component",
+                            "name": "Object",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Component",
+                            "path": "Runtime/Scene/Object",
                             "templates": []
                         }
                     ]

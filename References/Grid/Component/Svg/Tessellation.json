@@ -56,13 +56,13 @@
                     "path": "Grid/Component/Svg/Tessellation",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_GRID_SVGTESSELLATION_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_GRID_SVGTESSELLATION_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

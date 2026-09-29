@@ -61,6 +61,17 @@
                 },
                 "name": "Culled",
                 "description": "CHICANE_GRID_COMPONENTSTATUS_CULLED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Selected",
+                "description": "CHICANE_GRID_COMPONENTSTATUS_SELECTED_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -313,6 +324,45 @@
                     "constexpr"
                 ],
                 "description": "CHICANE_GRID_HAS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasAll",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inStatus"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ComponentStatus",
+                            "suffix": "",
+                            "path": "Grid/Component/Status",
+                            "templates": []
+                        },
+                        "name": "inFlags"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_GRID_HASALL_DESCRIPTION"
             }
         ],
         "members": [],

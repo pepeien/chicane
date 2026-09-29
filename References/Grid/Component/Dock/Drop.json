@@ -62,23 +62,6 @@
             },
             {
                 "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "getDrawPosition",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_DOCKDROP_GETDRAWPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",

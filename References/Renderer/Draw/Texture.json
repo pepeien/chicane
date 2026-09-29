@@ -40,13 +40,13 @@
                     "path": "Renderer/Draw/Texture",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_RENDERER_DRAWTEXTURE_EMPTY_DESCRIPTION"
+                "description": "CHICANE_RENDERER_DRAWTEXTURE_SEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "public",

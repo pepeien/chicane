@@ -47,13 +47,13 @@
                     "path": "Box/Model/Parsed",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_BOX_MODELPARSED_EMPTY_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_SEMPTY_DESCRIPTION"
             }
         ],
         "members": [

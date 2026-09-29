@@ -20,7 +20,7 @@
                     "path": "Grid/Style/Property/Entry",
                     "templates": []
                 },
-                "name": "get",
+                "name": "sGet",
                 "parameters": [
                     {
                         "type": {
@@ -36,7 +36,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_GET_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_SGET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -48,7 +48,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "find",
+                "name": "sFind",
                 "parameters": [
                     {
                         "type": {
@@ -74,7 +74,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_FIND_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_SFIND_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -86,7 +86,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "offset",
+                "name": "sOffset",
                 "parameters": [
                     {
                         "type": {
@@ -102,7 +102,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_OFFSET_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEPROPERTYTABLE_SOFFSET_DESCRIPTION"
             }
         ],
         "members": [

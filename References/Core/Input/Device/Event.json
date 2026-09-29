@@ -36,7 +36,7 @@
                     "path": "Core/Input/Device/Event",
                     "templates": []
                 },
-                "name": "fromMouse",
+                "name": "sFromMouse",
                 "parameters": [
                     {
                         "type": {
@@ -52,7 +52,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_INPUT_DEVICEEVENT_FROMMOUSE_DESCRIPTION"
+                "description": "CHICANE_INPUT_DEVICEEVENT_SFROMMOUSE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -64,7 +64,7 @@
                     "path": "Core/Input/Device/Event",
                     "templates": []
                 },
-                "name": "fromKeyboard",
+                "name": "sFromKeyboard",
                 "parameters": [
                     {
                         "type": {
@@ -80,7 +80,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_INPUT_DEVICEEVENT_FROMKEYBOARD_DESCRIPTION"
+                "description": "CHICANE_INPUT_DEVICEEVENT_SFROMKEYBOARD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -92,7 +92,7 @@
                     "path": "Core/Input/Device/Event",
                     "templates": []
                 },
-                "name": "fromGamepad",
+                "name": "sFromGamepad",
                 "parameters": [
                     {
                         "type": {
@@ -108,7 +108,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_INPUT_DEVICEEVENT_FROMGAMEPAD_DESCRIPTION"
+                "description": "CHICANE_INPUT_DEVICEEVENT_SFROMGAMEPAD_DESCRIPTION"
             }
         ],
         "members": [

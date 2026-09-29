@@ -118,12 +118,12 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "linear",
+                "name": "sLinear",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_LINEAR_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SLINEAR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -135,12 +135,12 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "ease",
+                "name": "sEase",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_EASE_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SEASE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -152,12 +152,12 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "easeIn",
+                "name": "sEaseIn",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_EASEIN_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SEASEIN_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -169,12 +169,12 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "easeOut",
+                "name": "sEaseOut",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_EASEOUT_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SEASEOUT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -186,12 +186,12 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "easeInOut",
+                "name": "sEaseInOut",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_EASEINOUT_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SEASEINOUT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -203,7 +203,7 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "cubicBezier",
+                "name": "sCubicBezier",
                 "parameters": [
                     {
                         "type": {
@@ -249,7 +249,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_CUBICBEZIER_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SCUBICBEZIER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -261,7 +261,7 @@
                     "path": "Drift/Easing/Curve",
                     "templates": []
                 },
-                "name": "fromString",
+                "name": "sFromString",
                 "parameters": [
                     {
                         "type": {
@@ -277,7 +277,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_DRIFT_EASINGCURVE_FROMSTRING_DESCRIPTION"
+                "description": "CHICANE_DRIFT_EASINGCURVE_SFROMSTRING_DESCRIPTION"
             },
             {
                 "accessor": "public",

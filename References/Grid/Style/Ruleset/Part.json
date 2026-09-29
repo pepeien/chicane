@@ -34,39 +34,34 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "ComponentStatus",
                     "suffix": "",
-                    "path": "",
+                    "path": "Grid/Component/Status",
                     "templates": []
                 },
-                "name": "bCanHover",
-                "description": "CHICANE_GRID_STYLESELECTORPART_BCANHOVER_DESCRIPTION"
+                "name": "status",
+                "description": "CHICANE_GRID_STYLESELECTORPART_STATUS_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "std::vector",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleSiblingSelector",
+                            "suffix": "",
+                            "path": "Grid/Style/Ruleset/Sibling",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "bCanFocus",
-                "description": "CHICANE_GRID_STYLESELECTORPART_BCANFOCUS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "bCanDrag",
-                "description": "CHICANE_GRID_STYLESELECTORPART_BCANDRAG_DESCRIPTION"
+                "name": "siblings",
+                "description": "CHICANE_GRID_STYLESELECTORPART_SIBLINGS_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -72,13 +72,13 @@
                     "path": "Core/Worker",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_WORKER_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_WORKER_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -90,7 +90,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "submit",
+                "name": "sSubmit",
                 "parameters": [
                     {
                         "type": {
@@ -106,7 +106,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_WORKER_SUBMIT_DESCRIPTION"
+                "description": "CHICANE_WORKER_SSUBMIT_DESCRIPTION"
             },
             {
                 "accessor": "public",

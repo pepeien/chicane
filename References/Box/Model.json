@@ -63,7 +63,7 @@
                     "path": "Box/Model/Vendor",
                     "templates": []
                 },
-                "name": "parseVendor",
+                "name": "sParseVendor",
                 "parameters": [
                     {
                         "type": {
@@ -79,7 +79,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_MODEL_PARSEVENDOR_DESCRIPTION"
+                "description": "CHICANE_BOX_MODEL_SPARSEVENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -91,7 +91,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "getVendorExtension",
+                "name": "sGetVendorExtension",
                 "parameters": [
                     {
                         "type": {
@@ -107,7 +107,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_MODEL_GETVENDOREXTENSION_DESCRIPTION"
+                "description": "CHICANE_BOX_MODEL_SGETVENDOREXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -119,12 +119,12 @@
                     "path": "Box/Model",
                     "templates": []
                 },
-                "name": "getDefault",
+                "name": "sGetDefault",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_MODEL_GETDEFAULT_DESCRIPTION"
+                "description": "CHICANE_BOX_MODEL_SGETDEFAULT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -136,7 +136,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "generateTangents",
+                "name": "sGenerateTangents",
                 "parameters": [
                     {
                         "type": {
@@ -152,7 +152,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_MODEL_GENERATETANGENTS_DESCRIPTION"
+                "description": "CHICANE_BOX_MODEL_SGENERATETANGENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",

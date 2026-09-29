@@ -1,0 +1,52 @@
+{
+    "title": "Channel",
+    "filename": "Channel",
+    "path": "Core/Script/Channel",
+    "source": {
+        "header": "Includes/Chicane/Core/Script/Channel.hpp",
+        "namespace": "Chicane::Script::Channel",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Queue",
+                    "suffix": "&",
+                    "path": "Core/Script/Queue",
+                    "templates": []
+                },
+                "name": "sToView",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCRIPT_CHANNEL_STOVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Queue",
+                    "suffix": "&",
+                    "path": "Core/Script/Queue",
+                    "templates": []
+                },
+                "name": "sToScene",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCRIPT_CHANNEL_STOSCENE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_SCRIPT_CHANNEL_DESCRIPTION"
+    },
+    "children": []
+}

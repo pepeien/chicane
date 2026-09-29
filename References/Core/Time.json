@@ -119,13 +119,13 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "Zero",
+                "name": "sZero",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_TIME_ZERO_DESCRIPTION"
+                "description": "CHICANE_TIME_SZERO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -137,7 +137,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "miliseconds",
+                "name": "sMiliseconds",
                 "parameters": [
                     {
                         "type": {
@@ -153,7 +153,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_MILISECONDS_DESCRIPTION"
+                "description": "CHICANE_TIME_SMILISECONDS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -165,7 +165,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "seconds",
+                "name": "sSeconds",
                 "parameters": [
                     {
                         "type": {
@@ -181,7 +181,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_SECONDS_DESCRIPTION"
+                "description": "CHICANE_TIME_SSECONDS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -193,7 +193,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "minutes",
+                "name": "sMinutes",
                 "parameters": [
                     {
                         "type": {
@@ -209,7 +209,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_MINUTES_DESCRIPTION"
+                "description": "CHICANE_TIME_SMINUTES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -221,7 +221,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hours",
+                "name": "sHours",
                 "parameters": [
                     {
                         "type": {
@@ -237,7 +237,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_HOURS_DESCRIPTION"
+                "description": "CHICANE_TIME_SHOURS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -249,7 +249,7 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "fromMilliseconds",
+                "name": "sFromMilliseconds",
                 "parameters": [
                     {
                         "type": {
@@ -265,7 +265,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_FROMMILLISECONDS_DESCRIPTION"
+                "description": "CHICANE_TIME_SFROMMILLISECONDS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -277,7 +277,7 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "fromSeconds",
+                "name": "sFromSeconds",
                 "parameters": [
                     {
                         "type": {
@@ -293,7 +293,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_FROMSECONDS_DESCRIPTION"
+                "description": "CHICANE_TIME_SFROMSECONDS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -305,7 +305,7 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "fromMinutes",
+                "name": "sFromMinutes",
                 "parameters": [
                     {
                         "type": {
@@ -321,7 +321,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_FROMMINUTES_DESCRIPTION"
+                "description": "CHICANE_TIME_SFROMMINUTES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -333,7 +333,7 @@
                     "path": "Core/Time",
                     "templates": []
                 },
-                "name": "fromHours",
+                "name": "sFromHours",
                 "parameters": [
                     {
                         "type": {
@@ -349,7 +349,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_TIME_FROMHOURS_DESCRIPTION"
+                "description": "CHICANE_TIME_SFROMHOURS_DESCRIPTION"
             },
             {
                 "accessor": "public",

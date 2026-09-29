@@ -226,17 +226,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "class",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "::Chicane::Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Window",
                     "suffix": "*",
                     "path": "Core/Window",
                     "templates": []
                 },
-                "name": "getCurrent",
+                "name": "sGetCurrent",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_WINDOW_GETCURRENT_DESCRIPTION"
+                "description": "CHICANE_WINDOW_SGETCURRENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1358,19 +1373,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "friend",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Application",
-                "description": "CHICANE_WINDOW_APPLICATION_DESCRIPTION"
-            },
             {
                 "accessor": "private",
                 "modifiers": [],

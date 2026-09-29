@@ -62,7 +62,7 @@
                     "path": "Grid/Component/Svg/Paint/LineCap",
                     "templates": []
                 },
-                "name": "parseLineCap",
+                "name": "sParseLineCap",
                 "parameters": [
                     {
                         "type": {
@@ -78,7 +78,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_SVGPAINT_PARSELINECAP_DESCRIPTION"
+                "description": "CHICANE_GRID_SVGPAINT_SPARSELINECAP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -90,7 +90,7 @@
                     "path": "Grid/Component/Svg/Paint/LineJoin",
                     "templates": []
                 },
-                "name": "parseLineJoin",
+                "name": "sParseLineJoin",
                 "parameters": [
                     {
                         "type": {
@@ -106,7 +106,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_SVGPAINT_PARSELINEJOIN_DESCRIPTION"
+                "description": "CHICANE_GRID_SVGPAINT_SPARSELINEJOIN_DESCRIPTION"
             }
         ],
         "members": [

@@ -1,0 +1,102 @@
+{
+    "title": "Queue",
+    "filename": "Queue",
+    "path": "Core/Script/Queue",
+    "source": {
+        "header": "Includes/Chicane/Core/Script/Queue.hpp",
+        "namespace": "Chicane::Script::Queue",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "push",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Event",
+                            "suffix": "",
+                            "path": "Core/Script/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_QUEUE_PUSH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Event",
+                            "suffix": "",
+                            "path": "Core/Script/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "drain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_QUEUE_DRAIN_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_SCRIPT_QUEUE_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Event",
+                            "suffix": "",
+                            "path": "Core/Script/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_pending",
+                "description": "CHICANE_SCRIPT_QUEUE_M_PENDING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCRIPT_QUEUE_DESCRIPTION"
+    },
+    "children": []
+}

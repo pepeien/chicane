@@ -47,40 +47,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isFocusable",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_INPUTSELECT_ISFOCUSABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "escapesOverflow",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_INPUTSELECT_ESCAPESOVERFLOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "onEvent",
                 "parameters": [
                     {
@@ -323,6 +289,21 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_INPUTSELECT_ONTICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_INPUTSELECT_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",

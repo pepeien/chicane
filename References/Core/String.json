@@ -317,13 +317,13 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_STRING_EMPTY_DESCRIPTION"
+                "description": "CHICANE_STRING_SEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -335,7 +335,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "sprint",
+                "name": "sSprint",
                 "parameters": [
                     {
                         "type": {
@@ -362,7 +362,7 @@
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_STRING_SPRINT_DESCRIPTION"
+                "description": "CHICANE_STRING_SSPRINT_DESCRIPTION"
             },
             {
                 "accessor": "public",

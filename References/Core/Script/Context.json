@@ -1,0 +1,652 @@
+{
+    "title": "Context",
+    "filename": "Context",
+    "path": "Core/Script/Context",
+    "source": {
+        "header": "Includes/Chicane/Core/Script/Context.hpp",
+        "namespace": "Chicane::Script::Context",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Context",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Context",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Context",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Context",
+                            "suffix": "&&",
+                            "path": "Core/Script/Context",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CONTEXT_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Context",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_~CONTEXT_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Context",
+                    "suffix": "*",
+                    "path": "Core/Script/Context",
+                    "templates": []
+                },
+                "name": "sFrom",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCRIPT_CONTEXT_SFROM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Context",
+                    "suffix": "&",
+                    "path": "Core/Script/Context",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Context",
+                    "suffix": "&",
+                    "path": "Core/Script/Context",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Context",
+                            "suffix": "&&",
+                            "path": "Core/Script/Context",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isOpen",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCRIPT_CONTEXT_ISOPEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "lua_State",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "state",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCRIPT_CONTEXT_STATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "open",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAllowedModule"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_OPEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "close",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CLOSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setUser",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inUser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_SETUSER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getUser",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCRIPT_CONTEXT_GETUSER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadFile",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_LOADFILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pcall",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inResults"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_PCALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushGlobalFunction",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_PUSHGLOBALFUNCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "callGlobal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CALLGLOBAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ref",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_REF_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unref",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRef"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_UNREF_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "callRef",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRef"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_CALLREF_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setHostModule",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_SETHOSTMODULE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reportError",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPrefix"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_REPORTERROR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "installSafeLibs",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_INSTALLSAFELIBS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "installRequire",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_INSTALLREQUIRE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "denyUnsafeGlobals",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_DENYUNSAFEGLOBALS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindSelf",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_CONTEXT_BINDSELF_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FLAG_MODULE",
+                "description": "CHICANE_SCRIPT_CONTEXT_FLAG_MODULE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STEWARD_MODULE",
+                "description": "CHICANE_SCRIPT_CONTEXT_STEWARD_MODULE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "lua_State",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_state",
+                "description": "CHICANE_SCRIPT_CONTEXT_M_STATE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_allowed",
+                "description": "CHICANE_SCRIPT_CONTEXT_M_ALLOWED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_user",
+                "description": "CHICANE_SCRIPT_CONTEXT_M_USER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCRIPT_CONTEXT_DESCRIPTION"
+    },
+    "children": []
+}

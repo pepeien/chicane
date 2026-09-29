@@ -20,7 +20,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "of",
+                "name": "sOf",
                 "parameters": [
                     {
                         "type": {
@@ -38,7 +38,7 @@
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_KERB_GRAVITY_OF_DESCRIPTION"
+                "description": "CHICANE_KERB_GRAVITY_SOF_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -50,7 +50,7 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "down",
+                "name": "sDown",
                 "parameters": [
                     {
                         "type": {
@@ -67,7 +67,7 @@
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_KERB_GRAVITY_DOWN_DESCRIPTION"
+                "description": "CHICANE_KERB_GRAVITY_SDOWN_DESCRIPTION"
             }
         ],
         "members": [

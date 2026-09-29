@@ -1,55 +1,55 @@
 {
-    "title": "Range",
+    "title": "InputRangeSliderDrag",
     "filename": "Range",
     "path": "Grid/Component/Input/Slider/Range",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Input/Slider/Range.hpp",
-        "namespace": "Chicane::Grid::InputRangeSlider::Drag",
+        "namespace": "Chicane::Grid::InputRangeSliderDrag",
         "types": [],
         "enums": [
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
                 "name": "None",
-                "description": "CHICANE_GRID_INPUTRANGESLIDER_DRAG_NONE_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_NONE_DESCRIPTION"
             },
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
                 "name": "Low",
-                "description": "CHICANE_GRID_INPUTRANGESLIDER_DRAG_LOW_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_LOW_DESCRIPTION"
             },
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
                 "name": "High",
-                "description": "CHICANE_GRID_INPUTRANGESLIDER_DRAG_HIGH_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_HIGH_DESCRIPTION"
             },
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
                 "name": "Span",
-                "description": "CHICANE_GRID_INPUTRANGESLIDER_DRAG_SPAN_DESCRIPTION"
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_SPAN_DESCRIPTION"
             }
         ],
         "constructors": [
@@ -82,23 +82,6 @@
         ],
         "destructors": [],
         "functions": [
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isFocusable",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_INPUTRANGESLIDER_ISFOCUSABLE_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "type": "override",
@@ -309,7 +292,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Drag",
+                            "name": "InputRangeSliderDrag",
                             "suffix": "",
                             "path": "Grid/Component/Input/Slider/Range",
                             "templates": []
@@ -421,7 +404,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Drag",
+                    "name": "InputRangeSliderDrag",
                     "suffix": "",
                     "path": "Grid/Component/Input/Slider/Range",
                     "templates": []
@@ -777,7 +760,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Drag",
+                    "name": "InputRangeSliderDrag",
                     "suffix": "",
                     "path": "Grid/Component/Input/Slider/Range",
                     "templates": []
@@ -825,7 +808,7 @@
                 "description": "CHICANE_GRID_INPUTRANGESLIDER_M_BISEDITED_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_INPUTRANGESLIDER_DESCRIPTION"
+        "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_DESCRIPTION"
     },
     "children": []
 }

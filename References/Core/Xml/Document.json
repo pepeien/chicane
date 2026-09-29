@@ -93,6 +93,34 @@
                 "return": {
                     "prefix": "",
                     "name": "XmlDocument",
+                    "suffix": "",
+                    "path": "Core/Xml/Document",
+                    "templates": []
+                },
+                "name": "sLoad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_XMLDOCUMENT_SLOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "XmlDocument",
                     "suffix": "&",
                     "path": "Core/Xml/Document",
                     "templates": []
@@ -315,34 +343,6 @@
                     "const"
                 ],
                 "description": "CHICANE_XMLDOCUMENT_SAVE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "XmlDocument",
-                    "suffix": "",
-                    "path": "Core/Xml/Document",
-                    "templates": []
-                },
-                "name": "load",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem/Path",
-                            "templates": []
-                        },
-                        "name": "inFilepath"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_XMLDOCUMENT_LOAD_DESCRIPTION"
             }
         ],
         "members": [
@@ -357,7 +357,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Impl",
+                            "name": "XmlDocumentImpl",
                             "suffix": "",
                             "path": "",
                             "templates": []

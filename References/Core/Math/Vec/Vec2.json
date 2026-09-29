@@ -19,16 +19,124 @@
                     "templates": []
                 },
                 "name": "Vec2",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_VEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec2",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "A...",
+                            "name": "float",
                             "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "args"
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_VEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC2_VEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "glm::vec",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "T",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "Q",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
                     }
                 ],
                 "modifiers": [
@@ -50,14 +158,14 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "Zero",
+                "name": "sZero",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC2_ZERO_DESCRIPTION"
+                "description": "CHICANE_VEC2_SZERO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -69,14 +177,14 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "One",
+                "name": "sOne",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC2_ONE_DESCRIPTION"
+                "description": "CHICANE_VEC2_SONE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -88,14 +196,14 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "Right",
+                "name": "sRight",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC2_RIGHT_DESCRIPTION"
+                "description": "CHICANE_VEC2_SRIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -107,14 +215,14 @@
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "Up",
+                "name": "sUp",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline",
                     "constexpr"
                 ],
-                "description": "CHICANE_VEC2_UP_DESCRIPTION"
+                "description": "CHICANE_VEC2_SUP_DESCRIPTION"
             },
             {
                 "accessor": "public",

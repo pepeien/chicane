@@ -1,0 +1,295 @@
+{
+    "title": "Mesh",
+    "filename": "Mesh",
+    "path": "Runtime/Scene/Trace/Shape/Mesh",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/Trace/Shape/Mesh.hpp",
+        "namespace": "Chicane::SceneTraceShapeMesh",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneTraceShapeMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::Mesh",
+                            "suffix": "*",
+                            "path": "Box/Mesh",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENETRACESHAPEMESH_SCENETRACESHAPEMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneTraceShapeMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENETRACESHAPEMESH_SCENETRACESHAPEMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SceneTraceShapeMesh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENETRACESHAPEMESH_SCENETRACESHAPEMESH_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isValid",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_ISVALID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intersects",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outEnter"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_INTERSECTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::List",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::Indices",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_GETINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Bounds3D",
+                    "suffix": "&",
+                    "path": "Core/Math/Bounds/3D",
+                    "templates": []
+                },
+                "name": "getBounds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_GETBOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureGeometry",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACESHAPEMESH_ENSUREGEOMETRY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Box::Mesh",
+                    "suffix": "*",
+                    "path": "Box/Mesh",
+                    "templates": []
+                },
+                "name": "mesh",
+                "description": "CHICANE_SCENETRACESHAPEMESH_MESH_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_vertices",
+                "description": "CHICANE_SCENETRACESHAPEMESH_M_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_indices",
+                "description": "CHICANE_SCENETRACESHAPEMESH_M_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds3D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/3D",
+                    "templates": []
+                },
+                "name": "m_bounds",
+                "description": "CHICANE_SCENETRACESHAPEMESH_M_BOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bHasGeometry",
+                "description": "CHICANE_SCENETRACESHAPEMESH_M_BHASGEOMETRY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCENETRACESHAPEMESH_DESCRIPTION"
+    },
+    "children": []
+}

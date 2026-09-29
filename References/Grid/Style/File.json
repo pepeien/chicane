@@ -89,13 +89,13 @@
                     "path": "Grid/Style/File",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_GRID_STYLEFILE_EMPTY_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEFILE_SEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -63,7 +63,7 @@
                     "path": "Box/Font/Vendor",
                     "templates": []
                 },
-                "name": "parseVendor",
+                "name": "sParseVendor",
                 "parameters": [
                     {
                         "type": {
@@ -79,7 +79,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_FONT_PARSEVENDOR_DESCRIPTION"
+                "description": "CHICANE_BOX_FONT_SPARSEVENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -91,7 +91,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "getVendorExtension",
+                "name": "sGetVendorExtension",
                 "parameters": [
                     {
                         "type": {
@@ -107,7 +107,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_FONT_GETVENDOREXTENSION_DESCRIPTION"
+                "description": "CHICANE_BOX_FONT_SGETVENDOREXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "public",

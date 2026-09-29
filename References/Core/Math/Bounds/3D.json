@@ -57,6 +57,62 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Bounds3D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/3D",
+                    "templates": []
+                },
+                "name": "sBox",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOUNDS3D_SBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Bounds3D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/3D",
+                    "templates": []
+                },
+                "name": "sBox",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOUNDS3D_SBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -369,6 +425,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOUNDS3D_TRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_ISEMPTY_DESCRIPTION"
             },
             {
                 "accessor": "private",

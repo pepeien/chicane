@@ -1,0 +1,52 @@
+{
+    "title": "Slot",
+    "filename": "Slot",
+    "path": "Core/Script/Bus/Slot",
+    "source": {
+        "header": "Includes/Chicane/Core/Script/Bus/Slot.hpp",
+        "namespace": "Chicane::Script::Slot",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "token",
+                "description": "CHICANE_SCRIPT_SLOT_TOKEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const String &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "callback",
+                "description": "CHICANE_SCRIPT_SLOT_CALLBACK_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCRIPT_SLOT_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,10 +1,10 @@
 {
     "title": "Telemetry",
     "filename": "Telemetry",
-    "path": "Runtime/Application/Telemetry",
+    "path": "Runtime/Instance/Telemetry",
     "source": {
-        "header": "Includes/Chicane/Runtime/Application/Telemetry.hpp",
-        "namespace": "Chicane::ApplicationTelemetry",
+        "header": "Includes/Chicane/Runtime/Instance/Telemetry.hpp",
+        "namespace": "Chicane::InstanceTelemetry",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "ApplicationTelemetry",
+                "name": "InstanceTelemetry",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATIONTELEMETRY_APPLICATIONTELEMETRY_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_INSTANCETELEMETRY_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "scene",
-                "description": "CHICANE_APPLICATIONTELEMETRY_SCENE_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_SCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -51,7 +51,7 @@
                     "templates": []
                 },
                 "name": "physics",
-                "description": "CHICANE_APPLICATIONTELEMETRY_PHYSICS_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_PHYSICS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -64,7 +64,7 @@
                     "templates": []
                 },
                 "name": "animation",
-                "description": "CHICANE_APPLICATIONTELEMETRY_ANIMATION_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_ANIMATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -77,7 +77,7 @@
                     "templates": []
                 },
                 "name": "ui",
-                "description": "CHICANE_APPLICATIONTELEMETRY_UI_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_UI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -90,10 +90,10 @@
                     "templates": []
                 },
                 "name": "renderer",
-                "description": "CHICANE_APPLICATIONTELEMETRY_RENDERER_DESCRIPTION"
+                "description": "CHICANE_INSTANCETELEMETRY_RENDERER_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_APPLICATIONTELEMETRY_DESCRIPTION"
+        "description": "CHICANE_INSTANCETELEMETRY_DESCRIPTION"
     },
     "children": []
 }

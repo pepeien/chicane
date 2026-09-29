@@ -63,12 +63,12 @@
                     "path": "Box/Texture",
                     "templates": []
                 },
-                "name": "getDefault",
+                "name": "sGetDefault",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_TEXTURE_GETDEFAULT_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTURE_SGETDEFAULT_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -1,0 +1,908 @@
+{
+    "title": "Types",
+    "filename": "Types",
+    "path": "Core/Script/Types",
+    "source": {
+        "header": "Includes/Chicane/Core/Script/Types.hpp",
+        "namespace": "Chicane::Script::Types",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bind",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BIND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindVec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BINDVEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushVec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHVEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_ISVEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "checkVec2",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_CHECKVEC2_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BINDVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_ISVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "checkVec3",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_CHECKVEC3_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindVec4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BINDVEC4_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushVec4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHVEC4_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isVec4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_ISVEC4_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "checkVec4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_CHECKVEC4_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BINDCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Color::Rgba",
+                            "suffix": "&",
+                            "path": "Core/Color",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_ISCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Color::Rgba",
+                    "suffix": "",
+                    "path": "Core/Color",
+                    "templates": []
+                },
+                "name": "checkColor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_CHECKCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bindRotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_BINDROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushRotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Rotator",
+                            "suffix": "&",
+                            "path": "Core/Math/Rotator",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isRotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_ISROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Rotator",
+                    "suffix": "",
+                    "path": "Core/Math/Rotator",
+                    "templates": []
+                },
+                "name": "checkRotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_CHECKROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushField",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionFieldAccessor",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Field/Acessor",
+                            "templates": []
+                        },
+                        "name": "inAccessor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHFIELD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setField",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ReflectionFieldAccessor",
+                            "suffix": "&",
+                            "path": "Core/Reflection/Type/Field/Acessor",
+                            "templates": []
+                        },
+                        "name": "inAccessor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_SETFIELD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushValue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_PUSHVALUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "readValue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inTypeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCRIPT_TYPES_READVALUE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_SCRIPT_TYPES_DESCRIPTION"
+    },
+    "children": []
+}

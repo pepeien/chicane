@@ -59,7 +59,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isDeclaration",
+                "name": "sIsDeclaration",
                 "parameters": [
                     {
                         "type": {
@@ -75,7 +75,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEGRADIENT_ISDECLARATION_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEGRADIENT_SISDECLARATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -87,7 +87,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isActive",
+                "name": "sIsActive",
                 "parameters": [
                     {
                         "type": {
@@ -103,7 +103,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEGRADIENT_ISACTIVE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEGRADIENT_SISACTIVE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -115,7 +115,7 @@
                     "path": "Grid/Style/Background/Gradient",
                     "templates": []
                 },
-                "name": "parse",
+                "name": "sParse",
                 "parameters": [
                     {
                         "type": {
@@ -141,7 +141,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEGRADIENT_PARSE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEGRADIENT_SPARSE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -153,7 +153,7 @@
                     "path": "Grid/Style/Background/Gradient",
                     "templates": []
                 },
-                "name": "parseList",
+                "name": "sParseList",
                 "parameters": [
                     {
                         "type": {
@@ -179,7 +179,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLEGRADIENT_PARSELIST_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEGRADIENT_SPARSELIST_DESCRIPTION"
             },
             {
                 "accessor": "public",

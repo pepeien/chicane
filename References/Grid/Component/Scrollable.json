@@ -135,6 +135,34 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isScrollPinned",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inChild"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_SCROLLABLE_ISSCROLLPINNED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
@@ -480,6 +508,74 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_SCROLLABLE_REFRESHPERIPHERALS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setPinnedPeripherals",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inPeripherals"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCROLLABLE_SETPINNEDPERIPHERALS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setPeripherals",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inPeripherals"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCROLLABLE_SETPERIPHERALS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -923,6 +1019,27 @@
                 },
                 "name": "m_verticalBar",
                 "description": "CHICANE_GRID_SCROLLABLE_M_VERTICALBAR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_pinnedPeripherals",
+                "description": "CHICANE_GRID_SCROLLABLE_M_PINNEDPERIPHERALS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_SCROLLABLE_DESCRIPTION"

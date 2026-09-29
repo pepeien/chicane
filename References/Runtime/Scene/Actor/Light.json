@@ -27,6 +27,23 @@
         "destructors": [],
         "functions": [
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component",
+                    "templates": []
+                },
+                "name": "getLight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ALIGHT_GETLIGHT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {

@@ -101,7 +101,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "normalizeData",
+                "name": "sNormalizeData",
                 "parameters": [
                     {
                         "type": {
@@ -117,7 +117,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_STYLERULESET_NORMALIZEDATA_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLERULESET_SNORMALIZEDATA_DESCRIPTION"
             },
             {
                 "accessor": "public",

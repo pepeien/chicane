@@ -47,23 +47,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isFocusable",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_INPUTSLIDER_ISFOCUSABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "onEvent",
                 "parameters": [
                     {

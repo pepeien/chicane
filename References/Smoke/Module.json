@@ -106,7 +106,7 @@
                     "path": "Smoke/Module",
                     "templates": []
                 },
-                "name": "create",
+                "name": "sCreate",
                 "parameters": [
                     {
                         "type": {
@@ -122,7 +122,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SMOKE_MODULE_CREATE_DESCRIPTION"
+                "description": "CHICANE_SMOKE_MODULE_SCREATE_DESCRIPTION"
             },
             {
                 "accessor": "public",

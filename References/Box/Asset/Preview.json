@@ -36,7 +36,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "textureIdOf",
+                "name": "sTextureIdOf",
                 "parameters": [
                     {
                         "type": {
@@ -52,7 +52,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_TEXTUREIDOF_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_STEXTUREIDOF_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -64,7 +64,24 @@
                     "path": "Core/FileSystem/Path",
                     "templates": []
                 },
-                "name": "trackPath",
+                "name": "sTrackPath",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETPREVIEW_STRACKPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "sEventName",
                 "parameters": [
                     {
                         "type": {
@@ -75,12 +92,22 @@
                             "templates": []
                         },
                         "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bBake"
                     }
                 ],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_TRACKPATH_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SEVENTNAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -92,7 +119,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "cameraDistance",
+                "name": "sCameraDistance",
                 "parameters": [
                     {
                         "type": {
@@ -128,7 +155,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CAMERADISTANCE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCAMERADISTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -140,7 +167,7 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "cameraStart",
+                "name": "sCameraStart",
                 "parameters": [
                     {
                         "type": {
@@ -166,7 +193,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CAMERASTART_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCAMERASTART_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -178,7 +205,7 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "cameraStart",
+                "name": "sCameraStart",
                 "parameters": [
                     {
                         "type": {
@@ -214,7 +241,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CAMERASTART_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCAMERASTART_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -234,7 +261,7 @@
                         }
                     ]
                 },
-                "name": "create",
+                "name": "sCreate",
                 "parameters": [
                     {
                         "type": {
@@ -270,7 +297,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -290,7 +317,7 @@
                         }
                     ]
                 },
-                "name": "createFromGeometry",
+                "name": "sCreateFromGeometry",
                 "parameters": [
                     {
                         "type": {
@@ -342,7 +369,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMGEOMETRY_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATEFROMGEOMETRY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -362,7 +389,7 @@
                         }
                     ]
                 },
-                "name": "createFromGeometry",
+                "name": "sCreateFromGeometry",
                 "parameters": [
                     {
                         "type": {
@@ -426,7 +453,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMGEOMETRY_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATEFROMGEOMETRY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -446,7 +473,7 @@
                         }
                     ]
                 },
-                "name": "createFromFont",
+                "name": "sCreateFromFont",
                 "parameters": [
                     {
                         "type": {
@@ -482,7 +509,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMFONT_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATEFROMFONT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -502,7 +529,7 @@
                         }
                     ]
                 },
-                "name": "createFromSound",
+                "name": "sCreateFromSound",
                 "parameters": [
                     {
                         "type": {
@@ -536,7 +563,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMSOUND_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATEFROMSOUND_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -556,7 +583,7 @@
                         }
                     ]
                 },
-                "name": "createFromSky",
+                "name": "sCreateFromSky",
                 "parameters": [
                     {
                         "type": {
@@ -610,7 +637,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_CREATEFROMSKY_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SCREATEFROMSKY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -622,7 +649,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "write",
+                "name": "sWrite",
                 "parameters": [
                     {
                         "type": {
@@ -658,7 +685,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_WRITE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SWRITE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -670,7 +697,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "bake",
+                "name": "sBake",
                 "parameters": [
                     {
                         "type": {
@@ -706,7 +733,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_BAKE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SBAKE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -726,7 +753,7 @@
                         }
                     ]
                 },
-                "name": "read",
+                "name": "sRead",
                 "parameters": [
                     {
                         "type": {
@@ -742,7 +769,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_READ_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SREAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -762,7 +789,7 @@
                         }
                     ]
                 },
-                "name": "read",
+                "name": "sRead",
                 "parameters": [
                     {
                         "type": {
@@ -778,7 +805,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_BOX_ASSETPREVIEW_READ_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETPREVIEW_SREAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1128,8 +1155,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TRACK_DIRECTORY",
-                "description": "CHICANE_BOX_ASSETPREVIEW_TRACK_DIRECTORY_DESCRIPTION"
+                "name": "TRACK_PATH",
+                "description": "CHICANE_BOX_ASSETPREVIEW_TRACK_PATH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1144,8 +1171,24 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "TRACK_EXTENSION",
-                "description": "CHICANE_BOX_ASSETPREVIEW_TRACK_EXTENSION_DESCRIPTION"
+                "name": "EVENT_PREFIX",
+                "description": "CHICANE_BOX_ASSETPREVIEW_EVENT_PREFIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EVENT_BAKE_SUFFIX",
+                "description": "CHICANE_BOX_ASSETPREVIEW_EVENT_BAKE_SUFFIX_DESCRIPTION"
             },
             {
                 "accessor": "public",

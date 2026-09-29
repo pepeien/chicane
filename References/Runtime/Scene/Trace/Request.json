@@ -24,34 +24,6 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCellSize"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_SCENETRACEREQUEST_LINE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "SceneTraceRequest",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Trace/Request",
-                    "templates": []
-                },
-                "name": "Line",
-                "parameters": [
-                    {
-                        "type": {
                             "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
@@ -69,60 +41,13 @@
                             "templates": []
                         },
                         "name": "inDestination"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCellSize"
                     }
                 ],
                 "modifiers": [
-                    "static"
+                    "static",
+                    "inline"
                 ],
                 "description": "CHICANE_SCENETRACEREQUEST_LINE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "SceneTraceRequest",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Trace/Request",
-                    "templates": []
-                },
-                "name": "Rectangle",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inHalfExtents"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCellSize"
-                    }
-                ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_SCENETRACEREQUEST_RECTANGLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -165,20 +90,11 @@
                             "templates": []
                         },
                         "name": "inHalfExtents"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inCellSize"
                     }
                 ],
                 "modifiers": [
-                    "static"
+                    "static",
+                    "inline"
                 ],
                 "description": "CHICANE_SCENETRACEREQUEST_RECTANGLE_DESCRIPTION"
             },
@@ -196,6 +112,472 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAngle"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_CONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "Cylinder",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_CYLINDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "Pyramid",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_PYRAMID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "Box",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_BOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "Sphere",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "Mesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_MESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sLine",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sLine",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sRectangle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SRECTANGLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sRectangle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SRECTANGLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sCone",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "",
                             "name": "float",
                             "suffix": "",
@@ -228,7 +610,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SCENETRACEREQUEST_CONE_DESCRIPTION"
+                "description": "CHICANE_SCENETRACEREQUEST_SCONE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -240,7 +622,7 @@
                     "path": "Runtime/Scene/Trace/Request",
                     "templates": []
                 },
-                "name": "Cone",
+                "name": "sCone",
                 "parameters": [
                     {
                         "type": {
@@ -296,7 +678,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SCENETRACEREQUEST_CONE_DESCRIPTION"
+                "description": "CHICANE_SCENETRACEREQUEST_SCONE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -308,7 +690,7 @@
                     "path": "Runtime/Scene/Trace/Request",
                     "templates": []
                 },
-                "name": "Cylinder",
+                "name": "sCylinder",
                 "parameters": [
                     {
                         "type": {
@@ -344,7 +726,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SCENETRACEREQUEST_CYLINDER_DESCRIPTION"
+                "description": "CHICANE_SCENETRACEREQUEST_SCYLINDER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -356,7 +738,7 @@
                     "path": "Runtime/Scene/Trace/Request",
                     "templates": []
                 },
-                "name": "Cylinder",
+                "name": "sCylinder",
                 "parameters": [
                     {
                         "type": {
@@ -412,7 +794,487 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SCENETRACEREQUEST_CYLINDER_DESCRIPTION"
+                "description": "CHICANE_SCENETRACEREQUEST_SCYLINDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sPyramid",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SPYRAMID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sPyramid",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SPYRAMID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sBox",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sBox",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inHalfExtents"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sSphere",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SSPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sSphere",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRadius"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SSPHERE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::Mesh",
+                            "suffix": "*",
+                            "path": "Box/Mesh",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::Mesh",
+                            "suffix": "*",
+                            "path": "Box/Mesh",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SMESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "SceneTraceRequest",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Trace/Request",
+                    "templates": []
+                },
+                "name": "sMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inMesh"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCellSize"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SMESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -464,6 +1326,98 @@
                     "const"
                 ],
                 "description": "CHICANE_SCENETRACEREQUEST_GETDIRECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getOrigin",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_GETORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SETORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getDestination",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_GETDESTINATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setDestination",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_SETDESTINATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -558,27 +1512,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::shared_ptr",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "SceneTraceShape",
-                            "suffix": "",
-                            "path": "Runtime/Scene/Trace/Shape",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "shape",
-                "description": "CHICANE_SCENETRACEREQUEST_SHAPE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -625,6 +1558,27 @@
                 },
                 "name": "destination",
                 "description": "CHICANE_SCENETRACEREQUEST_DESTINATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::shared_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SceneTraceShape",
+                            "suffix": "",
+                            "path": "Runtime/Scene/Trace/Shape",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "shape",
+                "description": "CHICANE_SCENETRACEREQUEST_SHAPE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENETRACEREQUEST_DESCRIPTION"

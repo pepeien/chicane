@@ -1,0 +1,126 @@
+{
+    "title": "Types",
+    "filename": "Types",
+    "path": "Grid/Script/Types",
+    "source": {
+        "header": "Includes/Chicane/Grid/Script/Types.hpp",
+        "namespace": "Chicane::Grid::Types",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushComponent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TYPES_PUSHCOMPONENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isComponent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TYPES_ISCOMPONENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "checkComponent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "lua_State",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inIndex"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TYPES_CHECKCOMPONENT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_GRID_TYPES_DESCRIPTION"
+    },
+    "children": []
+}

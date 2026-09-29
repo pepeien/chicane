@@ -27,6 +27,21 @@
         "destructors": [],
         "functions": [
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "replayAnimation",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ANIMATABLE_REPLAYANIMATION_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "virtual",
                 "return": {
@@ -233,6 +248,19 @@
                 },
                 "name": "m_bIsAnimationReady",
                 "description": "CHICANE_GRID_ANIMATABLE_M_BISANIMATIONREADY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsReplayingAnimation",
+                "description": "CHICANE_GRID_ANIMATABLE_M_BISREPLAYINGANIMATION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_ANIMATABLE_DESCRIPTION"

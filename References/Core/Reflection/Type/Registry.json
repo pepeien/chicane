@@ -120,12 +120,12 @@
                     "path": "Core/Reflection/Type/Registry",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_REFLECTIONTYPEREGISTRY_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_REFLECTIONTYPEREGISTRY_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "private",

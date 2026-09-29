@@ -78,7 +78,7 @@
                     "path": "Grid/Component/Dock/Panel",
                     "templates": []
                 },
-                "name": "findFrom",
+                "name": "sFindFrom",
                 "parameters": [
                     {
                         "type": {
@@ -94,7 +94,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_GRID_DOCKPANEL_FINDFROM_DESCRIPTION"
+                "description": "CHICANE_GRID_DOCKPANEL_SFINDFROM_DESCRIPTION"
             },
             {
                 "accessor": "public",

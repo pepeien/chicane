@@ -72,13 +72,13 @@
                     "path": "Core/Worker/Pool",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_WORKERPOOL_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_WORKERPOOL_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -90,7 +90,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "submit",
+                "name": "sSubmit",
                 "parameters": [
                     {
                         "type": {
@@ -106,7 +106,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_WORKERPOOL_SUBMIT_DESCRIPTION"
+                "description": "CHICANE_WORKERPOOL_SSUBMIT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -118,7 +118,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "parallel",
+                "name": "sParallel",
                 "parameters": [
                     {
                         "type": {
@@ -144,7 +144,7 @@
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_WORKERPOOL_PARALLEL_DESCRIPTION"
+                "description": "CHICANE_WORKERPOOL_SPARALLEL_DESCRIPTION"
             },
             {
                 "accessor": "private",

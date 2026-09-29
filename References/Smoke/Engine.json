@@ -73,7 +73,7 @@
         ],
         "functions": [
             {
-                "accessor": "private",
+                "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -82,10 +82,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Application",
+                "name": "::Chicane::Instance",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_SMOKE_ENGINE_APPLICATION_DESCRIPTION"
+                "description": "CHICANE_SMOKE_ENGINE_INSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -97,12 +97,12 @@
                     "path": "Smoke/Engine",
                     "templates": []
                 },
-                "name": "getInstance",
+                "name": "sInstance",
                 "parameters": [],
                 "modifiers": [
                     "static"
                 ],
-                "description": "CHICANE_SMOKE_ENGINE_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_SMOKE_ENGINE_SINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",

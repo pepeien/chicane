@@ -20,13 +20,13 @@
                     "path": "Box/Font/Glyph",
                     "templates": []
                 },
-                "name": "empty",
+                "name": "sEmpty",
                 "parameters": [],
                 "modifiers": [
                     "static",
                     "inline"
                 ],
-                "description": "CHICANE_BOX_FONTGLYPH_EMPTY_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTGLYPH_SEMPTY_DESCRIPTION"
             }
         ],
         "members": [

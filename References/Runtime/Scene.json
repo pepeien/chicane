@@ -274,6 +274,189 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "subscribe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void(const String &)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_SUBSCRIBE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unsubscribe",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inToken"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_UNSUBSCRIBE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "send",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_SEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "receive",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_RECEIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pumpEvents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_PUMPEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadSceneScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inTrack"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_LOADSCENESCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -1178,6 +1361,65 @@
                     {
                         "type": {
                             "prefix": "",
+                            "name": "SceneTraceRequest",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Request",
+                            "templates": []
+                        },
+                        "name": "outRequest"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "CView",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component/View",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_TRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "trace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
                             "name": "SceneTraceResponse",
                             "suffix": "&",
                             "path": "Runtime/Scene/Trace/Response",
@@ -1203,15 +1445,15 @@
                             "path": "",
                             "templates": [
                                 {
-                                    "prefix": "",
-                                    "name": "Actor",
+                                    "prefix": "const ",
+                                    "name": "Object",
                                     "suffix": "*",
-                                    "path": "Runtime/Scene/Actor",
+                                    "path": "Runtime/Scene/Object",
                                     "templates": []
                                 }
                             ]
                         },
-                        "name": "inIgnoredActors"
+                        "name": "inIgnored"
                     }
                 ],
                 "modifiers": [
@@ -1219,6 +1461,168 @@
                     "const"
                 ],
                 "description": "CHICANE_SCENE_TRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "trace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "SceneTraceResponse",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Trace/Response",
+                            "templates": []
+                        },
+                        "name": "outResponse"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "CView",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component/View",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "const ",
+                                    "name": "Object",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Object",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inIgnored"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_TRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "traceMulti",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "SceneTraceResponse",
+                                    "suffix": "",
+                                    "path": "Runtime/Scene/Trace/Response",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outResponses"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "CView",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component/View",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "const ",
+                                    "name": "Object",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Object",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inIgnored"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_TRACEMULTI_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1268,15 +1672,15 @@
                             "path": "",
                             "templates": [
                                 {
-                                    "prefix": "",
-                                    "name": "Actor",
+                                    "prefix": "const ",
+                                    "name": "Object",
                                     "suffix": "*",
-                                    "path": "Runtime/Scene/Actor",
+                                    "path": "Runtime/Scene/Object",
                                     "templates": []
                                 }
                             ]
                         },
-                        "name": "inIgnoredActors"
+                        "name": "inIgnored"
                     }
                 ],
                 "modifiers": [
@@ -1320,6 +1724,35 @@
                     "const"
                 ],
                 "description": "CHICANE_SCENE_GETCOMPONENTCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "withObjectLock",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Function",
+                            "suffix": "&&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFunction"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_WITHOBJECTLOCK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2155,6 +2588,40 @@
                 },
                 "name": "m_objectMutex",
                 "description": "CHICANE_SCENE_M_OBJECTMUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Script::Bus",
+                    "suffix": "",
+                    "path": "Core/Script/Bus",
+                    "templates": []
+                },
+                "name": "m_bus",
+                "description": "CHICANE_SCENE_M_BUS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SceneScript",
+                            "suffix": "",
+                            "path": "Runtime/Scene/Script",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_sceneScript",
+                "description": "CHICANE_SCENE_M_SCENESCRIPT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENE_DESCRIPTION"

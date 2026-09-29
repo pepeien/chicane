@@ -211,6 +211,16 @@
                             "templates": []
                         },
                         "name": "inContainerResolver"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsStatic"
                     }
                 ],
                 "modifiers": [],
@@ -406,6 +416,19 @@
                 },
                 "name": "bIsIterable",
                 "description": "CHICANE_REFLECTIONTYPEMETHODINFO_BISITERABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsStatic",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_BISSTATIC_DESCRIPTION"
             },
             {
                 "accessor": "public",
