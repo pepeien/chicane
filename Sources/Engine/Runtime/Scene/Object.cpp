@@ -140,6 +140,22 @@ namespace Chicane
         }
     }
 
+    void Object::beginRefresh()
+    {
+        if (m_scene)
+        {
+            m_scene->lockObjects();
+        }
+    }
+
+    void Object::endRefresh()
+    {
+        if (m_scene)
+        {
+            m_scene->unlockObjects();
+        }
+    }
+
     void Object::onRefresh()
     {
         Transformable::onRefresh();
@@ -205,6 +221,24 @@ namespace Chicane
     bool Object::isAttached() const
     {
         return m_parent != nullptr;
+    }
+
+    bool Object::isDescendantOf(const Object* inAncestor) const
+    {
+        if (!inAncestor)
+        {
+            return false;
+        }
+
+        for (const Object* current = m_parent; current; current = current->m_parent)
+        {
+            if (current == inAncestor)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Object* Object::getParent() const

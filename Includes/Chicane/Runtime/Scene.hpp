@@ -515,6 +515,9 @@ namespace Chicane
             return found->second.size();
         }
 
+        inline void lockObjects() const { m_objectMutex.lock(); }
+        inline void unlockObjects() const { m_objectMutex.unlock(); }
+
         template <class Function>
         inline void withObjectLock(Function&& inFunction) const
         {

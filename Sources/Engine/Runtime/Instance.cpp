@@ -5,6 +5,7 @@
 #include <cmath>
 #include <memory>
 #include <typeinfo>
+#include <unordered_set>
 #include <vector>
 
 #include "Chicane/Box.hpp"
@@ -929,14 +930,17 @@ namespace Chicane
             command.lights.push_back(light->getLight());
         }
 
+        std::unordered_set<CMesh*> submittedMeshes;
+
         auto submitMesh = [&](CMesh* mesh)
         {
-            if (!mesh || !mesh->isActive() || !mesh->hasMesh())
+            if (!mesh || !mesh->isActive() || !mesh->hasMesh() || !submittedMeshes.insert(mesh).second)
             {
                 return;
             }
 
-            if (activeCamera != nullptr && !activeCamera->canSee(mesh))
+            const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
+            if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
             {
                 return;
             }
@@ -989,6 +993,25 @@ namespace Chicane
                     submitMesh(static_cast<CMesh*>(object));
                 }
             );
+
+            std::vector<Object*> attached = {activeCamera};
+            while (!attached.empty())
+            {
+                Object* object = attached.back();
+                attached.pop_back();
+                if (!object)
+                {
+                    continue;
+                }
+
+                if (CMesh* mesh = dynamic_cast<CMesh*>(object))
+                {
+                    submitMesh(mesh);
+                }
+
+                const std::vector<Object*>& children = object->getAttachments();
+                attached.insert(attached.end(), children.begin(), children.end());
+            }
         }
         else
         {

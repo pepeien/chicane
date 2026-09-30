@@ -3302,10 +3302,11 @@ namespace Chicane
             const Style& style = inChild->getStyle();
             Vec2         size  = inChild->getContentSize();
 
-            const bool bIsWidthAuto       = isWidthAuto(style);
-            const bool bIsHeightAuto      = isHeightAuto(style);
-            const bool bIsWidthIntrinsic  = bIsWidthAuto || isWidthIntrinsicAuto(style, style);
-            const bool bIsHeightIntrinsic = bIsHeightAuto || isHeightIntrinsicAuto(style, style);
+            const Style& parentStyle      = getStyle();
+            const bool   bIsWidthAuto     = isWidthAuto(style);
+            const bool   bIsHeightAuto    = isHeightAuto(style);
+            const bool   bIsWidthIntrinsic  = isWidthIntrinsicAuto(style, parentStyle);
+            const bool   bIsHeightIntrinsic = isHeightIntrinsicAuto(style, parentStyle);
 
             if (bIsWidthIntrinsic || bIsHeightIntrinsic)
             {

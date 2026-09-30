@@ -39,6 +39,8 @@ namespace Chicane
         virtual ~Object();
 
     protected:
+        void beginRefresh() override;
+        void endRefresh() override;
         void onRefresh() override;
         void onAttributeChange(const String& inName, const String& inValue) override;
 
@@ -67,6 +69,9 @@ namespace Chicane
 
         CH_FUNCTION()
         bool isAttached() const;
+
+        CH_FUNCTION()
+        bool isDescendantOf(const Object* inAncestor) const;
 
         CH_FUNCTION()
         Object* getParent() const;

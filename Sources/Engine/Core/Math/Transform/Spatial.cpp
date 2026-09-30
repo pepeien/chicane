@@ -46,30 +46,28 @@ namespace Chicane
 
     void SpatialTransform::setAbsolute(const Transform& inTransform)
     {
-        m_absolute.translation = inTransform.translation;
-        m_absolute.rotation    = inTransform.rotation;
-        m_absolute.scale       = inTransform.scale;
+        m_absolute.setTransform(inTransform);
 
         refresh();
     }
 
     void SpatialTransform::refresh()
     {
+        beginRefresh();
+
+        m_relative.syncMatrix();
+        m_absolute.syncMatrix();
+
         const QuatFloat& absoluteRotation = m_absolute.getRotation().get();
         const QuatFloat& relativeRotation = m_relative.getRotation().get();
-        const QuatFloat  worldRot         = absoluteRotation * relativeRotation;
 
-        Vec3 localOffset   = m_relative.getTranslation() * m_absolute.getScale();
-        Vec3 rotatedOffset = absoluteRotation * localOffset;
-
-        rotation.set(worldRot);
-        translation = m_absolute.getTranslation() + rotatedOffset;
+        rotation.set(absoluteRotation * relativeRotation);
         scale       = m_absolute.getScale() * m_relative.getScale();
-
-        Transform::refresh();
+        m_matrix    = m_absolute.getMatrix() * m_relative.getMatrix();
+        translation = m_matrix.getTranslation();
 
         onRefresh();
-
         emmitChanges();
+        endRefresh();
     }
 }

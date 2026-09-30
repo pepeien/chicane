@@ -15,6 +15,8 @@ namespace Chicane
         SpatialTransform();
 
     protected:
+        inline virtual void beginRefresh() { return; }
+        inline virtual void endRefresh() { return; }
         inline virtual void onRefresh() { return; }
 
     public:

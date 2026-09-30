@@ -75,6 +75,8 @@ namespace Chicane
         void setScale(float inX, float inY, float inZ);
         void setScale(const Vec3& inValue);
 
+        inline void syncMatrix() { refresh(); }
+
     protected:
         void refresh();
 
