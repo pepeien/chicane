@@ -158,6 +158,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDescendantOf",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inAncestor"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_ISDESCENDANTOF_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Object",
                     "suffix": "*",
                     "path": "Runtime/Scene/Object",
@@ -566,6 +594,36 @@
                     "inline"
                 ],
                 "description": "CHICANE_OBJECT_SETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "beginRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_BEGINREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "endRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ENDREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
