@@ -1,10 +1,10 @@
 {
-    "title": "DrawSkyKind",
-    "filename": "Kind",
-    "path": "Renderer/Draw/Sky/Kind",
+    "title": "Origin",
+    "filename": "Origin",
+    "path": "Runtime/Scene/Object/Origin",
     "source": {
-        "header": "Includes/Chicane/Renderer/Draw/Sky/Kind.hpp",
-        "namespace": "Chicane::Renderer::DrawSkyKind",
+        "header": "Includes/Chicane/Runtime/Scene/Object/Origin.hpp",
+        "namespace": "Chicane::ObjectOrigin",
         "types": [],
         "enums": [
             {
@@ -15,8 +15,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Cube",
-                "description": "CHICANE_RENDERER_DRAWSKYKIND_CUBE_DESCRIPTION"
+                "name": "Native",
+                "description": "CHICANE_OBJECTORIGIN_NATIVE_DESCRIPTION"
             },
             {
                 "type": {
@@ -26,8 +26,30 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Panorama",
-                "description": "CHICANE_RENDERER_DRAWSKYKIND_PANORAMA_DESCRIPTION"
+                "name": "Instance",
+                "description": "CHICANE_OBJECTORIGIN_INSTANCE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Spawned",
+                "description": "CHICANE_OBJECTORIGIN_SPAWNED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Transient",
+                "description": "CHICANE_OBJECTORIGIN_TRANSIENT_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -48,9 +70,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Renderer::DrawSkyKind",
+                            "name": "ObjectOrigin",
                             "suffix": "",
-                            "path": "Renderer/Draw/Sky/Kind",
+                            "path": "Runtime/Scene/Object/Origin",
                             "templates": []
                         },
                         "name": "inValue"
@@ -61,7 +83,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DRAWSKYKIND_DESCRIPTION"
+        "description": "CHICANE_DESCRIPTION"
     },
     "children": []
 }

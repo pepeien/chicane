@@ -1,0 +1,100 @@
+{
+    "title": "Loading",
+    "filename": "Loading",
+    "path": "Grid/Component/Loading",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Loading.hpp",
+        "namespace": "Chicane::Grid::Loading",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Loading",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "Core/String",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inStack"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_LOADING_LOADING_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Loading",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_LOADING_~LOADING_DESCRIPTION"
+            }
+        ],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "stack",
+                "description": "CHICANE_GRID_LOADING_STACK_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_LOADING_DESCRIPTION"
+    },
+    "children": []
+}

@@ -74,160 +74,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "canSee",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Transformable",
-                            "suffix": "*",
-                            "path": "Core/Transformable",
-                            "templates": []
-                        },
-                        "name": "inSubject"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CVIEW_CANSEE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "ViewFrustum",
-                    "suffix": "&",
-                    "path": "Core/View/Frustum",
-                    "templates": []
-                },
-                "name": "getFrustum",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CVIEW_GETFRUSTUM_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vec",
-                    "suffix": "&",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getViewport",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CVIEW_GETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inViewport"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_CVIEW_SETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setViewport",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inWidth"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inHeight"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_CVIEW_SETVIEWPORT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -410,23 +256,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "View",
-                    "suffix": "&",
-                    "path": "Core/View",
-                    "templates": []
-                },
-                "name": "getData",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_CVIEW_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -464,6 +293,49 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_CVIEW_SETFOCUSPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getTarget",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CVIEW_SETTARGET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -512,18 +384,78 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
                     "templates": []
                 },
-                "name": "getTarget",
+                "name": "canSee",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Transformable",
+                            "suffix": "*",
+                            "path": "Core/Transformable",
+                            "templates": []
+                        },
+                        "name": "inSubject"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_CANSEE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ViewFrustum",
+                    "suffix": "&",
+                    "path": "Core/View/Frustum",
+                    "templates": []
+                },
+                "name": "getFrustum",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_CVIEW_GETTARGET_DESCRIPTION"
+                "description": "CHICANE_CVIEW_GETFRUSTUM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getViewport",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETVIEWPORT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -535,21 +467,89 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setTarget",
+                "name": "setViewport",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "String",
+                            "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         },
-                        "name": "inValue"
+                        "name": "inViewport"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_CVIEW_SETTARGET_DESCRIPTION"
+                "description": "CHICANE_CVIEW_SETVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CVIEW_SETVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "View",
+                    "suffix": "&",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "getData",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETDATA_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -594,6 +594,32 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onPropertyEdited",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CVIEW_ONPROPERTYEDITED_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -624,19 +650,6 @@
             }
         ],
         "members": [
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ViewSettings",
-                    "suffix": "",
-                    "path": "Core/View/Settings",
-                    "templates": []
-                },
-                "name": "m_settings",
-                "description": "CHICANE_CVIEW_M_SETTINGS_DESCRIPTION"
-            },
             {
                 "accessor": "protected",
                 "modifiers": [],

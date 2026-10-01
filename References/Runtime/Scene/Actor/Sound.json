@@ -79,10 +79,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onLoad",
+                "name": "createDefaultComponents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_ASOUND_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_ASOUND_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
             }
         ],
         "members": [

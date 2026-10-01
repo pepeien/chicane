@@ -108,6 +108,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "clear",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWSKYRESOURCE_CLEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "reset",
                 "parameters": [],
                 "modifiers": [],

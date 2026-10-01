@@ -146,6 +146,66 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "isNative",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_ISNATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ObjectOrigin",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Object/Origin",
+                    "templates": []
+                },
+                "name": "getOrigin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_OBJECT_GETORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setOrigin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectOrigin",
+                            "suffix": "",
+                            "path": "Runtime/Scene/Object/Origin",
+                            "templates": []
+                        },
+                        "name": "inOrigin"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_SETORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "isAttached",
                 "parameters": [],
                 "modifiers": [
@@ -796,6 +856,64 @@
             },
             {
                 "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "createDefaultComponents",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_OBJECT_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureDefaultComponents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_ENSUREDEFAULTCOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "T",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "createDefaultComponent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_OBJECT_CREATEDEFAULTCOMPONENT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -1191,8 +1309,21 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_bIsTransient",
-                "description": "CHICANE_OBJECT_M_BISTRANSIENT_DESCRIPTION"
+                "name": "m_bHasDefaultComponents",
+                "description": "CHICANE_OBJECT_M_BHASDEFAULTCOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ObjectOrigin",
+                    "suffix": "",
+                    "path": "Runtime/Scene/Object/Origin",
+                    "templates": []
+                },
+                "name": "m_origin",
+                "description": "CHICANE_OBJECT_M_ORIGIN_DESCRIPTION"
             },
             {
                 "accessor": "protected",

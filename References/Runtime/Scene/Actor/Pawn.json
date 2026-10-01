@@ -71,10 +71,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onLoad",
+                "name": "createDefaultComponents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APAWN_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_APAWN_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

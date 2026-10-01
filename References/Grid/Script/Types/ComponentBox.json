@@ -1,0 +1,57 @@
+{
+    "title": "ComponentBox",
+    "filename": "ComponentBox",
+    "path": "Grid/Script/Types/ComponentBox",
+    "source": {
+        "header": "Includes/Chicane/Grid/Script/Types/ComponentBox.hpp",
+        "namespace": "Chicane::Grid::Types::ComponentBox",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_GRID_TYPES_COMPONENTBOX_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "ReflectionTypeInfo",
+                    "suffix": "*",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_GRID_TYPES_COMPONENTBOX_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "owner",
+                "description": "CHICANE_GRID_TYPES_COMPONENTBOX_OWNER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_TYPES_COMPONENTBOX_DESCRIPTION"
+    },
+    "children": []
+}

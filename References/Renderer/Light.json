@@ -127,6 +127,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "up",
+                "description": "CHICANE_RENDERER_LIGHT_UP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -147,6 +160,58 @@
                 },
                 "name": "outerAngle",
                 "description": "CHICANE_RENDERER_LIGHT_OUTERANGLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewProjectionType",
+                    "suffix": "",
+                    "path": "Core/View/Projection/Type",
+                    "templates": []
+                },
+                "name": "projection",
+                "description": "CHICANE_RENDERER_LIGHT_PROJECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fieldOfView",
+                "description": "CHICANE_RENDERER_LIGHT_FIELDOFVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "nearClip",
+                "description": "CHICANE_RENDERER_LIGHT_NEARCLIP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "farClip",
+                "description": "CHICANE_RENDERER_LIGHT_FARCLIP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_LIGHT_DESCRIPTION"

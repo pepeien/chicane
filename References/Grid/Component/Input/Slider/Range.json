@@ -1,57 +1,12 @@
 {
-    "title": "InputRangeSliderDrag",
+    "title": "Range",
     "filename": "Range",
     "path": "Grid/Component/Input/Slider/Range",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Input/Slider/Range.hpp",
-        "namespace": "Chicane::Grid::InputRangeSliderDrag",
+        "namespace": "Chicane::Grid::InputRangeSlider",
         "types": [],
-        "enums": [
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "None",
-                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_NONE_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Low",
-                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_LOW_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "High",
-                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_HIGH_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Span",
-                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_SPAN_DESCRIPTION"
-            }
-        ],
+        "enums": [],
         "constructors": [
             {
                 "accessor": "public",
@@ -294,7 +249,7 @@
                             "prefix": "",
                             "name": "InputRangeSliderDrag",
                             "suffix": "",
-                            "path": "Grid/Component/Input/Slider/Range",
+                            "path": "Grid/Component/Input/Slider/Range/Drag",
                             "templates": []
                         },
                         "name": "inMode"
@@ -406,7 +361,7 @@
                     "prefix": "",
                     "name": "InputRangeSliderDrag",
                     "suffix": "",
-                    "path": "Grid/Component/Input/Slider/Range",
+                    "path": "Grid/Component/Input/Slider/Range/Drag",
                     "templates": []
                 },
                 "name": "hitDrag",
@@ -762,7 +717,7 @@
                     "prefix": "",
                     "name": "InputRangeSliderDrag",
                     "suffix": "",
-                    "path": "Grid/Component/Input/Slider/Range",
+                    "path": "Grid/Component/Input/Slider/Range/Drag",
                     "templates": []
                 },
                 "name": "m_drag",
@@ -808,7 +763,7 @@
                 "description": "CHICANE_GRID_INPUTRANGESLIDER_M_BISEDITED_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_DESCRIPTION"
+        "description": "CHICANE_GRID_INPUTRANGESLIDER_DESCRIPTION"
     },
     "children": []
 }

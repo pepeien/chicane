@@ -654,32 +654,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onAttachment",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Object",
-                            "suffix": "*",
-                            "path": "Runtime/Scene/Object",
-                            "templates": []
-                        },
-                        "name": "inParent"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_CPHYSICS_ONATTACHMENT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "onRefresh",
                 "parameters": [],
                 "modifiers": [],

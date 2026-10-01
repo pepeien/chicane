@@ -1,0 +1,343 @@
+{
+    "title": "LayoutMetrics",
+    "filename": "LayoutMetrics",
+    "path": "Grid/Component/LayoutMetrics",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/LayoutMetrics.hpp",
+        "namespace": "Chicane::Grid::LayoutMetrics",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "LayoutMetrics",
+                    "suffix": "",
+                    "path": "Grid/Component/LayoutMetrics",
+                    "templates": []
+                },
+                "name": "sCapture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Style",
+                            "suffix": "&",
+                            "path": "Grid/Style",
+                            "templates": []
+                        },
+                        "name": "inStyle"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_LAYOUTMETRICS_SCAPTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "LayoutMetrics",
+                            "suffix": "&",
+                            "path": "Grid/Component/LayoutMetrics",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "LayoutMetrics",
+                            "suffix": "&",
+                            "path": "Grid/Component/LayoutMetrics",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_OPERATOR==_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleDisplay",
+                    "suffix": "",
+                    "path": "Grid/Style/Display",
+                    "templates": []
+                },
+                "name": "display",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_DISPLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StylePosition",
+                    "suffix": "",
+                    "path": "Grid/Style/Position",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_POSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleAlignment",
+                    "suffix": "",
+                    "path": "Grid/Style/Alignment",
+                    "templates": []
+                },
+                "name": "align",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_ALIGN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleFlexDirection",
+                    "suffix": "",
+                    "path": "Grid/Style/Flex/Direction",
+                    "templates": []
+                },
+                "name": "flexDir",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_FLEXDIR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleFlexWrap",
+                    "suffix": "",
+                    "path": "Grid/Style/Flex/Wrap",
+                    "templates": []
+                },
+                "name": "flexWrap",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_FLEXWRAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleWordBreak",
+                    "suffix": "",
+                    "path": "Grid/Style/WordBreak",
+                    "templates": []
+                },
+                "name": "wordBreak",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_WORDBREAK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "widthRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_WIDTHRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "heightRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_HEIGHTRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "minWidthRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MINWIDTHRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "minHeightRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MINHEIGHTRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "maxWidthRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MAXWIDTHRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "maxHeightRaw",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MAXHEIGHTRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "marginL",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MARGINL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "marginR",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MARGINR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "marginT",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MARGINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "marginB",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_MARGINB_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "paddingL",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_PADDINGL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "paddingR",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_PADDINGR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "paddingT",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_PADDINGT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "paddingB",
+                "description": "CHICANE_GRID_LAYOUTMETRICS_PADDINGB_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_DESCRIPTION"
+    },
+    "children": []
+}

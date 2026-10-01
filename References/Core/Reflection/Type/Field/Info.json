@@ -29,18 +29,10 @@
                 "name": "Names",
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "ReflectionProperty::Names",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Reflection/Property",
+                    "templates": []
                 },
                 "description": "CHICANE_REFLECTIONFIELDINFO_NAMES_DESCRIPTION"
             }
@@ -62,12 +54,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Names",
+                            "name": "ReflectionProperty",
                             "suffix": "",
-                            "path": "Core/Reflection/Type/Field/Info",
+                            "path": "Core/Reflection/Property",
                             "templates": []
                         },
-                        "name": "inNames"
+                        "name": "inProperty"
                     },
                     {
                         "type": {
@@ -158,26 +150,6 @@
                             "templates": []
                         },
                         "name": "inIterable"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inGroup"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inDescription"
                     }
                 ],
                 "modifiers": [],
@@ -228,6 +200,91 @@
                     "const"
                 ],
                 "description": "CHICANE_REFLECTIONFIELDINFO_CONTAINSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_GETNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isTransient",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_ISTRANSIENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getGroup",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_GETGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getDescription",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_GETDESCRIPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Names",
+                    "suffix": "&",
+                    "path": "Core/Reflection/Type/Field/Info",
+                    "templates": []
+                },
+                "name": "getNames",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONFIELDINFO_GETNAMES_DESCRIPTION"
             }
         ],
         "members": [
@@ -236,13 +293,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Names",
+                    "name": "ReflectionProperty",
                     "suffix": "",
-                    "path": "Core/Reflection/Type/Field/Info",
+                    "path": "Core/Reflection/Property",
                     "templates": []
                 },
-                "name": "names",
-                "description": "CHICANE_REFLECTIONFIELDINFO_NAMES_DESCRIPTION"
+                "name": "property",
+                "description": "CHICANE_REFLECTIONFIELDINFO_PROPERTY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -360,32 +417,6 @@
                 },
                 "name": "iterable",
                 "description": "CHICANE_REFLECTIONFIELDINFO_ITERABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "group",
-                "description": "CHICANE_REFLECTIONFIELDINFO_GROUP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "description",
-                "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONFIELDINFO_DESCRIPTION"

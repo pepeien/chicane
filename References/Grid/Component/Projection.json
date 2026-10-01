@@ -1,0 +1,116 @@
+{
+    "title": "Projection",
+    "filename": "Projection",
+    "path": "Grid/Component/Projection",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Projection.hpp",
+        "namespace": "Chicane::Grid::Projection",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Projection",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Component",
+                                    "suffix": "*",
+                                    "path": "Grid/Component",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inChildren"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PROJECTION_PROJECTION_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Projection",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PROJECTION_~PROJECTION_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "sCurrent",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_PROJECTION_SCURRENT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "previous",
+                "description": "CHICANE_GRID_PROJECTION_PREVIOUS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_PROJECTION_DESCRIPTION"
+    },
+    "children": []
+}

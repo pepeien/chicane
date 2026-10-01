@@ -1,0 +1,92 @@
+{
+    "title": "Scope",
+    "filename": "Scope",
+    "path": "Grid/Component/Scope",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Scope.hpp",
+        "namespace": "Chicane::Grid::Scope",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scope",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCOPE_SCOPE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Scope",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SCOPE_~SCOPE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "sCurrent",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_SCOPE_SCURRENT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "previous",
+                "description": "CHICANE_GRID_SCOPE_PREVIOUS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_SCOPE_DESCRIPTION"
+    },
+    "children": []
+}

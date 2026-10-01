@@ -107,12 +107,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "String",
+                            "name": "ReflectionProperty",
                             "suffix": "",
-                            "path": "Core/String",
+                            "path": "Core/Reflection/Property",
                             "templates": []
                         },
-                        "name": "inName"
+                        "name": "inProperty"
                     },
                     {
                         "type": {
@@ -354,6 +354,68 @@
                     "const"
                 ],
                 "description": "CHICANE_REFLECTIONTYPEMETHODINFO_MAKEACCESSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "containsName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_CONTAINSNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getName",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_GETNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isTransient",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_ISTRANSIENT_DESCRIPTION"
             }
         ],
         "members": [
@@ -362,13 +424,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "ReflectionProperty",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Core/Reflection/Property",
                     "templates": []
                 },
-                "name": "name",
-                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_NAME_DESCRIPTION"
+                "name": "property",
+                "description": "CHICANE_REFLECTIONTYPEMETHODINFO_PROPERTY_DESCRIPTION"
             },
             {
                 "accessor": "public",

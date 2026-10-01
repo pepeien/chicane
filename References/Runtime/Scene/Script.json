@@ -4,7 +4,7 @@
     "path": "Runtime/Scene/Script",
     "source": {
         "header": "Includes/Chicane/Runtime/Scene/Script.hpp",
-        "namespace": "Chicane::SceneScriptSubscription",
+        "namespace": "Chicane::SceneScript",
         "types": [],
         "enums": [],
         "constructors": [
@@ -420,42 +420,16 @@
                             "prefix": "",
                             "name": "SceneScriptSubscription",
                             "suffix": "",
-                            "path": "Runtime/Scene/Script",
+                            "path": "Runtime/Scene/Script/Subscription",
                             "templates": []
                         }
                     ]
                 },
                 "name": "m_subscriptions",
                 "description": "CHICANE_SCENESCRIPT_M_SUBSCRIPTIONS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint64_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "token",
-                "description": "CHICANE_SCENESCRIPTSUBSCRIPTION_TOKEN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "ref",
-                "description": "CHICANE_SCENESCRIPTSUBSCRIPTION_REF_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_SCENESCRIPTSUBSCRIPTION_DESCRIPTION"
+        "description": "CHICANE_SCENESCRIPT_DESCRIPTION"
     },
     "children": []
 }

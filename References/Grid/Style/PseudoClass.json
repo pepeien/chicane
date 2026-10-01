@@ -1,0 +1,44 @@
+{
+    "title": "PseudoClass",
+    "filename": "PseudoClass",
+    "path": "Grid/Style/PseudoClass",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/PseudoClass.hpp",
+        "namespace": "Chicane::Grid::StylePseudoClass",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "token",
+                "description": "CHICANE_GRID_STYLEPSEUDOCLASS_TOKEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ComponentStatus",
+                    "suffix": "",
+                    "path": "Grid/Component/Status",
+                    "templates": []
+                },
+                "name": "status",
+                "description": "CHICANE_GRID_STYLEPSEUDOCLASS_STATUS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEPSEUDOCLASS_DESCRIPTION"
+    },
+    "children": []
+}

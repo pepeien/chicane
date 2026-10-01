@@ -1,10 +1,10 @@
 {
-    "title": "DrawSkyKind",
-    "filename": "Kind",
-    "path": "Renderer/Draw/Sky/Kind",
+    "title": "InputRangeSliderDrag",
+    "filename": "Drag",
+    "path": "Grid/Component/Input/Slider/Range/Drag",
     "source": {
-        "header": "Includes/Chicane/Renderer/Draw/Sky/Kind.hpp",
-        "namespace": "Chicane::Renderer::DrawSkyKind",
+        "header": "Includes/Chicane/Grid/Component/Input/Slider/Range/Drag.hpp",
+        "namespace": "Chicane::Grid::InputRangeSliderDrag",
         "types": [],
         "enums": [
             {
@@ -15,8 +15,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Cube",
-                "description": "CHICANE_RENDERER_DRAWSKYKIND_CUBE_DESCRIPTION"
+                "name": "None",
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_NONE_DESCRIPTION"
             },
             {
                 "type": {
@@ -26,8 +26,30 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Panorama",
-                "description": "CHICANE_RENDERER_DRAWSKYKIND_PANORAMA_DESCRIPTION"
+                "name": "Low",
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_LOW_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "High",
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_HIGH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Span",
+                "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_SPAN_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -48,9 +70,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Renderer::DrawSkyKind",
+                            "name": "Grid::InputRangeSliderDrag",
                             "suffix": "",
-                            "path": "Renderer/Draw/Sky/Kind",
+                            "path": "Grid/Component/Input/Slider/Range/Drag",
                             "templates": []
                         },
                         "name": "inValue"
@@ -61,7 +83,7 @@
             }
         ],
         "members": [],
-        "description": "CHICANE_RENDERER_DRAWSKYKIND_DESCRIPTION"
+        "description": "CHICANE_GRID_INPUTRANGESLIDERDRAG_DESCRIPTION"
     },
     "children": []
 }

@@ -208,6 +208,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "createDefaultComponents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "onLoad",
                 "parameters": [],
                 "modifiers": [],

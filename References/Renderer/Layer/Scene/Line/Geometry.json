@@ -1,0 +1,70 @@
+{
+    "title": "Geometry",
+    "filename": "Geometry",
+    "path": "Renderer/Layer/Scene/Line/Geometry",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Layer/Scene/Line/Geometry.hpp",
+        "namespace": "Chicane::Renderer::LSceneLineGeometry",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "vertex",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_VERTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "index",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_INDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_VERTEXBYTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexBytes",
+                "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_INDEXBYTES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_LSCENELINEGEOMETRY_DESCRIPTION"
+    },
+    "children": []
+}

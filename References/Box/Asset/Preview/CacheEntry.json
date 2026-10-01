@@ -1,0 +1,52 @@
+{
+    "title": "CacheEntry",
+    "filename": "CacheEntry",
+    "path": "Box/Asset/Preview/CacheEntry",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Preview/CacheEntry.hpp",
+        "namespace": "Chicane::Box::PreviewCacheEntry",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetPreview",
+                            "suffix": "",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "preview",
+                "description": "CHICANE_BOX_PREVIEWCACHEENTRY_PREVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::filesystem::file_time_type",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "writeTime",
+                "description": "CHICANE_BOX_PREVIEWCACHEENTRY_WRITETIME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_PREVIEWCACHEENTRY_DESCRIPTION"
+    },
+    "children": []
+}

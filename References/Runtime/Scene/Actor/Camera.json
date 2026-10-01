@@ -66,10 +66,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onLoad",
+                "name": "createDefaultComponents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_ACAMERA_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_ACAMERA_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
             }
         ],
         "members": [

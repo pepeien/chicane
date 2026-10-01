@@ -16,6 +16,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "ViewProjectionType",
+                    "suffix": "",
+                    "path": "Core/View/Projection/Type",
+                    "templates": []
+                },
+                "name": "projection",
+                "description": "CHICANE_VIEWSETTINGS_PROJECTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Vec",
                     "suffix": "",
                     "path": "Core/Math/Vec",
@@ -90,19 +103,6 @@
                 },
                 "name": "farClip",
                 "description": "CHICANE_VIEWSETTINGS_FARCLIP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ViewProjectionType",
-                    "suffix": "",
-                    "path": "Core/View/Projection/Type",
-                    "templates": []
-                },
-                "name": "projection",
-                "description": "CHICANE_VIEWSETTINGS_PROJECTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_VIEWSETTINGS_DESCRIPTION"

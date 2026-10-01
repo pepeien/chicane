@@ -1,0 +1,44 @@
+{
+    "title": "Subscription",
+    "filename": "Subscription",
+    "path": "Grid/Component/View/Script/Subscription",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/View/Script/Subscription.hpp",
+        "namespace": "Chicane::Grid::ViewScriptSubscription",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "token",
+                "description": "CHICANE_GRID_VIEWSCRIPTSUBSCRIPTION_TOKEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ref",
+                "description": "CHICANE_GRID_VIEWSCRIPTSUBSCRIPTION_REF_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_VIEWSCRIPTSUBSCRIPTION_DESCRIPTION"
+    },
+    "children": []
+}

@@ -242,7 +242,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "class _Data",
+                            "name": "Implementation",
                             "suffix": "",
                             "path": "",
                             "templates": []

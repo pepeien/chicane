@@ -129,6 +129,16 @@
                             "templates": []
                         },
                         "name": "inBoundInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsTransient"
                     }
                 ],
                 "modifiers": [],
@@ -754,6 +764,19 @@
                 },
                 "name": "boundInstance",
                 "description": "CHICANE_REFLECTIONFIELDACCESSOR_BOUNDINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsTransient",
+                "description": "CHICANE_REFLECTIONFIELDACCESSOR_BISTRANSIENT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONFIELDACCESSOR_DESCRIPTION"

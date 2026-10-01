@@ -1,0 +1,70 @@
+{
+    "title": "StyleMatch",
+    "filename": "StyleMatch",
+    "path": "Grid/Component/StyleMatch",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/StyleMatch.hpp",
+        "namespace": "Chicane::Grid::StyleMatch",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "origin",
+                "description": "CHICANE_GRID_STYLEMATCH_ORIGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "specificity",
+                "description": "CHICANE_GRID_STYLEMATCH_SPECIFICITY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "order",
+                "description": "CHICANE_GRID_STYLEMATCH_ORDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "StyleRuleset",
+                    "suffix": "*",
+                    "path": "Grid/Style/Ruleset",
+                    "templates": []
+                },
+                "name": "source",
+                "description": "CHICANE_GRID_STYLEMATCH_SOURCE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLEMATCH_DESCRIPTION"
+    },
+    "children": []
+}

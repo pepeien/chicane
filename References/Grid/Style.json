@@ -4,7 +4,7 @@
     "path": "Grid/Style",
     "source": {
         "header": "Includes/Chicane/Grid/Style.hpp",
-        "namespace": "Chicane::Grid::StylePseudoClass",
+        "namespace": "Chicane::Grid::Style",
         "types": [
             {
                 "name": "AnimatedValues",
@@ -2259,7 +2259,7 @@
                     "prefix": "",
                     "name": "StylePseudoClass",
                     "suffix": "",
-                    "path": "Grid/Style",
+                    "path": "Grid/Style/PseudoClass",
                     "templates": []
                 },
                 "name": "PSEUDO_CLASSES",
@@ -6411,32 +6411,6 @@
                 },
                 "name": "m_transitionLookup",
                 "description": "CHICANE_GRID_STYLE_M_TRANSITIONLOOKUP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "token",
-                "description": "CHICANE_GRID_STYLEPSEUDOCLASS_TOKEN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "ComponentStatus",
-                    "suffix": "",
-                    "path": "Grid/Component/Status",
-                    "templates": []
-                },
-                "name": "status",
-                "description": "CHICANE_GRID_STYLEPSEUDOCLASS_STATUS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_DESCRIPTION"

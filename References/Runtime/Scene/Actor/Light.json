@@ -53,10 +53,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onLoad",
+                "name": "createDefaultComponents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_ALIGHT_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_ALIGHT_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
             }
         ],
         "members": [
