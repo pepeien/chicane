@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection/Property.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Method/Info.hpp"
@@ -17,32 +18,33 @@ namespace Chicane
     {
     public:
         using TypeIdex     = std::optional<std::type_index>;
-        using Names        = std::vector<String>;
+        using Names        = ReflectionProperty::Names;
         using Fields       = std::vector<ReflectionFieldInfo>;
         using Methods      = std::vector<ReflectionTypeMethodInfo>;
         using Constructor  = std::function<void*(std::vector<std::any>)>;
         using Constructors = std::vector<Constructor>;
 
     public:
-        // Value
         static constexpr inline char OBJECT_SEPARATOR = '.';
 
     public:
         ReflectionTypeInfo(
-            Names               inNames,
+            ReflectionProperty  inProperty,
             std::size_t         inSize,
             TypeIdex            inTypeIndex,
             const Constructors& inConstructors,
             const Methods&      inMethods,
-            const Fields&       inFields,
-            String              inGroup       = String::sEmpty(),
-            String              inDescription = String::sEmpty()
+            const Fields&       inFields
         );
         ReflectionTypeInfo();
 
     public:
         bool containsName(const String& inValue) const;
         const String& getName() const;
+        const Names& getNames() const;
+        const String& getGroup() const;
+        const String& getDescription() const;
+        bool isTransient() const;
 
         const ReflectionFieldInfo* findField(const String& inName) const;
 
@@ -82,13 +84,11 @@ namespace Chicane
         }
 
     public:
-        Names        names;
-        std::size_t  size;
-        TypeIdex     typeIndex;
-        Constructors constructors;
-        Methods      methods;
-        Fields       fields;
-        String       group;
-        String       description;
+        ReflectionProperty property;
+        std::size_t        size;
+        TypeIdex           typeIndex;
+        Constructors       constructors;
+        Methods            methods;
+        Fields             fields;
     };
 }

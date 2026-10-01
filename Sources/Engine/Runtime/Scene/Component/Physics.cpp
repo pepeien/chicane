@@ -104,6 +104,11 @@ namespace Chicane
     {
         ensureBody();
 
+        if (hasBody())
+        {
+            syncBody();
+        }
+
         if (!hasBody())
         {
             return;
@@ -120,13 +125,6 @@ namespace Chicane
         }
 
         Kerb::Engine::sInstance().deactivateBody(m_body);
-    }
-
-    void CPhysics::onAttachment(Object* inParent)
-    {
-        Object::onAttachment(inParent);
-
-        ensureBody();
     }
 
     void CPhysics::onRefresh()
@@ -284,13 +282,12 @@ namespace Chicane
 
     void CPhysics::setMotion(Kerb::MotionType inType)
     {
-        body.motion = inType;
+        const bool bChanged = body.motion != inType;
+        body.motion         = inType;
 
-        if (hasBody())
+        if (hasBody() && bChanged)
         {
-            Kerb::Engine& physics = Kerb::Engine::sInstance();
-            physics.setBodyMotion(m_body, inType);
-            syncCollisionSettings();
+            rebuildBody();
         }
 
         syncTickState();

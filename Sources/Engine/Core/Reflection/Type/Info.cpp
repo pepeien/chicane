@@ -7,48 +7,58 @@
 namespace Chicane
 {
     ReflectionTypeInfo::ReflectionTypeInfo(
-        Names               inNames,
+        ReflectionProperty  inProperty,
         std::size_t         inSize,
         TypeIdex            inTypeIndex,
         const Constructors& inConstructors,
         const Methods&      inMethods,
-        const Fields&       inFields,
-        String              inGroup,
-        String              inDescription
+        const Fields&       inFields
     )
-        : names(std::move(inNames)),
+        : property(std::move(inProperty)),
           size(inSize),
           typeIndex(inTypeIndex),
           constructors(std::move(inConstructors)),
           methods(std::move(inMethods)),
-          fields(std::move(inFields)),
-          group(std::move(inGroup)),
-          description(std::move(inDescription))
+          fields(std::move(inFields))
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
-        : names({}),
+        : property(),
           size(0),
           typeIndex(std::nullopt),
           constructors({}),
           methods({}),
-          fields({}),
-          group(String::sEmpty()),
-          description(String::sEmpty())
+          fields({})
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const
     {
-        return std::find_if(
-                   names.begin(),
-                   names.end(),
-                   [&inValue](const String& inName) { return inName.equals(inValue); }
-               ) != names.end();
+        return property.containsName(inValue);
     }
 
     const String& ReflectionTypeInfo::getName() const
     {
-        return names.empty() ? String::sEmpty() : names.front();
+        return property.getName();
+    }
+
+    const ReflectionTypeInfo::Names& ReflectionTypeInfo::getNames() const
+    {
+        return property.names;
+    }
+
+    const String& ReflectionTypeInfo::getGroup() const
+    {
+        return property.group;
+    }
+
+    const String& ReflectionTypeInfo::getDescription() const
+    {
+        return property.description;
+    }
+
+    bool ReflectionTypeInfo::isTransient() const
+    {
+        return property.isTransient();
     }
 
     const ReflectionFieldInfo* ReflectionTypeInfo::findField(const String& inName) const
@@ -68,7 +78,7 @@ namespace Chicane
     {
         for (const ReflectionTypeMethodInfo& method : methods)
         {
-            if (method.name.equals(inName))
+            if (method.containsName(inName))
             {
                 return &method;
             }
@@ -138,14 +148,15 @@ namespace Chicane
             offset,
             ptrOffset,
             field->size,
-            field->names,
+            field->getNames(),
             field->typeName,
             field->typeIndex,
             bHasCrossedPointer,
             field->bIsIterable,
             field->elementIndex,
             field->iterable,
-            nullptr
+            nullptr,
+            field->isTransient()
         };
     }
 }

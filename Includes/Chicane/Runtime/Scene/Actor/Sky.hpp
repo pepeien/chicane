@@ -28,6 +28,7 @@ namespace Chicane
         ASky();
 
     protected:
+        void createDefaultComponents() override;
         void onLoad() override;
         void onPropertyEdited(const String& inName) override;
 

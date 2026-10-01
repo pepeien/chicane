@@ -214,11 +214,13 @@ namespace Chicane
             {
                 outOffset = 0.0f;
             }
-            else if (last.equals(Style::KEYFRAMES_TO_KEYWORD))
+
+            if (last.equals(Style::KEYFRAMES_TO_KEYWORD))
             {
                 outOffset = 1.0f;
             }
-            else if (last.endsWith("%"))
+
+            if (last.endsWith("%"))
             {
                 const String number = last.substr(0, last.size() - 1).trim();
 
@@ -400,8 +402,8 @@ namespace Chicane
 
                         if (bParentHasPseudo && isCompoundContinuation)
                         {
-                            String accumulated = inSelector.trim();
-                            const std::size_t split = accumulated.lastOf(Style::SELECTOR_SEPARATOR_SPACE);
+                            String            accumulated = inSelector.trim();
+                            const std::size_t split       = accumulated.lastOf(Style::SELECTOR_SEPARATOR_SPACE);
                             if (split != String::npos)
                             {
                                 accumulated = accumulated.substr(split + 1).trim();

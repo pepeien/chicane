@@ -1,5 +1,7 @@
 #include "Sample/Shooter/Actor/Apple.hpp"
 
+#include <algorithm>
+
 #include <Chicane/Runtime/Scene.hpp>
 
 #include "Sample/Shooter/Actor/Structure.hpp"
@@ -17,13 +19,17 @@ Apple::Apple()
     setCanCollide(true);
 }
 
-void Apple::onLoad()
+void Apple::createDefaultComponents()
 {
     static const Chicane::FileSystem::Path meshPath("Assets/Sample/Shooter/Meshes/Apple.bmsh");
 
-    m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
+    m_meshComponent = createDefaultComponent<Chicane::CMesh>("Mesh");
+    if (!m_meshComponent)
+    {
+        return;
+    }
+
     m_meshComponent->setMesh(meshPath);
-    m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 }
 
@@ -75,6 +81,7 @@ void Apple::onHit(const Chicane::Actor* inSubject)
     if (!m_hitSound)
     {
         m_hitSound = getScene()->createComponent<Chicane::CSound>();
+        m_hitSound->setOrigin(Chicane::ObjectOrigin::Spawned);
         m_hitSound->load("Assets/Sample/Shooter/Sounds/Hit.bsnd");
         m_hitSound->attachTo(this);
         m_hitSound->activate();

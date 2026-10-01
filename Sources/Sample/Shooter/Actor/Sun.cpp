@@ -2,18 +2,25 @@
 
 #include <cmath>
 
+#include <Chicane/Runtime/Scene.hpp>
+
 Sun::Sun()
     : Chicane::ALight(),
       m_distance(200.0f),
       m_angle(0.0f)
 {}
 
-void Sun::onLoad()
+void Sun::createDefaultComponents()
 {
-    Chicane::ALight::onLoad();
+    Chicane::ALight::createDefaultComponents();
 
     setAbsoluteTranslation(0.0f, 0.0f, m_distance);
     lookAt(Chicane::Vec3::sZero());
+
+    if (!light)
+    {
+        return;
+    }
 
     const float distanceToFocus = std::sqrt(2.0f) * m_distance;
     light->setNearClip(1.0f);

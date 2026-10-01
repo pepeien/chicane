@@ -31,6 +31,7 @@
 #include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Property/Id.hpp"
 #include "Chicane/Grid/Style/Property/Table.hpp"
+#include "Chicane/Grid/Style/PseudoClass.hpp"
 #include "Chicane/Grid/Style/Radius.hpp"
 #include "Chicane/Grid/Style/Ruleset.hpp"
 #include "Chicane/Grid/Style/Size.hpp"
@@ -43,12 +44,6 @@ namespace Chicane
     namespace Grid
     {
         class Component;
-
-        struct StylePseudoClass
-        {
-            const char*     token;
-            ComponentStatus status;
-        };
 
         CH_TYPE(Manual)
         struct CHICANE_GRID Style

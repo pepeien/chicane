@@ -176,6 +176,13 @@ namespace Chicane
 
         Draw::Id Instance::loadSky(const DrawSkyData& inData)
         {
+            if (inData.reference.isEmpty())
+            {
+                m_skyResource.clear();
+
+                return Draw::InvalidId;
+            }
+
             m_skyResource.exposure = inData.exposure;
             m_skyResource.bVisible = inData.bVisible;
 

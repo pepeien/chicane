@@ -34,7 +34,6 @@ namespace Chicane
         void onTick(float inDeltaTime) override;
         void onActivation() override;
         void onDeactivation() override;
-        void onAttachment(Object* inParent) override;
         void onRefresh() override;
         void onPropertyEdited(const String& inName) override;
 

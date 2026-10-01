@@ -3,7 +3,7 @@
 namespace Chicane
 {
     ReflectionFieldInfo::ReflectionFieldInfo(
-        Names                   inNames,
+        ReflectionProperty      inProperty,
         String                  inTypeName,
         std::size_t             inOffset,
         std::size_t             inSize,
@@ -12,26 +12,22 @@ namespace Chicane
         bool                    bInIsPointer,
         bool                    bInIsIterable,
         TypeIndex               inElementIndex,
-        ReflectionFieldIterable inIterable,
-        String                  inGroup,
-        String                  inDescription
+        ReflectionFieldIterable inIterable
     )
-        : names(std::move(inNames)),
+        : property(std::move(inProperty)),
           typeName(std::move(inTypeName)),
-          offset(std::move(inOffset)),
-          size(std::move(inSize)),
-          typeIndex(std::move(inTypeIndex)),
-          bIsReflected(std::move(bInIsReflected)),
-          bIsPointer(std::move(bInIsPointer)),
-          bIsIterable(std::move(bInIsIterable)),
-          elementIndex(std::move(inElementIndex)),
-          iterable(std::move(inIterable)),
-          group(std::move(inGroup)),
-          description(std::move(inDescription))
+          offset(inOffset),
+          size(inSize),
+          typeIndex(inTypeIndex),
+          bIsReflected(bInIsReflected),
+          bIsPointer(bInIsPointer),
+          bIsIterable(bInIsIterable),
+          elementIndex(inElementIndex),
+          iterable(std::move(inIterable))
     {}
 
     ReflectionFieldInfo::ReflectionFieldInfo()
-        : names({}),
+        : property(),
           typeName(""),
           offset(0),
           size(0),
@@ -40,17 +36,36 @@ namespace Chicane
           bIsPointer(false),
           bIsIterable(false),
           elementIndex(std::nullopt),
-          iterable({}),
-          group(""),
-          description("")
+          iterable({})
     {}
 
     bool ReflectionFieldInfo::containsName(const String& inValue) const
     {
-        return std::find_if(
-                   names.begin(),
-                   names.end(),
-                   [&inValue](const String& inName) { return inName.equals(inValue); }
-               ) != names.end();
+        return property.containsName(inValue);
+    }
+
+    const String& ReflectionFieldInfo::getName() const
+    {
+        return property.getName();
+    }
+
+    bool ReflectionFieldInfo::isTransient() const
+    {
+        return property.isTransient();
+    }
+
+    const String& ReflectionFieldInfo::getGroup() const
+    {
+        return property.group;
+    }
+
+    const String& ReflectionFieldInfo::getDescription() const
+    {
+        return property.description;
+    }
+
+    const ReflectionFieldInfo::Names& ReflectionFieldInfo::getNames() const
+    {
+        return property.names;
     }
 }

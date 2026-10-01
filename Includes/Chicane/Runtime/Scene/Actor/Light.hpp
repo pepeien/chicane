@@ -16,7 +16,7 @@ namespace Chicane
         ALight();
 
     protected:
-        void onLoad() override;
+        void createDefaultComponents() override;
 
     public:
         CH_FUNCTION()

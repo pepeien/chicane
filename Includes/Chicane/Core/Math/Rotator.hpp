@@ -18,6 +18,9 @@ namespace Chicane
         Rotator();
 
     public:
+        inline operator String() const { return static_cast<String>(getAngles()); }
+
+    public:
         // Orientation
         const QuatFloat& get() const;
 

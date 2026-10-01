@@ -8,6 +8,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Component/View/Script/Subscription.hpp"
 
 struct lua_State;
 
@@ -16,12 +17,6 @@ namespace Chicane
     namespace Grid
     {
         class View;
-
-        struct ViewScriptSubscription
-        {
-            std::uint64_t token;
-            int           ref;
-        };
 
         class CHICANE_GRID ViewScript
         {

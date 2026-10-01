@@ -51,7 +51,7 @@ namespace Chicane
                         inState,
                         "invalid argument %d for %s",
                         static_cast<int>(i) + 1,
-                        box->method->name.toChar()
+                        box->method->getName().toChar()
                     );
                 }
 
@@ -65,7 +65,7 @@ namespace Chicane
             }
             catch (const std::exception& error)
             {
-                return luaL_error(inState, "%s failed: %s", box->method->name.toChar(), error.what());
+                return luaL_error(inState, "%s failed: %s", box->method->getName().toChar(), error.what());
             }
         }
 

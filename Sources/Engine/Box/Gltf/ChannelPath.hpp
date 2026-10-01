@@ -2,6 +2,9 @@
 
 #include <cstdint>
 
+#include "Chicane/Box.hpp"
+#include "Chicane/Core/String.hpp"
+
 namespace Chicane
 {
     namespace Box
@@ -12,6 +15,7 @@ namespace Chicane
             Rotation,
             Scale
         };
-
     }
+
+    CHICANE_BOX String toString(Box::ChannelPath inValue);
 }

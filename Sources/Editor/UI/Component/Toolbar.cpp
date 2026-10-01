@@ -28,7 +28,7 @@ namespace Editor
 
     static Chicane::String spawnTag(const Chicane::ReflectionTypeInfo& inType)
     {
-        for (const Chicane::String& name : inType.names)
+        for (const Chicane::String& name : inType.getNames())
         {
             if (!name.contains("::"))
             {
@@ -229,7 +229,7 @@ namespace Editor
 
         for (const auto& [name, type] : Chicane::ReflectionTypeRegistry::sInstance().getAll())
         {
-            if (type.group.isEmpty() || type.constructors.empty())
+            if (type.getGroup().isEmpty() || type.constructors.empty())
             {
                 continue;
             }
@@ -239,7 +239,7 @@ namespace Editor
                 continue;
             }
 
-            const std::vector<Chicane::String> path = type.group.split(" | ");
+            const std::vector<Chicane::String> path = type.getGroup().split(" | ");
             if (path.empty())
             {
                 continue;

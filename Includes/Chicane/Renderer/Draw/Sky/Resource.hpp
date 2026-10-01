@@ -19,6 +19,7 @@ namespace Chicane
 
             Draw::Id add(const DrawSky& inData);
 
+            void clear();
             void reset();
 
         public:

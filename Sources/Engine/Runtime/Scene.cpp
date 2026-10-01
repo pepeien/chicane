@@ -188,7 +188,7 @@ namespace Chicane
         std::vector<Component*> components = getComponents();
         for (Component* component : components)
         {
-            if (!component || component->isTransient())
+            if (!component || component->getOrigin() == ObjectOrigin::Transient)
             {
                 continue;
             }
@@ -196,7 +196,7 @@ namespace Chicane
             bool bKeep = false;
             for (Object* parent = component->getParent(); parent; parent = parent->getParent())
             {
-                if (parent->isTransient())
+                if (parent->getOrigin() == ObjectOrigin::Transient)
                 {
                     bKeep = true;
 
@@ -217,7 +217,7 @@ namespace Chicane
         std::vector<Actor*> actors = getActors();
         for (Actor* actor : actors)
         {
-            if (!actor || actor->isTransient())
+            if (!actor || actor->getOrigin() == ObjectOrigin::Transient)
             {
                 continue;
             }
@@ -352,7 +352,7 @@ namespace Chicane
         {
             for (Actor* actor : actors)
             {
-                if (actor && actor->getId().equals(inId))
+                if (actor && !actor->isNative() && actor->getId().equals(inId))
                 {
                     return actor;
                 }
@@ -440,7 +440,7 @@ namespace Chicane
         {
             for (Component* component : components)
             {
-                if (component && component->getId().equals(inId))
+                if (component && !component->isNative() && component->getId().equals(inId))
                 {
                     return component;
                 }
@@ -543,7 +543,7 @@ namespace Chicane
 
     void Scene::ensureUniqueId(const String& inId, const Object* inIgnored) const
     {
-        if (inId.isEmpty())
+        if (inId.isEmpty() || (inIgnored && inIgnored->isNative()))
         {
             return;
         }

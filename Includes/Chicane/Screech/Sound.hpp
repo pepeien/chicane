@@ -16,6 +16,8 @@ namespace Chicane
         struct CHICANE_SCREECH Sound
         {
         public:
+            struct Implementation;
+
             using Raw = std::vector<unsigned char>;
 
         public:
@@ -35,9 +37,9 @@ namespace Chicane
             bool stop();
 
         private:
-            SoundStatus                  m_status;
-            SoundSettings                m_settings;
-            std::unique_ptr<class _Data> m_data;
+            SoundStatus                     m_status;
+            SoundSettings                   m_settings;
+            std::unique_ptr<Implementation> m_data;
         };
     }
 }

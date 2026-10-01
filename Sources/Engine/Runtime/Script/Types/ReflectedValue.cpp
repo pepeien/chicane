@@ -131,7 +131,7 @@ namespace Chicane
                         inState,
                         "invalid argument %d for %s",
                         static_cast<int>(i) + 1,
-                        method->name.toChar()
+                        method->getName().toChar()
                     );
                 }
 
@@ -149,7 +149,7 @@ namespace Chicane
             }
             catch (const std::exception& error)
             {
-                return luaL_error(inState, "%s failed: %s", method->name.toChar(), error.what());
+                return luaL_error(inState, "%s failed: %s", method->getName().toChar(), error.what());
             }
         }
 
@@ -175,7 +175,7 @@ namespace Chicane
                         inState,
                         "invalid argument %d for %s",
                         static_cast<int>(i) + 1,
-                        method->name.toChar()
+                        method->getName().toChar()
                     );
                 }
 
@@ -189,7 +189,7 @@ namespace Chicane
             }
             catch (const std::exception& error)
             {
-                return luaL_error(inState, "%s failed: %s", method->name.toChar(), error.what());
+                return luaL_error(inState, "%s failed: %s", method->getName().toChar(), error.what());
             }
         }
 
@@ -210,16 +210,16 @@ namespace Chicane
 
                 lua_pushlightuserdata(inState, const_cast<ReflectionTypeMethodInfo*>(&method));
                 lua_pushcclosure(inState, callStaticMethod, 1);
-                lua_setfield(inState, -2, method.name.toChar());
+                lua_setfield(inState, -2, method.getName().toChar());
                 bHasStatics = true;
             }
 
-            if (!bHasStatics || inType->names.empty())
+            if (!bHasStatics || inType->getNames().empty())
             {
                 return;
             }
 
-            const String global = shortNameOf(inType->names.back());
+            const String global = shortNameOf(inType->getNames().back());
             lua_pushvalue(inState, -1);
             lua_setglobal(inState, global.toChar());
         }
@@ -263,13 +263,13 @@ namespace Chicane
                 }
 
                 const ReflectionTypeInfo* type = registry.find(copy.typeIndex.value());
-                if (!type || type->names.empty())
+                if (!type || type->getNames().empty())
                 {
                     continue;
                 }
 
                 bool bIsObjectType = false;
-                for (const String& typeName : type->names)
+                for (const String& typeName : type->getNames())
                 {
                     const String tail = shortNameOf(typeName);
                     if (tail.equals("Object") || tail.equals("Actor") || tail.equals("Component"))
@@ -301,7 +301,7 @@ namespace Chicane
                     continue;
                 }
 
-                ensureValueMetatable(inState, type->names.front().toChar(), type);
+                ensureValueMetatable(inState, type->getNames().front().toChar(), type);
             }
         }
 

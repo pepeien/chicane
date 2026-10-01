@@ -8,18 +8,13 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Scene/Script/Subscription.hpp"
 
 struct lua_State;
 
 namespace Chicane
 {
     class Scene;
-
-    struct SceneScriptSubscription
-    {
-        std::uint64_t token;
-        int           ref;
-    };
 
     class CHICANE_RUNTIME SceneScript
     {

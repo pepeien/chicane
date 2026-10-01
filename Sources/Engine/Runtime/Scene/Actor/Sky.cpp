@@ -93,33 +93,24 @@ namespace Chicane
           m_asset(nullptr)
     {}
 
+    void ASky::createDefaultComponents()
+    {
+        m_sun = createDefaultComponent<CLight>("Environment");
+        if (!m_sun)
+        {
+            return;
+        }
+
+        m_sun->setType(LightType::Environment);
+        m_sun->setColor(Vec3(1.0f));
+        m_sun->setCanCastShadows(false);
+        m_sun->activate();
+        setIntensity(intensity);
+    }
+
     void ASky::onLoad()
     {
-        if (!m_sun)
-        {
-            for (Object* attachment : getAttachments())
-            {
-                if (CLight* light = dynamic_cast<CLight*>(attachment))
-                {
-                    m_sun = light;
-
-                    break;
-                }
-            }
-        }
-
-        if (!m_sun)
-        {
-            m_sun = getScene()->createComponent<CLight>();
-            m_sun->attachTo(this);
-            m_sun->setType(LightType::Environment);
-            m_sun->setColor(Vec3(1.0f));
-            m_sun->setCanCastShadows(false);
-            m_sun->activate();
-        }
-
         setIntensity(intensity);
-
         placeEnvironmentLightAtSun();
     }
 

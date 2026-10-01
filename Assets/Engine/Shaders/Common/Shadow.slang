@@ -43,7 +43,8 @@ public float ShadowCalculation(
     float4x4 cascadeProjection,
     float3 worldPosition,
     float3 normal,
-    float3 lightDirection
+    float3 lightDirection,
+    float perspective
 )
 {
     float4 projection = mul(cascadeProjection, mul(cascadeView, float4(worldPosition, 1.0)));
@@ -64,6 +65,14 @@ public float ShadowCalculation(
     shadowMap.GetDimensions(width, height, elements);
     float2 texelSize = 1.0 / float2(width, height);
     float bias       = max(texelSize.x * (4.0 - 3.0 * NdotL), texelSize.x * 0.5);
+    
+    if (perspective > 0.5)
+    {
+        float distance = max(abs(projection.w), 1.0);
+        float slope    = max(abs(ddx(currentDepth)), abs(ddy(currentDepth)));
+
+        bias = max(slope, 0.05 / (distance * distance));
+    }
 
     float filterRadius = 1.5;
     float shadow       = 0.0;

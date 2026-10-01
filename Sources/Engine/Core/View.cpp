@@ -1,4 +1,5 @@
 #include "Chicane/Core/View.hpp"
+#include "Chicane/Core/View/Settings.reflected.hpp"
 
 namespace Chicane
 {

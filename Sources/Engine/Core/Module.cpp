@@ -7,21 +7,13 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Module/Entry.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     namespace Module
     {
-        using InitFn     = bool (*)();
-        using ShutdownFn = void (*)();
-
-        struct Entry
-        {
-            SDL_SharedObject* handle   = nullptr;
-            ShutdownFn        shutdown = nullptr;
-        };
-
         static std::mutex& mutex()
         {
             static std::mutex instance;
@@ -162,7 +154,7 @@ namespace Chicane
 
                 if (entry.handle)
                 {
-                    SDL_UnloadObject(entry.handle);
+                    SDL_UnloadObject(static_cast<SDL_SharedObject*>(entry.handle));
                     entry.handle = nullptr;
                 }
             }

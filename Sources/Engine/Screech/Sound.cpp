@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Screech
     {
-        class _Data
+        struct Sound::Implementation
         {
         public:
             ma_decoder decoder;
@@ -20,7 +20,7 @@ namespace Chicane
         Sound::Sound()
             : m_status(SoundStatus::Stopped),
               m_settings({}),
-              m_data(std::make_unique<_Data>())
+              m_data(std::make_unique<Implementation>())
         {}
 
         Sound::~Sound()

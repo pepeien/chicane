@@ -19,7 +19,7 @@ namespace Chicane
         APawn();
 
     protected:
-        void onLoad() override;
+        void createDefaultComponents() override;
 
     protected:
         virtual void onControlAttachment() { return; }

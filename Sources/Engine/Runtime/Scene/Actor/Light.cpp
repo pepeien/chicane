@@ -14,27 +14,12 @@ namespace Chicane
         return light;
     }
 
-    void ALight::onLoad()
+    void ALight::createDefaultComponents()
     {
-        if (!light)
+        light = createDefaultComponent<CLight>("Light");
+        if (light)
         {
-            for (Object* attachment : getAttachments())
-            {
-                if (CLight* existing = dynamic_cast<CLight*>(attachment))
-                {
-                    light = existing;
-
-                    break;
-                }
-            }
+            light->activate();
         }
-
-        if (!light)
-        {
-            light = getScene()->createComponent<CLight>();
-            light->attachTo(this);
-        }
-
-        light->activate();
     }
 }

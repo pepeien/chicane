@@ -119,7 +119,13 @@ namespace Chicane
 
         Vec3 parseVec3(const String& inValue, const Vec3& inFallback)
         {
-            const std::vector<String> values = inValue.split(',');
+            String value = inValue.trim();
+            if (value.size() >= 2 && value.startsWith('[') && value.endsWith(']'))
+            {
+                value = value.substr(1, value.size() - 2).trim();
+            }
+
+            const std::vector<String> values = value.split(',');
             if (values.size() < 3)
             {
                 return inFallback;

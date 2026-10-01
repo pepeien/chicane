@@ -10,6 +10,7 @@
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
+#include "Chicane/Box/Asset/Preview/CacheEntry.hpp"
 #include "Chicane/Box/Asset/Preview/Service.hpp"
 #include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
@@ -32,12 +33,6 @@ namespace Chicane
         static AssetObservable                                                    g_assetObservable   = {};
         static PreviewObservable                                                  g_previewObservable = {};
         static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache             = {};
-
-        struct PreviewCacheEntry
-        {
-            std::unique_ptr<AssetPreview>   preview;
-            std::filesystem::file_time_type writeTime{};
-        };
 
         static std::unordered_map<FileSystem::Path, PreviewCacheEntry>                     g_previewCache   = {};
         static std::list<FileSystem::Path>                                                 g_previewOrder   = {};

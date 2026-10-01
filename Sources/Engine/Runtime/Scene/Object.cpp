@@ -7,6 +7,7 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
+#include "Chicane/Core/Math/Rotator.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Script/Handle.hpp"
 #include "Chicane/Core/Reflection/Enum/Enumerator/Info.hpp"
@@ -109,7 +110,8 @@ namespace Chicane
           Serializable(),
           m_bCanTick(false),
           m_bCanCollide(false),
-          m_bIsTransient(false),
+          m_bHasDefaultComponents(false),
+          m_origin(ObjectOrigin::Instance),
           m_id(""),
           m_parent(nullptr),
           m_parentSubscription({}),
@@ -215,7 +217,22 @@ namespace Chicane
 
     bool Object::isTransient() const
     {
-        return m_bIsTransient;
+        return m_origin == ObjectOrigin::Transient;
+    }
+
+    bool Object::isNative() const
+    {
+        return m_origin == ObjectOrigin::Native;
+    }
+
+    ObjectOrigin Object::getOrigin() const
+    {
+        return m_origin;
+    }
+
+    void Object::setOrigin(ObjectOrigin inOrigin)
+    {
+        m_origin = inOrigin;
     }
 
     bool Object::isAttached() const
@@ -259,6 +276,11 @@ namespace Chicane
         }
 
         if (isAncestorOf(inParent))
+        {
+            return;
+        }
+
+        if (isNative() && isAttached() && inParent != m_parent)
         {
             return;
         }
@@ -366,7 +388,28 @@ namespace Chicane
 
     void Object::setIsTransient(bool inValue)
     {
-        m_bIsTransient = inValue;
+        if (inValue)
+        {
+            m_origin = ObjectOrigin::Transient;
+
+            return;
+        }
+
+        if (m_origin == ObjectOrigin::Transient)
+        {
+            m_origin = ObjectOrigin::Instance;
+        }
+    }
+
+    void Object::ensureDefaultComponents()
+    {
+        if (m_bHasDefaultComponents)
+        {
+            return;
+        }
+
+        m_bHasDefaultComponents = true;
+        createDefaultComponents();
     }
 
     void Object::notifyPropertyEdited(const String& inName)
@@ -383,7 +426,7 @@ namespace Chicane
         }
 
         const ReflectionFieldAccessor accessor = type->resolve(inName);
-        if (!accessor.isValid() || accessor.bIsIterable || !accessor.address(this))
+        if (!accessor.isValid() || accessor.bIsIterable || accessor.bIsTransient || !accessor.address(this))
         {
             return false;
         }
@@ -414,6 +457,15 @@ namespace Chicane
         else if (accessor.isType<Vec3>())
         {
             accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
+        }
+        else if (accessor.isType<Rotator>())
+        {
+            if (inValue.split(',').size() < 3)
+            {
+                return false;
+            }
+
+            accessor.set<Rotator>(this, Rotator(Xml::parseVec3(inValue, Vec3::sZero())));
         }
         else if (accessor.isType<int>())
         {
@@ -528,6 +580,11 @@ namespace Chicane
 
         m_scene = inScene;
         markSpatialDirty();
+
+        if (m_scene)
+        {
+            ensureDefaultComponents();
+        }
     }
 
     void Object::markSpatialDirty()

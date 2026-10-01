@@ -39,7 +39,7 @@ namespace Editor
 
     bool Console::sIsConsoleMethod(const Chicane::ReflectionTypeMethodInfo& inMethod)
     {
-        if (inMethod.name.isEmpty() || inMethod.paramTypes.size() > 1)
+        if (inMethod.getName().isEmpty() || inMethod.paramTypes.size() > 1)
         {
             return false;
         }
@@ -186,7 +186,7 @@ namespace Editor
                 continue;
             }
 
-            add(sCommandNameFromMethod(method.name), method.name, !method.paramTypes.empty());
+            add(sCommandNameFromMethod(method.getName()), method.getName(), !method.paramTypes.empty());
         }
     }
 

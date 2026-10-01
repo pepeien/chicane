@@ -10,10 +10,10 @@ class Strcuture : public Chicane::Actor
 {
 public:
     CH_CONSTRUCTOR()
-    Strcuture();
+        Strcuture();
 
-protected:
-    void onLoad() override;
+    protected:
+        void createDefaultComponents() override;
 
 private:
     Chicane::CMesh*    m_mesh;

@@ -47,6 +47,21 @@ namespace Chicane
             return m_draw.id;
         }
 
+        void DrawSkyResource::clear()
+        {
+            bVisible = false;
+
+            if (isEmpty())
+            {
+                return;
+            }
+
+            m_draw = {};
+
+            clearHashes();
+            markAsDirty();
+        }
+
         void DrawSkyResource::reset()
         {
             if (!isVolatile() && !m_draw.bIsVolatile)

@@ -311,7 +311,7 @@ namespace Reflector
                 return field;
             }
 
-            return field with { Group = group };
+            return field with { Property = field.Property with { Group = group } };
         }
 
         static string TypeGroup(CXCursor cursor)
@@ -553,6 +553,7 @@ namespace Reflector
             var ownFields = new List<FieldModel>();
             string typeGroup = MacroArgs.Group(parsed);
             string typeDescription = MacroArgs.Description(parsed);
+            bool typeIsTransient = MacroArgs.IsTransient(parsed);
 
             bool isAutomatic = MacroArgs.IsAutomatic(parsed);
             bool isPublic = kind == "struct" || kind == "union";
@@ -618,12 +619,10 @@ namespace Reflector
 
             return new(
                 kind,
-                names,
+                new PropertyModel(names, typeGroup, typeDescription, typeIsTransient),
                 constructors,
                 methods,
                 fields,
-                typeGroup,
-                typeDescription,
                 bases,
                 ownMethods,
                 ownFields
@@ -680,9 +679,25 @@ namespace Reflector
                 elementName = elementName.TrimEnd('*').Trim();
             }
 
+            var names = new List<string> { cursor.Spelling.CString };
+            var methodArgs = MacroArgs.Parse(FindAnnotation(cursor, Annotation.Function));
+
+            foreach (string alias in MacroArgs.Aliases(methodArgs))
+            {
+                if (!names.Contains(alias))
+                {
+                    names.Add(alias);
+                }
+            }
+
             return new(
+                new PropertyModel(
+                    names,
+                    MacroArgs.Group(methodArgs),
+                    MacroArgs.Description(methodArgs),
+                    MacroArgs.IsTransient(methodArgs)
+                ),
                 returnType,
-                cursor.Spelling.CString,
                 paramTypes,
                 isIterable,
                 elementName,
@@ -738,14 +753,17 @@ namespace Reflector
             }
 
             return new(
+                new PropertyModel(
+                    names,
+                    MacroArgs.Group(fieldArgs),
+                    MacroArgs.Description(fieldArgs),
+                    MacroArgs.IsTransient(fieldArgs)
+                ),
                 typeName,
-                names,
                 isPointer,
                 isIterable,
                 elementName,
-                isElementPointer,
-                MacroArgs.Group(fieldArgs),
-                MacroArgs.Description(fieldArgs)
+                isElementPointer
             );
         }
 

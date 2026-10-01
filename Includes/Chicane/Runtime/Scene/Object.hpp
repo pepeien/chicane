@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Core/Event/Subscription.hpp"
@@ -10,6 +11,7 @@
 #include "Chicane/Core/Transformable.hpp"
 
 #include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Scene/Object/Origin.hpp"
 
 namespace Chicane
 {
@@ -50,6 +52,12 @@ namespace Chicane
         inline virtual void onTick(float inDeltaTime) { return; }
         inline virtual void onPropertyEdited(const String& inName) { return; }
         inline virtual void onAttachment(Object* inParent) { return; }
+        inline virtual void createDefaultComponents() { return; }
+
+        void ensureDefaultComponents();
+
+        template <typename T>
+        T* createDefaultComponent(const String& inId);
 
     public:
         CH_FUNCTION()
@@ -66,6 +74,12 @@ namespace Chicane
 
         CH_FUNCTION()
         bool isTransient() const;
+
+        CH_FUNCTION()
+        bool isNative() const;
+
+        ObjectOrigin getOrigin() const;
+        void setOrigin(ObjectOrigin inOrigin);
 
         CH_FUNCTION()
         bool isAttached() const;
@@ -146,7 +160,8 @@ namespace Chicane
     protected:
         bool                 m_bCanTick;
         bool                 m_bCanCollide;
-        bool                 m_bIsTransient;
+        bool                 m_bHasDefaultComponents;
+        ObjectOrigin         m_origin;
 
         String               m_id;
 

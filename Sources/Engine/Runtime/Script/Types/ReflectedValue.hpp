@@ -40,12 +40,12 @@ namespace Chicane
 
         inline const char* valueMetatableOf(const ReflectionTypeInfo* inType)
         {
-            if (!inType || inType->names.empty())
+            if (!inType || inType->getNames().empty())
             {
                 return nullptr;
             }
 
-            return inType->names.front().toChar();
+            return inType->getNames().front().toChar();
         }
 
         template <typename T>

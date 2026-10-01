@@ -9,19 +9,12 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component/Input/Slider/Range/Drag.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        enum class InputRangeSliderDrag : std::uint8_t
-        {
-            None,
-            Low,
-            High,
-            Span
-        };
-
         CH_TYPE(Type = (Manual), Alias = (Input::RangeSlider))
         class CHICANE_GRID InputRangeSlider : public Container
         {

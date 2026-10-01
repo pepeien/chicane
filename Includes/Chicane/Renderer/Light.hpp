@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/View/Projection/Type.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Light/Type.hpp"
@@ -24,8 +25,13 @@ namespace Chicane
             float     range       = 50.0f;
             Vec3      translation = Vec3::sZero();
             Vec3      direction   = Vec3::sForward();
-            float     innerAngle  = 25.0f;
-            float     outerAngle  = 40.0f;
+            Vec3      up          = Vec3::sUp();
+            float              innerAngle  = 25.0f;
+            float              outerAngle  = 40.0f;
+            ViewProjectionType projection  = ViewProjectionType::Orthographic;
+            float              fieldOfView = 45.0f;
+            float              nearClip    = 0.1f;
+            float              farClip     = 1000.0f;
         };
     }
 }

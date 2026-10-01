@@ -10,17 +10,23 @@ Strcuture::Strcuture()
     setCanCollide(true);
 }
 
-void Strcuture::onLoad()
+void Strcuture::createDefaultComponents()
 {
-    m_mesh = getScene()->createComponent<Chicane::CMesh>();
-    m_mesh->attachTo(this);
-    m_mesh->setMesh("Assets/Sample/Shooter/Meshes/Structure.bmsh");
-    m_mesh->activate();
+    m_mesh = createDefaultComponent<Chicane::CMesh>("Mesh");
+    if (m_mesh)
+    {
+        m_mesh->setMesh("Assets/Sample/Shooter/Meshes/Structure.bmsh");
+        m_mesh->activate();
+    }
 
-    m_physics = getScene()->createComponent<Chicane::CPhysics>();
+    m_physics = createDefaultComponent<Chicane::CPhysics>("Physics");
+    if (!m_physics)
+    {
+        return;
+    }
+
     m_physics->setShape(Chicane::Kerb::BodyShape::Box);
     m_physics->setMotion(Chicane::Kerb::MotionType::Static);
     m_physics->setCollisionPreset(Chicane::Kerb::CollisionPreset::BlockAll);
-    m_physics->attachTo(this);
     m_physics->activate();
 }

@@ -1,5 +1,7 @@
 #include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 
+#include "Chicane/Core/FileSystem/Path.hpp"
+#include "Chicane/Core/Math/Rotator.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
@@ -7,7 +9,7 @@
 namespace Chicane
 {
     ReflectionTypeMethodInfo::ReflectionTypeMethodInfo(
-        String                  inName,
+        ReflectionProperty      inProperty,
         String                  inReturnType,
         std::vector<String>     inParamTypes,
         Invoker                 inInvoker,
@@ -19,7 +21,7 @@ namespace Chicane
         ContainerResolver       inContainerResolver,
         bool                    bInIsStatic
     )
-        : name(std::move(inName)),
+        : property(std::move(inProperty)),
           returnType(std::move(inReturnType)),
           paramTypes(std::move(inParamTypes)),
           bIsIterable(bInIsIterable),
@@ -33,7 +35,7 @@ namespace Chicane
     {}
 
     ReflectionTypeMethodInfo::ReflectionTypeMethodInfo()
-        : name(""),
+        : property(),
           returnType(""),
           paramTypes({}),
           bIsIterable(false),
@@ -74,77 +76,87 @@ namespace Chicane
 
         if (const String* value = std::any_cast<String>(&inValue))
         {
-            return *value;
+            return static_cast<String>(*value);
         }
 
         if (const std::string* value = std::any_cast<std::string>(&inValue))
         {
-            return *value;
+            return static_cast<String>(*value);
+        }
+
+        if (const FileSystem::Path* value = std::any_cast<FileSystem::Path>(&inValue))
+        {
+            return static_cast<String>(*value);
         }
 
         if (const Vec2* value = std::any_cast<Vec2>(&inValue))
         {
-            return value->toString();
+            return static_cast<String>(*value);
         }
 
         if (const Vec3* value = std::any_cast<Vec3>(&inValue))
         {
-            return value->toString();
+            return static_cast<String>(*value);
         }
 
         if (const Vec4* value = std::any_cast<Vec4>(&inValue))
         {
-            return value->toString();
+            return static_cast<String>(*value);
         }
 
-        if (const bool* value = std::any_cast<bool>(&inValue))
+        if (const Rotator* value = std::any_cast<Rotator>(&inValue))
         {
-            return *value ? "true" : "false";
+            return static_cast<String>(*value);
         }
 
         if (const char* value = std::any_cast<char>(&inValue))
         {
-            return String(1, *value);
+            return static_cast<String>(*value);
+        }
+
+        if (const bool* value = std::any_cast<bool>(&inValue))
+        {
+            return static_cast<String>(*value);
         }
 
         if (const int* value = std::any_cast<int>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const long* value = std::any_cast<long>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const float* value = std::any_cast<float>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const double* value = std::any_cast<double>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const std::uint64_t* value = std::any_cast<std::uint64_t>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const std::uint32_t* value = std::any_cast<std::uint32_t>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const std::uint16_t* value = std::any_cast<std::uint16_t>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         if (const std::uint8_t* value = std::any_cast<std::uint8_t>(&inValue))
         {
-            return std::to_string(*value);
+            return static_cast<String>(*value);
         }
 
         return "<" + returnType + ">";
@@ -179,7 +191,23 @@ namespace Chicane
             true,
             elementIndex,
             iterable,
-            container
+            container,
+            property.isTransient()
         };
+    }
+
+    bool ReflectionTypeMethodInfo::containsName(const String& inValue) const
+    {
+        return property.containsName(inValue);
+    }
+
+    const String& ReflectionTypeMethodInfo::getName() const
+    {
+        return property.getName();
+    }
+
+    bool ReflectionTypeMethodInfo::isTransient() const
+    {
+        return property.isTransient();
     }
 }

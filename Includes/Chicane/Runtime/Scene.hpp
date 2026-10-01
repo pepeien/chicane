@@ -600,3 +600,5 @@ namespace Chicane
         std::unique_ptr<SceneScript>                                 m_sceneScript;
     };
 }
+
+#include "Chicane/Runtime/Scene/Object.inl"

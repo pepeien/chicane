@@ -10,6 +10,7 @@
 #include "Chicane/Renderer/RHI/BindGroup.hpp"
 #include "Chicane/Renderer/RHI/BindGroup/Layout.hpp"
 #include "Chicane/Renderer/RHI/Buffer.hpp"
+#include "Chicane/Renderer/Layer/Scene/Line/Geometry.hpp"
 #include "Chicane/Renderer/RHI/CommandList.hpp"
 #include "Chicane/Renderer/RHI/Device.hpp"
 #include "Chicane/Renderer/RHI/Pipeline.hpp"
@@ -18,14 +19,6 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct LSceneLineGeometry
-        {
-            RHI::Buffer vertex      = {};
-            RHI::Buffer index       = {};
-            std::size_t vertexBytes = 0;
-            std::size_t indexBytes  = 0;
-        };
-
         class CHICANE_RENDERER LSceneLine : public Layer
         {
         public:

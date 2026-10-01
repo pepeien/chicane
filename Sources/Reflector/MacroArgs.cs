@@ -39,6 +39,12 @@ namespace Reflector
             "Tooltip"
         ];
 
+        static readonly string[] TransientKeys =
+        [
+            Enum.GetStringValue(AnnotationParam.Transient),
+            "transient"
+        ];
+
         public static List<string> Split(string value)
         {
             var parts = new List<string>();
@@ -202,6 +208,33 @@ namespace Reflector
             return "";
         }
 
+        public static bool IsTransient(IEnumerable<MacroArg> args)
+        {
+            MacroArg? named = null;
+            foreach (MacroArg arg in args)
+            {
+                if (arg.IsNamed && Matches(arg.Name, TransientKeys))
+                {
+                    named = arg;
+                }
+            }
+
+            if (named.HasValue)
+            {
+                return IsTruthy(named.Value.Value);
+            }
+
+            foreach (MacroArg arg in args)
+            {
+                if (!arg.IsNamed && IsTransientToken(arg.Value))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static List<string> Aliases(IEnumerable<MacroArg> args)
         {
             var aliases = new List<string>();
@@ -218,7 +251,7 @@ namespace Reflector
                     continue;
                 }
 
-                if (!IsInclusion(arg.Value))
+                if (!IsInclusion(arg.Value) && !IsTransientToken(arg.Value))
                 {
                     Add(aliases, arg.Value);
                 }
@@ -340,6 +373,22 @@ namespace Reflector
         {
             return value.Equals(Automatic, StringComparison.OrdinalIgnoreCase) ||
                    value.Equals(Manual, StringComparison.OrdinalIgnoreCase);
+        }
+
+        static bool IsTransientToken(string value)
+        {
+            return Matches(value, TransientKeys);
+        }
+
+        static bool IsTruthy(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return true;
+            }
+
+            return value.Equals("true", StringComparison.OrdinalIgnoreCase) ||
+                   value.Equals("1", StringComparison.OrdinalIgnoreCase);
         }
 
         static bool Matches(string value, string[] names)

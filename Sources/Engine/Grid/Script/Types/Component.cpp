@@ -9,6 +9,7 @@
 #include "Chicane/Core/Script/Types.hpp"
 
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Script/Types/ComponentBox.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -22,13 +23,6 @@ namespace Chicane
         namespace Types
         {
             static constexpr inline const char* COMPONENT_METATABLE = "Chicane.Grid.Component";
-
-            struct ComponentBox
-            {
-                void*                     instance;
-                const ReflectionTypeInfo* type;
-                Component*                owner;
-            };
 
             static Component* liveOwner(const ComponentBox* inBox)
             {
@@ -108,7 +102,7 @@ namespace Chicane
                             inState,
                             "invalid argument %d for %s",
                             static_cast<int>(i) + 1,
-                            method->name.toChar()
+                            method->getName().toChar()
                         );
                     }
 
@@ -122,7 +116,7 @@ namespace Chicane
                 }
                 catch (const std::exception& error)
                 {
-                    return luaL_error(inState, "%s failed: %s", method->name.toChar(), error.what());
+                    return luaL_error(inState, "%s failed: %s", method->getName().toChar(), error.what());
                 }
             }
 

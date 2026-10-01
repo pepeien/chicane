@@ -9,19 +9,24 @@ namespace Chicane
           m_camera(nullptr)
     {}
 
-    void ACamera::onLoad()
+    void ACamera::createDefaultComponents()
     {
-        m_camera = getScene()->createComponent<CCamera>();
-        m_camera->attachTo(this);
+        m_camera = createDefaultComponent<CCamera>("Camera");
     }
 
     void ACamera::activate()
     {
-        m_camera->activate();
+        if (m_camera)
+        {
+            m_camera->activate();
+        }
     }
 
     void ACamera::deactivate()
     {
-        m_camera->deactivate();
+        if (m_camera)
+        {
+            m_camera->deactivate();
+        }
     }
 }

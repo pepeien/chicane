@@ -16,7 +16,7 @@ namespace Chicane
         ACamera();
 
     protected:
-        void onLoad() override;
+        void createDefaultComponents() override;
 
     public:
         CH_FUNCTION()

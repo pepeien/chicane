@@ -9,10 +9,9 @@ namespace Chicane
           m_sound(nullptr)
     {}
 
-    void ASound::onLoad()
+    void ASound::createDefaultComponents()
     {
-        m_sound = getScene()->createComponent<CSound>();
-        m_sound->attachTo(this);
+        m_sound = createDefaultComponent<CSound>("Sound");
     }
 
     void ASound::load(const FileSystem::Path& inFilePath)

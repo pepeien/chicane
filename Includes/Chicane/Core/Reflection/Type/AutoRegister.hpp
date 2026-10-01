@@ -2,6 +2,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Reflection.hpp"
+#include "Chicane/Core/Reflection/Property.hpp"
 #include "Chicane/Core/Reflection/Type/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 

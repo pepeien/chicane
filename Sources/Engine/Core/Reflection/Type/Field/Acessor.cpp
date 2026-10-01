@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <cstdio>
 
+#include "Chicane/Core/FileSystem/Path.hpp"
+#include "Chicane/Core/Math/Rotator.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
@@ -22,7 +24,8 @@ namespace Chicane
         bool                              bInIsIterable,
         ReflectionFieldInfo::TypeIndex    inElementIndex,
         ReflectionFieldIterable           inIterable,
-        const void*                       inBoundInstance
+        const void*                       inBoundInstance,
+        bool                              bInIsTransient
     )
         : offset(inOffset),
           ptrOffset(inPtrOffset),
@@ -34,7 +37,8 @@ namespace Chicane
           bNeedsDeref(bInNeedsDeref),
           bIsIterable(bInIsIterable),
           iterable(std::move(inIterable)),
-          boundInstance(inBoundInstance)
+          boundInstance(inBoundInstance),
+          bIsTransient(bInIsTransient)
     {}
 
     ReflectionFieldAccessor::ReflectionFieldAccessor()
@@ -48,7 +52,8 @@ namespace Chicane
           bNeedsDeref(false),
           bIsIterable(false),
           iterable({}),
-          boundInstance(nullptr)
+          boundInstance(nullptr),
+          bIsTransient(false)
     {}
 
     bool ReflectionFieldAccessor::isValid() const
@@ -177,7 +182,8 @@ namespace Chicane
             false,
             std::nullopt,
             {},
-            element
+            element,
+            false
         };
     }
 
@@ -196,7 +202,8 @@ namespace Chicane
             bIsIterable,
             elementIndex,
             iterable,
-            instance
+            instance,
+            bIsTransient
         };
     }
 
@@ -279,123 +286,89 @@ namespace Chicane
             }
         }
 
-        if (isType<Vec2>())
+        if (const String* value = getValue<String>(inInstance))
         {
-            const Vec2* v = getValue<Vec2>(inInstance);
-
-            return v ? v->toString() : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<Vec3>())
+        if (const std::string* value = getValue<std::string>(inInstance))
         {
-            const Vec3* v = getValue<Vec3>(inInstance);
-
-            return v ? v->toString() : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<Vec4>())
+        if (const FileSystem::Path* value = getValue<FileSystem::Path>(inInstance))
         {
-            const Vec4* v = getValue<Vec4>(inInstance);
-
-            return v ? v->toString() : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<String>())
+        if (const Vec2* value = getValue<Vec2>(inInstance))
         {
-            const String* v = getValue<String>(inInstance);
-
-            return v ? *v : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<std::string>())
+        if (const Vec3* value = getValue<Vec3>(inInstance))
         {
-            const std::string* v = getValue<std::string>(inInstance);
-
-            return v ? *v : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<char>())
+        if (const Vec4* value = getValue<Vec4>(inInstance))
         {
-            const char* v = getValue<char>(inInstance);
-
-            return v ? String(1, *v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<bool>())
+        if (const Rotator* value = getValue<Rotator>(inInstance))
         {
-            const bool* v = getValue<bool>(inInstance);
-
-            return v ? (*v ? "true" : "false") : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<int>())
+        if (const char* value = getValue<char>(inInstance))
         {
-            const int* v = getValue<int>(inInstance);
-
-            return v ? std::to_string(*v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<long>())
+        if (const bool* value = getValue<bool>(inInstance))
         {
-            const long* v = getValue<long>(inInstance);
-
-            return v ? std::to_string(*v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<float>())
+        if (const int* value = getValue<int>(inInstance))
         {
-            const float* v = getValue<float>(inInstance);
-            if (!v)
-            {
-                return "";
-            }
-
-            char buffer[64];
-            std::snprintf(buffer, sizeof(buffer), "%g", *v);
-
-            return buffer;
+            return static_cast<String>(*value);
         }
 
-        if (isType<double>())
+        if (const long* value = getValue<long>(inInstance))
         {
-            const double* v = getValue<double>(inInstance);
-            if (!v)
-            {
-                return "";
-            }
-
-            char buffer[64];
-            std::snprintf(buffer, sizeof(buffer), "%g", *v);
-
-            return buffer;
+            return static_cast<String>(*value);
         }
 
-        if (isType<std::uint64_t>())
+        if (const float* value = getValue<float>(inInstance))
         {
-            const std::uint64_t* v = getValue<std::uint64_t>(inInstance);
-
-            return v ? std::to_string(*v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<std::uint32_t>())
+        if (const double* value = getValue<double>(inInstance))
         {
-            const std::uint32_t* v = getValue<std::uint32_t>(inInstance);
-
-            return v ? std::to_string(*v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<std::uint16_t>())
+        if (const std::uint64_t* value = getValue<std::uint64_t>(inInstance))
         {
-            const std::uint16_t* v = getValue<std::uint16_t>(inInstance);
-
-            return v ? std::to_string(*v) : "";
+            return static_cast<String>(*value);
         }
 
-        if (isType<std::uint8_t>())
+        if (const std::uint32_t* value = getValue<std::uint32_t>(inInstance))
         {
-            const std::uint8_t* v = getValue<std::uint8_t>(inInstance);
+            return static_cast<String>(*value);
+        }
 
-            return v ? std::to_string(*v) : "";
+        if (const std::uint16_t* value = getValue<std::uint16_t>(inInstance))
+        {
+            return static_cast<String>(*value);
+        }
+
+        if (const std::uint8_t* value = getValue<std::uint8_t>(inInstance))
+        {
+            return static_cast<String>(*value);
         }
 
         if (elementIndex.has_value())

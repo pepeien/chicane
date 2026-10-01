@@ -8,10 +8,10 @@ class Sun : public Chicane::ALight
 {
 public:
     CH_CONSTRUCTOR()
-    Sun();
+        Sun();
 
-protected:
-    void onLoad() override;
+    protected:
+        void createDefaultComponents() override;
 
 private:
     float m_distance;

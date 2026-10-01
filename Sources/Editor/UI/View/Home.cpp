@@ -854,7 +854,7 @@ namespace Editor
 
     void HomeView::onItemDelete()
     {
-        if (!selectedItem || selectedItem->isTransient())
+        if (!selectedItem || selectedItem->isTransient() || selectedItem->isNative())
         {
             return;
         }
@@ -1164,7 +1164,9 @@ namespace Editor
     {
         if (std::shared_ptr<Scene> scene = editorScene())
         {
-            onItemSelection(scene->createActor<Chicane::Actor>());
+            Chicane::Actor* actor = scene->createActor<Chicane::Actor>();
+            actor->setOrigin(Chicane::ObjectOrigin::Instance);
+            onItemSelection(actor);
         }
     }
 
@@ -1186,7 +1188,9 @@ namespace Editor
 
         try
         {
-            onItemSelection(scene->createActorFromTag(inTypeName));
+            Chicane::Actor* actor = scene->createActorFromTag(inTypeName);
+            actor->setOrigin(Chicane::ObjectOrigin::Instance);
+            onItemSelection(actor);
 
             return;
         }
@@ -1217,8 +1221,10 @@ namespace Editor
         if (!parent || parent->isTransient())
         {
             parent = scene->createActor<Chicane::Actor>();
+            parent->setOrigin(Chicane::ObjectOrigin::Instance);
         }
 
+        component->setOrigin(Chicane::ObjectOrigin::Instance);
         component->attachTo(parent);
         component->activate();
         onItemSelection(component);
@@ -1565,12 +1571,12 @@ namespace Editor
     {
         for (const Chicane::ReflectionFieldInfo& info : inType.fields)
         {
-            if (info.names.empty() || info.bIsIterable)
+            if (info.getNames().empty() || info.bIsIterable)
             {
                 continue;
             }
 
-            const Chicane::String name = info.names.front();
+            const Chicane::String name = info.getName();
             if (name.equals("angles", "right", "forward", "up"))
             {
                 continue;
@@ -1588,14 +1594,19 @@ namespace Editor
                 continue;
             }
 
-            Chicane::String group = info.group;
-            if (group.isEmpty())
+            Chicane::String group        = info.getGroup();
+            const bool      bIsTypeGroup = !group.isEmpty() && group.equals(inType.getGroup());
+            if (!inFallbackGroup.isEmpty() && (group.isEmpty() || bIsTypeGroup))
             {
                 group = inFallbackGroup;
             }
-            if (group.isEmpty())
+            else if (group.isEmpty())
             {
-                group = typeGroupLabel(inRoot.group);
+                group = inType.getGroup();
+                if (group.isEmpty())
+                {
+                    group = typeGroupLabel(inRoot.getGroup());
+                }
             }
 
             if (info.bIsPointer || !isLeafAttribute(accessor, name))
@@ -1613,7 +1624,7 @@ namespace Editor
             field.name        = path;
             field.label       = name;
             field.group       = group;
-            field.description = info.description;
+            field.description = info.getDescription();
             field.type        = AttributeFieldType::Text;
 
             if (const Chicane::ReflectionEnumInfo* enumeration = findEnum(accessor.typeName))

@@ -7,7 +7,7 @@ namespace Chicane
 {
     CView::CView()
         : Component(),
-          m_settings({}),
+          ViewSettings(),
           m_frustum({}),
           m_data({}),
           m_focusPoint(Vec3::sZero()),
@@ -24,6 +24,17 @@ namespace Chicane
         }
 
         inParent->addBounds(getBounds());
+    }
+
+    void CView::onPropertyEdited(const String& inName)
+    {
+        const std::vector<String> parts = inName.split('.');
+        const String              name  = parts.empty() ? inName : parts.back();
+
+        if (name.equals("projection"))
+        {
+            updateProjection();
+        }
     }
 
     void CView::onTransform()
@@ -51,7 +62,7 @@ namespace Chicane
 
     const Vec<2, std::uint32_t>& CView::getViewport() const
     {
-        return m_settings.viewport;
+        return viewport;
     }
 
     void CView::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
@@ -61,12 +72,12 @@ namespace Chicane
 
     void CView::setViewport(const Vec<2, std::uint32_t>& inViewport)
     {
-        m_settings.viewport    = inViewport;
-        m_settings.aspectRatio = 0;
+        viewport    = inViewport;
+        aspectRatio = 0;
 
         if (inViewport.x > 0 && inViewport.y > 0)
         {
-            m_settings.aspectRatio = (float)m_settings.viewport.x / m_settings.viewport.y;
+            aspectRatio = (float)viewport.x / viewport.y;
         }
 
         updateProjection();
@@ -74,24 +85,24 @@ namespace Chicane
 
     float CView::getAspectRatio() const
     {
-        return m_settings.aspectRatio;
+        return aspectRatio;
     }
 
     float CView::getFieldOfView() const
     {
-        return m_settings.fieldOfView;
+        return fieldOfView;
     }
 
     void CView::setFieldOfView(float inFov)
     {
-        m_settings.fieldOfView = inFov;
+        fieldOfView = inFov;
 
         updateProjection();
     }
 
     float CView::getNearClip() const
     {
-        return m_settings.nearClip;
+        return nearClip;
     }
 
     void CView::setNearClip(float inNearClip)
@@ -101,14 +112,14 @@ namespace Chicane
             return;
         }
 
-        m_settings.nearClip = inNearClip;
+        nearClip = inNearClip;
 
         updateProjection();
     }
 
     float CView::getFarClip() const
     {
-        return m_settings.farClip;
+        return farClip;
     }
 
     void CView::setFarClip(float inFarClip)
@@ -118,7 +129,7 @@ namespace Chicane
             return;
         }
 
-        m_settings.farClip = inFarClip;
+        farClip = inFarClip;
 
         updateProjection();
     }
@@ -143,12 +154,12 @@ namespace Chicane
 
     const ViewProjectionType CView::getProjectionType() const
     {
-        return m_settings.projection;
+        return projection;
     }
 
     void CView::setProjectionType(ViewProjectionType inType)
     {
-        m_settings.projection = inType;
+        projection = inType;
 
         updateProjection();
     }
@@ -173,14 +184,14 @@ namespace Chicane
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
 
-        switch (m_settings.projection)
+        switch (projection)
         {
         case ViewProjectionType::Orthographic:
             m_data.projection = Mat4::sOrtho(
-                -static_cast<float>(m_settings.viewport.x),
-                static_cast<float>(m_settings.viewport.x),
-                -static_cast<float>(m_settings.viewport.y),
-                static_cast<float>(m_settings.viewport.y),
+                -static_cast<float>(viewport.x),
+                static_cast<float>(viewport.x),
+                -static_cast<float>(viewport.y),
+                static_cast<float>(viewport.y),
                 m_data.clip.x,
                 m_data.clip.y
             );
@@ -189,7 +200,7 @@ namespace Chicane
 
         case ViewProjectionType::Perspective:
             m_data.projection = Mat4::sPerspective(
-                getFieldOfView() * Math::DEG_TO_RAD, m_settings.aspectRatio, m_data.clip.x, m_data.clip.y
+                getFieldOfView() * Math::DEG_TO_RAD, aspectRatio, m_data.clip.x, m_data.clip.y
             );
 
             break;
@@ -198,7 +209,7 @@ namespace Chicane
             break;
         }
 
-        m_frustum.update(this, m_settings);
+        m_frustum.update(this, *this);
     }
 
     void CView::updateView()
@@ -207,6 +218,6 @@ namespace Chicane
 
         m_data.view = (getMatrix() * viewBasis).inverse();
 
-        m_frustum.update(this, m_settings);
+        m_frustum.update(this, *this);
     }
 }

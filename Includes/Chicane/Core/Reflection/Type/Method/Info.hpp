@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Reflection/Property.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Acessor.hpp"
 #include "Chicane/Core/Reflection/Type/Field/Iterable.hpp"
 #include "Chicane/Core/String.hpp"
@@ -24,7 +25,7 @@ namespace Chicane
 
     public:
         ReflectionTypeMethodInfo(
-            String                  inName,
+            ReflectionProperty      inProperty,
             String                  inReturnType,
             std::vector<String>     inParamTypes,
             Invoker                 inInvoker,
@@ -45,8 +46,12 @@ namespace Chicane
         bool isIterable() const;
         ReflectionFieldAccessor makeAccessor(const std::any& inValue) const;
 
+        bool containsName(const String& inValue) const;
+        const String& getName() const;
+        bool isTransient() const;
+
     public:
-        String                  name;
+        ReflectionProperty      property;
         String                  returnType;
         std::vector<String>     paramTypes;
         bool                    bIsIterable;

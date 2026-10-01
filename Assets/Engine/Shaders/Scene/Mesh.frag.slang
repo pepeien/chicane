@@ -178,7 +178,8 @@ float4 main(VSOut inData) : SV_Target
                 gLights[0].projections[cascade],
                 inData.meshPosition,
                 normal,
-                lightDirection
+                lightDirection,
+                gLights[0].info.y
             );
         }
 

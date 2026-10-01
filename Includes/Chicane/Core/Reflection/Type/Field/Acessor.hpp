@@ -25,7 +25,8 @@ namespace Chicane
             bool                              bInIsIterable,
             ReflectionFieldInfo::TypeIndex    inElementIndex,
             ReflectionFieldIterable           inIterable,
-            const void*                       inBoundInstance
+            const void*                       inBoundInstance,
+            bool                              bInIsTransient = false
         );
         ReflectionFieldAccessor();
 
@@ -138,5 +139,6 @@ namespace Chicane
         bool                           bIsIterable;
         ReflectionFieldIterable        iterable;
         const void*                    boundInstance;
+        bool                           bIsTransient;
     };
 }

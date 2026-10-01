@@ -13,16 +13,19 @@ namespace Chicane
 {
     struct XmlDocumentWriter : pugi::xml_writer
     {
-        std::string data;
-
+    public:
         void write(const void* inData, size_t inSize) override
         {
             data.append(static_cast<const char*>(inData), inSize);
         }
+
+    public:
+        std::string data;
     };
 
     struct XmlDocumentImpl
     {
+    public:
         pugi::xml_document document;
     };
 

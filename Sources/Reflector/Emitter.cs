@@ -43,6 +43,17 @@ namespace Reflector
         static string EmitString(string value)
             => (value ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"");
 
+        static string EmitProperty(PropertyModel property)
+        {
+            return (
+                $"Chicane::ReflectionProperty(" +
+                $"{{{string.Join(" ,", property.Names.Select(n => $"\"{n}\""))}}}, " +
+                $"\"{EmitString(property.Group)}\", " +
+                $"\"{EmitString(property.Description)}\", " +
+                $"{(property.IsTransient ? "true" : "false")})"
+            );
+        }
+
         static string SafeIdentifier(string qualifiedName)
             => qualifiedName.Replace("::", "_");
 
@@ -137,7 +148,7 @@ namespace Reflector
 
             sb.AppendLine($"inline Chicane::ReflectionTypeAutoRegister _reg_{safeId}(");
             sb.AppendLine($"\tChicane::ReflectionTypeInfo(");
-            sb.AppendLine($"\t\t{{{string.Join(" ,", t.Names.Select(n => $"\"{n}\""))}}},");
+            sb.AppendLine($"\t\t{EmitProperty(t.Property)},");
             sb.AppendLine($"\t\tsizeof({t.Name}),");
             sb.AppendLine($"\t\tstd::type_index(typeid({t.Name})),");
 
@@ -212,7 +223,7 @@ namespace Reflector
 
                 sb.AppendLine(
                     $"\t\t\t{{\n" +
-                    $"\t\t\t\t\"{f.Name}\",\n" +
+                    $"\t\t\t\t{EmitProperty(f.Property)},\n" +
                     $"\t\t\t\t\"{f.ReturnType}\",\n" +
                     $"\t\t\t\t{{{string.Join(" ,", f.ParamTypes.Select(p => $"\"{p}\""))}}},\n" +
                     $"\t\t\t\t[](void* inInstance, std::vector<std::any> inParams) -> std::any\n" +
@@ -245,7 +256,7 @@ namespace Reflector
 
                 sb.AppendLine(
                     $"\t\t\t{{\n" +
-                    $"\t\t\t\t{{{string.Join(" ,", f.Names.Select(p => $"\"{p}\""))}}},\n" +
+                    $"\t\t\t\t{EmitProperty(f.Property)},\n" +
                     $"\t\t\t\t\"{f.TypeName}\",\n" +
                     $"\t\t\t\toffsetof({t.Name}, {f.Name}),\n" +
                     $"\t\t\t\tsizeof({(f.IsPointer ? "void*" : f.TypeName)}),\n" +
@@ -254,16 +265,11 @@ namespace Reflector
                     $"\t\t\t\t{(f.IsPointer ? "true" : "false")},\n" +
                     $"\t\t\t\t{(f.IsIterable ? "true" : "false")},\n" +
                     $"\t\t\t\t{(string.IsNullOrEmpty(f.ElementName) ? "std::nullopt" : $"std::type_index(typeid({f.ElementName}))")},\n" +
-                    EmitIterable(f.TypeName, f.IsIterable, f.ElementName, f.IsElementPointer) +
-                    $",\n" +
-                    $"\t\t\t\t\"{EmitString(f.Group)}\",\n" +
-                    $"\t\t\t\t\"{EmitString(f.Description)}\"\n" +
+                    EmitIterable(f.TypeName, f.IsIterable, f.ElementName, f.IsElementPointer) + "\n" +
                     $"\t\t\t}},"
                 );
             }
-            sb.AppendLine("\t\t},");
-            sb.AppendLine($"\t\t\"{EmitString(t.Group)}\",");
-            sb.AppendLine($"\t\t\"{EmitString(t.Description)}\"");
+            sb.AppendLine("\t\t}");
             sb.AppendLine("\t)");
             sb.AppendLine(");");
             sb.AppendLine();

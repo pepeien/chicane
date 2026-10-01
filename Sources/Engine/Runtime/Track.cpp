@@ -2,7 +2,11 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <mutex>
 #include <stdexcept>
+#include <typeindex>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Rotator.hpp"
@@ -138,22 +142,117 @@ namespace Chicane
             return ReflectionTypeRegistry::sInstance().find(inField.typeIndex.value());
         }
 
-        static void writeFields(
+        static String fieldValue(const ReflectionFieldAccessor& inAccessor, const Object& inObject)
+        {
+            if (findEnum(inAccessor.typeName))
+            {
+                return enumToString(inAccessor, &inObject);
+            }
+
+            return inAccessor.toString(&inObject);
+        }
+
+        static Scene& defaultsScene()
+        {
+            static Scene scene;
+
+            return scene;
+        }
+
+        static const Object* classDefaultObject(const Object& inObject)
+        {
+            static std::mutex                                     mutex;
+            static std::unordered_map<std::type_index, Object*> cache;
+
+            const std::type_index index(typeid(inObject));
+            std::lock_guard<std::mutex> lock(mutex);
+
+            auto found = cache.find(index);
+            if (found != cache.end())
+            {
+                return found->second;
+            }
+
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(index);
+            if (!type)
+            {
+                return nullptr;
+            }
+
+            Object* instance = nullptr;
+            try
+            {
+                instance = type->create<Object>({});
+            }
+            catch (const std::exception&)
+            {
+                return nullptr;
+            }
+
+            if (!instance)
+            {
+                return nullptr;
+            }
+
+            Actor*     actor     = dynamic_cast<Actor*>(instance);
+            Component* component = actor ? nullptr : dynamic_cast<Component*>(instance);
+            if (actor)
+            {
+                defaultsScene().adoptActor(actor);
+            }
+            else if (component)
+            {
+                defaultsScene().adoptComponent(component);
+            }
+            else
+            {
+                delete instance;
+
+                return nullptr;
+            }
+
+            cache[index] = instance;
+
+            return instance;
+        }
+
+        static const Object* findChildById(const Object* inParent, const String& inId)
+        {
+            if (!inParent || inId.isEmpty())
+            {
+                return nullptr;
+            }
+
+            for (Object* attachment : inParent->getAttachments())
+            {
+                if (attachment && attachment->getId().equals(inId))
+                {
+                    return attachment;
+                }
+            }
+
+            return nullptr;
+        }
+
+        static bool writeFields(
             XmlNode&                  outNode,
             const Object&             inObject,
             const ReflectionTypeInfo& inRoot,
             const ReflectionTypeInfo& inType,
-            const String&             inPrefix
+            const String&             inPrefix,
+            const Object*             inBaseline
         )
         {
+            bool dirty = false;
+
             for (const ReflectionFieldInfo& field : inType.fields)
             {
-                if (field.names.empty() || field.bIsPointer || field.bIsIterable)
+                if (field.isTransient() || field.getNames().empty() || field.bIsPointer || field.bIsIterable)
                 {
                     continue;
                 }
 
-                const String name = field.names.front();
+                const String name = field.getName();
                 if (inPrefix.isEmpty() && isTransformAttribute(name))
                 {
                     continue;
@@ -161,7 +260,7 @@ namespace Chicane
 
                 const String                  path     = inPrefix.isEmpty() ? name : inPrefix + "." + name;
                 const ReflectionFieldAccessor accessor = inRoot.resolve(path);
-                if (!accessor.isValid())
+                if (!accessor.isValid() || accessor.bIsTransient)
                 {
                     continue;
                 }
@@ -170,57 +269,119 @@ namespace Chicane
                 {
                     if (const ReflectionTypeInfo* nested = nestedFieldType(field))
                     {
-                        writeFields(outNode, inObject, inRoot, *nested, path);
+                        dirty = writeFields(outNode, inObject, inRoot, *nested, path, inBaseline) || dirty;
                     }
 
                     continue;
                 }
 
-                String value;
-                if (findEnum(accessor.typeName))
+                const String value = fieldValue(accessor, inObject);
+                if (inBaseline)
                 {
-                    value = enumToString(accessor, &inObject);
+                    const ReflectionTypeInfo* baselineType =
+                        ReflectionTypeRegistry::sInstance().find(typeid(*inBaseline));
+                    if (baselineType)
+                    {
+                        const ReflectionFieldAccessor baselineAccessor = baselineType->resolve(path);
+                        if (baselineAccessor.isValid() && value.equals(fieldValue(baselineAccessor, *inBaseline)))
+                        {
+                            continue;
+                        }
+                    }
                 }
-                else if (accessor.isType<FileSystem::Path>())
-                {
-                    const FileSystem::Path* filePath = accessor.getValue<FileSystem::Path>(&inObject);
-                    value                            = filePath ? filePath->toString() : String::sEmpty();
-                }
-                else if (accessor.isType<Vec3>())
-                {
-                    const Vec3* vector = accessor.getValue<Vec3>(&inObject);
-                    value              = vector ? formatVec3(*vector) : String::sEmpty();
-                }
-                else
-                {
-                    value = accessor.toString(&inObject);
-                }
-
-                if (value.isEmpty())
+                else if (value.isEmpty())
                 {
                     continue;
                 }
 
                 Xml::addAttribute(outNode, path, value);
+                dirty = true;
             }
+
+            return dirty;
         }
 
-        static void writeFields(XmlNode& outNode, const Object& inObject)
+        static bool writeFields(XmlNode& outNode, const Object& inObject, const Object* inBaseline)
         {
             const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(inObject));
             if (!type)
             {
-                return;
+                return false;
             }
 
-            writeFields(outNode, inObject, *type, *type, {});
+            return writeFields(outNode, inObject, *type, *type, {}, inBaseline);
         }
 
-        static void writeObject(XmlNode& outParent, const Object& inObject)
+        static bool writeTransforms(XmlNode& outNode, const Object& inObject, const Object* inBaseline)
         {
-            if (inObject.isTransient())
+            bool dirty = false;
+
+            const auto writeAxis = [&](const char* inName, const String& inValue, const String& inBaselineValue, bool bIdentity)
             {
-                return;
+                if (inBaseline)
+                {
+                    if (inValue.equals(inBaselineValue))
+                    {
+                        return;
+                    }
+                }
+                else if (bIdentity)
+                {
+                    return;
+                }
+
+                Xml::addAttribute(outNode, inName, inValue);
+                dirty = true;
+            };
+
+            if (inObject.isAttached())
+            {
+                const bool   identity = isRelativeIdentity(inObject);
+                const String translation = formatVec3(inObject.getRelativeTranslation());
+                const String rotation    = formatVec3(inObject.getRelativeRotation().getAngles());
+                const String scale       = formatVec3(inObject.getRelativeScale());
+                const String baselineTranslation =
+                    inBaseline ? formatVec3(inBaseline->getRelativeTranslation()) : String::sEmpty();
+                const String baselineRotation =
+                    inBaseline ? formatVec3(inBaseline->getRelativeRotation().getAngles()) : String::sEmpty();
+                const String baselineScale = inBaseline ? formatVec3(inBaseline->getRelativeScale()) : String::sEmpty();
+
+                writeAxis(RELATIVE_TRANSLATION_ATTRIBUTE_NAME, translation, baselineTranslation, identity);
+                writeAxis(RELATIVE_ROTATION_ATTRIBUTE_NAME, rotation, baselineRotation, identity);
+                writeAxis(RELATIVE_SCALE_ATTRIBUTE_NAME, scale, baselineScale, identity);
+            }
+            else
+            {
+                const bool   identity = isAbsoluteIdentity(inObject);
+                const String translation = formatVec3(inObject.getTranslation());
+                const String rotation    = formatVec3(inObject.getRotation().getAngles());
+                const String scale       = formatVec3(inObject.getScale());
+                const String baselineTranslation =
+                    inBaseline ? formatVec3(inBaseline->getTranslation()) : String::sEmpty();
+                const String baselineRotation =
+                    inBaseline ? formatVec3(inBaseline->getRotation().getAngles()) : String::sEmpty();
+                const String baselineScale = inBaseline ? formatVec3(inBaseline->getScale()) : String::sEmpty();
+
+                writeAxis(ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME, translation, baselineTranslation, identity);
+                writeAxis(ABSOLUTE_ROTATION_ATTRIBUTE_NAME, rotation, baselineRotation, identity);
+                writeAxis(ABSOLUTE_SCALE_ATTRIBUTE_NAME, scale, baselineScale, identity);
+            }
+
+            return dirty;
+        }
+
+        static bool writeObject(XmlNode& outParent, const Object& inObject, const Object* inBaseline)
+        {
+            const ObjectOrigin origin = inObject.getOrigin();
+            if (origin == ObjectOrigin::Spawned || origin == ObjectOrigin::Transient)
+            {
+                return false;
+            }
+
+            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(inObject));
+            if (type && type->isTransient())
+            {
+                return false;
             }
 
             String tag = inObject.getTypeName();
@@ -232,35 +393,8 @@ namespace Chicane
             XmlNode node = outParent.appendChild(tag.toChar());
             Xml::addAttribute(node, ID_ATTRIBUTE_NAME, inObject.getId());
 
-            if (inObject.isAttached())
-            {
-                if (!isRelativeIdentity(inObject))
-                {
-                    Xml::addAttribute(
-                        node,
-                        RELATIVE_TRANSLATION_ATTRIBUTE_NAME,
-                        formatVec3(inObject.getRelativeTranslation())
-                    );
-                    Xml::addAttribute(
-                        node,
-                        RELATIVE_ROTATION_ATTRIBUTE_NAME,
-                        formatVec3(inObject.getRelativeRotation().getAngles())
-                    );
-                    Xml::addAttribute(node, RELATIVE_SCALE_ATTRIBUTE_NAME, formatVec3(inObject.getRelativeScale()));
-                }
-            }
-            else if (!isAbsoluteIdentity(inObject))
-            {
-                Xml::addAttribute(node, ABSOLUTE_TRANSLATION_ATTRIBUTE_NAME, formatVec3(inObject.getTranslation()));
-                Xml::addAttribute(
-                    node,
-                    ABSOLUTE_ROTATION_ATTRIBUTE_NAME,
-                    formatVec3(inObject.getRotation().getAngles())
-                );
-                Xml::addAttribute(node, ABSOLUTE_SCALE_ATTRIBUTE_NAME, formatVec3(inObject.getScale()));
-            }
-
-            writeFields(node, inObject);
+            bool dirty = writeTransforms(node, inObject, inBaseline);
+            dirty      = writeFields(node, inObject, inBaseline) || dirty;
 
             for (Object* attachment : inObject.getAttachments())
             {
@@ -269,8 +403,32 @@ namespace Chicane
                     continue;
                 }
 
-                writeObject(node, *attachment);
+                const Object* childBaseline = nullptr;
+                if (attachment->isNative())
+                {
+                    childBaseline = findChildById(inBaseline, attachment->getId());
+                }
+                else
+                {
+                    childBaseline = classDefaultObject(*attachment);
+                }
+
+                dirty = writeObject(node, *attachment, childBaseline) || dirty;
             }
+
+            if (inObject.isNative() && !dirty)
+            {
+                outParent.removeChild(node);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        static bool writeObject(XmlNode& outParent, const Object& inObject)
+        {
+            return writeObject(outParent, inObject, classDefaultObject(inObject));
         }
 
         const ReflectionTypeInfo* findType(const String& inTag)
@@ -304,11 +462,81 @@ namespace Chicane
             inObject.parse(inNode);
         }
 
-        Object* spawnObject(Scene& inScene, const XmlNode& inNode, Object* inParent)
+        static Object* findNativeMatch(
+            Object& inParent, const XmlNode& inNode, const std::unordered_set<Object*>& inConsumed
+        )
+        {
+            const String id = inNode.getAttribute(ID_ATTRIBUTE_NAME);
+            if (!id.isEmpty())
+            {
+                for (Object* attachment : inParent.getAttachments())
+                {
+                    if (!attachment || !attachment->isNative() || inConsumed.find(attachment) != inConsumed.end())
+                    {
+                        continue;
+                    }
+
+                    if (attachment->getId().equals(id))
+                    {
+                        return attachment;
+                    }
+                }
+            }
+
+            const ReflectionTypeInfo* type = findType(inNode.getName());
+            if (!type || !type->typeIndex.has_value())
+            {
+                return nullptr;
+            }
+
+            Object*     unique = nullptr;
+            std::size_t count  = 0;
+            for (Object* attachment : inParent.getAttachments())
+            {
+                if (!attachment || !attachment->isNative() || inConsumed.find(attachment) != inConsumed.end())
+                {
+                    continue;
+                }
+
+                if (std::type_index(typeid(*attachment)) != type->typeIndex.value())
+                {
+                    continue;
+                }
+
+                unique = attachment;
+                count++;
+            }
+
+            return count == 1 ? unique : nullptr;
+        }
+
+        static Object* spawnObject(
+            Scene& inScene, const XmlNode& inNode, Object* inParent, std::unordered_set<Object*>& ioConsumed
+        )
         {
             if (inNode.empty() || !inNode.isElement())
             {
                 return nullptr;
+            }
+
+            if (inParent)
+            {
+                if (Object* native = findNativeMatch(*inParent, inNode, ioConsumed))
+                {
+                    ioConsumed.insert(native);
+
+                    const String nativeId = native->getId();
+                    applyAttributes(*native, inNode);
+                    native->setId(nativeId);
+
+                    std::unordered_set<Object*> childConsumed;
+                    for (XmlNode child : inNode.getChildren())
+                    {
+                        spawnObject(inScene, child, native, childConsumed);
+                    }
+
+                    return native;
+                }
             }
 
             const ReflectionTypeInfo* type = findType(inNode.getName());
@@ -332,7 +560,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            applyAttributes(*instance, inNode);
+            instance->setOrigin(ObjectOrigin::Instance);
 
             if (actor)
             {
@@ -343,9 +571,17 @@ namespace Chicane
                 inScene.adoptComponent(component);
             }
 
+            applyAttributes(*instance, inNode);
+
             if (inParent)
             {
                 instance->attachTo(inParent);
+            }
+
+            std::unordered_set<Object*> childConsumed;
+            for (XmlNode child : inNode.getChildren())
+            {
+                spawnObject(inScene, child, instance, childConsumed);
             }
 
             if (component)
@@ -353,12 +589,14 @@ namespace Chicane
                 component->activate();
             }
 
-            for (XmlNode child : inNode.getChildren())
-            {
-                spawnObject(inScene, child, instance);
-            }
-
             return instance;
+        }
+
+        Object* spawnObject(Scene& inScene, const XmlNode& inNode, Object* inParent)
+        {
+            std::unordered_set<Object*> consumed;
+
+            return spawnObject(inScene, inNode, inParent, consumed);
         }
 
         Actor* spawnActor(Scene& inScene, const XmlNode& inNode)

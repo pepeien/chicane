@@ -352,7 +352,7 @@ namespace Chicane
 
                 const String prefix = "Chicane::Grid::";
 
-                for (const String& name : type->names)
+                for (const String& name : type->getNames())
                 {
                     String selector = name;
                     if (selector.startsWith(prefix))

@@ -19,80 +19,18 @@
 #include "Chicane/Drift/Loop.hpp"
 #include "Chicane/Drift/Track.hpp"
 
+#include "Chicane/Grid/Component/LayoutMetrics.hpp"
+#include "Chicane/Grid/Component/Loading.hpp"
+#include "Chicane/Grid/Component/Projection.hpp"
+#include "Chicane/Grid/Component/Scope.hpp"
 #include "Chicane/Grid/Component/Scrollable.hpp"
+#include "Chicane/Grid/Component/StyleMatch.hpp"
 #include "Chicane/Grid/Component/View.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        thread_local Component*               g_scope     = nullptr;
-        thread_local std::vector<Component*>* g_projected = nullptr;
-
-        struct Scope
-        {
-        public:
-            explicit Scope(Component* inComponent)
-                : previous(g_scope)
-            {
-                g_scope = inComponent;
-            }
-
-            ~Scope() { g_scope = previous; }
-
-        public:
-            Component* previous = nullptr;
-        };
-
-        struct LayoutMetrics
-        {
-            StyleDisplay       display;
-            StylePosition      position;
-            StyleAlignment     align;
-            StyleFlexDirection flexDir;
-            StyleFlexWrap      flexWrap;
-            StyleWordBreak     wordBreak;
-            String             widthRaw;
-            String             heightRaw;
-            String             minWidthRaw;
-            String             minHeightRaw;
-            String             maxWidthRaw;
-            String             maxHeightRaw;
-            String             marginL;
-            String             marginR;
-            String             marginT;
-            String             marginB;
-            String             paddingL;
-            String             paddingR;
-            String             paddingT;
-            String             paddingB;
-        };
-
-        bool operator==(const LayoutMetrics& inLeft, const LayoutMetrics& inRight)
-        {
-            return inLeft.display == inRight.display && inLeft.position == inRight.position &&
-                   inLeft.align == inRight.align && inLeft.flexDir == inRight.flexDir &&
-                   inLeft.flexWrap == inRight.flexWrap && inLeft.wordBreak == inRight.wordBreak &&
-                   inLeft.widthRaw.equals(inRight.widthRaw) && inLeft.heightRaw.equals(inRight.heightRaw) &&
-                   inLeft.minWidthRaw.equals(inRight.minWidthRaw) && inLeft.minHeightRaw.equals(inRight.minHeightRaw) &&
-                   inLeft.maxWidthRaw.equals(inRight.maxWidthRaw) && inLeft.maxHeightRaw.equals(inRight.maxHeightRaw) &&
-                   inLeft.marginL.equals(inRight.marginL) && inLeft.marginR.equals(inRight.marginR) &&
-                   inLeft.marginT.equals(inRight.marginT) && inLeft.marginB.equals(inRight.marginB) &&
-                   inLeft.paddingL.equals(inRight.paddingL) && inLeft.paddingR.equals(inRight.paddingR) &&
-                   inLeft.paddingT.equals(inRight.paddingT) && inLeft.paddingB.equals(inRight.paddingB);
-        }
-
-        static LayoutMetrics captureLayoutMetrics(const Style& inStyle)
-        {
-            return {inStyle.display.get(),          inStyle.position.get(),         inStyle.align.get(),
-                    inStyle.flex.direction.get(),   inStyle.flex.wrap.get(),        inStyle.wordBreak.get(),
-                    inStyle.width.value.getRaw(),   inStyle.height.value.getRaw(),  inStyle.width.min.getRaw(),
-                    inStyle.height.min.getRaw(),    inStyle.width.max.getRaw(),     inStyle.height.max.getRaw(),
-                    inStyle.margin.left.getRaw(),   inStyle.margin.right.getRaw(),  inStyle.margin.top.getRaw(),
-                    inStyle.margin.bottom.getRaw(), inStyle.padding.left.getRaw(),  inStyle.padding.right.getRaw(),
-                    inStyle.padding.top.getRaw(),   inStyle.padding.bottom.getRaw()};
-        }
-
         static bool isNonFillPercent(const StyleSize& inSize)
         {
             const String raw = inSize.value.getRaw().trim();
@@ -329,36 +267,6 @@ namespace Chicane
             return converted;
         }
 
-        struct Projection
-        {
-        public:
-            explicit Projection(std::vector<Component*>& inChildren)
-                : previous(g_projected)
-            {
-                g_projected = &inChildren;
-            }
-
-            ~Projection() { g_projected = previous; }
-
-        public:
-            std::vector<Component*>* previous = nullptr;
-        };
-
-        struct Loading
-        {
-        public:
-            Loading(std::vector<String>& inStack, const String& inPath)
-                : stack(inStack)
-            {
-                stack.push_back(inPath);
-            }
-
-            ~Loading() { stack.pop_back(); }
-
-        public:
-            std::vector<String>& stack;
-        };
-
         Component* Component::sCreate(const XmlNode& inNode)
         {
             if (inNode.empty() || !inNode.isElement() || sIsContentSlot(inNode))
@@ -384,9 +292,9 @@ namespace Chicane
                 }
             }
 
-            if (!type && g_scope)
+            if (!type && Scope::sCurrent())
             {
-                type = g_scope->findImported(tag);
+                type = Scope::sCurrent()->findImported(tag);
             }
 
             if (!type)
@@ -397,7 +305,7 @@ namespace Chicane
             Component* instance = type->create<Component>({inNode});
             if (instance)
             {
-                instance->m_importOwner = g_scope;
+                instance->m_importOwner = Scope::sCurrent();
             }
 
             return instance;
@@ -705,14 +613,6 @@ namespace Chicane
 
                 return;
             }
-
-            struct StyleMatch
-            {
-                std::uint32_t       origin      = 0;
-                std::uint32_t       specificity = 0;
-                std::uint32_t       order       = 0;
-                const StyleRuleset* source      = nullptr;
-            };
 
             std::vector<StyleMatch> matches;
             std::uint32_t           order = 0;
@@ -1658,14 +1558,14 @@ namespace Chicane
 
             if (bStyleRefreshed)
             {
-                const LayoutMetrics before = captureLayoutMetrics(style);
+                const LayoutMetrics before = LayoutMetrics::sCapture(style);
 
                 refreshStyleRuleset();
                 setFlag(ComponentDirty::Style, false);
                 refreshStyle();
                 setFlag(ComponentDirty::Text);
 
-                if (!(before == captureLayoutMetrics(style)))
+                if (!(before == LayoutMetrics::sCapture(style)))
                 {
                     markLayoutDirty();
                 }
@@ -3302,9 +3202,9 @@ namespace Chicane
             const Style& style = inChild->getStyle();
             Vec2         size  = inChild->getContentSize();
 
-            const Style& parentStyle      = getStyle();
-            const bool   bIsWidthAuto     = isWidthAuto(style);
-            const bool   bIsHeightAuto    = isHeightAuto(style);
+            const Style& parentStyle        = getStyle();
+            const bool   bIsWidthAuto       = isWidthAuto(style);
+            const bool   bIsHeightAuto      = isHeightAuto(style);
             const bool   bIsWidthIntrinsic  = isWidthIntrinsicAuto(style, parentStyle);
             const bool   bIsHeightIntrinsic = isHeightIntrinsicAuto(style, parentStyle);
 
@@ -3921,7 +3821,8 @@ namespace Chicane
 
         void Component::addProjectedContent(const XmlNode& inSlot)
         {
-            if (!g_projected || g_projected->empty())
+            std::vector<Component*>* projected = Projection::sCurrent();
+            if (!projected || projected->empty())
             {
                 return;
             }
@@ -3929,9 +3830,9 @@ namespace Chicane
             const String select = inSlot.parseString(CONTENT_SELECT_ATTRIBUTE_NAME, String::sEmpty()).trim();
 
             std::vector<Component*> leftover;
-            leftover.reserve(g_projected->size());
+            leftover.reserve(projected->size());
 
-            for (Component* child : *g_projected)
+            for (Component* child : *projected)
             {
                 if (!child)
                 {
@@ -3948,7 +3849,7 @@ namespace Chicane
                 leftover.push_back(child);
             }
 
-            *g_projected = std::move(leftover);
+            *projected = std::move(leftover);
         }
 
         void Component::refreshClassName()

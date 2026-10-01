@@ -135,7 +135,9 @@ void Scene::spawnApples()
         {
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
-                createActor<Apple>()->setInitialPosition(position);
+                Apple* apple = createActor<Apple>();
+                apple->setOrigin(Chicane::ObjectOrigin::Spawned);
+                apple->setInitialPosition(position);
 
                 position.x += APPLE_STEP;
             }

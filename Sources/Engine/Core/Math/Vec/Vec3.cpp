@@ -12,6 +12,6 @@ namespace Chicane
 
     String Vec3::toString() const
     {
-        return String::sSprint("[%.2f, %.2f, %.2f]", x, y, z);
+        return String::sSprint("%.2f, %.2f, %.2f", x, y, z);
     }
 }

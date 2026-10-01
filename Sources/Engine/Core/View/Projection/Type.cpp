@@ -1,4 +1,5 @@
 #include "Chicane/Core/View/Projection/Type.hpp"
+#include "Chicane/Core/View/Projection/Type.reflected.hpp"
 
 namespace Chicane
 {

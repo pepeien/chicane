@@ -13,13 +13,17 @@ namespace Chicane
         setCanCollide(true);
     }
 
-    void APawn::onLoad()
+    void APawn::createDefaultComponents()
     {
-        m_physics = getScene()->createComponent<CPhysics>();
+        m_physics = createDefaultComponent<CPhysics>("Physics");
+        if (!m_physics)
+        {
+            return;
+        }
+
         m_physics->setShape(Kerb::BodyShape::Capsule);
         m_physics->setMotion(Kerb::MotionType::Dynamic);
         m_physics->setCollisionPreset(Kerb::CollisionPreset::Pawn);
-        m_physics->attachTo(this);
     }
 
     bool APawn::isControlled() const

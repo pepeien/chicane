@@ -62,7 +62,7 @@ namespace Editor
 
     void Scene::destroyObject(Chicane::Object* inObject)
     {
-        if (!inObject || inObject->isTransient())
+        if (!inObject || inObject->isTransient() || inObject->isNative())
         {
             return;
         }
@@ -140,6 +140,8 @@ namespace Editor
     {
         Chicane::Actor* actor = createActor<Chicane::Actor>();
         Chicane::CMesh* mesh  = createComponent<Chicane::CMesh>();
+        actor->setOrigin(Chicane::ObjectOrigin::Instance);
+        mesh->setOrigin(Chicane::ObjectOrigin::Instance);
         mesh->setMesh(inMesh.isEmpty() ? Chicane::Box::Mesh::DEFAULT_SOURCE : inMesh);
         mesh->attachTo(actor);
         mesh->activate();

@@ -81,13 +81,13 @@ namespace Chicane
         void refresh();
 
     public:
-        CH_FIELD(Group = "Transform")
+        CH_FIELD(Group = "Transform", Transient)
         Vec3 translation;
 
-        CH_FIELD(Group = "Transform")
+        CH_FIELD(Group = "Transform", Transient)
         Rotator rotation;
 
-        CH_FIELD(Group = "Transform")
+        CH_FIELD(Group = "Transform", Transient)
         Vec3 scale;
 
     protected:

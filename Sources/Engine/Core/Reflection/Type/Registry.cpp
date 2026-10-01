@@ -46,7 +46,7 @@ namespace Chicane
             m_indices[inValue.typeIndex.value()] = inValue;
         }
 
-        for (const String& name : inValue.names)
+        for (const String& name : inValue.getNames())
         {
             if (name.isEmpty())
             {

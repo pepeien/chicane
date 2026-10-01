@@ -12,7 +12,7 @@
 namespace Chicane
 {
     CH_TYPE(Manual)
-    class CHICANE_RUNTIME CView : public Component
+    class CHICANE_RUNTIME CView : public Component, public ViewSettings
     {
     public:
         CView();
@@ -20,20 +20,13 @@ namespace Chicane
     protected:
         void onTransform() override;
         void onAttachment(Object* inParent) override;
+        void onPropertyEdited(const String& inName) override;
 
     public:
         inline virtual void onResize(const Vec<2, std::uint32_t>& inValue) { return; }
 
     public:
-        // Frustum
-        bool canSee(const Transformable* inSubject) const;
-        const ViewFrustum& getFrustum() const;
-
-        // Viewport
-        const Vec<2, std::uint32_t>& getViewport() const;
-        void setViewport(const Vec<2, std::uint32_t>& inViewport);
-        void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
-
+        // Aspect Ratio
         CH_FUNCTION()
         float getAspectRatio() const;
 
@@ -48,18 +41,17 @@ namespace Chicane
         CH_FUNCTION()
         float getNearClip() const;
 
+        CH_FUNCTION()
         void setNearClip(float inNearClip);
 
         CH_FUNCTION()
         float getFarClip() const;
 
+        CH_FUNCTION()
         void setFarClip(float inFarClip);
 
         CH_FUNCTION()
         void setClip(float inNearClip, float inFarClip);
-
-        // Data
-        const View& getData() const;
 
         // Focus
         CH_FUNCTION()
@@ -68,10 +60,6 @@ namespace Chicane
         CH_FUNCTION()
         void setFocusPoint(const Vec3& inPoint);
 
-        // Type
-        const ViewProjectionType getProjectionType() const;
-        void setProjectionType(ViewProjectionType inType);
-
         // Target
         CH_FUNCTION()
         const String& getTarget() const;
@@ -79,15 +67,34 @@ namespace Chicane
         CH_FUNCTION()
         void setTarget(const String& inValue);
 
+        // Type
+        CH_FUNCTION()
+        const ViewProjectionType getProjectionType() const;
+
+        CH_FUNCTION()
+        void setProjectionType(ViewProjectionType inType);
+
+    public:
+        // Frustum
+        bool canSee(const Transformable* inSubject) const;
+        const ViewFrustum& getFrustum() const;
+
+        // Viewport
+        const Vec<2, std::uint32_t>& getViewport() const;
+        void setViewport(const Vec<2, std::uint32_t>& inViewport);
+        void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
+
+        // Data
+        const View& getData() const;
+
     protected:
         void updateProjection();
         void updateView();
 
     protected:
-        ViewSettings m_settings;
-        ViewFrustum  m_frustum;
-        View         m_data;
-        Vec3         m_focusPoint;
-        String       m_target;
+        ViewFrustum m_frustum;
+        View        m_data;
+        Vec3        m_focusPoint;
+        String      m_target;
     };
 }

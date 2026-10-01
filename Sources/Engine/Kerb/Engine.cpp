@@ -36,6 +36,67 @@ namespace Chicane
 {
     namespace Kerb
     {
+        enum class PendingWriteKind : std::uint8_t
+        {
+            Velocity,
+            HorizontalVelocity,
+            Impulse
+        };
+
+        struct PendingWrite
+        {
+        public:
+            PendingWriteKind kind     = PendingWriteKind::Velocity;
+            JPH::BodyID      id       = JPH::BodyID();
+            JPH::Vec3        vector   = JPH::Vec3::sZero();
+            JPH::Vec3        location = JPH::Vec3::sZero();
+        };
+
+        struct Engine::Implementation
+        {
+        public:
+            Implementation();
+
+        public:
+            void applyGravity(const Vec3& inValue)
+            {
+                gravity = inValue;
+
+                system.SetGravity(Convert::toPhysicsPosition(gravity));
+            }
+
+            JPH::BodyInterface& bodies()
+            {
+                return system.GetBodyInterface();
+            }
+
+            const JPH::BodyInterface& bodies() const
+            {
+                return system.GetBodyInterface();
+            }
+
+            JPH::RefConst<JPH::Shape> createShape(const BodyCreateInfo& inCreateInfo);
+            void                      applyPendingWrites();
+
+        public:
+            JPH::JobSystemThreadPool                                   threadPool;
+            JPH::TempAllocatorImpl                                     tempAllocator;
+            JPH::BroadPhaseLayerInterfaceTable                         broadLayer;
+            JPH::ObjectLayerPairFilterTable                            objectLayer;
+            std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable>   objectVsBroadPhaseLayer;
+            JPH::RefConst<JPH::GroupFilterTable>                       groupFilter;
+            JPH::PhysicsSystem                                         system;
+            std::unordered_map<Hash::Value, JPH::RefConst<JPH::Shape>> shapes;
+            std::vector<JPH::BodyID>                                   ids;
+            std::mutex                                                 pendingMutex;
+            std::vector<PendingWrite>                                  pending;
+            std::unordered_map<std::uint32_t, JPH::Vec3>               horizontalWish;
+            std::unordered_map<std::uint32_t, JPH::RVec3>              previousPosition;
+            Vec3                                                       gravity;
+            bool                                                       bBroadPhaseDirty = false;
+            float                                                      accumulator;
+        };
+
         namespace BroadPhaseLayer
         {
             static constexpr JPH::BroadPhaseLayer NonMoving(0);
@@ -170,94 +231,45 @@ namespace Chicane
             return Hash::generate(data, seed);
         }
 
-        struct Engine::Implementation
+        Engine::Implementation::Implementation()
+            : tempAllocator(10 * 1024 * 1024),
+              broadLayer(OBJECT_LAYER_COUNT, BroadPhaseLayer::Count),
+              objectLayer(OBJECT_LAYER_COUNT),
+              groupFilter(new JPH::GroupFilterTable(MAX_COLLISION_SUB_GROUPS)),
+              gravity(sGetEarthGravity()),
+              accumulator(0.0f)
         {
-            Implementation()
-                : tempAllocator(10 * 1024 * 1024),
-                  broadLayer(OBJECT_LAYER_COUNT, BroadPhaseLayer::Count),
-                  objectLayer(OBJECT_LAYER_COUNT),
-                  groupFilter(new JPH::GroupFilterTable(MAX_COLLISION_SUB_GROUPS)),
-                  gravity(sGetEarthGravity()),
-                  accumulator(0.0f)
+            threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, -1);
+
+            for (std::uint32_t i = 0; i < OBJECT_LAYER_COUNT; i++)
             {
-                threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, -1);
-
-                for (std::uint32_t i = 0; i < OBJECT_LAYER_COUNT; i++)
-                {
-                    const ObjectLayer layer = static_cast<ObjectLayer>(i);
-                    broadLayer.MapObjectToBroadPhaseLayer(
-                        toPhysicsObjectLayer(layer),
-                        isNonMovingLayer(layer) ? BroadPhaseLayer::NonMoving : BroadPhaseLayer::Moving
-                    );
-                }
-
-                setupObjectLayerMatrix(objectLayer);
-
-                objectVsBroadPhaseLayer = std::make_unique<JPH::ObjectVsBroadPhaseLayerFilterTable>(
-                    broadLayer,
-                    BroadPhaseLayer::Count,
-                    objectLayer,
-                    OBJECT_LAYER_COUNT
+                const ObjectLayer layer = static_cast<ObjectLayer>(i);
+                broadLayer.MapObjectToBroadPhaseLayer(
+                    toPhysicsObjectLayer(layer),
+                    isNonMovingLayer(layer) ? BroadPhaseLayer::NonMoving : BroadPhaseLayer::Moving
                 );
-
-                system.Init(
-                    MAX_BODIES,
-                    MAX_BODY_MUTEXES,
-                    MAX_BODY_PAIRS,
-                    MAX_CONTACT_CONSTRAINTS,
-                    broadLayer,
-                    *objectVsBroadPhaseLayer,
-                    objectLayer
-                );
-                system.SetGravity(Convert::toPhysicsPosition(gravity));
             }
 
-            void applyGravity(const Vec3& inValue)
-            {
-                gravity = inValue;
+            setupObjectLayerMatrix(objectLayer);
 
-                system.SetGravity(Convert::toPhysicsPosition(gravity));
-            }
+            objectVsBroadPhaseLayer = std::make_unique<JPH::ObjectVsBroadPhaseLayerFilterTable>(
+                broadLayer,
+                BroadPhaseLayer::Count,
+                objectLayer,
+                OBJECT_LAYER_COUNT
+            );
 
-            JPH::BodyInterface& bodies() { return system.GetBodyInterface(); }
-
-            const JPH::BodyInterface& bodies() const { return system.GetBodyInterface(); }
-
-            JPH::RefConst<JPH::Shape> createShape(const BodyCreateInfo& inCreateInfo);
-            void applyPendingWrites();
-
-            struct PendingWrite
-            {
-                enum class Kind
-                {
-                    Velocity,
-                    HorizontalVelocity,
-                    Impulse
-                };
-
-                Kind        kind     = Kind::Velocity;
-                JPH::BodyID id       = JPH::BodyID();
-                JPH::Vec3   vector   = JPH::Vec3::sZero();
-                JPH::Vec3   location = JPH::Vec3::sZero();
-            };
-
-            JPH::JobSystemThreadPool                                   threadPool;
-            JPH::TempAllocatorImpl                                     tempAllocator;
-            JPH::BroadPhaseLayerInterfaceTable                         broadLayer;
-            JPH::ObjectLayerPairFilterTable                            objectLayer;
-            std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable>   objectVsBroadPhaseLayer;
-            JPH::RefConst<JPH::GroupFilterTable>                       groupFilter;
-            JPH::PhysicsSystem                                         system;
-            std::unordered_map<Hash::Value, JPH::RefConst<JPH::Shape>> shapes;
-            std::vector<JPH::BodyID>                                   ids;
-            std::mutex                                                 pendingMutex;
-            std::vector<PendingWrite>                                  pending;
-            std::unordered_map<std::uint32_t, JPH::Vec3>               horizontalWish;
-            std::unordered_map<std::uint32_t, JPH::RVec3>              previousPosition;
-            Vec3                                                       gravity;
-            bool                                                       bBroadPhaseDirty = false;
-            float                                                      accumulator;
-        };
+            system.Init(
+                MAX_BODIES,
+                MAX_BODY_MUTEXES,
+                MAX_BODY_PAIRS,
+                MAX_CONTACT_CONSTRAINTS,
+                broadLayer,
+                *objectVsBroadPhaseLayer,
+                objectLayer
+            );
+            system.SetGravity(Convert::toPhysicsPosition(gravity));
+        }
 
         static JPH::RefConst<JPH::Shape> makeBox(const Vec3& inSize)
         {
@@ -552,14 +564,14 @@ namespace Chicane
                     continue;
                 }
 
-                if (write.kind == PendingWrite::Kind::Impulse)
+                if (write.kind == PendingWriteKind::Impulse)
                 {
                     interface.AddImpulse(write.id, write.vector, write.location);
 
                     continue;
                 }
 
-                if (write.kind == PendingWrite::Kind::HorizontalVelocity)
+                if (write.kind == PendingWriteKind::HorizontalVelocity)
                 {
                     horizontalWish[write.id.GetIndexAndSequenceNumber()] = write.vector;
 
@@ -659,7 +671,7 @@ namespace Chicane
                 toPhysicsObjectLayer(layer)
             );
             settings.mAllowSleeping                = bIsStatic;
-            settings.mAllowDynamicOrKinematic      = !bIsStatic;
+            settings.mAllowDynamicOrKinematic      = true;
             settings.mGravityFactor                = inCreateInfo.gravityFactor;
             settings.mIsSensor                     = bSensor;
             settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
@@ -843,7 +855,7 @@ namespace Chicane
 
             std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
             m_implementation->pending.push_back(
-                {Implementation::PendingWrite::Kind::Impulse,
+                {PendingWriteKind::Impulse,
                  id,
                  Convert::toPhysicsPosition(inDirection * inForce),
                  Convert::toPhysicsPosition(inLocation)}
@@ -871,7 +883,7 @@ namespace Chicane
 
             std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
             m_implementation->pending.push_back(
-                {Implementation::PendingWrite::Kind::Velocity,
+                {PendingWriteKind::Velocity,
                  id,
                  Convert::toPhysicsPosition(inVelocity),
                  JPH::Vec3::sZero()}
@@ -888,7 +900,7 @@ namespace Chicane
 
             std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
             m_implementation->pending.push_back(
-                {Implementation::PendingWrite::Kind::HorizontalVelocity,
+                {PendingWriteKind::HorizontalVelocity,
                  id,
                  Convert::toPhysicsPosition(Vec3(inVelocity.x, inVelocity.y, 0.0f)),
                  JPH::Vec3::sZero()}

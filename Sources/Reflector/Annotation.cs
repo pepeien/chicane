@@ -36,5 +36,7 @@ namespace Reflector
         Group,
         [StringValue("Description")]
         Description,
+        [StringValue("Transient")]
+        Transient,
     }
 }

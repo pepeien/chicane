@@ -8,6 +8,7 @@
 #include <regex>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include "Chicane/Core.hpp"
@@ -79,6 +80,23 @@ namespace Chicane
         inline String(const std::filesystem::path& p)
             : m_value(p.string())
         {}
+
+        inline explicit String(bool value)
+            : m_value(value ? "true" : "false")
+        {}
+
+        template <typename T, std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>, int> = 0>
+        inline explicit String(T value)
+            : m_value(std::to_string(value))
+        {}
+
+        template <typename T, std::enable_if_t<std::is_floating_point_v<T>, int> = 0>
+        inline explicit String(T value)
+        {
+            char buffer[64];
+            std::snprintf(buffer, sizeof(buffer), "%g", static_cast<double>(value));
+            m_value = buffer;
+        }
 
         template <typename InputIt, typename = std::enable_if_t<!std::is_integral_v<InputIt>>>
         inline String(InputIt first, InputIt last)
