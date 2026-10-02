@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/View/Script.hpp"
+#include "Chicane/Grid/Component/Script.hpp"
 
 #include <any>
 #include <exception>
@@ -21,7 +21,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        static ViewScript* hostFrom(lua_State* inState)
+        static ComponentScript* hostFrom(lua_State* inState)
         {
             Script::Context* context = Script::Context::sFrom(inState);
             if (!context)
@@ -29,12 +29,12 @@ namespace Chicane
                 return nullptr;
             }
 
-            return static_cast<ViewScript*>(context->getUser());
+            return static_cast<ComponentScript*>(context->getUser());
         }
 
         static int instanceOnLoad(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             luaL_checktype(inState, 1, LUA_TFUNCTION);
             if (!host)
             {
@@ -49,7 +49,7 @@ namespace Chicane
 
         static int instanceOnTick(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             luaL_checktype(inState, 1, LUA_TFUNCTION);
             if (!host)
             {
@@ -64,7 +64,7 @@ namespace Chicane
 
         static int instanceFind(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             const char* raw  = luaL_checkstring(inState, 1);
             if (!host || !host->view())
             {
@@ -80,7 +80,7 @@ namespace Chicane
 
         static int instanceView(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             if (!host || !host->view())
             {
                 lua_pushnil(inState);
@@ -95,7 +95,7 @@ namespace Chicane
 
         static int instanceInvoke(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             const char* name = luaL_checkstring(inState, 1);
             if (!host || !host->host())
             {
@@ -156,7 +156,7 @@ namespace Chicane
 
         static int instanceSubscribe(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             const char* name = luaL_checkstring(inState, 1);
             luaL_checktype(inState, 2, LUA_TFUNCTION);
             if (!host || !host->view())
@@ -176,7 +176,7 @@ namespace Chicane
 
         static int instanceUnsubscribe(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             if (host)
             {
                 host->unsubscribe(static_cast<std::uint64_t>(luaL_checkinteger(inState, 1)));
@@ -187,7 +187,7 @@ namespace Chicane
 
         static int instanceSend(lua_State* inState)
         {
-            ViewScript* host = hostFrom(inState);
+            ComponentScript* host = hostFrom(inState);
             const char* name = luaL_checkstring(inState, 1);
             const char* data = luaL_optstring(inState, 2, "");
             if (host && host->view())
@@ -211,7 +211,7 @@ namespace Chicane
             {nullptr,       nullptr            }
         };
 
-        ViewScript::ViewScript(Component* inHost)
+        ComponentScript::ComponentScript(Component* inHost)
             : m_host(inHost),
               m_context(),
               m_onLoad(LUA_NOREF),
@@ -220,14 +220,14 @@ namespace Chicane
               m_subscriptions({})
         {}
 
-        ViewScript::~ViewScript()
+        ComponentScript::~ComponentScript()
         {
             m_bClosing = true;
             clearSubscriptions();
             m_context.close();
         }
 
-        bool ViewScript::load(const FileSystem::Path& inPath)
+        bool ComponentScript::load(const FileSystem::Path& inPath)
         {
             if (!m_context.open(Script::Context::FLAG_MODULE))
             {
@@ -247,7 +247,7 @@ namespace Chicane
             return true;
         }
 
-        void ViewScript::tick(float inDelta)
+        void ComponentScript::tick(float inDelta)
         {
             if (!m_context.isOpen() || m_onTick == LUA_NOREF)
             {
@@ -258,7 +258,7 @@ namespace Chicane
             m_context.callRef(m_onTick, 1);
         }
 
-        bool ViewScript::callGlobal(const String& inName, const std::vector<String>& inArgs)
+        bool ComponentScript::callGlobal(const String& inName, const std::vector<String>& inArgs)
         {
             lua_State* state = m_context.state();
             if (!state || !m_context.pushGlobalFunction(inName))
@@ -274,12 +274,12 @@ namespace Chicane
             return m_context.pcall(static_cast<int>(inArgs.size()), 0);
         }
 
-        Component* ViewScript::host() const
+        Component* ComponentScript::host() const
         {
             return m_host;
         }
 
-        View* ViewScript::view() const
+        View* ComponentScript::view() const
         {
             if (!m_host)
             {
@@ -294,17 +294,17 @@ namespace Chicane
             return dynamic_cast<View*>(m_host->getRoot());
         }
 
-        Script::Context& ViewScript::context()
+        Script::Context& ComponentScript::context()
         {
             return m_context;
         }
 
-        bool ViewScript::isBound() const
+        bool ComponentScript::isBound() const
         {
             return !m_bClosing && m_context.isOpen();
         }
 
-        std::uint64_t ViewScript::subscribe(const String& inName, int inRef)
+        std::uint64_t ComponentScript::subscribe(const String& inName, int inRef)
         {
             View* view = this->view();
             if (!view || !isBound())
@@ -334,7 +334,7 @@ namespace Chicane
             return token;
         }
 
-        void ViewScript::unsubscribe(std::uint64_t inToken)
+        void ComponentScript::unsubscribe(std::uint64_t inToken)
         {
             if (View* view = this->view())
             {
@@ -355,9 +355,9 @@ namespace Chicane
             }
         }
 
-        void ViewScript::clearSubscriptions()
+        void ComponentScript::clearSubscriptions()
         {
-            for (const ViewScriptSubscription& subscription : m_subscriptions)
+            for (const ComponentScriptSubscription& subscription : m_subscriptions)
             {
                 if (View* view = this->view())
                 {
@@ -370,19 +370,19 @@ namespace Chicane
             m_subscriptions.clear();
         }
 
-        void ViewScript::setOnLoad(int inRef)
+        void ComponentScript::setOnLoad(int inRef)
         {
             m_context.unref(m_onLoad);
             m_onLoad = inRef;
         }
 
-        void ViewScript::setOnTick(int inRef)
+        void ComponentScript::setOnTick(int inRef)
         {
             m_context.unref(m_onTick);
             m_onTick = inRef;
         }
 
-        void ViewScript::pushFind(lua_State* inState, const char* inSelector)
+        void ComponentScript::pushFind(lua_State* inState, const char* inSelector)
         {
             View* view = this->view();
             if (!view || !inSelector)
@@ -433,7 +433,7 @@ namespace Chicane
             lua_pushnil(inState);
         }
 
-        void ViewScript::bind()
+        void ComponentScript::bind()
         {
             lua_State* state = m_context.state();
 

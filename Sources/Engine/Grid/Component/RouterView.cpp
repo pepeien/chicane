@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Component/RouterView.reflected.hpp"
 
-#include "Chicane/Core/Xml.hpp"
-
 #include "Chicane/Grid/Component/Scope.hpp"
 #include "Chicane/Grid/Component/View.hpp"
 #include "Chicane/Grid/Style.hpp"
@@ -22,8 +20,6 @@ namespace Chicane
 
             Container::tick(inDeltaTime);
 
-            // A hover on this view dirties every mounted page. Style refresh would
-            // replace the hidden page's display and paint it for a frame.
             applyVisibility();
         }
 
@@ -140,23 +136,15 @@ namespace Chicane
                 return;
             }
 
-            XmlDocument document = Xml::load(inRoute.file);
-            if (document.empty())
-            {
-                return;
-            }
-
-            const XmlNode root = document.getFirstChild();
-            View*         view = dynamic_cast<View*>(getRoot());
-            Scope         scope(view ? static_cast<Component*>(view) : static_cast<Component*>(this));
-            Component*    created = sCreate(root);
+            View*      view = dynamic_cast<View*>(getRoot());
+            Scope      scope(view ? static_cast<Component*>(view) : static_cast<Component*>(this));
+            Component* created = sCreate(inRoute.file);
             if (!created)
             {
                 return;
             }
 
             addChild(created);
-            created->loadScript(inRoute.file);
 
             MountedPage mounted;
             mounted.path = inRoute.path;

@@ -8,7 +8,7 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
-#include "Chicane/Grid/Component/View/Script/Subscription.hpp"
+#include "Chicane/Grid/Component/Script/Subscription.hpp"
 
 struct lua_State;
 
@@ -19,14 +19,14 @@ namespace Chicane
         class Component;
         class View;
 
-        class CHICANE_GRID ViewScript
+        class CHICANE_GRID ComponentScript
         {
         public:
             static constexpr inline const char* EXTENSION = ".flag";
 
         public:
-            explicit ViewScript(Component* inHost);
-            ~ViewScript();
+            explicit ComponentScript(Component* inHost);
+            ~ComponentScript();
 
         public:
             bool load(const FileSystem::Path& inPath);
@@ -55,7 +55,7 @@ namespace Chicane
             int                                 m_onLoad;
             int                                 m_onTick;
             bool                                m_bClosing;
-            std::vector<ViewScriptSubscription> m_subscriptions;
+            std::vector<ComponentScriptSubscription> m_subscriptions;
         };
     }
 }

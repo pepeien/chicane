@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        struct CHICANE_GRID ViewScriptSubscription
+        struct CHICANE_GRID ComponentScriptSubscription
         {
         public:
             std::uint64_t token = 0;

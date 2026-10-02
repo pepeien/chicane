@@ -14,7 +14,7 @@
 
 #include "Chicane/Grid/Component/Text/Glyph.hpp"
 #include "Chicane/Grid/Component/View/InputQueue/Event.hpp"
-#include "Chicane/Grid/Component/View/Script.hpp"
+#include "Chicane/Grid/Component/Script.hpp"
 
 namespace Chicane
 {

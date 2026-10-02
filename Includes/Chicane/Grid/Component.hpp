@@ -43,7 +43,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        class ViewScript;
+        class ComponentScript;
 
         CH_TYPE(Manual)
         class CHICANE_GRID Component : public Animatable, public Serializable
@@ -76,6 +76,7 @@ namespace Chicane
 
         public:
             static Component* sCreate(const XmlNode& inNode);
+            static Component* sCreate(const FileSystem::Path& inTemplate);
 
             static bool sIsContentSlot(const XmlNode& inNode);
 
@@ -371,10 +372,11 @@ namespace Chicane
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
 
-            void loadScript(const FileSystem::Path& inTemplate);
+        public:
             bool callScript(const String& inName, const std::vector<String>& inArgs = {}) const;
             void releaseScript();
 
+        protected:
             void addProjectedContent(const XmlNode& inSlot);
 
             void refreshClassName();
@@ -478,7 +480,10 @@ namespace Chicane
             std::any                       m_forSource;
 
             // Script
-            std::unique_ptr<ViewScript>    m_script;
+            std::unique_ptr<ComponentScript>    m_script;
+
+        private:
+            void loadScript(const FileSystem::Path& inTemplate);
         };
     }
 }

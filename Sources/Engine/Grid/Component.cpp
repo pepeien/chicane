@@ -26,7 +26,7 @@
 #include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Component/StyleMatch.hpp"
 #include "Chicane/Grid/Component/View.hpp"
-#include "Chicane/Grid/Component/View/Script.hpp"
+#include "Chicane/Grid/Component/Script.hpp"
 
 namespace Chicane
 {
@@ -320,6 +320,30 @@ namespace Chicane
             }
 
             return instance;
+        }
+
+        Component* Component::sCreate(const FileSystem::Path& inTemplate)
+        {
+            if (inTemplate.isEmpty())
+            {
+                return nullptr;
+            }
+
+            const XmlDocument document = Xml::load(inTemplate);
+            if (document.empty())
+            {
+                return nullptr;
+            }
+
+            Component* created = sCreate(document.getFirstChild());
+            if (!created)
+            {
+                return nullptr;
+            }
+
+            created->loadScript(inTemplate);
+
+            return created;
         }
 
         bool Component::sIsContentSlot(const XmlNode& inNode)
@@ -3965,13 +3989,13 @@ namespace Chicane
                 return;
             }
 
-            const FileSystem::Path script = inTemplate.withExtension(ViewScript::EXTENSION);
+            const FileSystem::Path script = inTemplate.withExtension(ComponentScript::EXTENSION);
             if (!FileSystem::exists(script))
             {
                 return;
             }
 
-            m_script = std::make_unique<ViewScript>(this);
+            m_script = std::make_unique<ComponentScript>(this);
             if (!m_script->load(script))
             {
                 m_script.reset();

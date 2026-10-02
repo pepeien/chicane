@@ -11,6 +11,7 @@ namespace Chicane
     {
         struct CHICANE_GRID Route
         {
+        public:
             String           path = {};
             FileSystem::Path file = {};
         };
