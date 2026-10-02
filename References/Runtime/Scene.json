@@ -274,6 +274,72 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "claim",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_CLAIM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ownsObjects",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_OWNSOBJECTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "runOnOwner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void()",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inWork"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_RUNONOWNER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::uint64_t",
                     "suffix": "",
                     "path": "",
@@ -1735,71 +1801,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "lockObjects",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_SCENE_LOCKOBJECTS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "unlockObjects",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_SCENE_UNLOCKOBJECTS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "withObjectLock",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Function",
-                            "suffix": "&&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFunction"
-                    }
-                ],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_SCENE_WITHOBJECTLOCK_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "forEachInFrustum",
                 "parameters": [
                     {
@@ -2369,6 +2370,93 @@
                     "const"
                 ],
                 "description": "CHICANE_SCENE_ENSUREUNIQUEID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drainMutations",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_DRAINMUTATIONS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unlinkActor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Actor",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Actor",
+                            "templates": []
+                        },
+                        "name": "inActor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::type_index",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_UNLINKACTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unlinkComponent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component",
+                            "templates": []
+                        },
+                        "name": "inComponent"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::type_index",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_UNLINKCOMPONENT_DESCRIPTION"
             }
         ],
         "members": [
@@ -2617,13 +2705,50 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::recursive_mutex",
+                    "name": "std::atomic",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::thread::id",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "m_objectMutex",
-                "description": "CHICANE_SCENE_M_OBJECTMUTEX_DESCRIPTION"
+                "name": "m_owner",
+                "description": "CHICANE_SCENE_M_OWNER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "",
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void()",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_mutations",
+                "description": "CHICANE_SCENE_M_MUTATIONS_DESCRIPTION"
             },
             {
                 "accessor": "private",

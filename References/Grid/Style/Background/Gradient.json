@@ -207,7 +207,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",

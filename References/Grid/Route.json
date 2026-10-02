@@ -1,0 +1,44 @@
+{
+    "title": "Route",
+    "filename": "Route",
+    "path": "Grid/Route",
+    "source": {
+        "header": "Includes/Chicane/Grid/Route.hpp",
+        "namespace": "Chicane::Grid::Route",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "path",
+                "description": "CHICANE_GRID_ROUTE_PATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "file",
+                "description": "CHICANE_GRID_ROUTE_FILE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_ROUTE_DESCRIPTION"
+    },
+    "children": []
+}

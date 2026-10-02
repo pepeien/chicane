@@ -2256,7 +2256,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "StylePseudoClass",
                     "suffix": "",
                     "path": "Grid/Style/PseudoClass",
@@ -2480,7 +2480,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2496,7 +2496,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2512,7 +2512,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2528,7 +2528,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2544,7 +2544,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2560,7 +2560,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2576,7 +2576,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",
@@ -2592,7 +2592,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "int",
                     "suffix": "",
                     "path": "",

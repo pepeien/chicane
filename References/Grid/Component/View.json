@@ -427,21 +427,92 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "loadViewScript",
+                "name": "addRoute",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "FileSystem::Path",
+                            "name": "Route",
                             "suffix": "&",
-                            "path": "Core/FileSystem/Path",
+                            "path": "Grid/Route",
                             "templates": []
                         },
-                        "name": "inTemplate"
+                        "name": "inRoute"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_LOADVIEWSCRIPT_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_ADDROUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "navigate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_NAVIGATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getRoute",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEW_GETROUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Route",
+                    "suffix": "*",
+                    "path": "Grid/Route",
+                    "templates": []
+                },
+                "name": "findRoute",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEW_FINDROUTE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -856,6 +927,40 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_route",
+                "description": "CHICANE_GRID_VIEW_M_ROUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Route",
+                            "suffix": "",
+                            "path": "Grid/Route",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_routes",
+                "description": "CHICANE_GRID_VIEW_M_ROUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "Component",
                     "suffix": "*",
                     "path": "Grid/Component",
@@ -965,27 +1070,6 @@
                 },
                 "name": "m_bus",
                 "description": "CHICANE_GRID_VIEW_M_BUS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::unique_ptr",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "ViewScript",
-                            "suffix": "",
-                            "path": "Grid/Component/View/Script",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_viewScript",
-                "description": "CHICANE_GRID_VIEW_M_VIEWSCRIPT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_VIEW_DESCRIPTION"

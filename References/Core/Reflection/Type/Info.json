@@ -684,7 +684,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "",
                     "path": "",

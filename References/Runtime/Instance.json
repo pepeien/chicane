@@ -151,6 +151,32 @@
                     ]
                 },
                 "description": "CHICANE_INSTANCE_VIEWSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "ViewTargetMap",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "InstanceViewTargetBinding",
+                            "suffix": "",
+                            "path": "Runtime/Instance/ViewTargetBinding",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INSTANCE_VIEWTARGETMAP_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -1637,41 +1663,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_viewTargetMutex",
-                "description": "CHICANE_INSTANCE_M_VIEWTARGETMUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::map",
+                    "name": "std::shared_ptr",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
-                            "prefix": "",
-                            "name": "String",
+                            "prefix": "const ",
+                            "name": "ViewTargetMap",
                             "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "InstanceViewTargetBinding",
-                            "suffix": "",
-                            "path": "Runtime/Instance/ViewTargetBinding",
+                            "path": "Runtime/Instance",
                             "templates": []
                         }
                     ]
                 },
-                "name": "m_viewTargets",
-                "description": "CHICANE_INSTANCE_M_VIEWTARGETS_DESCRIPTION"
+                "name": "m_publishedViewTargets",
+                "description": "CHICANE_INSTANCE_M_PUBLISHEDVIEWTARGETS_DESCRIPTION"
             },
             {
                 "accessor": "private",

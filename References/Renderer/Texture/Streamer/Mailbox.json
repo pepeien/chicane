@@ -5,27 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Renderer/Texture/Streamer/Mailbox.hpp",
         "namespace": "Chicane::Renderer::TextureStreamerMailbox",
-        "types": [
-            {
-                "name": "Textures",
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "TextureStreamerDecodeResult",
-                            "suffix": "",
-                            "path": "Renderer/Texture/Streamer/DecodeResult",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_TEXTURES_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -36,23 +16,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
+                    "name": "Mailbox",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "mutex",
-                "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Textures",
-                    "suffix": "",
-                    "path": "Renderer/Texture/Streamer/Mailbox",
-                    "templates": []
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "TextureStreamerDecodeResult",
+                            "suffix": "",
+                            "path": "Renderer/Texture/Streamer/DecodeResult",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "ready",
                 "description": "CHICANE_RENDERER_TEXTURESTREAMERMAILBOX_READY_DESCRIPTION"

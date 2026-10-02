@@ -23,12 +23,12 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "View",
+                            "name": "Component",
                             "suffix": "*",
-                            "path": "Grid/Component/View",
+                            "path": "Grid/Component",
                             "templates": []
                         },
-                        "name": "inView"
+                        "name": "inHost"
                     }
                 ],
                 "modifiers": [],
@@ -321,6 +321,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "host",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEWSCRIPT_HOST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "View",
                     "suffix": "*",
                     "path": "Grid/Component/View",
@@ -401,13 +418,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View",
+                    "name": "Component",
                     "suffix": "*",
-                    "path": "Grid/Component/View",
+                    "path": "Grid/Component",
                     "templates": []
                 },
-                "name": "m_view",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_VIEW_DESCRIPTION"
+                "name": "m_host",
+                "description": "CHICANE_GRID_VIEWSCRIPT_M_HOST_DESCRIPTION"
             },
             {
                 "accessor": "private",

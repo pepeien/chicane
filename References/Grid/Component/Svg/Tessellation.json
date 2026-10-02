@@ -203,19 +203,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_mutex",
-                "description": "CHICANE_GRID_SVGTESSELLATION_M_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "std::unordered_set",
                     "suffix": "",
                     "path": "",
@@ -237,9 +224,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Mailbox",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Mailbox",
                     "templates": [
                         {
                             "prefix": "",

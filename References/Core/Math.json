@@ -18,7 +18,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -34,7 +34,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -50,7 +50,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -66,7 +66,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -82,7 +82,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -98,7 +98,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",

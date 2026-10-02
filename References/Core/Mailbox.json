@@ -1,0 +1,287 @@
+{
+    "title": "Mailbox",
+    "filename": "Mailbox",
+    "path": "Core/Mailbox",
+    "source": {
+        "header": "Includes/Chicane/Core/Mailbox.hpp",
+        "namespace": "Chicane::Mailbox::Node",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mailbox",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_MAILBOX_MAILBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mailbox",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_MAILBOX_MAILBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mailbox",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_MAILBOX_MAILBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Node",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_MAILBOX_NODE_NODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Node",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_MAILBOX_NODE_NODE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Mailbox",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_MAILBOX_~MAILBOX_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "&",
+                    "path": "Core/Mailbox",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_MAILBOX_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "&",
+                    "path": "Core/Mailbox",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_MAILBOX_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "push",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_MAILBOX_PUSH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "drain",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_MAILBOX_DRAIN_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Node",
+                            "suffix": "*",
+                            "path": "Core/Mailbox",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_head",
+                "description": "CHICANE_MAILBOX_M_HEAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Node",
+                    "suffix": "*",
+                    "path": "Core/Mailbox",
+                    "templates": []
+                },
+                "name": "m_tail",
+                "description": "CHICANE_MAILBOX_M_TAIL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::atomic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Node",
+                            "suffix": "*",
+                            "path": "Core/Mailbox",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "next",
+                "description": "CHICANE_MAILBOX_NODE_NEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "value",
+                "description": "CHICANE_MAILBOX_NODE_VALUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_MAILBOX_NODE_DESCRIPTION"
+    },
+    "children": []
+}

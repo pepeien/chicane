@@ -660,7 +660,7 @@
                 "type": "override",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -1264,7 +1264,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",

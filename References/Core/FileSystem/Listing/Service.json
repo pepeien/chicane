@@ -147,19 +147,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_mutex",
-                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "std::unordered_set",
                     "suffix": "",
                     "path": "",
@@ -224,6 +211,27 @@
                 },
                 "name": "m_ready",
                 "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_READY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "",
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Listing",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Listing",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_mailbox",
+                "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_M_MAILBOX_DESCRIPTION"
             }
         ],
         "description": "CHICANE_FILESYSTEM_LISTINGSERVICE_DESCRIPTION"

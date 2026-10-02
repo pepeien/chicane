@@ -215,7 +215,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",

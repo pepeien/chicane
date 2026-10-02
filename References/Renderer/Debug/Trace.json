@@ -38,7 +38,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "float",
                     "suffix": "",
                     "path": "",

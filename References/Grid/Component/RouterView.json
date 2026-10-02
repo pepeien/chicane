@@ -1,0 +1,247 @@
+{
+    "title": "RouterView",
+    "filename": "RouterView",
+    "path": "Grid/Component/RouterView",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/RouterView.hpp",
+        "namespace": "Chicane::Grid::RouterView",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RouterView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "XmlNode",
+                            "suffix": "&",
+                            "path": "Core/Xml/Node",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_ROUTERVIEW_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tick",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_TICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshSize",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_REFRESHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "syncRoute",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_SYNCROUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyVisibility",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_APPLYVISIBILITY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mount",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Route",
+                            "suffix": "&",
+                            "path": "Grid/Route",
+                            "templates": []
+                        },
+                        "name": "inRoute"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_ROUTERVIEW_MOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "findPage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_ROUTERVIEW_FINDPAGE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "path",
+                "description": "CHICANE_GRID_ROUTERVIEW_MOUNTEDPAGE_PATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "page",
+                "description": "CHICANE_GRID_ROUTERVIEW_MOUNTEDPAGE_PAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_ROUTERVIEW_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_mounted",
+                "description": "CHICANE_GRID_ROUTERVIEW_M_MOUNTED_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "MountedPage",
+                            "suffix": "",
+                            "path": "Grid/Component/RouterView",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_pages",
+                "description": "CHICANE_GRID_ROUTERVIEW_M_PAGES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_ROUTERVIEW_DESCRIPTION"
+    },
+    "children": []
+}

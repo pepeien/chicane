@@ -521,7 +521,7 @@
                 "type": "virtual",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "bool",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -568,7 +568,7 @@
                 "description": "CHICANE_SPATIALTRANSFORM_ONREFRESH_DESCRIPTION"
             },
             {
-                "accessor": "private",
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",

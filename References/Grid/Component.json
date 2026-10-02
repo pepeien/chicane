@@ -510,44 +510,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addClassName",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "T",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inFirst"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Args...",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inRest"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_ADDCLASSNAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1251,6 +1213,44 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETCLASSLIST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addClassName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFirst"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Args...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRest"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ADDCLASSNAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -4012,6 +4012,93 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "loadScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inTemplate"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_LOADSCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "callScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "Core/String",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_CALLSCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "releaseScript",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_RELEASESCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "addProjectedContent",
                 "parameters": [
                     {
@@ -5388,6 +5475,27 @@
                 },
                 "name": "m_forSource",
                 "description": "CHICANE_GRID_COMPONENT_M_FORSOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "ViewScript",
+                            "suffix": "",
+                            "path": "Grid/Component/View/Script",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_script",
+                "description": "CHICANE_GRID_COMPONENT_M_SCRIPT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_COMPONENT_DESCRIPTION"

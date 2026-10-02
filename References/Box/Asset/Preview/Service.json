@@ -4,7 +4,7 @@
     "path": "Box/Asset/Preview/Service",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Preview/Service.hpp",
-        "namespace": "Chicane::Box::PreviewService",
+        "namespace": "Chicane::Box::PreviewService::Ready",
         "types": [],
         "enums": [],
         "constructors": [
@@ -163,19 +163,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_mutex",
-                "description": "CHICANE_BOX_PREVIEWSERVICE_M_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "std::unordered_set",
                     "suffix": "",
                     "path": "",
@@ -197,32 +184,58 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Mailbox",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Mailbox",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::unique_ptr",
+                            "name": "Ready",
                             "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "AssetPreview",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Box/Asset/Preview/Service",
+                            "templates": []
                         }
                     ]
                 },
                 "name": "m_ready",
                 "description": "CHICANE_BOX_PREVIEWSERVICE_M_READY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem/Path",
+                    "templates": []
+                },
+                "name": "path",
+                "description": "CHICANE_BOX_PREVIEWSERVICE_READY_PATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "AssetPreview",
+                            "suffix": "",
+                            "path": "Box/Asset/Preview",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "preview",
+                "description": "CHICANE_BOX_PREVIEWSERVICE_READY_PREVIEW_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_PREVIEWSERVICE_DESCRIPTION"
+        "description": "CHICANE_BOX_PREVIEWSERVICE_READY_DESCRIPTION"
     },
     "children": []
 }

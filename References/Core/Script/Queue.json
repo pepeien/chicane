@@ -66,22 +66,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::mutex",
+                    "name": "Mailbox",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_mutex",
-                "description": "CHICANE_SCRIPT_QUEUE_M_MUTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
+                    "path": "Core/Mailbox",
                     "templates": [
                         {
                             "prefix": "",

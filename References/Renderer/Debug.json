@@ -964,7 +964,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "std::size_t",
                     "suffix": "",
                     "path": "",
