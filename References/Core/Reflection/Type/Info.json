@@ -119,6 +119,44 @@
                     ]
                 },
                 "description": "CHICANE_REFLECTIONTYPEINFO_CONSTRUCTORS_DESCRIPTION"
+            },
+            {
+                "name": "Stringifier",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String(const void *)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_STRINGIFIER_DESCRIPTION"
+            },
+            {
+                "name": "AnyStringifier",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String(const std::any &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_ANYSTRINGIFIER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -194,6 +232,26 @@
                             "templates": []
                         },
                         "name": "inFields"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Stringifier",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inStringifier"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AnyStringifier",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inAnyStringifier"
                     }
                 ],
                 "modifiers": [],
@@ -450,6 +508,172 @@
                     "const"
                 ],
                 "description": "CHICANE_REFLECTIONTYPEINFO_CREATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Stringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKESTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnyStringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeAnyStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKEANYSTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "sStringify",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SSTRINGIFY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "sStringifyAny",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SSTRINGIFYANY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Stringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKESTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Stringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKESTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnyStringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeAnyStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKEANYSTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnyStringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeAnyStringifier",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKEANYSTRINGIFIER_DESCRIPTION"
             }
         ],
         "members": [
@@ -546,6 +770,32 @@
                 },
                 "name": "fields",
                 "description": "CHICANE_REFLECTIONTYPEINFO_FIELDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Stringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "stringifier",
+                "description": "CHICANE_REFLECTIONTYPEINFO_STRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnyStringifier",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "anyStringifier",
+                "description": "CHICANE_REFLECTIONTYPEINFO_ANYSTRINGIFIER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONTYPEINFO_DESCRIPTION"

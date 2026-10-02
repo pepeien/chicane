@@ -6044,6 +6044,23 @@
                             "description": null
                         },
                         "children": []
+                    },
+                    {
+                        "title": "ViewTargetSlot",
+                        "filename": "ViewTargetSlot",
+                        "path": "Renderer/Backend/ViewTargetSlot",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Backend/ViewTargetSlot.hpp",
+                            "namespace": "Chicane::Renderer::BackendViewTargetSlot",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
                     }
                 ]
             },
@@ -6772,7 +6789,25 @@
                     "members": [],
                     "description": null
                 },
-                "children": []
+                "children": [
+                    {
+                        "title": "ViewTarget",
+                        "filename": "ViewTarget",
+                        "path": "Renderer/Instance/ViewTarget",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/Instance/ViewTarget.hpp",
+                            "namespace": "Chicane::Renderer::InstanceViewTarget",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
             },
             {
                 "title": "Layer",
@@ -8231,6 +8266,41 @@
                 ]
             },
             {
+                "title": "View",
+                "filename": "View",
+                "path": "Renderer/View",
+                "source": {
+                    "header": null,
+                    "namespace": null,
+                    "types": [],
+                    "enums": [],
+                    "constructors": [],
+                    "destructors": [],
+                    "functions": [],
+                    "members": [],
+                    "description": null
+                },
+                "children": [
+                    {
+                        "title": "Target",
+                        "filename": "Target",
+                        "path": "Renderer/View/Target",
+                        "source": {
+                            "header": "Includes/Chicane/Renderer/View/Target.hpp",
+                            "namespace": "Chicane::Renderer::ViewTargetCommand",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "title": "Viewport",
                 "filename": "Viewport",
                 "path": "Renderer/Viewport",
@@ -8375,6 +8445,23 @@
                         "source": {
                             "header": "Includes/Chicane/Runtime/Instance/Telemetry.hpp",
                             "namespace": "Chicane::InstanceTelemetry",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "ViewTargetBinding",
+                        "filename": "ViewTargetBinding",
+                        "path": "Runtime/Instance/ViewTargetBinding",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Instance/ViewTargetBinding.hpp",
+                            "namespace": "Chicane::InstanceViewTargetBinding",
                             "types": [],
                             "enums": [],
                             "constructors": [],

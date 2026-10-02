@@ -10,10 +10,25 @@
                 "name": "Read",
                 "type": {
                     "prefix": "",
-                    "name": "bool(*)(const Style &inStyle, float *outValues)",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool(const Style &inStyle",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float *outValues)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_GRID_STYLEPROPERTYENTRY_READ_DESCRIPTION"
             },
@@ -21,10 +36,25 @@
                 "name": "Write",
                 "type": {
                     "prefix": "",
-                    "name": "void(*)(Style &outStyle, const float *inValues)",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(Style &outStyle",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "const ",
+                            "name": "float *inValues)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_GRID_STYLEPROPERTYENTRY_WRITE_DESCRIPTION"
             }

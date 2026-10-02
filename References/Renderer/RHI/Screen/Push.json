@@ -36,8 +36,64 @@
                         }
                     ]
                 },
-                "name": "data",
-                "description": "CHICANE_RENDERER_RHI_SCREENPUSH_DATA_DESCRIPTION"
+                "name": "header",
+                "description": "CHICANE_RENDERER_RHI_SCREENPUSH_HEADER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "ids0",
+                "description": "CHICANE_RENDERER_RHI_SCREENPUSH_IDS0_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::int32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "ids1",
+                "description": "CHICANE_RENDERER_RHI_SCREENPUSH_IDS1_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_RHI_SCREENPUSH_DESCRIPTION"

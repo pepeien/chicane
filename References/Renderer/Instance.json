@@ -156,6 +156,128 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "useViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_USEVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Frame",
+                            "suffix": "",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_SETVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearViewTargets",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_INSTANCE_CLEARVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "InstanceViewTarget",
+                            "suffix": "",
+                            "path": "Renderer/Instance/ViewTarget",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getViewTargets",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_INSTANCE_GETVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "addLight",
                 "parameters": [
                     {
@@ -1191,6 +1313,27 @@
                 },
                 "name": "m_currentFrame",
                 "description": "CHICANE_RENDERER_INSTANCE_M_CURRENTFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "InstanceViewTarget",
+                            "suffix": "",
+                            "path": "Renderer/Instance/ViewTarget",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewTargets",
+                "description": "CHICANE_RENDERER_INSTANCE_M_VIEWTARGETS_DESCRIPTION"
             },
             {
                 "accessor": "private",

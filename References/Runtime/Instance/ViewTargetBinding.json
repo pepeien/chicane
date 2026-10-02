@@ -1,0 +1,57 @@
+{
+    "title": "ViewTargetBinding",
+    "filename": "ViewTargetBinding",
+    "path": "Runtime/Instance/ViewTargetBinding",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Instance/ViewTargetBinding.hpp",
+        "namespace": "Chicane::InstanceViewTargetBinding",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CView",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component/View",
+                    "templates": []
+                },
+                "name": "view",
+                "description": "CHICANE_INSTANCEVIEWTARGETBINDING_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_INSTANCEVIEWTARGETBINDING_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_INSTANCEVIEWTARGETBINDING_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_INSTANCEVIEWTARGETBINDING_DESCRIPTION"
+    },
+    "children": []
+}

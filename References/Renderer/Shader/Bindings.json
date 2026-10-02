@@ -200,8 +200,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "RHI_BINDING_UI_SCREEN",
-                "description": "CHICANE_RENDERER_RHI_BINDING_UI_SCREEN_DESCRIPTION"
+                "name": "RHI_BINDING_UI_VIEWS",
+                "description": "CHICANE_RENDERER_RHI_BINDING_UI_VIEWS_DESCRIPTION"
             },
             {
                 "accessor": "public",

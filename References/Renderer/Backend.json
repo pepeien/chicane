@@ -380,6 +380,133 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "registerViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_REGISTERVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "viewTargetSlot",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_VIEWTARGETSLOT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "viewTargetTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_VIEWTARGETTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "viewTargetImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_VIEWTARGETIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "viewPlaceholder",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_VIEWPLACEHOLDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -898,6 +1025,304 @@
                 "description": "CHICANE_RENDERER_BACKEND_SETGPUDELTA_DESCRIPTION"
             },
             {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "assignViewTargetTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inTexture"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ASSIGNVIEWTARGETTEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "prepareViewTargets",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_PREPAREVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderViewTargets",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Frame",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Frame",
+                            "templates": []
+                        },
+                        "name": "ioFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bFlipY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_RENDERVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyViewTargets",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_DESTROYVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "discardViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Image",
+                            "suffix": "",
+                            "path": "Renderer/RHI/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_DISCARDVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureViewPlaceholder",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ENSUREVIEWPLACEHOLDER_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ensureViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_ENSUREVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "uploadViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bFlipY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_UPLOADVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drawViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSlot"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Frame",
+                            "suffix": "&",
+                            "path": "Renderer/Frame",
+                            "templates": []
+                        },
+                        "name": "inFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "RHI::Frame",
+                            "suffix": "&",
+                            "path": "Renderer/RHI/Frame",
+                            "templates": []
+                        },
+                        "name": "ioFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_BACKEND_DRAWVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RHI::Scissor",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Scissor",
+                    "templates": []
+                },
+                "name": "previewScissor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_BACKEND_PREVIEWSCISSOR_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -1010,6 +1435,86 @@
                 },
                 "name": "m_gpuDelta",
                 "description": "CHICANE_RENDERER_BACKEND_M_GPUDELTA_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bPreviewPass",
+                "description": "CHICANE_RENDERER_BACKEND_M_BPREVIEWPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Viewport",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Viewport",
+                    "templates": []
+                },
+                "name": "m_previewViewport",
+                "description": "CHICANE_RENDERER_BACKEND_M_PREVIEWVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BackendViewTargetSlot",
+                            "suffix": "",
+                            "path": "Renderer/Backend/ViewTargetSlot",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "VIEW_TARGET_MAX",
+                            "suffix": "",
+                            "path": "d8/d18/namespaceChicane_1_1Renderer_1a6881ace533aacd41c7141c3a2fe65d86",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewSlots",
+                "description": "CHICANE_RENDERER_BACKEND_M_VIEWSLOTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_viewSlotCount",
+                "description": "CHICANE_RENDERER_BACKEND_M_VIEWSLOTCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "m_viewPlaceholder",
+                "description": "CHICANE_RENDERER_BACKEND_M_VIEWPLACEHOLDER_DESCRIPTION"
             },
             {
                 "accessor": "private",

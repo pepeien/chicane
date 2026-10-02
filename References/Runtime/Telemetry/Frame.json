@@ -31,6 +31,24 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator String",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_FRAMETELEMETRY_OPERATOR STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -51,6 +69,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_FRAMETELEMETRY_SET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "toString",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_FRAMETELEMETRY_TOSTRING_DESCRIPTION"
             },
             {
                 "accessor": "protected",

@@ -1,0 +1,148 @@
+{
+    "title": "ViewTargetSlot",
+    "filename": "ViewTargetSlot",
+    "path": "Renderer/Backend/ViewTargetSlot",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/ViewTargetSlot.hpp",
+        "namespace": "Chicane::Renderer::BackendViewTargetSlot",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Image",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Image",
+                    "templates": []
+                },
+                "name": "depth",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_DEPTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "camera",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_CAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "light",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_LIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "instances",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_INSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "RHI::Buffer",
+                    "suffix": "",
+                    "path": "Renderer/RHI/Buffer",
+                    "templates": []
+                },
+                "name": "particles",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_PARTICLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_BACKENDVIEWTARGETSLOT_DESCRIPTION"
+    },
+    "children": []
+}

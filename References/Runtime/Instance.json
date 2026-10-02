@@ -717,6 +717,42 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setViewTarget",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CView",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component/View",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SETVIEWTARGET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1264,6 +1300,40 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "publishViewTargets",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Renderer::ViewTargetCommand",
+                                    "suffix": "",
+                                    "path": "Renderer/View/Target",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCommands"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_PUBLISHVIEWTARGETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "initUI",
                 "parameters": [],
                 "modifiers": [],
@@ -1332,6 +1402,40 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_INSTANCE_SNAPSHOTSCREENVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "snapshotViewTargets",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::shared_ptr",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Grid::View",
+                                    "suffix": "",
+                                    "path": "Grid/Component/View",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SNAPSHOTVIEWTARGETS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1498,6 +1602,76 @@
                 },
                 "name": "m_sceneCommandBuffers",
                 "description": "CHICANE_INSTANCE_M_SCENECOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Renderer::ViewTargetCommand",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_viewTargetBuffers",
+                "description": "CHICANE_INSTANCE_M_VIEWTARGETBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_viewTargetMutex",
+                "description": "CHICANE_INSTANCE_M_VIEWTARGETMUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "InstanceViewTargetBinding",
+                            "suffix": "",
+                            "path": "Runtime/Instance/ViewTargetBinding",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_viewTargets",
+                "description": "CHICANE_INSTANCE_M_VIEWTARGETS_DESCRIPTION"
             },
             {
                 "accessor": "private",

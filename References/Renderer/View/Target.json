@@ -1,0 +1,70 @@
+{
+    "title": "Target",
+    "filename": "Target",
+    "path": "Renderer/View/Target",
+    "source": {
+        "header": "Includes/Chicane/Renderer/View/Target.hpp",
+        "namespace": "Chicane::Renderer::ViewTargetCommand",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_RENDERER_VIEWTARGETCOMMAND_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_VIEWTARGETCOMMAND_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_VIEWTARGETCOMMAND_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DCommand",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Command",
+                    "templates": []
+                },
+                "name": "command",
+                "description": "CHICANE_RENDERER_VIEWTARGETCOMMAND_COMMAND_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VIEWTARGETCOMMAND_DESCRIPTION"
+    },
+    "children": []
+}

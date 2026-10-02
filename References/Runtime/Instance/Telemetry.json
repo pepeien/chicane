@@ -91,6 +91,19 @@
                 },
                 "name": "renderer",
                 "description": "CHICANE_INSTANCETELEMETRY_RENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Runtime/Telemetry",
+                    "templates": []
+                },
+                "name": "loop",
+                "description": "CHICANE_INSTANCETELEMETRY_LOOP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_INSTANCETELEMETRY_DESCRIPTION"

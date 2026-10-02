@@ -731,6 +731,21 @@
                 "description": "CHICANE_CMESH_SETEMISSIVESTRENGTH_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "evaluatePose",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_EVALUATEPOSE_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -837,21 +852,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_CMESH_BINDSKELETON_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "evaluatePose",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CMESH_EVALUATEPOSE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

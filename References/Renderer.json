@@ -200,6 +200,38 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "VIEW_TARGET_MAX",
+                "description": "CHICANE_RENDERER_VIEW_TARGET_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VIEW_TARGET_EXTENT_MAX",
+                "description": "CHICANE_RENDERER_VIEW_TARGET_EXTENT_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "TEXTURE_MAX_SIZE",
                 "description": "CHICANE_RENDERER_TEXTURE_MAX_SIZE_DESCRIPTION"
             },

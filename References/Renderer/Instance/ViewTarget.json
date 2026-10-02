@@ -1,0 +1,70 @@
+{
+    "title": "ViewTarget",
+    "filename": "ViewTarget",
+    "path": "Renderer/Instance/ViewTarget",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Instance/ViewTarget.hpp",
+        "namespace": "Chicane::Renderer::InstanceViewTarget",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_RENDERER_INSTANCEVIEWTARGET_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Frame",
+                    "suffix": "",
+                    "path": "Renderer/Frame",
+                    "templates": []
+                },
+                "name": "frame",
+                "description": "CHICANE_RENDERER_INSTANCEVIEWTARGET_FRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_RENDERER_INSTANCEVIEWTARGET_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_RENDERER_INSTANCEVIEWTARGET_HEIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_INSTANCEVIEWTARGET_DESCRIPTION"
+    },
+    "children": []
+}

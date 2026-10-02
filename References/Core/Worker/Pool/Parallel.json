@@ -116,6 +116,40 @@
                 "description": "CHICANE_WORKERPOOLPARALLEL_RUN_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "detach",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void()",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WORKERPOOLPARALLEL_DETACH_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "type": "standard",
                 "return": {
@@ -159,9 +193,104 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_WORKERPOOLPARALLEL_LOOP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasWork",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WORKERPOOLPARALLEL_HASWORK_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Job",
+                    "suffix": "",
+                    "path": "Core/Worker/Pool/Parallel",
+                    "templates": []
+                },
+                "name": "job",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_JOB_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "next",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_NEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "count",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "remaining",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_REMAINING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::exception_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "error",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_ERROR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::condition_variable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "done",
+                "description": "CHICANE_WORKERPOOLPARALLEL_BATCH_DONE_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "modifiers": [],
@@ -193,60 +322,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::condition_variable",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_done",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_DONE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::queue",
+                    "name": "std::deque",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::size_t",
+                            "name": "std::shared_ptr",
                             "suffix": "",
                             "path": "",
-                            "templates": []
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Batch",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
                         }
                     ]
                 },
-                "name": "m_indices",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_INDICES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Job",
-                    "suffix": "",
-                    "path": "Core/Worker/Pool/Parallel",
-                    "templates": []
-                },
-                "name": "m_job",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_JOB_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::exception_ptr",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_error",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_ERROR_DESCRIPTION"
+                "name": "m_batches",
+                "description": "CHICANE_WORKERPOOLPARALLEL_M_BATCHES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -268,32 +366,6 @@
                 },
                 "name": "m_workers",
                 "description": "CHICANE_WORKERPOOLPARALLEL_M_WORKERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::size_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_remaining",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_REMAINING_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bActive",
-                "description": "CHICANE_WORKERPOOLPARALLEL_M_BACTIVE_DESCRIPTION"
             },
             {
                 "accessor": "private",

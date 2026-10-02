@@ -118,6 +118,34 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "sDetach",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Job",
+                            "suffix": "",
+                            "path": "Core/Worker/Pool",
+                            "templates": []
+                        },
+                        "name": "inJob"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_WORKERPOOL_SDETACH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "sParallel",
                 "parameters": [
                     {
