@@ -26,12 +26,17 @@ namespace Chicane
             return &found->second;
         }
 
-        String name = inValue.trim();
-        if (name.startsWith("enum class "))
+        String     name   = inValue.trim();
+        const bool bNameStartsEnumClass = static_cast<bool>(name.startsWith("enum class "));
+
+        if (bNameStartsEnumClass)
         {
             name = name.substr(11).trim();
         }
-        else if (name.startsWith("enum "))
+
+        const bool bNameStartsEnum = !bNameStartsEnumClass && (name.startsWith("enum "));
+
+        if (bNameStartsEnum)
         {
             name = name.substr(5).trim();
         }

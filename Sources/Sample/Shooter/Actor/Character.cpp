@@ -171,12 +171,15 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
     {
     case Chicane::Input::GamepadAxis::LeftX:
     case Chicane::Input::GamepadAxis::LeftY: {
-        const float value = std::abs(inEvent.value) <= GAMEPAD_DEADZONE ? 0.0f : inEvent.value;
-        if (inEvent.axis == Chicane::Input::GamepadAxis::LeftY)
+        const float value  = std::abs(inEvent.value) <= GAMEPAD_DEADZONE ? 0.0f : inEvent.value;
+        const bool  bAxisLeftY = static_cast<bool>(inEvent.axis == Chicane::Input::GamepadAxis::LeftY);
+
+        if (bAxisLeftY)
         {
             m_padForward = -value;
         }
-        else
+
+        if (!bAxisLeftY)
         {
             m_padRight = value;
         }
@@ -187,17 +190,21 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
     }
 
     case Chicane::Input::GamepadAxis::RightX:
-    case Chicane::Input::GamepadAxis::RightY:
-        if (inEvent.axis == Chicane::Input::GamepadAxis::RightY)
+    case Chicane::Input::GamepadAxis::RightY: {
+        const bool bAxisRightY = static_cast<bool>(inEvent.axis == Chicane::Input::GamepadAxis::RightY);
+
+        if (bAxisRightY)
         {
             onLook(0.0f, -inEvent.value);
         }
-        else
+
+        if (!bAxisRightY)
         {
             onLook(-inEvent.value, 0.0f);
         }
 
         break;
+    }
 
     case Chicane::Input::GamepadAxis::RightTrigger:
         onShoot();

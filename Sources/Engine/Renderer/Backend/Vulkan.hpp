@@ -30,7 +30,6 @@ namespace Chicane
             ~VulkanBackend();
 
         public:
-            Draw::Id getScreenTextureId() const override;
             bool captureScreen(
                 std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
             ) override;
@@ -106,6 +105,7 @@ namespace Chicane
             bool needsTextureUpload(const DrawTexture& inTexture) const;
             void destroyTextureData();
             void bindScreenTarget(const VulkanImageInfo& inTarget);
+            void discardViewTarget(RHI::Image inImage) override;
 
         public:
             // Instance
@@ -140,7 +140,6 @@ namespace Chicane
             // Frame
             std::uint32_t m_currentFrameIndex;
             std::uint32_t m_lastImageIndex;
-            Draw::Id      m_screenTextureId;
 
             // Instance
             vk::DispatchLoaderDynamic m_dispatcher;

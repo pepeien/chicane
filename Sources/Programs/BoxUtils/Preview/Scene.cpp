@@ -65,11 +65,14 @@ void PreviewScene::onTick(float)
         const Chicane::FileSystem::Path& asset = m_assets.at(m_index);
         Chicane::PreviewService::sInstance().clear(*this);
 
-        if (Chicane::Box::embedPreview(asset))
+        const bool bAsset = static_cast<bool>(Chicane::Box::embedPreview(asset));
+
+        if (bAsset)
         {
             std::cout << "Generated a preview for [" << asset.toString() << "]" << std::endl;
         }
-        else
+
+        if (!bAsset)
         {
             std::cerr << "Failed to generate a preview for [" << asset.toString() << "]: " << exception.what()
                       << std::endl;
@@ -117,20 +120,31 @@ void PreviewScene::onFrame()
 
     try
     {
-        if (image && Chicane::Box::AssetPreview::sBake(asset, Chicane::Box::getTypeFromExtension(asset), *image))
+        const bool bHasImageAndImage = static_cast<bool>(
+            image && Chicane::Box::AssetPreview::sBake(asset, Chicane::Box::getTypeFromExtension(asset), *image)
+        );
+
+        if (bHasImageAndImage)
         {
             std::cout << "Generated a preview for [" << asset.toString() << "]" << std::endl;
         }
-        else if (Chicane::Box::embedPreview(asset))
+
+        const bool bAsset = !bHasImageAndImage && (Chicane::Box::embedPreview(asset));
+
+        if (bAsset)
         {
             std::cout << "Generated a preview for [" << asset.toString() << "]" << std::endl;
         }
-        else if (!image)
+
+        const bool bNotHasImage = !bHasImageAndImage && !bAsset && (!image);
+
+        if (bNotHasImage)
         {
             std::cerr << "Failed to generate a preview for [" << asset.toString() << "]: screen capture unavailable"
                       << std::endl;
         }
-        else
+
+        if (!bHasImageAndImage && !bAsset && !bNotHasImage)
         {
             std::cerr << "Failed to generate a preview for [" << asset.toString() << "]: bake and CPU fallback failed"
                       << std::endl;

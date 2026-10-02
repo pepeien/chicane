@@ -27,7 +27,9 @@ namespace Chicane
                 const int args = lua_gettop(inState);
                 Vec4      value;
 
-                if (args >= 5)
+                const bool bArgsAtLeast5 = static_cast<bool>(args >= 5);
+
+                if (bArgsAtLeast5)
                 {
                     value = Vec4(
                         static_cast<float>(luaL_checknumber(inState, 2)),
@@ -36,16 +38,25 @@ namespace Chicane
                         static_cast<float>(luaL_checknumber(inState, 5))
                     );
                 }
-                else if (args >= 2 && isVec3(inState, 2))
+
+                const bool bArgsAtLeast2AndVec3 = !bArgsAtLeast5 && (args >= 2 && isVec3(inState, 2));
+
+                if (bArgsAtLeast2AndVec3)
                 {
                     const float w = args >= 3 ? static_cast<float>(luaL_checknumber(inState, 3)) : 0.0f;
                     value         = Vec4(checkVec3(inState, 2), w);
                 }
-                else if (args >= 2 && isVec2(inState, 2))
+
+                const bool bArgsAtLeast2AndVec2 = !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 && (args >= 2 && isVec2(inState, 2));
+
+                if (bArgsAtLeast2AndVec2)
                 {
                     value = Vec4(checkVec2(inState, 2));
                 }
-                else if (args >= 2 && lua_isnumber(inState, 2))
+
+                const bool bArgsAtLeast2AndIsNumber = !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 && !bArgsAtLeast2AndVec2 && (args >= 2 && lua_isnumber(inState, 2));
+
+                if (bArgsAtLeast2AndIsNumber)
                 {
                     value = Vec4(static_cast<float>(luaL_checknumber(inState, 2)));
                 }

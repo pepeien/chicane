@@ -43,8 +43,10 @@ namespace Editor
         dialog.bCanSelectMany = false;
         dialog.title          = "Select " + typeLabel();
 
-        const Chicane::Box::AssetType type = assetType();
-        if (type == Chicane::Box::AssetType::Undefined)
+        const Chicane::Box::AssetType type   = assetType();
+        const bool                    bTypeUndefined = static_cast<bool>(type == Chicane::Box::AssetType::Undefined);
+
+        if (bTypeUndefined)
         {
             Chicane::FileSystem::FileFilter::Extensions extensions;
             for (const Chicane::String& extension : Chicane::Box::getExtensions(true))
@@ -54,7 +56,8 @@ namespace Editor
 
             dialog.addFilter("Assets", extensions);
         }
-        else
+
+        if (!bTypeUndefined)
         {
             dialog.addFilter(typeLabel() + "s", {typeExtension()});
         }

@@ -269,7 +269,9 @@ namespace Reflector
                     $"\t\t\t}},"
                 );
             }
-            sb.AppendLine("\t\t}");
+            sb.AppendLine("\t\t},");
+            sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeStringifier<{t.Name}>(),");
+            sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeAnyStringifier<{t.Name}>()");
             sb.AppendLine("\t)");
             sb.AppendLine(");");
             sb.AppendLine();

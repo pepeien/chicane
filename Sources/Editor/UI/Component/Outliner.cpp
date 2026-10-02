@@ -144,7 +144,7 @@ namespace Editor
             {
                 const void* instance =
                     accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(node);
-                if (const auto* value = accessor.getValue<Chicane::Object*>(instance))
+                if (Chicane::Object* const* value = accessor.getValue<Chicane::Object*>(instance))
                 {
                     selected = *value;
                 }

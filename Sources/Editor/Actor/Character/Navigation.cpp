@@ -308,8 +308,7 @@ namespace Editor
             return;
         }
 
-        if (std::shared_ptr<Scene> scene =
-                std::dynamic_pointer_cast<Scene>(Chicane::Instance::sInstance().getScene()))
+        if (std::shared_ptr<Scene> scene = std::dynamic_pointer_cast<Scene>(Chicane::Instance::sInstance().getScene()))
         {
             if (Gizmo* gizmo = scene->getGizmo())
             {
@@ -394,7 +393,7 @@ namespace Editor
 
             if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID) && node->isHovered())
             {
-                return true;
+                return !node->getAttribute(Chicane::Grid::Component::ON_HOVER_ATTRIBUTE_NAME).isEmpty();
             }
 
             for (Chicane::Grid::Component* child : node->getChildren())

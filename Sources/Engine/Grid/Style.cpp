@@ -81,15 +81,23 @@ namespace Chicane
             const String head = compact.substr(0, stepMark);
             const String tail = compact.substr(stepMark + 1);
 
-            if (head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS))
+            const bool bHeadEmptyOrHeadMatchesPseudoStepPlus = static_cast<bool>(head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS));
+
+            if (bHeadEmptyOrHeadMatchesPseudoStepPlus)
             {
                 outStep = Style::PSEUDO_SINGLE_STEP;
             }
-            else if (head.equals(Style::PSEUDO_STEP_MINUS))
+
+            const bool bHeadMatchesPseudoStepMinus = !bHeadEmptyOrHeadMatchesPseudoStepPlus && (head.equals(Style::PSEUDO_STEP_MINUS));
+
+            if (bHeadMatchesPseudoStepMinus)
             {
                 outStep = Style::PSEUDO_NEGATIVE_STEP;
             }
-            else if (!parseInteger(head, outStep))
+
+            const bool bNotParseInteger = !bHeadEmptyOrHeadMatchesPseudoStepPlus && !bHeadMatchesPseudoStepMinus && (!parseInteger(head, outStep));
+
+            if (bNotParseInteger)
             {
                 return false;
             }
@@ -119,8 +127,9 @@ namespace Chicane
 
             const char next = inValue.at(inAt + length);
 
-            return next == Style::PSEUDO_CLASS_SELECTOR || next == Style::CLASS_SELECTOR || next == Style::ID_SELECTOR ||
-                   next == Style::SELECTOR_SEPARATOR_SPACE || next == Style::SELECTOR_SEPARATOR_COMMA;
+            return next == Style::PSEUDO_CLASS_SELECTOR || next == Style::CLASS_SELECTOR ||
+                   next == Style::ID_SELECTOR || next == Style::SELECTOR_SEPARATOR_SPACE ||
+                   next == Style::SELECTOR_SEPARATOR_COMMA;
         }
 
         static bool findSiblingPseudo(
@@ -133,9 +142,9 @@ namespace Chicane
             {
                 if (inAt < outAt)
                 {
-                    outAt        = inAt;
-                    outLength    = inLength;
-                    outSelector  = inSelector;
+                    outAt       = inAt;
+                    outLength   = inLength;
+                    outSelector = inSelector;
                 }
             };
 
@@ -241,8 +250,8 @@ namespace Chicane
                 if (stateMatch && (!bSibling || stateAt <= siblingAt))
                 {
                     status |= stateMatch->status;
-                    ioSelector = ioSelector.substr(0, stateAt) +
-                                 ioSelector.substr(stateAt + std::strlen(stateMatch->token));
+                    ioSelector =
+                        ioSelector.substr(0, stateAt) + ioSelector.substr(stateAt + std::strlen(stateMatch->token));
                     continue;
                 }
 
@@ -267,11 +276,9 @@ namespace Chicane
                 }
             }
 
-            return inSelector.contains(Style::PSEUDO_FIRST_CHILD) ||
-                   inSelector.contains(Style::PSEUDO_LAST_CHILD) ||
+            return inSelector.contains(Style::PSEUDO_FIRST_CHILD) || inSelector.contains(Style::PSEUDO_LAST_CHILD) ||
                    inSelector.contains(Style::PSEUDO_FIRST_OF_TYPE) ||
-                   inSelector.contains(Style::PSEUDO_LAST_OF_TYPE) ||
-                   inSelector.contains(Style::PSEUDO_NTH_CHILD) ||
+                   inSelector.contains(Style::PSEUDO_LAST_OF_TYPE) || inSelector.contains(Style::PSEUDO_NTH_CHILD) ||
                    inSelector.contains(Style::PSEUDO_NTH_OF_TYPE);
         }
 
@@ -864,12 +871,17 @@ namespace Chicane
             {
                 const std::vector<String> values = splitOneliner(inProperties.at(OVERFLOW_ATTRIBUTE_NAME));
 
-                if (values.size() == 1)
+                const bool bValues1 = static_cast<bool>(values.size() == 1);
+
+                if (bValues1)
                 {
                     overflowX.setRaw(values.at(0));
                     overflowY.setRaw(values.at(0));
                 }
-                else if (values.size() >= 2)
+
+                const bool bValuesAtLeast2 = !bValues1 && (values.size() >= 2);
+
+                if (bValuesAtLeast2)
                 {
                     overflowX.setRaw(values.at(0));
                     overflowY.setRaw(values.at(1));
@@ -1158,11 +1170,16 @@ namespace Chicane
                         all = &transition;
                     }
 
-                    if (transition.property.equals(target))
+                    const bool bPropertyMatchesTarget = static_cast<bool>(transition.property.equals(target));
+
+                    if (bPropertyMatchesTarget)
                     {
                         specific = &transition;
                     }
-                    else if (sCoversProperty(transition.property, target))
+
+                    const bool bSCoversProperty = !bPropertyMatchesTarget && (sCoversProperty(transition.property, target));
+
+                    if (bSCoversProperty)
                     {
                         shorthand = &transition;
                     }
@@ -1342,15 +1359,21 @@ namespace Chicane
             const String colorRaw = parseText(background.color.getRaw());
             const String imageRaw = parseText(background.image.getRaw());
 
-            if (StyleGradient::sIsDeclaration(imageRaw))
+            const bool bImageRaw = static_cast<bool>(StyleGradient::sIsDeclaration(imageRaw));
+
+            if (bImageRaw)
             {
                 background.gradients = parseGradients(imageRaw);
             }
-            else if (StyleGradient::sIsDeclaration(colorRaw))
+
+            const bool bColorRaw = !bImageRaw && (StyleGradient::sIsDeclaration(colorRaw));
+
+            if (bColorRaw)
             {
                 background.gradients = parseGradients(colorRaw);
             }
-            else
+
+            if (!bImageRaw && !bColorRaw)
             {
                 background.gradients = {};
             }
@@ -1861,7 +1884,9 @@ namespace Chicane
         {
             String result = "";
 
-            if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
+            const bool bValueStartsRgbOrValueStartsRgba = static_cast<bool>(inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD));
+
+            if (bValueStartsRgbOrValueStartsRgba)
             {
                 const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
@@ -1883,7 +1908,8 @@ namespace Chicane
                 result.popBack();
                 result.append(METHOD_PARAMS_CLOSING);
             }
-            else
+
+            if (!bValueStartsRgbOrValueStartsRgba)
             {
                 result = parseText(inValue);
             }
@@ -1942,12 +1968,15 @@ namespace Chicane
                 return size;
             }
 
-            const float gaps = static_cast<float>(count - 1);
-            if (style.flex.direction.get() == StyleFlexDirection::Row)
+            const float gaps   = static_cast<float>(count - 1);
+            const bool  bDirectionRow = static_cast<bool>(style.flex.direction.get() == StyleFlexDirection::Row);
+
+            if (bDirectionRow)
             {
                 size.x = std::max(0.0f, size.x - gaps * style.gap.left.get());
             }
-            else
+
+            if (!bDirectionRow)
             {
                 size.y = std::max(0.0f, size.y - gaps * style.gap.top.get());
             }
@@ -1966,11 +1995,16 @@ namespace Chicane
                 result.setRoot(m_parent->getRoot()->getSize());
             }
 
-            if (inBox)
+            const bool bHasBox = static_cast<bool>(inBox);
+
+            if (bHasBox)
             {
                 result.setParent(*inBox);
             }
-            else if (hasParent())
+
+            const bool bHasParent = !bHasBox && (hasParent());
+
+            if (bHasParent)
             {
                 const Component* containingBlock = m_parent->getContainingBlock();
                 if (containingBlock && containingBlock != m_parent)

@@ -100,19 +100,28 @@ static void writeFixedHuffman(
     std::vector<unsigned char>& outValue, std::uint32_t& outBuffer, int& outCount, int inSymbol
 )
 {
-    if (inSymbol <= 143)
+    const bool bSymbolAtMost143 = static_cast<bool>(inSymbol <= 143);
+
+    if (bSymbolAtMost143)
     {
         writeBits(outValue, outBuffer, outCount, bitReverse(0x30u + static_cast<std::uint32_t>(inSymbol), 8), 8);
     }
-    else if (inSymbol <= 255)
+
+    const bool bSymbolAtMost255 = !bSymbolAtMost143 && (inSymbol <= 255);
+
+    if (bSymbolAtMost255)
     {
         writeBits(outValue, outBuffer, outCount, bitReverse(0x190u + static_cast<std::uint32_t>(inSymbol - 144), 9), 9);
     }
-    else if (inSymbol <= 279)
+
+    const bool bSymbolAtMost279 = !bSymbolAtMost143 && !bSymbolAtMost255 && (inSymbol <= 279);
+
+    if (bSymbolAtMost279)
     {
         writeBits(outValue, outBuffer, outCount, bitReverse(static_cast<std::uint32_t>(inSymbol - 256), 7), 7);
     }
-    else
+
+    if (!bSymbolAtMost143 && !bSymbolAtMost255 && !bSymbolAtMost279)
     {
         writeBits(outValue, outBuffer, outCount, bitReverse(0xC0u + static_cast<std::uint32_t>(inSymbol - 280), 8), 8);
     }
@@ -626,12 +635,15 @@ namespace Chicane
             float      channel = m_floats[i];
             if (!bAlpha)
             {
-                channel = channel / (1.0f + std::max(channel, 0.0f));
-                if (channel <= 0.0031308f)
+                channel           = channel / (1.0f + std::max(channel, 0.0f));
+                const bool bChannelAtMost0p0031 = static_cast<bool>(channel <= 0.0031308f);
+
+                if (bChannelAtMost0p0031)
                 {
                     channel = channel * 12.92f;
                 }
-                else
+
+                if (!bChannelAtMost0p0031)
                 {
                     channel = 1.055f * std::pow(channel, 1.0f / 2.4f) - 0.055f;
                 }

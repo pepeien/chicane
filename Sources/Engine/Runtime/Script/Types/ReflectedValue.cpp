@@ -106,7 +106,7 @@ namespace Chicane
         {
             const ReflectedValueBox* box =
                 static_cast<const ReflectedValueBox*>(lua_touserdata(inState, lua_upvalueindex(1)));
-            const auto* method =
+            const ReflectionTypeMethodInfo* method =
                 static_cast<const ReflectionTypeMethodInfo*>(lua_touserdata(inState, lua_upvalueindex(2)));
             if (!box || !box->type || !method)
             {
@@ -155,7 +155,7 @@ namespace Chicane
 
         static int callStaticMethod(lua_State* inState)
         {
-            const auto* method =
+            const ReflectionTypeMethodInfo* method =
                 static_cast<const ReflectionTypeMethodInfo*>(lua_touserdata(inState, lua_upvalueindex(1)));
             if (!method)
             {
@@ -431,12 +431,15 @@ namespace Chicane
                 return 0;
             }
 
-            if (box->destroy)
+            const bool bDestroy = static_cast<bool>(box->destroy);
+
+            if (bDestroy)
             {
                 box->destroy(reflectedValueData(box));
                 box->destroy = nullptr;
             }
-            else
+
+            if (!bDestroy)
             {
                 *static_cast<Object**>(reflectedValueData(box)) = nullptr;
             }

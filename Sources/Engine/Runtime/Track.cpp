@@ -161,10 +161,10 @@ namespace Chicane
 
         static const Object* classDefaultObject(const Object& inObject)
         {
-            static std::mutex                                     mutex;
+            static std::mutex                                   mutex;
             static std::unordered_map<std::type_index, Object*> cache;
 
-            const std::type_index index(typeid(inObject));
+            const std::type_index       index(typeid(inObject));
             std::lock_guard<std::mutex> lock(mutex);
 
             auto found = cache.find(index);
@@ -196,15 +196,21 @@ namespace Chicane
 
             Actor*     actor     = dynamic_cast<Actor*>(instance);
             Component* component = actor ? nullptr : dynamic_cast<Component*>(instance);
-            if (actor)
+            const bool bHasActor    = static_cast<bool>(actor);
+
+            if (bHasActor)
             {
                 defaultsScene().adoptActor(actor);
             }
-            else if (component)
+
+            const bool bHasComponent = !bHasActor && (component);
+
+            if (bHasComponent)
             {
                 defaultsScene().adoptComponent(component);
             }
-            else
+
+            if (!bHasActor && !bHasComponent)
             {
                 delete instance;
 
@@ -275,8 +281,10 @@ namespace Chicane
                     continue;
                 }
 
-                const String value = fieldValue(accessor, inObject);
-                if (inBaseline)
+                const String value  = fieldValue(accessor, inObject);
+                const bool   bHasBaseline = static_cast<bool>(inBaseline);
+
+                if (bHasBaseline)
                 {
                     const ReflectionTypeInfo* baselineType =
                         ReflectionTypeRegistry::sInstance().find(typeid(*inBaseline));
@@ -289,7 +297,10 @@ namespace Chicane
                         }
                     }
                 }
-                else if (value.isEmpty())
+
+                const bool bValueEmpty = !bHasBaseline && (value.isEmpty());
+
+                if (bValueEmpty)
                 {
                     continue;
                 }
@@ -316,16 +327,22 @@ namespace Chicane
         {
             bool dirty = false;
 
-            const auto writeAxis = [&](const char* inName, const String& inValue, const String& inBaselineValue, bool bIdentity)
+            const auto writeAxis =
+                [&](const char* inName, const String& inValue, const String& inBaselineValue, bool bIdentity)
             {
-                if (inBaseline)
+                const bool bHasBaseline = static_cast<bool>(inBaseline);
+
+                if (bHasBaseline)
                 {
                     if (inValue.equals(inBaselineValue))
                     {
                         return;
                     }
                 }
-                else if (bIdentity)
+
+                const bool bIdentity2 = !bHasBaseline && (bIdentity);
+
+                if (bIdentity2)
                 {
                     return;
                 }
@@ -334,9 +351,11 @@ namespace Chicane
                 dirty = true;
             };
 
-            if (inObject.isAttached())
+            const bool bAttached = static_cast<bool>(inObject.isAttached());
+
+            if (bAttached)
             {
-                const bool   identity = isRelativeIdentity(inObject);
+                const bool   identity    = isRelativeIdentity(inObject);
                 const String translation = formatVec3(inObject.getRelativeTranslation());
                 const String rotation    = formatVec3(inObject.getRelativeRotation().getAngles());
                 const String scale       = formatVec3(inObject.getRelativeScale());
@@ -350,9 +369,10 @@ namespace Chicane
                 writeAxis(RELATIVE_ROTATION_ATTRIBUTE_NAME, rotation, baselineRotation, identity);
                 writeAxis(RELATIVE_SCALE_ATTRIBUTE_NAME, scale, baselineScale, identity);
             }
-            else
+
+            if (!bAttached)
             {
-                const bool   identity = isAbsoluteIdentity(inObject);
+                const bool   identity    = isAbsoluteIdentity(inObject);
                 const String translation = formatVec3(inObject.getTranslation());
                 const String rotation    = formatVec3(inObject.getRotation().getAngles());
                 const String scale       = formatVec3(inObject.getScale());
@@ -404,11 +424,14 @@ namespace Chicane
                 }
 
                 const Object* childBaseline = nullptr;
-                if (attachment->isNative())
+                const bool    bNative        = static_cast<bool>(attachment->isNative());
+
+                if (bNative)
                 {
                     childBaseline = findChildById(inBaseline, attachment->getId());
                 }
-                else
+
+                if (!bNative)
                 {
                     childBaseline = classDefaultObject(*attachment);
                 }
@@ -562,11 +585,14 @@ namespace Chicane
 
             instance->setOrigin(ObjectOrigin::Instance);
 
-            if (actor)
+            const bool bHasActor = static_cast<bool>(actor);
+
+            if (bHasActor)
             {
                 inScene.adoptActor(actor);
             }
-            else
+
+            if (!bHasActor)
             {
                 inScene.adoptComponent(component);
             }

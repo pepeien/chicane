@@ -1,6 +1,8 @@
 #pragma once
 
 #include <atomic>
+#include <map>
+#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -14,12 +16,15 @@
 #include "Chicane/Renderer/Draw/Poly/2D/Command.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Command.hpp"
 #include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer/View/Target.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Instance/CreateInfo.hpp"
+#include "Chicane/Runtime/Instance/ViewTargetBinding.hpp"
 #include "Chicane/Runtime/Instance/Telemetry.hpp"
 #include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/View.hpp"
 #include "Chicane/Runtime/Scene/Trace/Request.hpp"
 
 namespace Chicane
@@ -151,6 +156,8 @@ namespace Chicane
         Vec<2, std::uint32_t> getScreenViewport() const;
         Bounds2D getScreenViewportRect() const;
 
+        void setViewTarget(const String& inName, CView* inView);
+
         // Renderer
         bool hasRenderer() const;
         Renderer::Instance* getRenderer() const;
@@ -198,6 +205,7 @@ namespace Chicane
 
         void buildSceneCommands(std::shared_ptr<Scene> inScene);
         void renderScene();
+        void publishViewTargets(const std::vector<Renderer::ViewTargetCommand>& inCommands);
 
         // Grid
         void initUI();
@@ -205,47 +213,52 @@ namespace Chicane
         void tickUI();
 
         void snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView);
+        void snapshotViewTargets(const std::shared_ptr<Grid::View>& inView);
 
         void buildUICommands(std::shared_ptr<Grid::View> inView);
         void renderUI();
 
     private:
         // Status
-        InstanceTelemetry                        m_telemetry;
-        std::atomic<bool>                        m_bIsRunning;
+        InstanceTelemetry                                     m_telemetry;
+        std::atomic<bool>                                     m_bIsRunning;
 
         // Scene
-        Controller*                              m_controller;
-        ControllerObservable                     m_controllerObservable;
+        Controller*                                           m_controller;
+        ControllerObservable                                  m_controllerObservable;
 
-        std::shared_ptr<Scene>                   m_scene;
-        std::thread                              m_sceneThread;
-        std::vector<Renderer::DrawPoly3DCommand> m_sceneCommandBuffers;
-        std::atomic<std::size_t>                 m_sceneWriteIndex;
-        std::atomic<std::size_t>                 m_sceneReadIndex;
-        std::atomic<std::size_t>                 m_sceneBusyIndex;
-        SceneObservable                          m_sceneObservable;
+        std::shared_ptr<Scene>                                m_scene;
+        std::thread                                           m_sceneThread;
+
+        std::vector<Renderer::DrawPoly3DCommand>              m_sceneCommandBuffers;
+        std::vector<std::vector<Renderer::ViewTargetCommand>> m_viewTargetBuffers;
+        std::mutex                                            m_viewTargetMutex;
+        std::map<String, InstanceViewTargetBinding>           m_viewTargets;
+        std::atomic<std::size_t>                              m_sceneWriteIndex;
+        std::atomic<std::size_t>                              m_sceneReadIndex;
+        std::atomic<std::size_t>                              m_sceneBusyIndex;
+        SceneObservable                                       m_sceneObservable;
 
         // Grid
-        std::shared_ptr<Grid::View>              m_view;
-        std::thread                              m_viewThread;
-        std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
-        std::vector<Grid::Component*>            m_viewDrawables;
-        std::atomic<std::size_t>                 m_viewWriteIndex;
-        std::atomic<std::size_t>                 m_viewReadIndex;
-        std::atomic<std::uint32_t>               m_screenViewportX;
-        std::atomic<std::uint32_t>               m_screenViewportY;
-        std::atomic<std::uint32_t>               m_screenViewportWidth;
-        std::atomic<std::uint32_t>               m_screenViewportHeight;
-        ViewObservable                           m_viewObservable;
+        std::shared_ptr<Grid::View>                           m_view;
+        std::thread                                           m_viewThread;
+        std::vector<Renderer::DrawPoly2DCommand>              m_viewCommandBuffers;
+        std::vector<Grid::Component*>                         m_viewDrawables;
+        std::atomic<std::size_t>                              m_viewWriteIndex;
+        std::atomic<std::size_t>                              m_viewReadIndex;
+        std::atomic<std::uint32_t>                            m_screenViewportX;
+        std::atomic<std::uint32_t>                            m_screenViewportY;
+        std::atomic<std::uint32_t>                            m_screenViewportWidth;
+        std::atomic<std::uint32_t>                            m_screenViewportHeight;
+        ViewObservable                                        m_viewObservable;
 
         // Window
-        std::unique_ptr<Window>                  m_window;
+        std::unique_ptr<Window>                               m_window;
 
         // Renderer
-        std::unique_ptr<Renderer::Instance>      m_renderer;
-        std::atomic<std::uint16_t>               m_featureFlags;
-        std::atomic<std::uint32_t>               m_rendererWidth;
-        std::atomic<std::uint32_t>               m_rendererHeight;
+        std::unique_ptr<Renderer::Instance>                   m_renderer;
+        std::atomic<std::uint16_t>                            m_featureFlags;
+        std::atomic<std::uint32_t>                            m_rendererWidth;
+        std::atomic<std::uint32_t>                            m_rendererHeight;
     };
 }

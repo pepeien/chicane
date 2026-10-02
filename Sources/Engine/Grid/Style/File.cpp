@@ -298,11 +298,16 @@ namespace Chicane
 
                 for (char character : statement)
                 {
-                    if (character == Style::RULESET_OPENING)
+                    const bool bCharacterOpening = static_cast<bool>(character == Style::RULESET_OPENING);
+
+                    if (bCharacterOpening)
                     {
                         depth++;
                     }
-                    else if (character == Style::RULESET_CLOSING && depth > 0)
+
+                    const bool bCharacterClosingAndDepthPositive = !bCharacterOpening && (character == Style::RULESET_CLOSING && depth > 0);
+
+                    if (bCharacterClosingAndDepthPositive)
                     {
                         depth--;
                     }
@@ -357,11 +362,16 @@ namespace Chicane
 
                 while (cursor < size && depth > 0)
                 {
-                    if (inValue.at(cursor) == Style::RULESET_OPENING)
+                    const bool bCursorOpening = static_cast<bool>(inValue.at(cursor) == Style::RULESET_OPENING);
+
+                    if (bCursorOpening)
                     {
                         depth++;
                     }
-                    else if (inValue.at(cursor) == Style::RULESET_CLOSING)
+
+                    const bool bCursorClosing = !bCursorOpening && (inValue.at(cursor) == Style::RULESET_CLOSING);
+
+                    if (bCursorClosing)
                     {
                         depth--;
                     }
@@ -388,7 +398,9 @@ namespace Chicane
 
                     String resolvedSelector;
 
-                    if (trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE))
+                    const bool bStartsSelectorInheritance = static_cast<bool>(trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE));
+
+                    if (bStartsSelectorInheritance)
                     {
                         const String suffix = trimmedSelector.substr(1);
 
@@ -400,7 +412,9 @@ namespace Chicane
                                                                                      Style::SELECTOR_SEPARATOR_SPACE
                                                                                  );
 
-                        if (bParentHasPseudo && isCompoundContinuation)
+                        const bool bParentHasPseudoAndCompoundContinuation = static_cast<bool>(bParentHasPseudo && isCompoundContinuation);
+
+                        if (bParentHasPseudoAndCompoundContinuation)
                         {
                             String            accumulated = inSelector.trim();
                             const std::size_t split       = accumulated.lastOf(Style::SELECTOR_SEPARATOR_SPACE);
@@ -417,19 +431,24 @@ namespace Chicane
                             resolvedSelector.append(' ');
                             resolvedSelector.append(accumulated);
                         }
-                        else
+
+                        if (!bParentHasPseudoAndCompoundContinuation)
                         {
                             resolvedSelector = inSelector;
                             resolvedSelector.append(suffix);
                         }
                     }
-                    else if (!inSelector.isEmpty())
+
+                    const bool bSelectorEmpty = !bStartsSelectorInheritance && (!inSelector.isEmpty());
+
+                    if (bSelectorEmpty)
                     {
                         resolvedSelector = inSelector;
                         resolvedSelector.append(' ');
                         resolvedSelector.append(trimmedSelector);
                     }
-                    else
+
+                    if (!bStartsSelectorInheritance && !bSelectorEmpty)
                     {
                         resolvedSelector = trimmedSelector;
                     }

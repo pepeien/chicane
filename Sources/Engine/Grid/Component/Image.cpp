@@ -141,15 +141,22 @@ namespace Chicane
                 m_texture = nullptr;
                 Box::requestPreview(src);
 
-                if (const Box::AssetPreview* preview = Box::findPreview(src))
                 {
-                    m_previewImage = preview->image;
-                    m_previewId    = preview->textureId();
-                }
-                else
-                {
-                    m_previewImage = nullptr;
-                    m_previewId    = "";
+                    const Box::AssetPreview* preview = Box::findPreview(src);
+
+                    const bool bHasPreview = static_cast<bool>(preview);
+
+                    if (bHasPreview)
+                    {
+                        m_previewImage = preview->image;
+                        m_previewId    = preview->textureId();
+                    }
+
+                    if (!bHasPreview)
+                    {
+                        m_previewImage = nullptr;
+                        m_previewId    = "";
+                    }
                 }
 
                 return;
@@ -163,11 +170,14 @@ namespace Chicane
                 return;
             }
 
-            if (src.endsWith(Box::Texture::EXTENSION))
+            const bool bSrcEndsExtension = static_cast<bool>(src.endsWith(Box::Texture::EXTENSION));
+
+            if (bSrcEndsExtension)
             {
                 m_texture = Box::load<Box::Texture>(src);
             }
-            else
+
+            if (!bSrcEndsExtension)
             {
                 m_texture = Box::getById<Box::Texture>(src);
             }

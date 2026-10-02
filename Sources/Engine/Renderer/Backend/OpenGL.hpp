@@ -37,7 +37,6 @@ namespace Chicane
             ~OpenGLBackend();
 
         public:
-            Draw::Id getScreenTextureId() const override;
             bool captureScreen(
                 std::uint32_t& outWidth, std::uint32_t& outHeight, std::vector<unsigned char>& outRgba
             ) override;
@@ -163,7 +162,6 @@ namespace Chicane
             std::uint32_t                                           m_targetWidth;
             std::uint32_t                                           m_targetHeight;
             std::uint32_t                                           m_screenBlitFramebuffer;
-            Draw::Id                                                m_screenTextureId;
 
             RHI::FullscreenPass                         m_bloomPass;
             RHI::Buffer                                 m_cameraBuffer;

@@ -111,6 +111,21 @@ namespace Editor
         CH_FUNCTION()
         void onExplorerAssetDrop(Chicane::String inPath);
 
+        CH_FUNCTION()
+        void onViewPreviewClose();
+
+        CH_FUNCTION()
+        void onViewportHover();
+
+        CH_FUNCTION()
+        void onViewportClick();
+
+        CH_FUNCTION()
+        void onViewportFocus();
+
+        CH_FUNCTION()
+        void onViewportBlur();
+
     public:
         CoordinateSpace getCoordinateSpace() const;
 
@@ -143,6 +158,7 @@ namespace Editor
         void setWorkspace(const Chicane::String& inValue);
 
         void pickAt(const Chicane::Vec2& inLocation);
+        void syncViewPreview(Chicane::Object* inItem);
 
     public:
         CH_FIELD()
@@ -192,6 +208,9 @@ namespace Editor
 
         CH_FIELD()
         Chicane::String selectedAssetName;
+
+        CH_FIELD()
+        bool bIsViewPreviewOpen;
 
     private:
         Chicane::String                       m_activeWorkspace;

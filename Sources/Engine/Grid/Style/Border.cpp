@@ -35,18 +35,26 @@ namespace Chicane
             String bottom = top;
             String left   = top;
 
-            if (inValues.size() == 2)
+            const bool bValues2 = static_cast<bool>(inValues.size() == 2);
+
+            if (bValues2)
             {
                 right = inValues.at(1);
                 left  = right;
             }
-            else if (inValues.size() == 3)
+
+            const bool bValues3 = !bValues2 && (inValues.size() == 3);
+
+            if (bValues3)
             {
                 right  = inValues.at(1);
                 bottom = inValues.at(2);
                 left   = right;
             }
-            else if (inValues.size() >= 4)
+
+            const bool bValuesAtLeast4 = !bValues2 && !bValues3 && (inValues.size() >= 4);
+
+            if (bValuesAtLeast4)
             {
                 right  = inValues.at(1);
                 bottom = inValues.at(2);

@@ -7,6 +7,11 @@ namespace Chicane
         sInstance().enqueue(std::move(inJob));
     }
 
+    void WorkerPool::sDetach(Job inJob)
+    {
+        sInstance().m_parallel.detach(std::move(inJob));
+    }
+
     void WorkerPool::sParallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob)
     {
         sInstance().m_parallel.run(inCount, inJob);

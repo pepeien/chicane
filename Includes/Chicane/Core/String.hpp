@@ -85,7 +85,10 @@ namespace Chicane
             : m_value(value ? "true" : "false")
         {}
 
-        template <typename T, std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>, int> = 0>
+        template <
+            typename T,
+            std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>, int> = 0
+        >
         inline explicit String(T value)
             : m_value(std::to_string(value))
         {}

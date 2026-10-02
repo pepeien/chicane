@@ -20,12 +20,17 @@ namespace Chicane
                     std::make_shared<ImageMipChain>(Image::sMakeMipChain(*inData.image, TEXTURE_MAX_SIZE, false));
             }
 
-            if (outDraw.mips && !outDraw.mips->isEmpty())
+            const bool bMipsAndNotEmpty = static_cast<bool>(outDraw.mips && !outDraw.mips->isEmpty());
+
+            if (bMipsAndNotEmpty)
             {
                 outDraw.width  = outDraw.mips->getWidth();
                 outDraw.height = outDraw.mips->getHeight();
             }
-            else if (inData.image)
+
+            const bool bImage = !bMipsAndNotEmpty && (inData.image);
+
+            if (bImage)
             {
                 outDraw.width  = static_cast<std::uint32_t>(std::max(0, inData.image->getWidth()));
                 outDraw.height = static_cast<std::uint32_t>(std::max(0, inData.image->getHeight()));

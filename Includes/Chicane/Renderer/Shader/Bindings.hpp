@@ -20,7 +20,7 @@ namespace Chicane
         static constexpr inline const std::uint32_t RHI_BINDING_UI_INSTANCES   = 0;
         static constexpr inline const std::uint32_t RHI_BINDING_UI_GLYPHS      = 1;
         static constexpr inline const std::uint32_t RHI_BINDING_UI_BACKDROP    = 2;
-        static constexpr inline const std::uint32_t RHI_BINDING_UI_SCREEN      = 3;
+        static constexpr inline const std::uint32_t RHI_BINDING_UI_VIEWS       = 3;
         static constexpr inline const std::uint32_t RHI_BINDING_POST_SOURCE    = 0;
         static constexpr inline const std::uint32_t RHI_BINDING_POST_BLOOM     = 1;
         static constexpr inline const std::uint32_t RHI_BINDING_TEXTURES       = 16;

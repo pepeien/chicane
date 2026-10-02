@@ -207,6 +207,7 @@ namespace Chicane
             {
                 label = m_data.getName();
             }
+
             if (label.isEmpty())
             {
                 label = getId();

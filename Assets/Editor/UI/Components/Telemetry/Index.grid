@@ -3,30 +3,36 @@
         <Container class="telemetry__group__label">
             <Text>Scene</Text>
         </Container>
-        <Text>{{ telemetry.scene.frame.rate }} FPS ({{ telemetry.scene.frame.delta }} ms)</Text>
+        <Text>{{ telemetry.scene.frame }}</Text>
     </Container>
     <Container class="telemetry__group">
         <Container class="telemetry__group__label">
             <Text>Physics</Text>
         </Container>
-        <Text>{{ telemetry.physics.frame.rate }} FPS ({{ telemetry.physics.frame.delta }} ms)</Text>
+        <Text>{{ telemetry.physics.frame }}</Text>
     </Container>
     <Container class="telemetry__group">
         <Container class="telemetry__group__label">
             <Text>Animation</Text>
         </Container>
-        <Text>{{ telemetry.animation.frame.rate }} FPS ({{ telemetry.animation.frame.delta }} ms)</Text>
+        <Text>{{ telemetry.animation.frame }}</Text>
     </Container>
     <Container class="telemetry__group">
         <Container class="telemetry__group__label">
             <Text>UI</Text>
         </Container>
-        <Text>{{ telemetry.ui.frame.rate }} FPS ({{ telemetry.ui.frame.delta }} ms)</Text>
+        <Text>{{ telemetry.ui.frame }}</Text>
     </Container>
     <Container class="telemetry__group">
         <Container class="telemetry__group__label">
             <Text>Renderer</Text>
         </Container>
-        <Text>{{ telemetry.renderer.frame.rate }} FPS ({{ telemetry.renderer.frame.delta }} ms)</Text>
+        <Text>{{ telemetry.renderer.frame }}</Text>
+    </Container>
+    <Container class="telemetry__group">
+        <Container class="telemetry__group__label">
+            <Text>Loop</Text>
+        </Container>
+        <Text>{{ telemetry.loop.frame }}</Text>
     </Container>
 </Container>

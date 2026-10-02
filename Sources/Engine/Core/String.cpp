@@ -288,27 +288,39 @@ namespace Chicane
             char32_t      code  = 0;
             size_t        extra = 0;
 
-            if (raw <= 0x7F)
+            const bool bAscii = static_cast<bool>(raw <= 0x7F);
+
+            if (bAscii)
             {
                 code  = raw;
                 extra = 0;
             }
-            else if ((raw & 0xE0) == 0xC0)
+
+            const bool bTwoByte = !bAscii && ((raw & 0xE0) == 0xC0);
+
+            if (bTwoByte)
             {
                 code  = raw & 0x1F;
                 extra = 1;
             }
-            else if ((raw & 0xF0) == 0xE0)
+
+            const bool bThreeByte = !bAscii && !bTwoByte && ((raw & 0xF0) == 0xE0);
+
+            if (bThreeByte)
             {
                 code  = raw & 0x0F;
                 extra = 2;
             }
-            else if ((raw & 0xF8) == 0xF0)
+
+            const bool bFourByte = !bAscii && !bTwoByte && !bThreeByte && ((raw & 0xF8) == 0xF0);
+
+            if (bFourByte)
             {
                 code  = raw & 0x07;
                 extra = 3;
             }
-            else
+
+            if (!bAscii && !bTwoByte && !bThreeByte && !bFourByte)
             {
                 i++;
 

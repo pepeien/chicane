@@ -25,6 +25,7 @@ namespace Chicane
         }
 
         static void sSubmit(Job inJob);
+        static void sDetach(Job inJob);
         static void sParallel(std::size_t inCount, const WorkerPoolParallel::Job& inJob);
 
     public:

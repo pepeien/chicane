@@ -41,17 +41,24 @@ namespace Editor
 
     bool ExplorerItem::onEvent(const Chicane::WindowEvent& inEvent)
     {
-        if (inEvent.type == Chicane::WindowEventType::MouseMotion)
+        const bool bTypeMouseMotion = static_cast<bool>(inEvent.type == Chicane::WindowEventType::MouseMotion);
+
+        if (bTypeMouseMotion)
         {
             const Chicane::Input::MouseMotionEvent event =
                 *static_cast<Chicane::Input::MouseMotionEvent*>(inEvent.data);
             m_pointer = event.location;
 
-            if (m_bIsGhost)
+            const bool bGhost = static_cast<bool>(m_bIsGhost);
+
+            if (bGhost)
             {
                 moveGhost(m_pointer);
             }
-            else if (isDragging())
+
+            const bool bTypeMouseButtonDownOrTypeMouseButtonUp = !bGhost && (isDragging());
+
+            if (bTypeMouseButtonDownOrTypeMouseButtonUp)
             {
                 if (Explorer* explorer = findExplorer())
                 {
@@ -59,8 +66,11 @@ namespace Editor
                 }
             }
         }
-        else if (inEvent.type == Chicane::WindowEventType::MouseButtonDown ||
-                 inEvent.type == Chicane::WindowEventType::MouseButtonUp)
+
+        const bool bTypeMouseButtonDownOrTypeMouseButtonUp = !bTypeMouseMotion && (inEvent.type == Chicane::WindowEventType::MouseButtonDown ||
+                                        inEvent.type == Chicane::WindowEventType::MouseButtonUp);
+
+        if (bTypeMouseButtonDownOrTypeMouseButtonUp)
         {
             const Chicane::Input::MouseButtonEvent event =
                 *static_cast<Chicane::Input::MouseButtonEvent*>(inEvent.data);
@@ -120,12 +130,16 @@ namespace Editor
         markPaintDirty();
         setCulled(false);
 
-        if (inShouldRestyle || previousKind != kind || !previousType.equals(typeClass))
+        const bool bHasShouldRestyleOrPreviousKindDiffers =
+            static_cast<bool>(inShouldRestyle || previousKind != kind || !previousType.equals(typeClass));
+
+        if (bHasShouldRestyleOrPreviousKindDiffers)
         {
             markStyleDirtySubtree();
             markLayoutDirty();
         }
-        else
+
+        if (!bHasShouldRestyleOrPreviousKindDiffers)
         {
             markLayoutDirty();
         }
@@ -387,11 +401,16 @@ namespace Editor
 
         typeClass = "file";
 
-        if (kind == ExplorerItemKind::Folder)
+        const bool bKindFolder = static_cast<bool>(kind == ExplorerItemKind::Folder);
+
+        if (bKindFolder)
         {
             typeClass = "folder";
         }
-        else if (!itemPath.isEmpty())
+
+        const bool bItemPathEmpty = !bKindFolder && (!itemPath.isEmpty());
+
+        if (bItemPathEmpty)
         {
             const Chicane::FileSystem::Path filePath(itemPath);
             const Chicane::Box::AssetType   assetType = Chicane::Box::getTypeFromExtension(filePath);

@@ -88,7 +88,9 @@ namespace Chicane
             const bool      isPng =
                 encoded.size() >= AssetPreview::PNG_HEADER_SIZE &&
                 std::memcmp(encoded.data(), AssetPreview::PNG_SIGNATURE, sizeof(AssetPreview::PNG_SIGNATURE)) == 0;
-            if (isPng)
+            const bool bPng = static_cast<bool>(isPng);
+
+            if (bPng)
             {
                 try
                 {
@@ -99,7 +101,8 @@ namespace Chicane
                     return nullptr;
                 }
             }
-            else
+
+            if (!bPng)
             {
                 const std::size_t bytes = static_cast<std::size_t>(width) * static_cast<std::size_t>(height) *
                                           static_cast<std::size_t>(AssetPreview::CHANNELS);
@@ -166,11 +169,15 @@ namespace Chicane
                     AssetPreview::VIEW_DIRECTION.x * AssetPreview::VIEW_DIRECTION.x +
                     AssetPreview::VIEW_DIRECTION.y * AssetPreview::VIEW_DIRECTION.y
                 );
-                if (horiz > AssetPreview::EXTENT_EPSILON && viewHoriz > AssetPreview::EXTENT_EPSILON)
+                const bool bHorizExtentEpsilon =
+                    static_cast<bool>(horiz > AssetPreview::EXTENT_EPSILON && viewHoriz > AssetPreview::EXTENT_EPSILON);
+
+                if (bHorizExtentEpsilon)
                 {
                     hint.z = (-AssetPreview::VIEW_DIRECTION.z / viewHoriz) * horiz;
                 }
-                else
+
+                if (!bHorizExtentEpsilon)
                 {
                     hint = AssetPreview::VIEW_DIRECTION * -1.0f;
                 }
@@ -309,21 +316,27 @@ namespace Chicane
             float tc   = 0.0f;
             float ma   = absX;
 
-            if (absX >= absY && absX >= absZ)
+            const bool bDominantX = static_cast<bool>(absX >= absY && absX >= absZ);
+
+            if (bDominantX)
             {
                 face = direction.x >= 0.0f ? 0 : 1;
                 ma   = absX;
                 sc   = direction.x >= 0.0f ? -direction.z : direction.z;
                 tc   = -direction.y;
             }
-            else if (absY >= absZ)
+
+            const bool bDominantY = !bDominantX && (absY >= absZ);
+
+            if (bDominantY)
             {
                 face = direction.y >= 0.0f ? 2 : 3;
                 ma   = absY;
                 sc   = direction.x;
                 tc   = direction.y >= 0.0f ? direction.z : -direction.z;
             }
-            else
+
+            if (!bDominantX && !bDominantY)
             {
                 face = direction.z >= 0.0f ? 4 : 5;
                 ma   = absZ;
@@ -662,11 +675,15 @@ namespace Chicane
                                 Vec3 sampleNormal = (batch.vertices.at(i0).normal * w0) +
                                                     (batch.vertices.at(i1).normal * w1) +
                                                     (batch.vertices.at(i2).normal * w2);
-                                if (sampleNormal.dot(sampleNormal) < AssetPreview::NORMAL_EPSILON)
+                                const bool bSampleNormalNormalEpsilon =
+                                    static_cast<bool>(sampleNormal.dot(sampleNormal) < AssetPreview::NORMAL_EPSILON);
+
+                                if (bSampleNormalNormalEpsilon)
                                 {
                                     sampleNormal = normal;
                                 }
-                                else
+
+                                if (!bSampleNormalNormalEpsilon)
                                 {
                                     sampleNormal = sampleNormal.normalize();
                                 }
@@ -776,10 +793,12 @@ namespace Chicane
             {
                 label = inFamily.getFamily();
             }
+
             if (label.isEmpty())
             {
                 label = inFamily.getName();
             }
+
             if (label.isEmpty())
             {
                 label = inAsset.stem().toString();
@@ -801,14 +820,17 @@ namespace Chicane
                     outPoints.push_back({-(vertex.position.x + inCursor), -vertex.position.y});
                 }
 
-                if (inGlyph.indices.empty())
+                const bool bIndicesEmpty = static_cast<bool>(inGlyph.indices.empty());
+
+                if (bIndicesEmpty)
                 {
                     for (Vertex::Index i = 0; i < static_cast<Vertex::Index>(inGlyph.vertices.size()); i++)
                     {
                         outIndices.push_back(base + i);
                     }
                 }
-                else
+
+                if (!bIndicesEmpty)
                 {
                     for (const Vertex::Index index : inGlyph.indices)
                     {
@@ -854,8 +876,8 @@ namespace Chicane
                 return std::make_pair(std::move(points), std::move(indices));
             };
 
-            std::vector<char32_t> codes = label.toUnicode();
-            auto                  mesh  = layout(codes);
+            std::vector<char32_t>                                   codes = label.toUnicode();
+            std::pair<std::vector<Vec2>, std::vector<unsigned int>> mesh  = layout(codes);
             if (mesh.first.empty() || mesh.second.size() < 3)
             {
                 codes = {'A', 'a'};
@@ -1031,7 +1053,11 @@ namespace Chicane
                         break;
                     }
 
-                    if (chunkId[0] == 'f' && chunkId[1] == 'm' && chunkId[2] == 't' && chunkId[3] == ' ')
+                    const bool bFmtChunk = static_cast<bool>(
+                        chunkId[0] == 'f' && chunkId[1] == 'm' && chunkId[2] == 't' && chunkId[3] == ' '
+                    );
+
+                    if (bFmtChunk)
                     {
                         if (chunkSize >= WAV_FMT_MIN_SIZE)
                         {
@@ -1040,7 +1066,11 @@ namespace Chicane
                             bits     = readU16(bytes + offset + WAV_FMT_BITS_OFFSET);
                         }
                     }
-                    else if (chunkId[0] == 'd' && chunkId[1] == 'a' && chunkId[2] == 't' && chunkId[3] == 'a')
+
+                    const bool bDataChunk =
+                        !bFmtChunk && (chunkId[0] == 'd' && chunkId[1] == 'a' && chunkId[2] == 't' && chunkId[3] == 'a');
+
+                    if (bDataChunk)
                     {
                         data     = bytes + offset;
                         dataSize = chunkSize;
@@ -1064,24 +1094,35 @@ namespace Chicane
                         const unsigned char* sample = cursor + (channel * bytesPerSample);
                         float                value  = 0.0f;
 
-                        if (format == WAV_FORMAT_FLOAT && bits == WAV_BITS_32)
+                        const bool bFormatFloatAndBits32 = static_cast<bool>(format == WAV_FORMAT_FLOAT && bits == WAV_BITS_32);
+
+                        if (bFormatFloatAndBits32)
                         {
                             std::uint32_t bitsValue = readU32(sample);
                             float         decoded   = 0.0f;
                             std::memcpy(&decoded, &bitsValue, sizeof(float));
                             value = decoded;
                         }
-                        else if (bits == WAV_BITS_8)
+
+                        const bool bBits8 = !bFormatFloatAndBits32 && (bits == WAV_BITS_8);
+
+                        if (bBits8)
                         {
                             value = (static_cast<float>(sample[0]) - WAV_PCM8_BIAS) / WAV_PCM8_BIAS;
                         }
-                        else if (bits == WAV_BITS_16)
+
+                        const bool bBits16 = !bFormatFloatAndBits32 && !bBits8 && (bits == WAV_BITS_16);
+
+                        if (bBits16)
                         {
                             const std::int16_t decoded =
                                 static_cast<std::int16_t>(sample[0] | (static_cast<std::uint16_t>(sample[1]) << 8));
                             value = static_cast<float>(decoded) / WAV_PCM16_SCALE;
                         }
-                        else if (bits == WAV_BITS_24)
+
+                        const bool bBits24 = !bFormatFloatAndBits32 && !bBits8 && !bBits16 && (bits == WAV_BITS_24);
+
+                        if (bBits24)
                         {
                             std::int32_t decoded = sample[0] | (static_cast<std::int32_t>(sample[1]) << 8) |
                                                    (static_cast<std::int32_t>(sample[2]) << 16);
@@ -1091,7 +1132,10 @@ namespace Chicane
                             }
                             value = static_cast<float>(decoded) / WAV_PCM24_SCALE;
                         }
-                        else if (bits == WAV_BITS_32)
+
+                        const bool bBits32 = !bFormatFloatAndBits32 && !bBits8 && !bBits16 && !bBits24 && (bits == WAV_BITS_32);
+
+                        if (bBits32)
                         {
                             const std::int32_t decoded = static_cast<std::int32_t>(readU32(sample));
                             value                      = static_cast<float>(decoded) / WAV_PCM32_SCALE;

@@ -14,7 +14,9 @@ namespace Chicane
             struct CHICANE_RENDERER ScreenPush
             {
             public:
-                std::array<std::int32_t, 4> data = {};
+                std::array<std::int32_t, 4> header = {};
+                std::array<std::int32_t, 4> ids0   = {};
+                std::array<std::int32_t, 4> ids1   = {};
             };
         }
     }

@@ -18,14 +18,14 @@ namespace Chicane
             using List = std::vector<Light>;
 
         public:
-            LightType type        = LightType::Directional;
-            bool      castShadows = false;
-            Vec3      color       = Vec3(1.0f);
-            float     intensity   = 1.0f;
-            float     range       = 50.0f;
-            Vec3      translation = Vec3::sZero();
-            Vec3      direction   = Vec3::sForward();
-            Vec3      up          = Vec3::sUp();
+            LightType          type        = LightType::Directional;
+            bool               castShadows = false;
+            Vec3               color       = Vec3(1.0f);
+            float              intensity   = 1.0f;
+            float              range       = 50.0f;
+            Vec3               translation = Vec3::sZero();
+            Vec3               direction   = Vec3::sForward();
+            Vec3               up          = Vec3::sUp();
             float              innerAngle  = 25.0f;
             float              outerAngle  = 40.0f;
             ViewProjectionType projection  = ViewProjectionType::Orthographic;

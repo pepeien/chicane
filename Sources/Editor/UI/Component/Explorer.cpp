@@ -483,11 +483,14 @@ namespace Editor
             const bool bHasChildren = sHasChildFolders(folder);
             const bool bIsExpanded  = m_expandedPaths.find(entry.path.toStandard()) != m_expandedPaths.end();
 
-            if (!bHasChildren)
+            const bool bNotChildren = static_cast<bool>(!bHasChildren);
+
+            if (bNotChildren)
             {
                 entry.expandState = EXPAND_LEAF;
             }
-            else
+
+            if (!bNotChildren)
             {
                 entry.expandState = bIsExpanded ? EXPAND_EXPANDED : EXPAND_COLLAPSED;
             }
@@ -888,13 +891,20 @@ namespace Editor
             return;
         }
 
-        if (Chicane::FileSystem::Item* displayed = findFolder(m_rootFolder, sToPathKey(explorerFolder.path)))
         {
-            explorerFolder = *displayed;
-        }
-        else
-        {
-            explorerFolder = m_rootFolder;
+            Chicane::FileSystem::Item* displayed = findFolder(m_rootFolder, sToPathKey(explorerFolder.path));
+
+            const bool bHasDisplayed = static_cast<bool>(displayed);
+
+            if (bHasDisplayed)
+            {
+                explorerFolder = *displayed;
+            }
+
+            if (!bHasDisplayed)
+            {
+                explorerFolder = m_rootFolder;
+            }
         }
 
         rebuildTree();

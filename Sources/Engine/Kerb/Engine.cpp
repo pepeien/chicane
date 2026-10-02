@@ -65,18 +65,12 @@ namespace Chicane
                 system.SetGravity(Convert::toPhysicsPosition(gravity));
             }
 
-            JPH::BodyInterface& bodies()
-            {
-                return system.GetBodyInterface();
-            }
+            JPH::BodyInterface& bodies() { return system.GetBodyInterface(); }
 
-            const JPH::BodyInterface& bodies() const
-            {
-                return system.GetBodyInterface();
-            }
+            const JPH::BodyInterface& bodies() const { return system.GetBodyInterface(); }
 
             JPH::RefConst<JPH::Shape> createShape(const BodyCreateInfo& inCreateInfo);
-            void                      applyPendingWrites();
+            void applyPendingWrites();
 
         public:
             JPH::JobSystemThreadPool                                   threadPool;
@@ -686,7 +680,9 @@ namespace Chicane
                 );
             }
 
-            if (inCreateInfo.shape == BodyShape::Capsule && !bIsStatic)
+            const bool bShapeCapsuleAndNotStatic = static_cast<bool>(inCreateInfo.shape == BodyShape::Capsule && !bIsStatic);
+
+            if (bShapeCapsuleAndNotStatic)
             {
                 settings.mFriction       = 0.0f;
                 settings.mRestitution    = 0.0f;
@@ -696,7 +692,8 @@ namespace Chicane
                 settings.mAllowedDOFs =
                     JPH::EAllowedDOFs::TranslationX | JPH::EAllowedDOFs::TranslationY | JPH::EAllowedDOFs::TranslationZ;
             }
-            else
+
+            if (!bShapeCapsuleAndNotStatic)
             {
                 settings.mMotionQuality = bIsStatic ? JPH::EMotionQuality::Discrete : JPH::EMotionQuality::LinearCast;
             }
@@ -766,7 +763,7 @@ namespace Chicane
             m_implementation->horizontalWish.erase(id.GetIndexAndSequenceNumber());
             m_implementation->previousPosition.erase(id.GetIndexAndSequenceNumber());
 
-            auto& ids = m_implementation->ids;
+            std::vector<JPH::BodyID>& ids = m_implementation->ids;
             ids.erase(std::remove(ids.begin(), ids.end(), id), ids.end());
         }
 
@@ -883,10 +880,7 @@ namespace Chicane
 
             std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
             m_implementation->pending.push_back(
-                {PendingWriteKind::Velocity,
-                 id,
-                 Convert::toPhysicsPosition(inVelocity),
-                 JPH::Vec3::sZero()}
+                {PendingWriteKind::Velocity, id, Convert::toPhysicsPosition(inVelocity), JPH::Vec3::sZero()}
             );
         }
 

@@ -84,7 +84,9 @@ namespace Chicane
                     return false;
                 }
 
-                if (m_drag == InputRangeSliderDrag::Span)
+                const bool bDragSpan = static_cast<bool>(m_drag == InputRangeSliderDrag::Span);
+
+                if (bDragSpan)
                 {
                     Component*     track   = SliderMath::findChildId(this, "rangeTrack");
                     const Bounds2D box     = track ? track->getDrawBounds() : getDrawBounds();
@@ -92,7 +94,8 @@ namespace Chicane
                     m_spanWidth            = high - low;
                     m_grabOffset           = pointer - low;
                 }
-                else
+
+                if (!bDragSpan)
                 {
                     applyAt(event.location);
                 }
@@ -290,24 +293,35 @@ namespace Chicane
             }
 
             const float minimum = gap();
-            if (inMode == InputRangeSliderDrag::Span)
+            const bool  bModeSpan  = static_cast<bool>(inMode == InputRangeSliderDrag::Span);
+
+            if (bModeSpan)
             {
                 const float width = std::max(minimum, m_spanWidth);
                 nextLow           = SliderMath::clampValue(nextLow, min, max - width);
                 nextHigh          = SliderMath::snapValue(nextLow + width, min, max, step);
                 nextLow           = SliderMath::snapValue(nextHigh - width, min, max, step);
             }
-            else if (inMode == InputRangeSliderDrag::High)
+
+            const bool bModeHigh = !bModeSpan && (inMode == InputRangeSliderDrag::High);
+
+            if (bModeHigh)
             {
                 nextHigh = std::max(nextHigh, SliderMath::snapValue(low + minimum, min, max, step));
                 nextLow  = low;
             }
-            else if (inMode == InputRangeSliderDrag::Low)
+
+            const bool bModeLow = !bModeSpan && !bModeHigh && (inMode == InputRangeSliderDrag::Low);
+
+            if (bModeLow)
             {
                 nextLow  = std::min(nextLow, SliderMath::snapValue(high - minimum, min, max, step));
                 nextHigh = high;
             }
-            else if (nextHigh - nextLow < minimum)
+
+            const bool bNextLowMinimum = !bModeSpan && !bModeHigh && !bModeLow && (nextHigh - nextLow < minimum);
+
+            if (bNextLowMinimum)
             {
                 nextHigh = SliderMath::snapValue(nextLow + minimum, min, max, step);
             }

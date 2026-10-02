@@ -69,11 +69,14 @@ namespace Chicane
                                              static_cast<std::size_t>(outPrimitive.tangentComponents)) >= vertexCount;
 
                 std::vector<std::uint32_t> sourceIndices;
-                if (inPrimitive.indices >= 0)
+                const bool                 bIndicesNonNegative = static_cast<bool>(inPrimitive.indices >= 0);
+
+                if (bIndicesNonNegative)
                 {
                     inDocument.readIndices(inPrimitive.indices, sourceIndices);
                 }
-                else
+
+                if (!bIndicesNonNegative)
                 {
                     sourceIndices.resize(vertexCount);
                     for (std::size_t index = 0; index < vertexCount; index++)
@@ -113,12 +116,12 @@ namespace Chicane
                     if (inPrimitive.bHasNormals)
                     {
                         const std::size_t normalOffset = index * static_cast<std::size_t>(inPrimitive.normalComponents);
-                        normal                          = Vec3(
+                        normal                         = Vec3(
                             inPrimitive.normals[normalOffset],
                             inPrimitive.normals[normalOffset + 1],
                             inPrimitive.normals[normalOffset + 2]
                         );
-                        normal                          = normal.normalize();
+                        normal = normal.normalize();
                     }
 
                     float u = 0.0f;
@@ -170,8 +173,8 @@ namespace Chicane
                 }
 
                 const std::vector<std::int32_t> parents = document.parents();
-                std::vector<Mat4> locals(model.nodes_count, Mat4(1.0f));
-                std::vector<Mat4> worlds(model.nodes_count, Mat4(1.0f));
+                std::vector<Mat4>               locals(model.nodes_count, Mat4(1.0f));
+                std::vector<Mat4>               worlds(model.nodes_count, Mat4(1.0f));
                 std::vector<char>               computed(model.nodes_count, 0);
 
                 for (std::uint32_t index = 0; index < model.nodes_count; index++)
@@ -246,6 +249,7 @@ namespace Chicane
                         {
                             name = String::sSprint("Mesh_%u", meshIndex);
                         }
+
                         if (mesh.primitives_count > 1)
                         {
                             name = String::sSprint("%s_%u", name.toChar(), primitiveIndex);
@@ -264,7 +268,7 @@ namespace Chicane
                     const std::vector<std::int32_t> instances = nodes.empty() ? std::vector<std::int32_t>{-1} : nodes;
                     for (const std::int32_t node : instances)
                     {
-                        const Mat4 world = node >= 0 ? worlds[static_cast<std::size_t>(node)] : Mat4(1.0f);
+                        const Mat4      world     = node >= 0 ? worlds[static_cast<std::size_t>(node)] : Mat4(1.0f);
                         const Transform transform = transformFromMatrix(BASIS4 * world * BASIS4_INVERSE);
                         const String    bone      = node >= 0 ? document.nodeName(node) : String();
 

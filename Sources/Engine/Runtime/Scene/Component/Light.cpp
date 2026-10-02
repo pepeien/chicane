@@ -88,11 +88,11 @@ namespace Chicane
         light.range           = range;
         light.innerAngle      = std::min(innerAngle, outerAngle);
         light.outerAngle      = outerAngle;
-        light.translation = Vec3(m_data.translation.x, m_data.translation.y, m_data.translation.z);
-        light.projection  = getProjectionType();
-        light.fieldOfView = getFieldOfView();
-        light.nearClip    = getNearClip();
-        light.farClip     = getFarClip();
+        light.translation     = Vec3(m_data.translation.x, m_data.translation.y, m_data.translation.z);
+        light.projection      = getProjectionType();
+        light.fieldOfView     = getFieldOfView();
+        light.nearClip        = getNearClip();
+        light.farClip         = getFarClip();
 
         const Vec3 forward = Vec3(m_data.forward.x, m_data.forward.y, m_data.forward.z);
         light.direction    = forward.dot(forward) < 1e-8f ? Vec3::sForward() : forward.normalize();

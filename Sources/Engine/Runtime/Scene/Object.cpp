@@ -331,7 +331,7 @@ namespace Chicane
         const Vec3 parentWorld = getAbsoluteTranslation();
         const Vec3 parentScale = getAbsoluteScale();
         const Vec3 delta       = inValue - parentWorld;
-        const Vec3 local = getAbsoluteRotation().get().inverse() * delta;
+        const Vec3 local       = getAbsoluteRotation().get().inverse() * delta;
 
         const auto divide = [](float inValue, float inScale) -> float
         { return std::fabs(inScale) > 1e-8f ? inValue / inScale : inValue; };
@@ -438,27 +438,44 @@ namespace Chicane
             return true;
         }
 
-        if (accessor.isType<FileSystem::Path>())
+        const bool bPath = static_cast<bool>(accessor.isType<FileSystem::Path>());
+
+        if (bPath)
         {
             accessor.set<FileSystem::Path>(this, FileSystem::Path(inValue));
         }
-        else if (accessor.isType<String>())
+
+        const bool bString = !bPath && (accessor.isType<String>());
+
+        if (bString)
         {
             accessor.set<String>(this, inValue);
         }
-        else if (accessor.isType<bool>())
+
+        const bool bBool = !bPath && !bString && (accessor.isType<bool>());
+
+        if (bBool)
         {
             accessor.set<bool>(this, inValue.toBool() || inValue.equals("true", "1"));
         }
-        else if (accessor.isType<float>())
+
+        const bool bFloat = !bPath && !bString && !bBool && (accessor.isType<float>());
+
+        if (bFloat)
         {
             accessor.set<float>(this, std::stof(inValue.toStandard()));
         }
-        else if (accessor.isType<Vec3>())
+
+        const bool bVec3 = !bPath && !bString && !bBool && !bFloat && (accessor.isType<Vec3>());
+
+        if (bVec3)
         {
             accessor.set<Vec3>(this, Xml::parseVec3(inValue, Vec3::sZero()));
         }
-        else if (accessor.isType<Rotator>())
+
+        const bool bRotator = !bPath && !bString && !bBool && !bFloat && !bVec3 && (accessor.isType<Rotator>());
+
+        if (bRotator)
         {
             if (inValue.split(',').size() < 3)
             {
@@ -467,11 +484,15 @@ namespace Chicane
 
             accessor.set<Rotator>(this, Rotator(Xml::parseVec3(inValue, Vec3::sZero())));
         }
-        else if (accessor.isType<int>())
+
+        const bool bInt = !bPath && !bString && !bBool && !bFloat && !bVec3 && !bRotator && (accessor.isType<int>());
+
+        if (bInt)
         {
             accessor.set<int>(this, std::stoi(inValue.toStandard()));
         }
-        else
+
+        if (!bPath && !bString && !bBool && !bFloat && !bVec3 && !bRotator && !bInt)
         {
             return false;
         }

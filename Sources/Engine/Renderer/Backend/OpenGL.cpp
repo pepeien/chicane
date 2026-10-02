@@ -46,7 +46,6 @@ namespace Chicane
               m_targetWidth(0),
               m_targetHeight(0),
               m_screenBlitFramebuffer(0),
-              m_screenTextureId(Draw::InvalidId),
               m_gpuQueries({}),
               m_gpuQueryPending({}),
               m_gpuQueryWrite(0)
@@ -157,6 +156,7 @@ namespace Chicane
 
             // Layers
             destroyLayers();
+            destroyViewTargets();
             m_bloomPass.destroy();
             destroyRhiResources();
             destroyFrames();
@@ -185,9 +185,10 @@ namespace Chicane
 
             for (const DrawTexture& texture : inResources.getDraws())
             {
-                if (texture.reference.equals(SCREEN_TARGET_ID))
+                const int viewSlot = viewTargetSlot(texture.reference);
+                if (viewSlot >= 0)
                 {
-                    m_screenTextureId = texture.id;
+                    assignViewTargetTexture(static_cast<std::uint32_t>(viewSlot), texture.id);
 
                     continue;
                 }
@@ -228,7 +229,9 @@ namespace Chicane
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
             m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
+            prepareViewTargets();
             fillRhiFrame(inFrame);
+            renderViewTargets(m_rhiFrame, false);
             renderLayers(
                 inFrame,
                 &m_rhiFrame,
@@ -271,6 +274,11 @@ namespace Chicane
 
         RHI::Viewport OpenGLBackend::getRHIViewport(Layer* inLayer) const
         {
+            if (m_bPreviewPass)
+            {
+                return m_previewViewport;
+            }
+
             const Viewport viewport = getGLViewport(inLayer);
 
             RHI::Viewport result;
@@ -282,6 +290,11 @@ namespace Chicane
 
         RHI::Scissor OpenGLBackend::getRHIScissor(Layer* inLayer) const
         {
+            if (m_bPreviewPass)
+            {
+                return previewScissor();
+            }
+
             const Viewport viewport = getGLViewport(inLayer);
 
             RHI::Scissor result;
@@ -904,11 +917,16 @@ namespace Chicane
             for (std::uint32_t gpuLevel = 0; gpuLevel < mipLevels; gpuLevel++)
             {
                 Image::Instance image;
-                if (inTexture.mips)
+                const bool      bMips = static_cast<bool>(inTexture.mips);
+
+                if (bMips)
                 {
                     image = inTexture.mips->decode(inTexture.residentMinMip + gpuLevel);
                 }
-                else if (gpuLevel == 0)
+
+                const bool bGpuLevelZero = !bMips && (gpuLevel == 0);
+
+                if (bGpuLevelZero)
                 {
                     image = inTexture.image;
                 }
@@ -923,12 +941,17 @@ namespace Chicane
                 std::vector<Image::Pixel> staging(static_cast<std::size_t>(levelWidth) * levelHeight * 4, 255);
                 if (image && image->getPixels())
                 {
-                    if (image->getWidth() == static_cast<int>(levelWidth) &&
-                        image->getHeight() == static_cast<int>(levelHeight))
+                    const bool bWidthLevelWidthAndHeightLevelHeight = static_cast<bool>(
+                        image->getWidth() == static_cast<int>(levelWidth) &&
+                        image->getHeight() == static_cast<int>(levelHeight)
+                    );
+
+                    if (bWidthLevelWidthAndHeightLevelHeight)
                     {
                         std::memcpy(staging.data(), image->getPixels(), staging.size());
                     }
-                    else
+
+                    if (!bWidthLevelWidthAndHeightLevelHeight)
                     {
                         image->blit(staging.data(), static_cast<int>(levelWidth), static_cast<int>(levelHeight));
                     }
@@ -1004,17 +1027,19 @@ namespace Chicane
         {
             if (m_rhi)
             {
-                auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+                Renderer::OpenGLRHIDevice* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
                 if (m_sceneColor.handle)
                 {
                     device->destroyImage(m_sceneColor);
                     m_sceneColor = {};
                 }
+
                 if (m_sceneDepth.handle)
                 {
                     device->destroyImage(m_sceneDepth);
                     m_sceneDepth = {};
                 }
+
                 if (m_presentColor.handle)
                 {
                     device->destroyImage(m_presentColor);
@@ -1058,11 +1083,6 @@ namespace Chicane
         std::uint32_t OpenGLBackend::getTargetColor() const
         {
             return m_targetColor;
-        }
-
-        Draw::Id OpenGLBackend::getScreenTextureId() const
-        {
-            return m_screenTextureId;
         }
 
         bool OpenGLBackend::captureScreen(
@@ -1138,7 +1158,7 @@ namespace Chicane
 
         void OpenGLBackend::wrapTargetImages()
         {
-            auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            Renderer::OpenGLRHIDevice* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
             if (!device)
             {
                 return;
@@ -1149,11 +1169,13 @@ namespace Chicane
                 device->destroyImage(m_sceneColor);
                 m_sceneColor = {};
             }
+
             if (m_sceneDepth.handle)
             {
                 device->destroyImage(m_sceneDepth);
                 m_sceneDepth = {};
             }
+
             if (m_presentColor.handle)
             {
                 device->destroyImage(m_presentColor);
@@ -1188,7 +1210,7 @@ namespace Chicane
 
         void OpenGLBackend::buildTextureBindGroup()
         {
-            auto* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            Renderer::OpenGLRHIDevice* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
             if (!device || m_textureTable == 0)
             {
                 return;
@@ -1207,6 +1229,7 @@ namespace Chicane
                     image = {};
                 }
             }
+
             if (m_textureGroup.handle)
             {
                 device->destroyBindGroup(m_textureGroup);
@@ -1248,20 +1271,20 @@ namespace Chicane
 
         void OpenGLBackend::fillRhiFrame(const Frame& inFrame)
         {
-            auto* device                = static_cast<OpenGLRHIDevice*>(m_rhi.get());
-            m_rhiFrame.commands         = device->commandList();
-            m_rhiFrame.frameIndex       = m_currentFrameIndex;
-            m_rhiFrame.width            = m_targetWidth;
-            m_rhiFrame.height           = m_targetHeight;
-            m_rhiFrame.cameraBuffer     = m_cameraBuffer;
-            m_rhiFrame.lightBuffer      = m_lightBuffer;
-            m_rhiFrame.instance3DBuffer = m_instanceBuffer;
-            m_rhiFrame.particleBuffer   = m_particleBuffer;
-            m_rhiFrame.textureTable     = m_textureGroup;
-            m_rhiFrame.sceneColor       = m_sceneColor;
-            m_rhiFrame.sceneDepth       = m_sceneDepth;
-            m_rhiFrame.presentColor     = m_presentColor;
-            m_rhiFrame.linearSampler    = m_linearSampler;
+            Renderer::OpenGLRHIDevice* device = static_cast<OpenGLRHIDevice*>(m_rhi.get());
+            m_rhiFrame.commands               = device->commandList();
+            m_rhiFrame.frameIndex             = m_currentFrameIndex;
+            m_rhiFrame.width                  = m_targetWidth;
+            m_rhiFrame.height                 = m_targetHeight;
+            m_rhiFrame.cameraBuffer           = m_cameraBuffer;
+            m_rhiFrame.lightBuffer            = m_lightBuffer;
+            m_rhiFrame.instance3DBuffer       = m_instanceBuffer;
+            m_rhiFrame.particleBuffer         = m_particleBuffer;
+            m_rhiFrame.textureTable           = m_textureGroup;
+            m_rhiFrame.sceneColor             = m_sceneColor;
+            m_rhiFrame.sceneDepth             = m_sceneDepth;
+            m_rhiFrame.presentColor           = m_presentColor;
+            m_rhiFrame.linearSampler          = m_linearSampler;
 
             View camera = inFrame.getCamera();
             camera.depthZeroToOne();
@@ -1347,16 +1370,19 @@ namespace Chicane
                 m_rhi->destroyBindGroup(m_textureGroup);
                 m_textureGroup = {};
             }
+
             if (m_textureLayout.handle)
             {
                 m_rhi->destroyBindGroupLayout(m_textureLayout);
                 m_textureLayout = {};
             }
+
             if (m_linearSampler.handle)
             {
                 m_rhi->destroySampler(m_linearSampler);
                 m_linearSampler = {};
             }
+
             if (m_textureSampler.handle)
             {
                 m_rhi->destroySampler(m_textureSampler);

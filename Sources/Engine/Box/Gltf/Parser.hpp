@@ -335,13 +335,16 @@ namespace Chicane
             {
                 for (std::size_t i = 2; i < inIndices.size(); i++)
                 {
-                    if ((i % 2) == 0)
+                    const bool bEvenI = static_cast<bool>((i % 2) == 0);
+
+                    if (bEvenI)
                     {
                         outIndices.push_back(inIndices[i - 2]);
                         outIndices.push_back(inIndices[i - 1]);
                         outIndices.push_back(inIndices[i]);
                     }
-                    else
+
+                    if (!bEvenI)
                     {
                         outIndices.push_back(inIndices[i - 1]);
                         outIndices.push_back(inIndices[i - 2]);

@@ -1,5 +1,7 @@
 #include "Chicane/Core/Worker/Pool/Parallel.hpp"
 
+#include <algorithm>
+
 namespace Chicane
 {
     static thread_local bool g_bWorkerPoolParallel = false;
@@ -21,7 +23,14 @@ namespace Chicane
             return;
         }
 
-        if (inCount == 1 || g_bWorkerPoolParallel)
+        unsigned cores = std::thread::hardware_concurrency();
+        if (cores < 1)
+        {
+            cores = 1;
+        }
+
+        const bool bFew = inCount <= static_cast<std::size_t>(cores);
+        if (inCount == 1 || bFew || g_bWorkerPoolParallel)
         {
             for (std::size_t index = 0; index < inCount; index++)
             {
@@ -33,24 +42,24 @@ namespace Chicane
 
         ensureWorkers();
 
+        std::shared_ptr<Batch> batch = std::make_shared<Batch>();
+        batch->job                   = inJob;
+        batch->count                 = inCount;
+        batch->remaining             = inCount;
+
         bool bSerial = false;
         {
             std::lock_guard<std::mutex> lock(m_mutex);
-            if (m_workers.empty() || m_bShutdown)
+            const bool                  bWorkersEmptyOrShutdown = static_cast<bool>(m_workers.empty() || m_bShutdown);
+
+            if (bWorkersEmptyOrShutdown)
             {
                 bSerial = true;
             }
-            else
-            {
-                m_job       = inJob;
-                m_error     = nullptr;
-                m_remaining = inCount;
-                m_bActive   = true;
 
-                for (std::size_t index = 0; index < inCount; index++)
-                {
-                    m_indices.push(index);
-                }
+            if (!bWorkersEmptyOrShutdown)
+            {
+                m_batches.push_back(batch);
             }
         }
 
@@ -69,17 +78,62 @@ namespace Chicane
         std::exception_ptr error;
         {
             std::unique_lock<std::mutex> lock(m_mutex);
-            m_done.wait(lock, [this]() { return m_remaining == 0; });
-            m_bActive = false;
-            m_job     = nullptr;
-            error     = m_error;
-            m_error   = nullptr;
+            batch->done.wait(lock, [&batch]() { return batch->remaining == 0; });
+            error = batch->error;
         }
 
         if (error)
         {
             std::rethrow_exception(error);
         }
+    }
+
+    void WorkerPoolParallel::detach(std::function<void()> inJob)
+    {
+        if (!inJob)
+        {
+            return;
+        }
+
+        const bool bInline = g_bWorkerPoolParallel;
+        if (bInline)
+        {
+            inJob();
+
+            return;
+        }
+
+        ensureWorkers();
+
+        std::shared_ptr<Batch> batch = std::make_shared<Batch>();
+        batch->job                   = [inJob](std::size_t) { inJob(); };
+        batch->count                 = 1;
+        batch->remaining             = 1;
+
+        bool bRunHere = false;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            const bool                  bWorkersEmptyOrShutdown = static_cast<bool>(m_workers.empty() || m_bShutdown);
+
+            if (bWorkersEmptyOrShutdown)
+            {
+                bRunHere = true;
+            }
+
+            if (!bWorkersEmptyOrShutdown)
+            {
+                m_batches.push_back(batch);
+            }
+        }
+
+        if (bRunHere)
+        {
+            inJob();
+
+            return;
+        }
+
+        m_signal.notify_all();
     }
 
     void WorkerPoolParallel::shutdown()
@@ -121,20 +175,34 @@ namespace Chicane
         }
     }
 
+    bool WorkerPoolParallel::hasWork() const
+    {
+        for (const std::shared_ptr<Batch>& batch : m_batches)
+        {
+            if (batch && batch->next < batch->count)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void WorkerPoolParallel::loop()
     {
         g_bWorkerPoolParallel = true;
 
         while (true)
         {
-            std::size_t index = 0;
-            Job         job;
+            std::shared_ptr<Batch> batch;
+            std::size_t            index = 0;
+            Job                    job;
 
             {
                 std::unique_lock<std::mutex> lock(m_mutex);
-                m_signal.wait(lock, [this]() { return m_bShutdown || (m_bActive && !m_indices.empty()); });
+                m_signal.wait(lock, [this]() { return m_bShutdown || hasWork(); });
 
-                if (m_indices.empty())
+                if (!hasWork())
                 {
                     if (m_bShutdown)
                     {
@@ -144,9 +212,25 @@ namespace Chicane
                     continue;
                 }
 
-                index = m_indices.front();
-                m_indices.pop();
-                job = m_job;
+                for (const std::shared_ptr<Batch>& candidate : m_batches)
+                {
+                    if (!candidate || candidate->next >= candidate->count)
+                    {
+                        continue;
+                    }
+
+                    batch = candidate;
+                    index = batch->next;
+                    batch->next++;
+                    job = batch->job;
+
+                    break;
+                }
+            }
+
+            if (!batch)
+            {
+                continue;
             }
 
             if (job)
@@ -158,24 +242,30 @@ namespace Chicane
                 catch (...)
                 {
                     std::lock_guard<std::mutex> lock(m_mutex);
-                    if (!m_error)
+                    if (!batch->error)
                     {
-                        m_error = std::current_exception();
+                        batch->error = std::current_exception();
                     }
                 }
             }
 
             {
                 std::lock_guard<std::mutex> lock(m_mutex);
-                if (m_remaining > 0)
+                if (batch->remaining > 0)
                 {
-                    m_remaining--;
+                    batch->remaining--;
                 }
 
-                if (m_remaining == 0)
+                if (batch->remaining == 0)
                 {
-                    m_bActive = false;
-                    m_done.notify_one();
+                    const auto found = std::find(m_batches.begin(), m_batches.end(), batch);
+                    if (found != m_batches.end())
+                    {
+                        m_batches.erase(found);
+                    }
+
+                    batch->done.notify_one();
+                    m_signal.notify_all();
                 }
             }
         }

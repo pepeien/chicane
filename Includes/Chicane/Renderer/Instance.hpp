@@ -8,6 +8,7 @@
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Window/Backend.hpp"
@@ -25,6 +26,7 @@
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 #include "Chicane/Renderer/Draw/Sky/Resource.hpp"
 #include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Instance/ViewTarget.hpp"
 #include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Target.hpp"
 #include "Chicane/Renderer/Texture/Streamer.hpp"
@@ -55,6 +57,10 @@ namespace Chicane
 
             // View
             void useCamera(const View& inData);
+            void useViewTarget(const String& inName);
+            void setViewTarget(const String& inName, Frame inFrame, std::uint32_t inWidth, std::uint32_t inHeight);
+            void clearViewTargets();
+            const std::vector<InstanceViewTarget>& getViewTargets() const;
             void addLight(const Light& inData);
             void addLight(const Light::List& inData);
 
@@ -138,26 +144,27 @@ namespace Chicane
 
         private:
             // Window
-            const Window*              m_window;
+            const Window*                   m_window;
 
             // Settings
-            Settings                   m_settings;
+            Settings                        m_settings;
 
             // Frame
-            std::vector<Frame>         m_frames;
-            std::uint32_t              m_currentFrame;
+            std::vector<Frame>              m_frames;
+            std::uint32_t                   m_currentFrame;
+            std::vector<InstanceViewTarget> m_viewTargets;
 
             // Draw
-            DrawPolyResource::Map      m_polyResources;
-            DrawTextureResource        m_textureResources;
-            DrawSkyResource            m_skyResource;
-            TextureStreamer            m_textureStreamer;
+            DrawPolyResource::Map           m_polyResources;
+            DrawTextureResource             m_textureResources;
+            DrawSkyResource                 m_skyResource;
+            TextureStreamer                 m_textureStreamer;
 
             // Feature
-            std::atomic<std::uint16_t> m_features;
+            std::atomic<std::uint16_t>      m_features;
 
             // Backend
-            std::unique_ptr<Backend>   m_backend;
+            std::unique_ptr<Backend>        m_backend;
         };
     }
 }

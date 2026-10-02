@@ -22,31 +22,51 @@ namespace Chicane
                     return VK_FALSE;
                 }
 
-                String prefix = "General";
-                if (inMessageType ==
-                    VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT)
+                String     prefix = "General";
+                const bool bMessageTypePerformance = static_cast<bool>(
+                    inMessageType == VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT
+                );
+
+                if (bMessageTypePerformance)
                 {
                     prefix = "Performance";
                 }
-                else if (inMessageType ==
-                         VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT)
+
+                const bool bMessageTypeValidation =
+                    !bMessageTypePerformance && (inMessageType ==
+                                VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT);
+
+                if (bMessageTypeValidation)
                 {
                     prefix = "Validation";
                 }
-                else if (inMessageType ==
-                         VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT)
+
+                const bool bMessageTypeDeviceAddressBinding =
+                    !bMessageTypePerformance && !bMessageTypeValidation &&
+                    (inMessageType ==
+                     VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT);
+
+                if (bMessageTypeDeviceAddressBinding)
                 {
                     prefix = "Device";
                 }
 
-                String color = Color::HEX_COLOR_WHITE;
-                if (inMessageSeverity ==
-                    VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
+                String     color  = Color::HEX_COLOR_WHITE;
+                const bool bMessageSeverityWarning = static_cast<bool>(
+                    inMessageSeverity ==
+                    VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT
+                );
+
+                if (bMessageSeverityWarning)
                 {
                     color = Color::HEX_COLOR_YELLOW;
                 }
-                else if (inMessageSeverity ==
-                         VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
+
+                const bool bMessageSeverityError =
+                    !bMessageSeverityWarning && (inMessageSeverity ==
+                                VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT);
+
+                if (bMessageSeverityError)
                 {
                     color = Color::HEX_COLOR_ORANGE;
                 }

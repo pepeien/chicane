@@ -25,11 +25,16 @@ namespace Chicane
                 const int args = lua_gettop(inState);
                 Rotator   value;
 
-                if (args >= 2 && isVec3(inState, 2))
+                const bool bArgsAtLeast2AndVec3 = static_cast<bool>(args >= 2 && isVec3(inState, 2));
+
+                if (bArgsAtLeast2AndVec3)
                 {
                     value = Rotator(checkVec3(inState, 2));
                 }
-                else if (args >= 4)
+
+                const bool bArgsAtLeast4 = !bArgsAtLeast2AndVec3 && (args >= 4);
+
+                if (bArgsAtLeast4)
                 {
                     value = Rotator(
                         static_cast<float>(luaL_checknumber(inState, 2)),
@@ -37,7 +42,10 @@ namespace Chicane
                         static_cast<float>(luaL_checknumber(inState, 4))
                     );
                 }
-                else if (args >= 2)
+
+                const bool bArgsAtLeast2 = !bArgsAtLeast2AndVec3 && !bArgsAtLeast4 && (args >= 2);
+
+                if (bArgsAtLeast2)
                 {
                     value = Rotator(static_cast<float>(luaL_checknumber(inState, 2)));
                 }
@@ -62,15 +70,23 @@ namespace Chicane
             {
                 Rotator* value = check(inState, 1);
 
-                if (isVec3(inState, 2))
+                const bool bVec3 = static_cast<bool>(isVec3(inState, 2));
+
+                if (bVec3)
                 {
                     value->set(checkVec3(inState, 2));
                 }
-                else if (isRotator(inState, 2))
+
+                const bool bRotator = !bVec3 && (isRotator(inState, 2));
+
+                if (bRotator)
                 {
                     value->set(checkRotator(inState, 2));
                 }
-                else if (lua_gettop(inState) >= 4)
+
+                const bool bTopAtLeast4 = !bVec3 && !bRotator && (lua_gettop(inState) >= 4);
+
+                if (bTopAtLeast4)
                 {
                     value->set(
                         static_cast<float>(luaL_checknumber(inState, 2)),
@@ -78,7 +94,8 @@ namespace Chicane
                         static_cast<float>(luaL_checknumber(inState, 4))
                     );
                 }
-                else
+
+                if (!bVec3 && !bRotator && !bTopAtLeast4)
                 {
                     value->set(static_cast<float>(luaL_checknumber(inState, 2)));
                 }
@@ -90,11 +107,16 @@ namespace Chicane
             {
                 Rotator* value = check(inState, 1);
 
-                if (isVec3(inState, 2))
+                const bool bVec3 = static_cast<bool>(isVec3(inState, 2));
+
+                if (bVec3)
                 {
                     value->addLocal(checkVec3(inState, 2));
                 }
-                else if (lua_gettop(inState) >= 4)
+
+                const bool bTopAtLeast4 = !bVec3 && (lua_gettop(inState) >= 4);
+
+                if (bTopAtLeast4)
                 {
                     value->addLocal(
                         static_cast<float>(luaL_checknumber(inState, 2)),
@@ -102,7 +124,8 @@ namespace Chicane
                         static_cast<float>(luaL_checknumber(inState, 4))
                     );
                 }
-                else
+
+                if (!bVec3 && !bTopAtLeast4)
                 {
                     value->addLocal(static_cast<float>(luaL_checknumber(inState, 2)));
                 }
@@ -114,11 +137,16 @@ namespace Chicane
             {
                 Rotator* value = check(inState, 1);
 
-                if (isVec3(inState, 2))
+                const bool bVec3 = static_cast<bool>(isVec3(inState, 2));
+
+                if (bVec3)
                 {
                     value->addWorld(checkVec3(inState, 2));
                 }
-                else if (lua_gettop(inState) >= 4)
+
+                const bool bTopAtLeast4 = !bVec3 && (lua_gettop(inState) >= 4);
+
+                if (bTopAtLeast4)
                 {
                     value->addWorld(
                         static_cast<float>(luaL_checknumber(inState, 2)),
@@ -126,7 +154,8 @@ namespace Chicane
                         static_cast<float>(luaL_checknumber(inState, 4))
                     );
                 }
-                else
+
+                if (!bVec3 && !bTopAtLeast4)
                 {
                     value->addWorld(static_cast<float>(luaL_checknumber(inState, 2)));
                 }

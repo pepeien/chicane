@@ -333,11 +333,14 @@ namespace Editor
             return;
         }
 
-        if (inEnabled)
+        const bool bHasEnabled = static_cast<bool>(inEnabled);
+
+        if (bHasEnabled)
         {
             renderer->enableFeature(inFeature);
         }
-        else
+
+        if (!bHasEnabled)
         {
             renderer->disableFeature(inFeature);
         }

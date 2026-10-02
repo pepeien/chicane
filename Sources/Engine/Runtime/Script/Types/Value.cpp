@@ -53,28 +53,28 @@ namespace Chicane
 
         static bool asObject(const std::any& inValue, Object*& outObject)
         {
-            if (const auto* value = std::any_cast<Object*>(&inValue))
+            if (Object* const* value = std::any_cast<Object*>(&inValue))
             {
                 outObject = *value;
 
                 return true;
             }
 
-            if (const auto* value = std::any_cast<Actor*>(&inValue))
+            if (Actor* const* value = std::any_cast<Actor*>(&inValue))
             {
                 outObject = *value;
 
                 return true;
             }
 
-            if (const auto* value = std::any_cast<Component*>(&inValue))
+            if (Component* const* value = std::any_cast<Component*>(&inValue))
             {
                 outObject = *value;
 
                 return true;
             }
 
-            if (const auto* value = std::any_cast<void*>(&inValue))
+            if (void* const* value = std::any_cast<void*>(&inValue))
             {
                 if (!*value)
                 {
@@ -163,11 +163,14 @@ namespace Chicane
             Object* object = nullptr;
             if (asObject(inValue, object))
             {
-                if (!object)
+                const bool bNotHasObject = static_cast<bool>(!object);
+
+                if (bNotHasObject)
                 {
                     lua_pushnil(inState);
                 }
-                else
+
+                if (!bNotHasObject)
                 {
                     pushObject(inState, object);
                 }
@@ -175,14 +178,14 @@ namespace Chicane
                 return 1;
             }
 
-            if (const auto* value = std::any_cast<SceneTraceRequest>(&inValue))
+            if (const SceneTraceRequest* value = std::any_cast<SceneTraceRequest>(&inValue))
             {
                 pushValueCopy(inState, *value);
 
                 return 1;
             }
 
-            if (const auto* value = std::any_cast<SceneTraceResponse>(&inValue))
+            if (const SceneTraceResponse* value = std::any_cast<SceneTraceResponse>(&inValue))
             {
                 pushValueCopy(inState, *value);
 

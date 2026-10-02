@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cstddef>
 #include <functional>
 #include <memory>
@@ -8,6 +9,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Status.hpp"
+#include "Chicane/Renderer/Backend/ViewTargetSlot.hpp"
 #include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -19,7 +21,10 @@
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/RHI/Buffer.hpp"
 #include "Chicane/Renderer/RHI/Device.hpp"
+#include "Chicane/Renderer/RHI/Frame.hpp"
+#include "Chicane/Renderer/RHI/Image.hpp"
 #include "Chicane/Renderer/RHI/Scissor.hpp"
 #include "Chicane/Renderer/RHI/Viewport.hpp"
 
@@ -66,6 +71,13 @@ namespace Chicane
             // Renderer
             const Instance* getRenderer() const;
             bool hasFeature(RendererFeature inFeature) const;
+
+            // View
+            int registerViewTarget(const String& inName);
+            int viewTargetSlot(const String& inName) const;
+            Draw::Id viewTargetTexture(std::uint32_t inSlot) const;
+            RHI::Image viewTargetImage(std::uint32_t inSlot) const;
+            RHI::Image viewPlaceholder() const;
 
             // Layer
             std::vector<Layer*> findLayers(std::function<bool(const Layer* inLayer)> inPredicate) const;
@@ -182,15 +194,35 @@ namespace Chicane
             void setVRAM(std::size_t inBytes);
             void setGpuDelta(float inMilliseconds);
 
+            void assignViewTargetTexture(std::uint32_t inSlot, Draw::Id inTexture);
+
+            void prepareViewTargets();
+            void renderViewTargets(RHI::Frame& ioFrame, bool bFlipY);
+            void destroyViewTargets();
+
+            virtual void discardViewTarget(RHI::Image inImage);
+
+            void ensureViewPlaceholder();
+            void ensureViewTarget(std::uint32_t inSlot, std::uint32_t inWidth, std::uint32_t inHeight);
+            void uploadViewTarget(std::uint32_t inSlot, const Frame& inFrame, bool bFlipY);
+            void drawViewTarget(std::uint32_t inSlot, const Frame& inFrame, RHI::Frame& ioFrame);
+            RHI::Scissor previewScissor() const;
+
         private:
             void setRenderer(const Instance* inValue);
 
         protected:
-            const Instance*              m_renderer;
-            LayerList                    m_layers;
-            std::unique_ptr<RHI::Device> m_rhi;
-            std::size_t                  m_VRAM;
-            float                        m_gpuDelta;
+            const Instance*                                    m_renderer;
+            LayerList                                          m_layers;
+            std::unique_ptr<RHI::Device>                       m_rhi;
+            std::size_t                                        m_VRAM;
+            float                                              m_gpuDelta;
+
+            bool                                               m_bPreviewPass;
+            RHI::Viewport                                      m_previewViewport;
+            std::array<BackendViewTargetSlot, VIEW_TARGET_MAX> m_viewSlots;
+            std::uint32_t                                      m_viewSlotCount;
+            RHI::Image                                         m_viewPlaceholder;
 
         private:
             BackendStatus m_status;

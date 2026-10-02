@@ -15,11 +15,16 @@ namespace Chicane
     public:
         FrameTelemetry();
 
+    public:
+        inline operator String() const { return toString(); }
+
     protected:
         void onTime() override;
 
     public:
         void set(float inDelta);
+
+        String toString() const;
 
     public:
         CH_FIELD()

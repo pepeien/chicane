@@ -106,10 +106,11 @@ namespace Chicane
         float getEmissiveStrength() const;
         void setEmissiveStrength(float inValue);
 
+        void evaluatePose();
+
     protected:
         void generateBounds();
         void bindSkeleton();
-        void evaluatePose();
         String resolveAnimationId(const String& inId) const;
         std::int32_t findBoundBone(const Box::MeshGroup& inGroup) const;
 

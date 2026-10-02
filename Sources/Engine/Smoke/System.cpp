@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Worker/Pool.hpp"
 #include "Chicane/Core/Xml.hpp"
 #include "Chicane/Smoke/Spawn.hpp"
 #include "Chicane/Smoke/System.hpp"
@@ -141,7 +142,9 @@ namespace Chicane
                 }
             }
 
-            if (spawn)
+            const bool bHasSpawn = static_cast<bool>(spawn);
+
+            if (bHasSpawn)
             {
                 if (!m_bBurst && spawn->burst > 0)
                 {
@@ -161,7 +164,8 @@ namespace Chicane
                     }
                 }
             }
-            else
+
+            if (!bHasSpawn)
             {
                 m_bBurst = true;
             }
@@ -176,35 +180,40 @@ namespace Chicane
                 module->tick(inDeltaTime, outParticles, inPlay);
             }
 
-            for (Particle& particle : outParticles)
-            {
-                if (!particle.bAlive)
+            WorkerPool::sParallel(
+                outParticles.size(),
+                [&outParticles, inDeltaTime](std::size_t index)
                 {
-                    continue;
+                    Particle& particle = outParticles.at(index);
+                    if (!particle.bAlive)
+                    {
+                        return;
+                    }
+
+                    particle.age += inDeltaTime;
+                    if (particle.age >= particle.lifetime)
+                    {
+                        particle.bAlive = false;
+
+                        return;
+                    }
+
+                    const float alpha =
+                        particle.lifetime > 0.0f ? std::min(particle.age / particle.lifetime, 1.0f) : 1.0f;
+                    particle.position = particle.position + particle.velocity * inDeltaTime;
+                    particle.size     = Vec2(
+                        particle.sizeStart.x + (particle.sizeEnd.x - particle.sizeStart.x) * alpha,
+                        particle.sizeStart.y + (particle.sizeEnd.y - particle.sizeStart.y) * alpha
+                    );
+
+                    particle.color = Vec4(
+                        particle.colorStart.x + (particle.colorEnd.x - particle.colorStart.x) * alpha,
+                        particle.colorStart.y + (particle.colorEnd.y - particle.colorStart.y) * alpha,
+                        particle.colorStart.z + (particle.colorEnd.z - particle.colorStart.z) * alpha,
+                        particle.colorStart.w + (particle.colorEnd.w - particle.colorStart.w) * alpha
+                    );
                 }
-
-                particle.age += inDeltaTime;
-                if (particle.age >= particle.lifetime)
-                {
-                    particle.bAlive = false;
-
-                    continue;
-                }
-
-                const float alpha = particle.lifetime > 0.0f ? std::min(particle.age / particle.lifetime, 1.0f) : 1.0f;
-                particle.position = particle.position + particle.velocity * inDeltaTime;
-                particle.size     = Vec2(
-                    particle.sizeStart.x + (particle.sizeEnd.x - particle.sizeStart.x) * alpha,
-                    particle.sizeStart.y + (particle.sizeEnd.y - particle.sizeStart.y) * alpha
-                );
-
-                particle.color = Vec4(
-                    particle.colorStart.x + (particle.colorEnd.x - particle.colorStart.x) * alpha,
-                    particle.colorStart.y + (particle.colorEnd.y - particle.colorStart.y) * alpha,
-                    particle.colorStart.z + (particle.colorEnd.z - particle.colorStart.z) * alpha,
-                    particle.colorStart.w + (particle.colorEnd.w - particle.colorStart.w) * alpha
-                );
-            }
+            );
 
             outParticles.erase(
                 std::remove_if(outParticles.begin(), outParticles.end(), isDeadParticle),

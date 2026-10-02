@@ -74,6 +74,7 @@ namespace Chicane
                         m_device->destroyImage(m_bloom[i]);
                         m_bloom[i] = {};
                     }
+
                     if (m_blurGroup[i].handle)
                     {
                         m_device->destroyBindGroup(m_blurGroup[i]);
@@ -160,11 +161,14 @@ namespace Chicane
                     {
                         outGroups.resize(inFrameIndex + 1);
                     }
-                    if (outGroups[inFrameIndex].handle)
+                    const bool bHandle = static_cast<bool>(outGroups[inFrameIndex].handle);
+
+                    if (bHandle)
                     {
                         m_device->updateBindGroup(outGroups[inFrameIndex], inResources);
                     }
-                    else
+
+                    if (!bHandle)
                     {
                         outGroups[inFrameIndex] = m_device->createBindGroup(inLayout, inResources);
                     }

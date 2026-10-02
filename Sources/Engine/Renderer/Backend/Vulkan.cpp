@@ -21,7 +21,9 @@
 #include "Chicane/Renderer/Shader/Bindings.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
 #include "Chicane/Renderer/Layer/UI.hpp"
+#include "Backend/Vulkan/Image.hpp"
 #include "Backend/Vulkan/RHI/Device.hpp"
+#include "Backend/Vulkan/RHI/Image/Data.hpp"
 #include "Backend/Vulkan/Surface.hpp"
 #include "Backend/Vulkan/Swapchain.hpp"
 
@@ -35,7 +37,6 @@ namespace Chicane
               frames({}),
               m_currentFrameIndex(0U),
               m_lastImageIndex(~0u),
-              m_screenTextureId(Draw::InvalidId),
               m_timestampQueryPool(nullptr),
               m_timestampPeriod(1.0f),
               m_bIsTimestampsEnabled(false),
@@ -92,6 +93,7 @@ namespace Chicane
             logicalDevice.waitIdle();
 
             destroyLayers();
+            destroyViewTargets();
             bloom.destroy();
             if (m_linearSampler.handle)
             {
@@ -153,7 +155,8 @@ namespace Chicane
 
                 return;
             }
-            else if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR)
+
+            if (result != vk::Result::eSuccess && result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
@@ -161,6 +164,8 @@ namespace Chicane
             nextFrame.reset();
 
             VulkanSwapchainImage& nextImage = swapchain.images.at(imageIndex);
+
+            prepareViewTargets();
 
             nextFrame.commandBuffer.reset();
             bindScreenTarget(nextImage.targetImage);
@@ -170,6 +175,7 @@ namespace Chicane
                 writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
 
                 fillRhiFrame(nextFrame, nextImage);
+                renderViewTargets(m_rhiFrame, true);
                 renderLayers(
                     inFrame,
                     &m_rhiFrame,
@@ -237,7 +243,8 @@ namespace Chicane
 
                 return;
             }
-            else if (presentResult != vk::Result::eSuccess)
+
+            if (presentResult != vk::Result::eSuccess)
             {
                 throw std::runtime_error("Present failed");
             }
@@ -246,9 +253,69 @@ namespace Chicane
             m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
         }
 
-        Draw::Id VulkanBackend::getScreenTextureId() const
+        void VulkanBackend::discardViewTarget(RHI::Image inImage)
         {
-            return m_screenTextureId;
+            Renderer::VulkanRHIDevice*    device = static_cast<VulkanRHIDevice*>(m_rhi.get());
+            Renderer::VulkanRHIImageData* image  = static_cast<VulkanRHIImageData*>(inImage.handle);
+            if (!device || !image || !image->info.instance || m_currentFrameIndex >= frames.size())
+            {
+                return;
+            }
+
+            const vk::ImageLayout oldLayout = device->rememberedLayout(image);
+            if (oldLayout == vk::ImageLayout::eUndefined)
+            {
+                return;
+            }
+
+            vk::AccessFlags        srcAccess = vk::AccessFlagBits::eNone;
+            vk::PipelineStageFlags srcStage  = vk::PipelineStageFlagBits::eTopOfPipe;
+            switch (oldLayout)
+            {
+            case vk::ImageLayout::eColorAttachmentOptimal:
+                srcAccess = vk::AccessFlagBits::eColorAttachmentWrite;
+                srcStage  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+                break;
+            case vk::ImageLayout::eDepthStencilAttachmentOptimal:
+                srcAccess = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+                srcStage  = vk::PipelineStageFlagBits::eLateFragmentTests;
+                break;
+            case vk::ImageLayout::eShaderReadOnlyOptimal:
+            case vk::ImageLayout::eDepthStencilReadOnlyOptimal:
+                srcAccess = vk::AccessFlagBits::eShaderRead;
+                srcStage  = vk::PipelineStageFlagBits::eFragmentShader;
+                break;
+            default:
+                srcAccess = vk::AccessFlagBits::eMemoryRead | vk::AccessFlagBits::eMemoryWrite;
+                srcStage  = vk::PipelineStageFlagBits::eAllCommands;
+                break;
+            }
+
+            vk::ImageMemoryBarrier barrier;
+            barrier.oldLayout           = oldLayout;
+            barrier.newLayout           = vk::ImageLayout::eUndefined;
+            barrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            barrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+            barrier.image               = image->info.instance;
+            barrier.srcAccessMask       = srcAccess;
+            barrier.dstAccessMask       = vk::AccessFlagBits::eNone;
+            barrier.subresourceRange.aspectMask =
+                image->bHasDepth ? VulkanImage::depthAspect(image->info.format) : vk::ImageAspectFlagBits::eColor;
+            barrier.subresourceRange.baseMipLevel   = 0;
+            barrier.subresourceRange.levelCount     = 1;
+            barrier.subresourceRange.baseArrayLayer = 0;
+            barrier.subresourceRange.layerCount     = 1;
+
+            frames.at(m_currentFrameIndex)
+                .commandBuffer.pipelineBarrier(
+                    srcStage,
+                    vk::PipelineStageFlagBits::eTopOfPipe,
+                    vk::DependencyFlags(),
+                    nullptr,
+                    nullptr,
+                    barrier
+                );
+            device->rememberLayout(image, vk::ImageLayout::eUndefined);
         }
 
         bool VulkanBackend::captureScreen(
@@ -369,16 +436,19 @@ namespace Chicane
                 const std::uint32_t dstRow = y * width * 4;
                 for (std::uint32_t x = 0; x < width; ++x)
                 {
-                    const std::uint32_t src = srcRow + x * 4;
-                    const std::uint32_t dst = dstRow + x * 4;
-                    if (bSwapRedBlue)
+                    const std::uint32_t src    = srcRow + x * 4;
+                    const std::uint32_t dst    = dstRow + x * 4;
+                    const bool          bSwapRedBlue2 = static_cast<bool>(bSwapRedBlue);
+
+                    if (bSwapRedBlue2)
                     {
                         outRgba[dst + 0] = source[src + 2];
                         outRgba[dst + 1] = source[src + 1];
                         outRgba[dst + 2] = source[src + 0];
                         outRgba[dst + 3] = source[src + 3];
                     }
-                    else
+
+                    if (!bSwapRedBlue2)
                     {
                         outRgba[dst + 0] = source[src + 0];
                         outRgba[dst + 1] = source[src + 1];
@@ -454,6 +524,11 @@ namespace Chicane
 
         RHI::Viewport VulkanBackend::getRHIViewport(Layer* inLayer) const
         {
+            if (m_bPreviewPass)
+            {
+                return m_previewViewport;
+            }
+
             const vk::Viewport viewport = getVkViewport(inLayer);
 
             RHI::Viewport result;
@@ -466,6 +541,11 @@ namespace Chicane
 
         RHI::Scissor VulkanBackend::getRHIScissor(Layer* inLayer) const
         {
+            if (m_bPreviewPass)
+            {
+                return previewScissor();
+            }
+
             const vk::Viewport viewport = getVkViewport(inLayer);
 
             RHI::Scissor result;
@@ -851,9 +931,10 @@ namespace Chicane
                 return false;
             }
 
-            if (inTexture.reference.equals(SCREEN_TARGET_ID))
+            const int viewSlot = viewTargetSlot(inTexture.reference);
+            if (viewSlot >= 0)
             {
-                return m_screenTextureId != inTexture.id;
+                return viewTargetTexture(static_cast<std::uint32_t>(viewSlot)) != inTexture.id;
             }
 
             const std::size_t index = static_cast<std::size_t>(inTexture.id);
@@ -935,11 +1016,11 @@ namespace Chicane
                 vk::DescriptorImageInfo info;
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
 
-                const bool bIsScreen = texture.reference.equals(SCREEN_TARGET_ID);
-                if (bIsScreen)
+                const int viewSlot = viewTargetSlot(texture.reference);
+                if (viewSlot >= 0)
                 {
-                    m_screenTextureId = texture.id;
-                    if (!swapchain.images.empty() && swapchain.images.front().targetImage.view)
+                    assignViewTargetTexture(static_cast<std::uint32_t>(viewSlot), texture.id);
+                    if (viewSlot == 0 && !swapchain.images.empty() && swapchain.images.front().targetImage.view)
                     {
                         const VulkanImageInfo& target                  = swapchain.images.front().targetImage;
                         info.imageView                                 = target.view;
@@ -986,7 +1067,7 @@ namespace Chicane
 
         void VulkanBackend::bindScreenTarget(const VulkanImageInfo& inTarget)
         {
-            if (m_screenTextureId <= Draw::InvalidId || !inTarget.view || !inTarget.sampler)
+            if (getScreenTextureId() <= Draw::InvalidId || !inTarget.view || !inTarget.sampler)
             {
                 return;
             }
@@ -999,7 +1080,7 @@ namespace Chicane
             vk::WriteDescriptorSet set;
             set.dstSet          = getTextureDescriptorSet();
             set.dstBinding      = RHI_BINDING_TEXTURES;
-            set.dstArrayElement = static_cast<std::uint32_t>(m_screenTextureId);
+            set.dstArrayElement = static_cast<std::uint32_t>(getScreenTextureId());
             set.descriptorCount = 1;
             set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             set.pImageInfo      = &info;
@@ -1065,7 +1146,7 @@ namespace Chicane
 
         void VulkanBackend::fillRhiFrame(VulkanFrame& inFrame, const VulkanSwapchainImage& inImage)
         {
-            auto* device = static_cast<VulkanRHIDevice*>(m_rhi.get());
+            Renderer::VulkanRHIDevice* device = static_cast<VulkanRHIDevice*>(m_rhi.get());
             releaseRhiWraps();
 
             device->setCommandBuffer(inFrame.commandBuffer);
@@ -1105,16 +1186,17 @@ namespace Chicane
                 device->wrapImage(inImage.colorImage, RHI::ImageKind::Color2D, device->presentColorFormat());
             m_rhiFrame.textureTable = device->wrapDescriptorSet(getTextureDescriptorSet());
 
-            auto* sceneColor       = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneColor.handle);
-            sceneColor->bIsSampled = true;
-            sceneColor->bHasColor  = true;
+            Renderer::VulkanRHIImageData* sceneColor = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneColor.handle);
+            sceneColor->bIsSampled                   = true;
+            sceneColor->bHasColor                    = true;
             device->rememberLayout(sceneColor, vk::ImageLayout::eColorAttachmentOptimal);
 
-            auto* sceneDepth      = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneDepth.handle);
-            sceneDepth->bHasDepth = true;
+            Renderer::VulkanRHIImageData* sceneDepth = static_cast<VulkanRHIImageData*>(m_rhiFrame.sceneDepth.handle);
+            sceneDepth->bHasDepth                    = true;
             device->rememberLayout(sceneDepth, vk::ImageLayout::eDepthStencilAttachmentOptimal);
 
-            auto* presentColor      = static_cast<VulkanRHIImageData*>(m_rhiFrame.presentColor.handle);
+            Renderer::VulkanRHIImageData* presentColor =
+                static_cast<VulkanRHIImageData*>(m_rhiFrame.presentColor.handle);
             presentColor->bHasColor = true;
             presentColor->bPresent  = true;
         }

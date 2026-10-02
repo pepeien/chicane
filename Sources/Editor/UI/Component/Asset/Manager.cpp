@@ -380,13 +380,16 @@ namespace Editor
 
         const Chicane::String payload     = asset.getPayload();
         constexpr std::size_t sourceLimit = 4096;
-        if (payload.size() > sourceLimit)
+        const bool            bSizeSourceLimit      = static_cast<bool>(payload.size() > sourceLimit);
+
+        if (bSizeSourceLimit)
         {
             m_bEditSource          = false;
             const double megabytes = static_cast<double>(payload.size()) / (1024.0 * 1024.0);
             assetSource            = Chicane::String::sSprint("%.1f MB", megabytes);
         }
-        else
+
+        if (!bSizeSourceLimit)
         {
             m_bEditSource = true;
             assetSource   = payload;

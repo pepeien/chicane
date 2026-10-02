@@ -146,6 +146,7 @@ namespace Chicane
                 {
                     device->destroyBuffer(slot.vertex);
                 }
+
                 if (slot.index.handle)
                 {
                     device->destroyBuffer(slot.index);
@@ -247,6 +248,7 @@ namespace Chicane
                 slot.vertex         = inDevice->createBuffer(desc);
                 slot.vertexBytes    = vertexBytes;
             }
+
             if (indexBytes > slot.indexBytes)
             {
                 if (slot.index.handle)
@@ -265,6 +267,7 @@ namespace Chicane
             {
                 inDevice->updateBuffer(slot.vertex, inFrame.getImmediateVertices().data(), vertexBytes);
             }
+
             if (indexBytes > 0)
             {
                 inDevice->updateBuffer(slot.index, inFrame.getImmediateIndices().data(), indexBytes);
@@ -362,6 +365,7 @@ namespace Chicane
                 {
                     drawBatch(DrawPolyMode::Line);
                 }
+
                 if (inFrame.hasFeature(RendererFeature::Wireframe))
                 {
                     for (const DrawPoly& draw : inFrame.getSceneDraws())
@@ -428,11 +432,14 @@ namespace Chicane
                     RHI::LinePush push;
                     push.extra[0] = 0.0f;
                     rhi->commands->pushConstants(&push, sizeof(push));
-                    if (draw.indexCount == 0)
+                    const bool bIndexCountZero = static_cast<bool>(draw.indexCount == 0);
+
+                    if (bIndexCountZero)
                     {
                         rhi->commands->draw(draw.vertexCount, draw.instanceCount, draw.vertexStart, draw.instanceStart);
                     }
-                    else
+
+                    if (!bIndexCountZero)
                     {
                         rhi->commands->bindIndexBuffer(immediate.index);
                         rhi->commands->drawIndexed(

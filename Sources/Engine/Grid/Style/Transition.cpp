@@ -95,11 +95,16 @@ namespace Chicane
 
             for (char character : inValue)
             {
-                if (character == METHOD_PARAMS_OPENING)
+                const bool bCharacterOpening = static_cast<bool>(character == METHOD_PARAMS_OPENING);
+
+                if (bCharacterOpening)
                 {
                     depth++;
                 }
-                else if (character == METHOD_PARAMS_CLOSING && depth > 0)
+
+                const bool bCharacterClosingAndDepthPositive = !bCharacterOpening && (character == METHOD_PARAMS_CLOSING && depth > 0);
+
+                if (bCharacterClosingAndDepthPositive)
                 {
                     depth--;
                 }

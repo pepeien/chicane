@@ -1,6 +1,7 @@
 #include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 
 #include "Chicane/Core/FileSystem/Path.hpp"
+#include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Math/Rotator.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
@@ -157,6 +158,17 @@ namespace Chicane
         if (const std::uint8_t* value = std::any_cast<std::uint8_t>(&inValue))
         {
             return static_cast<String>(*value);
+        }
+
+        if (returnTypeIndex.has_value())
+        {
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(returnTypeIndex.value()))
+            {
+                if (type->anyStringifier)
+                {
+                    return type->anyStringifier(inValue);
+                }
+            }
         }
 
         return "<" + returnType + ">";

@@ -49,15 +49,21 @@ namespace Chicane
                 return;
             }
 
-            if (max == inR)
+            const bool bMaxRed = static_cast<bool>(max == inR);
+
+            if (bMaxRed)
             {
                 outH = std::fmod((inG - inB) / delta, 6.0f);
             }
-            else if (max == inG)
+
+            const bool bMaxGreen = !bMaxRed && (max == inG);
+
+            if (bMaxGreen)
             {
                 outH = (inB - inR) / delta + 2.0f;
             }
-            else
+
+            if (!bMaxRed && !bMaxGreen)
             {
                 outH = (inR - inG) / delta + 4.0f;
             }
@@ -81,32 +87,47 @@ namespace Chicane
             float g = 0.0f;
             float b = 0.0f;
 
-            if (inH < 60.0f)
+            const bool bHueBelow60 = static_cast<bool>(inH < 60.0f);
+
+            if (bHueBelow60)
             {
                 r = c;
                 g = x;
             }
-            else if (inH < 120.0f)
+
+            const bool bHueBelow120 = !bHueBelow60 && (inH < 120.0f);
+
+            if (bHueBelow120)
             {
                 r = x;
                 g = c;
             }
-            else if (inH < 180.0f)
+
+            const bool bHueBelow180 = !bHueBelow60 && !bHueBelow120 && (inH < 180.0f);
+
+            if (bHueBelow180)
             {
                 g = c;
                 b = x;
             }
-            else if (inH < 240.0f)
+
+            const bool bHueBelow240 = !bHueBelow60 && !bHueBelow120 && !bHueBelow180 && (inH < 240.0f);
+
+            if (bHueBelow240)
             {
                 g = x;
                 b = c;
             }
-            else if (inH < 300.0f)
+
+            const bool bHueBelow300 = !bHueBelow60 && !bHueBelow120 && !bHueBelow180 && !bHueBelow240 && (inH < 300.0f);
+
+            if (bHueBelow300)
             {
                 r = x;
                 b = c;
             }
-            else
+
+            if (!bHueBelow60 && !bHueBelow120 && !bHueBelow180 && !bHueBelow240 && !bHueBelow300)
             {
                 r = c;
                 b = x;
@@ -146,15 +167,21 @@ namespace Chicane
 
             outS = outL > 0.5f ? delta / (2.0f - max - min) : delta / (max + min);
 
-            if (max == inR)
+            const bool bMaxRed = static_cast<bool>(max == inR);
+
+            if (bMaxRed)
             {
                 outH = std::fmod((inG - inB) / delta, 6.0f);
             }
-            else if (max == inG)
+
+            const bool bMaxGreen = !bMaxRed && (max == inG);
+
+            if (bMaxGreen)
             {
                 outH = (inB - inR) / delta + 2.0f;
             }
-            else
+
+            if (!bMaxRed && !bMaxGreen)
             {
                 outH = (inR - inG) / delta + 4.0f;
             }

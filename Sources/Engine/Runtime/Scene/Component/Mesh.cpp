@@ -54,7 +54,7 @@ namespace Chicane
         }
 
         const QuatFloat current(ioValue.at(3), ioValue.at(4), ioValue.at(5), ioValue.at(6));
-        const float align = inPrevious.dot(current);
+        const float     align = inPrevious.dot(current);
         if (align >= 0.0f)
         {
             return;
@@ -75,13 +75,16 @@ namespace Chicane
 
         Transform transform;
         transform.setTranslation(Vec3(inValue.at(0), inValue.at(1), inValue.at(2)));
-        if (inValue.size() >= 10)
+        const bool bValueAtLeast10 = static_cast<bool>(inValue.size() >= 10);
+
+        if (bValueAtLeast10)
         {
             const QuatFloat rotation(inValue.at(3), inValue.at(4), inValue.at(5), inValue.at(6));
             transform.setRotation(rotation.normalize());
             transform.setScale(Vec3(inValue.at(7), inValue.at(8), inValue.at(9)));
         }
-        else
+
+        if (!bValueAtLeast10)
         {
             transform.setRotation(Vec3(inValue.at(3), inValue.at(4), inValue.at(5)));
             transform.setScale(Vec3(inValue.at(6), inValue.at(7), inValue.at(8)));
@@ -367,11 +370,16 @@ namespace Chicane
 
         if (!m_skeleton)
         {
-            if (animation->hasSkeleton())
+            const bool bHasSkeleton = static_cast<bool>(animation->hasSkeleton());
+
+            if (bHasSkeleton)
             {
                 m_skeleton = Box::load<Box::Skeleton>(animation->getSkeleton().getSource());
             }
-            else if (m_asset && m_asset->hasSkeleton())
+
+            const bool bAssetHasSkeleton = !bHasSkeleton && (m_asset && m_asset->hasSkeleton());
+
+            if (bAssetHasSkeleton)
             {
                 m_skeleton = Box::load<Box::Skeleton>(m_asset->getSkeleton().getSource());
             }
@@ -383,12 +391,15 @@ namespace Chicane
             return;
         }
 
-        const auto found = m_animationById.find(id);
-        if (found == m_animationById.end())
+        const auto found  = m_animationById.find(id);
+        const bool bFoundEnd = static_cast<bool>(found == m_animationById.end());
+
+        if (bFoundEnd)
         {
             m_animations.push_back(animation);
         }
-        else
+
+        if (!bFoundEnd)
         {
             for (const Box::Animation*& slot : m_animations)
             {
@@ -500,8 +511,6 @@ namespace Chicane
     void CMesh::onTick(float inDeltaTime)
     {
         m_queue.tick(inDeltaTime);
-
-        evaluatePose();
     }
 
     void CMesh::bindSkeleton()
@@ -618,11 +627,14 @@ namespace Chicane
                 local = unpackTransform(m_queue.sample(entries.at(i).id), local);
             }
 
-            if (entries.at(i).parentIndex >= 0)
+            const bool bParentIndexNonNegative = static_cast<bool>(entries.at(i).parentIndex >= 0);
+
+            if (bParentIndexNonNegative)
             {
                 m_bones[i] = m_bones.at(static_cast<std::size_t>(entries.at(i).parentIndex)) * local.getMatrix();
             }
-            else
+
+            if (!bParentIndexNonNegative)
             {
                 m_bones[i] = local.getMatrix();
             }

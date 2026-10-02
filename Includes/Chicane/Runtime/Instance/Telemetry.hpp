@@ -28,5 +28,8 @@ namespace Chicane
 
         CH_FIELD()
         Telemetry renderer;
+
+        CH_FIELD()
+        Telemetry loop;
     };
 }

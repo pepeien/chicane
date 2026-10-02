@@ -308,7 +308,9 @@ namespace Chicane
             const DrawSky& sky    = inResource.getDraw();
             m_bIsPanorama         = sky.kind == DrawSkyKind::Panorama;
 
-            if (m_bIsPanorama)
+            const bool bPanorama = static_cast<bool>(m_bIsPanorama);
+
+            if (bPanorama)
             {
                 const Image::Instance image =
                     sky.textures.empty() ? Image::Instance() : sky.textures.front().getSampleImage();
@@ -352,7 +354,8 @@ namespace Chicane
                 }
                 );
             }
-            else
+
+            if (!bPanorama)
             {
                 std::vector<std::uint16_t> linear(static_cast<std::size_t>(SKY_TEXTURE_SIZE) * SKY_TEXTURE_SIZE * 4u);
                 std::uint32_t              face = 0;

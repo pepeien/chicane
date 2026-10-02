@@ -98,10 +98,10 @@ namespace Chicane
 
         RHI::Buffer VulkanRHIDevice::createBuffer(const RHI::BufferCreateInfo& inCreateInfo)
         {
-            auto* data   = new VulkanRHIBufferData();
-            data->size   = inCreateInfo.size;
-            data->bHost  = inCreateInfo.bHasHostAccess;
-            data->bOwned = true;
+            Renderer::VulkanRHIBufferData* data = new VulkanRHIBufferData();
+            data->size                          = inCreateInfo.size;
+            data->bHost                         = inCreateInfo.bHasHostAccess;
+            data->bOwned                        = true;
 
             VulkanBufferCreateInfo info;
             info.logicalDevice  = m_backend->logicalDevice;
@@ -109,29 +109,41 @@ namespace Chicane
             info.allocator      = &m_backend->allocator;
             info.size           = inCreateInfo.size;
             info.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc;
-            if (inCreateInfo.usage == RHI::BufferUsage::Vertex)
+            const bool bUsageVertex   = static_cast<bool>(inCreateInfo.usage == RHI::BufferUsage::Vertex);
+
+            if (bUsageVertex)
             {
                 info.usage |= vk::BufferUsageFlagBits::eVertexBuffer;
             }
-            else if (inCreateInfo.usage == RHI::BufferUsage::Index)
+
+            const bool bUsageIndex = !bUsageVertex && (inCreateInfo.usage == RHI::BufferUsage::Index);
+
+            if (bUsageIndex)
             {
                 info.usage |= vk::BufferUsageFlagBits::eIndexBuffer;
             }
-            else if (inCreateInfo.usage == RHI::BufferUsage::Uniform)
+
+            const bool bUsageUniform = !bUsageVertex && !bUsageIndex && (inCreateInfo.usage == RHI::BufferUsage::Uniform);
+
+            if (bUsageUniform)
             {
                 info.usage |= vk::BufferUsageFlagBits::eUniformBuffer;
             }
-            else
+
+            if (!bUsageVertex && !bUsageIndex && !bUsageUniform)
             {
                 info.usage |= vk::BufferUsageFlagBits::eStorageBuffer;
             }
 
-            if (inCreateInfo.bHasHostAccess)
+            const bool bHostAccess = static_cast<bool>(inCreateInfo.bHasHostAccess);
+
+            if (bHostAccess)
             {
                 info.memoryProperties =
                     vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             }
-            else
+
+            if (!bHostAccess)
             {
                 info.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
             }
@@ -148,7 +160,7 @@ namespace Chicane
 
         void VulkanRHIDevice::destroyBuffer(RHI::Buffer inBuffer)
         {
-            auto* data = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
+            Renderer::VulkanRHIBufferData* data = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
             if (!data)
             {
                 return;
@@ -166,7 +178,7 @@ namespace Chicane
             RHI::Buffer inBuffer, const void* inData, std::size_t inSize, std::size_t inOffset
         )
         {
-            auto* data = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
+            Renderer::VulkanRHIBufferData* data = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
             if (!data || !inData || inSize == 0)
             {
                 return;
@@ -188,11 +200,16 @@ namespace Chicane
 
                 VulkanBuffer grown;
                 grown.init(info);
-                if (data->bHost && data->mapped && data->size > 0)
+                const bool bHostAndMappedAndSizePositive = static_cast<bool>(data->bHost && data->mapped && data->size > 0);
+
+                if (bHostAndMappedAndSizePositive)
                 {
                     std::memcpy(grown.map(), data->mapped, static_cast<std::size_t>(data->size));
                 }
-                else if (!data->bHost && data->size > 0)
+
+                const bool bNotHostAndSizePositive = !bHostAndMappedAndSizePositive && (!data->bHost && data->size > 0);
+
+                if (bNotHostAndSizePositive)
                 {
                     data->buffer.copy(grown, data->size, m_backend->graphicsQueue, m_backend->mainCommandBuffer);
                 }
@@ -221,14 +238,14 @@ namespace Chicane
 
         RHI::Image VulkanRHIDevice::createImage(const RHI::ImageCreateInfo& inCreateInfo)
         {
-            auto* data        = new VulkanRHIImageData();
-            data->kind        = inCreateInfo.kind;
-            data->format      = inCreateInfo.format;
-            data->layers      = inCreateInfo.layers;
-            data->mips        = inCreateInfo.mipLevels;
-            data->bOwned      = true;
-            data->info.format = toVkFormat(inCreateInfo.format);
-            data->info.extent = vk::Extent2D{inCreateInfo.width, inCreateInfo.height};
+            Renderer::VulkanRHIImageData* data = new VulkanRHIImageData();
+            data->kind                         = inCreateInfo.kind;
+            data->format                       = inCreateInfo.format;
+            data->layers                       = inCreateInfo.layers;
+            data->mips                         = inCreateInfo.mipLevels;
+            data->bOwned                       = true;
+            data->info.format                  = toVkFormat(inCreateInfo.format);
+            data->info.extent                  = vk::Extent2D{inCreateInfo.width, inCreateInfo.height};
 
             VulkanImageCreateInfo instanceCreateInfo;
             instanceCreateInfo.width     = inCreateInfo.width;
@@ -244,10 +261,12 @@ namespace Chicane
             {
                 instanceCreateInfo.usage |= vk::ImageUsageFlagBits::eSampled;
             }
+
             if (inCreateInfo.bHasColor)
             {
                 instanceCreateInfo.usage |= vk::ImageUsageFlagBits::eColorAttachment;
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 instanceCreateInfo.usage |= vk::ImageUsageFlagBits::eDepthStencilAttachment;
@@ -267,22 +286,31 @@ namespace Chicane
             viewCreateInfo.mipLevels     = inCreateInfo.mipLevels;
             viewCreateInfo.format        = data->info.format;
             viewCreateInfo.logicalDevice = m_backend->logicalDevice;
-            if (inCreateInfo.kind == RHI::ImageKind::Cube)
+            const bool bKindCube            = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
+
+            if (bKindCube)
             {
                 viewCreateInfo.type   = vk::ImageViewType::eCube;
                 viewCreateInfo.aspect = vk::ImageAspectFlagBits::eColor;
             }
-            else if (inCreateInfo.kind == RHI::ImageKind::Depth2DArray)
+
+            const bool bKindDepth2DArray = !bKindCube && (inCreateInfo.kind == RHI::ImageKind::Depth2DArray);
+
+            if (bKindDepth2DArray)
             {
                 viewCreateInfo.type   = vk::ImageViewType::e2DArray;
                 viewCreateInfo.aspect = vk::ImageAspectFlagBits::eDepth;
             }
-            else if (inCreateInfo.kind == RHI::ImageKind::Depth2D)
+
+            const bool bKindDepth2D = !bKindCube && !bKindDepth2DArray && (inCreateInfo.kind == RHI::ImageKind::Depth2D);
+
+            if (bKindDepth2D)
             {
                 viewCreateInfo.type   = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect = VulkanImage::depthAspect(data->info.format);
             }
-            else
+
+            if (!bKindCube && !bKindDepth2DArray && !bKindDepth2D)
             {
                 viewCreateInfo.type   = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect = vk::ImageAspectFlagBits::eColor;
@@ -314,7 +342,7 @@ namespace Chicane
 
         void VulkanRHIDevice::destroyImage(RHI::Image inImage)
         {
-            auto* data = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* data = static_cast<VulkanRHIImageData*>(inImage.handle);
             if (!data)
             {
                 return;
@@ -326,10 +354,12 @@ namespace Chicane
                 {
                     m_imageLayouts.erase(imageKey(data));
                 }
+
                 if (data->info.view)
                 {
                     m_backend->logicalDevice.destroyImageView(data->info.view);
                 }
+
                 if (!data->bViewOnly)
                 {
                     VulkanAllocator::sDestroyImage(data->info);
@@ -346,7 +376,7 @@ namespace Chicane
             RHI::Image inImage, const void* inData, std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inLayer
         )
         {
-            auto* data = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* data = static_cast<VulkanRHIImageData*>(inImage.handle);
             if (!data || !inData)
             {
                 return;
@@ -398,7 +428,7 @@ namespace Chicane
 
         void VulkanRHIDevice::generateMips(RHI::Image inImage)
         {
-            auto* data = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* data = static_cast<VulkanRHIImageData*>(inImage.handle);
             if (!data)
             {
                 return;
@@ -418,21 +448,21 @@ namespace Chicane
 
         RHI::Image VulkanRHIDevice::createImageView(RHI::Image inImage, std::uint32_t inLayer)
         {
-            auto* source     = static_cast<VulkanRHIImageData*>(inImage.handle);
-            auto* data       = new VulkanRHIImageData();
-            data->kind       = RHI::ImageKind::Depth2D;
-            data->format     = source->format;
-            data->layers     = 1;
-            data->mips       = 1;
-            data->bOwned     = true;
-            data->bViewOnly  = true;
-            data->bIsSampled = source->bIsSampled;
-            data->bHasColor  = source->bHasColor;
-            data->bHasDepth  = source->bHasDepth;
-            data->layout     = source->layout;
-            data->parent     = source;
-            data->info       = source->info;
-            data->info.view  = nullptr;
+            Renderer::VulkanRHIImageData* source = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* data   = new VulkanRHIImageData();
+            data->kind                           = RHI::ImageKind::Depth2D;
+            data->format                         = source->format;
+            data->layers                         = 1;
+            data->mips                           = 1;
+            data->bOwned                         = true;
+            data->bViewOnly                      = true;
+            data->bIsSampled                     = source->bIsSampled;
+            data->bHasColor                      = source->bHasColor;
+            data->bHasDepth                      = source->bHasDepth;
+            data->layout                         = source->layout;
+            data->parent                         = source;
+            data->info                           = source->info;
+            data->info.view                      = nullptr;
 
             VulkanImageViewCreateInfo viewCreateInfo;
             viewCreateInfo.count          = 1;
@@ -448,19 +478,24 @@ namespace Chicane
 
         RHI::Sampler VulkanRHIDevice::createSampler(const RHI::SamplerCreateInfo& inCreateInfo)
         {
-            auto*                 data = new VulkanRHISamplerData();
-            vk::SamplerCreateInfo info;
+            Renderer::VulkanRHISamplerData* data = new VulkanRHISamplerData();
+            vk::SamplerCreateInfo           info;
             info.minFilter =
                 inCreateInfo.minFilter == RHI::SamplerFilter::Nearest ? vk::Filter::eNearest : vk::Filter::eLinear;
             info.magFilter =
                 inCreateInfo.magFilter == RHI::SamplerFilter::Nearest ? vk::Filter::eNearest : vk::Filter::eLinear;
             info.mipmapMode   = inCreateInfo.bHasMip ? vk::SamplerMipmapMode::eLinear : vk::SamplerMipmapMode::eNearest;
             info.addressModeU = vk::SamplerAddressMode::eClampToEdge;
-            if (inCreateInfo.address == RHI::SamplerAddress::ClampToBorder)
+            const bool bAddressClampToBorder = static_cast<bool>(inCreateInfo.address == RHI::SamplerAddress::ClampToBorder);
+
+            if (bAddressClampToBorder)
             {
                 info.addressModeU = vk::SamplerAddressMode::eClampToBorder;
             }
-            else if (inCreateInfo.address == RHI::SamplerAddress::Repeat)
+
+            const bool bAddressRepeat = !bAddressClampToBorder && (inCreateInfo.address == RHI::SamplerAddress::Repeat);
+
+            if (bAddressRepeat)
             {
                 info.addressModeU = vk::SamplerAddressMode::eRepeat;
             }
@@ -474,11 +509,12 @@ namespace Chicane
 
         void VulkanRHIDevice::destroySampler(RHI::Sampler inSampler)
         {
-            auto* data = static_cast<VulkanRHISamplerData*>(inSampler.handle);
+            Renderer::VulkanRHISamplerData* data = static_cast<VulkanRHISamplerData*>(inSampler.handle);
             if (!data)
             {
                 return;
             }
+
             if (data->bOwned && data->sampler)
             {
                 m_backend->logicalDevice.destroySampler(data->sampler);
@@ -488,20 +524,25 @@ namespace Chicane
 
         RHI::BindGroupLayout VulkanRHIDevice::createBindGroupLayout(const RHI::BindGroupLayoutCreateInfo& inCreateInfo)
         {
-            auto* data       = new VulkanRHILayoutData();
-            data->createInfo = inCreateInfo;
+            Renderer::VulkanRHILayoutData* data = new VulkanRHILayoutData();
+            data->createInfo                    = inCreateInfo;
 
             VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
             bidings.count = static_cast<std::uint32_t>(inCreateInfo.bindings.size());
             for (const RHI::Binding& binding : inCreateInfo.bindings)
             {
                 bidings.indices.push_back(binding.binding);
-                vk::DescriptorType type = vk::DescriptorType::eUniformBuffer;
-                if (binding.type == RHI::BindingType::StorageBuffer)
+                vk::DescriptorType type   = vk::DescriptorType::eUniformBuffer;
+                const bool         bTypeStorageBuffer = static_cast<bool>(binding.type == RHI::BindingType::StorageBuffer);
+
+                if (bTypeStorageBuffer)
                 {
                     type = vk::DescriptorType::eStorageBuffer;
                 }
-                else if (binding.type == RHI::BindingType::SampledImage)
+
+                const bool bTypeSampledImage = !bTypeStorageBuffer && (binding.type == RHI::BindingType::SampledImage);
+
+                if (bTypeSampledImage)
                 {
                     type = vk::DescriptorType::eCombinedImageSampler;
                 }
@@ -512,6 +553,7 @@ namespace Chicane
                 {
                     stages |= vk::ShaderStageFlagBits::eVertex;
                 }
+
                 if (binding.bIsFragment)
                 {
                     stages |= vk::ShaderStageFlagBits::eFragment;
@@ -528,7 +570,7 @@ namespace Chicane
 
         void VulkanRHIDevice::destroyBindGroupLayout(RHI::BindGroupLayout inLayout)
         {
-            auto* data = static_cast<VulkanRHILayoutData*>(inLayout.handle);
+            Renderer::VulkanRHILayoutData* data = static_cast<VulkanRHILayoutData*>(inLayout.handle);
             if (!data)
             {
                 return;
@@ -554,10 +596,13 @@ namespace Chicane
                 write.dstArrayElement = resource.arrayIndex;
                 write.descriptorCount = 1;
 
-                if (resource.type == RHI::BindingType::SampledImage)
+                const bool bTypeSampledImage = static_cast<bool>(resource.type == RHI::BindingType::SampledImage);
+
+                if (bTypeSampledImage)
                 {
-                    auto*                   image   = static_cast<VulkanRHIImageData*>(resource.image.handle);
-                    auto*                   sampler = static_cast<VulkanRHISamplerData*>(resource.sampler.handle);
+                    Renderer::VulkanRHIImageData*   image = static_cast<VulkanRHIImageData*>(resource.image.handle);
+                    Renderer::VulkanRHISamplerData* sampler =
+                        static_cast<VulkanRHISamplerData*>(resource.sampler.handle);
                     vk::DescriptorImageInfo info;
                     info.imageLayout = shaderLayout(image->kind);
                     info.imageView   = image->info.view;
@@ -566,10 +611,11 @@ namespace Chicane
                     write.descriptorType = vk::DescriptorType::eCombinedImageSampler;
                     write.pImageInfo     = &images.back();
                 }
-                else
+
+                if (!bTypeSampledImage)
                 {
-                    auto*                    buffer = static_cast<VulkanRHIBufferData*>(resource.buffer.handle);
-                    vk::DescriptorBufferInfo info;
+                    Renderer::VulkanRHIBufferData* buffer = static_cast<VulkanRHIBufferData*>(resource.buffer.handle);
+                    vk::DescriptorBufferInfo       info;
                     info.buffer = buffer->buffer.instance;
                     info.offset = 0;
                     info.range  = buffer->size;
@@ -592,10 +638,10 @@ namespace Chicane
             RHI::BindGroupLayout inLayout, const std::vector<RHI::BindResource>& inResources
         )
         {
-            auto* layout = static_cast<VulkanRHILayoutData*>(inLayout.handle);
-            auto* data   = new VulkanRHIGroupData();
-            data->layout = layout->layout;
-            data->bOwned = true;
+            Renderer::VulkanRHILayoutData* layout = static_cast<VulkanRHILayoutData*>(inLayout.handle);
+            Renderer::VulkanRHIGroupData*  data   = new VulkanRHIGroupData();
+            data->layout                          = layout->layout;
+            data->bOwned                          = true;
 
             VulkanDescriptorPoolCreateInfo poolInfo;
             poolInfo.maxSets = 1;
@@ -610,7 +656,7 @@ namespace Chicane
 
         void VulkanRHIDevice::updateBindGroup(RHI::BindGroup inGroup, const std::vector<RHI::BindResource>& inResources)
         {
-            auto* data = static_cast<VulkanRHIGroupData*>(inGroup.handle);
+            Renderer::VulkanRHIGroupData* data = static_cast<VulkanRHIGroupData*>(inGroup.handle);
             if (!data)
             {
                 return;
@@ -620,11 +666,12 @@ namespace Chicane
 
         void VulkanRHIDevice::destroyBindGroup(RHI::BindGroup inGroup)
         {
-            auto* data = static_cast<VulkanRHIGroupData*>(inGroup.handle);
+            Renderer::VulkanRHIGroupData* data = static_cast<VulkanRHIGroupData*>(inGroup.handle);
             if (!data)
             {
                 return;
             }
+
             if (data->bOwned && data->pool)
             {
                 m_backend->logicalDevice.destroyDescriptorPool(data->pool);
@@ -670,12 +717,13 @@ namespace Chicane
 
         RHI::Pipeline VulkanRHIDevice::createPipeline(const RHI::PipelineCreateInfo& inCreateInfo)
         {
-            auto* data     = new VulkanRHIPipelineData();
-            data->pushSize = inCreateInfo.pushConstantSize;
+            Renderer::VulkanRHIPipelineData* data = new VulkanRHIPipelineData();
+            data->pushSize                        = inCreateInfo.pushConstantSize;
             if (inCreateInfo.bHasPushVertex)
             {
                 data->pushStages |= vk::ShaderStageFlagBits::eVertex;
             }
+
             if (inCreateInfo.bHasPushFragment)
             {
                 data->pushStages |= vk::ShaderStageFlagBits::eFragment;
@@ -708,7 +756,9 @@ namespace Chicane
             depth.depthTestEnable  = inCreateInfo.bHasDepthTest;
             depth.depthWriteEnable = inCreateInfo.bHasDepthWrite;
             depth.depthCompareOp   = toVkCompare(inCreateInfo.depthCompare);
-            if (inCreateInfo.stencil == RHI::StencilMode::WriteReplace)
+            const bool bStencilWriteReplace     = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
+
+            if (bStencilWriteReplace)
             {
                 vk::StencilOpState stencil;
                 stencil.failOp          = vk::StencilOp::eKeep;
@@ -722,7 +772,10 @@ namespace Chicane
                 depth.front             = stencil;
                 depth.back              = stencil;
             }
-            else if (inCreateInfo.stencil == RHI::StencilMode::TestNotEqual)
+
+            const bool bStencilTestNotEqual = !bStencilWriteReplace && (inCreateInfo.stencil == RHI::StencilMode::TestNotEqual);
+
+            if (bStencilTestNotEqual)
             {
                 vk::StencilOpState stencil;
                 stencil.failOp          = vk::StencilOp::eKeep;
@@ -746,7 +799,7 @@ namespace Chicane
                 blend.colorWriteMask = {};
             }
 
-            auto builder = VulkanGraphicsPipelineBuilder();
+            Renderer::VulkanGraphicsPipelineBuilder builder = VulkanGraphicsPipelineBuilder();
             if (inCreateInfo.vertexStride > 0)
             {
                 vk::VertexInputBindingDescription binding;
@@ -766,11 +819,16 @@ namespace Chicane
             }
 
             vk::PipelineInputAssemblyStateCreateInfo assembly = VulkanGraphicsPipeline::sCreateInputAssemblyState();
-            if (inCreateInfo.topology == RHI::PrimitiveTopology::TriangleStrip)
+            const bool bTopologyTriangleStrip = static_cast<bool>(inCreateInfo.topology == RHI::PrimitiveTopology::TriangleStrip);
+
+            if (bTopologyTriangleStrip)
             {
                 assembly.topology = vk::PrimitiveTopology::eTriangleStrip;
             }
-            else if (inCreateInfo.topology == RHI::PrimitiveTopology::LineList)
+
+            const bool bTopologyLineList = !bTopologyTriangleStrip && (inCreateInfo.topology == RHI::PrimitiveTopology::LineList);
+
+            if (bTopologyLineList)
             {
                 assembly.topology = vk::PrimitiveTopology::eLineList;
             }
@@ -820,6 +878,7 @@ namespace Chicane
                 colorRefs.push_back(ref);
                 builder = builder.addColorBlendingAttachment(blend);
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 vk::AttachmentDescription depthAttachment;
@@ -845,6 +904,7 @@ namespace Chicane
                 subpass.colorAttachmentCount = 1;
                 subpass.pColorAttachments    = colorRefs.data();
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 subpass.pDepthStencilAttachment = &depthRef;
@@ -853,8 +913,8 @@ namespace Chicane
 
             for (RHI::BindGroupLayout layout : inCreateInfo.layouts)
             {
-                auto* layoutData = static_cast<VulkanRHILayoutData*>(layout.handle);
-                builder          = builder.addDescriptorSetLayout(layoutData->layout);
+                Renderer::VulkanRHILayoutData* layoutData = static_cast<VulkanRHILayoutData*>(layout.handle);
+                builder                                   = builder.addDescriptorSetLayout(layoutData->layout);
             }
 
             if (inCreateInfo.pushConstantSize > 0)
@@ -866,6 +926,7 @@ namespace Chicane
                 {
                     range.stageFlags |= vk::ShaderStageFlagBits::eVertex;
                 }
+
                 if (inCreateInfo.bHasPushFragment)
                 {
                     range.stageFlags |= vk::ShaderStageFlagBits::eFragment;
@@ -879,7 +940,7 @@ namespace Chicane
 
         void VulkanRHIDevice::destroyPipeline(RHI::Pipeline inPipeline)
         {
-            auto* data = static_cast<VulkanRHIPipelineData*>(inPipeline.handle);
+            Renderer::VulkanRHIPipelineData* data = static_cast<VulkanRHIPipelineData*>(inPipeline.handle);
             if (!data)
             {
                 return;
@@ -912,12 +973,12 @@ namespace Chicane
 
         RHI::Buffer VulkanRHIDevice::wrapBuffer(const VulkanBuffer& inBuffer, vk::DeviceSize inSize, void* inMapped)
         {
-            auto* data   = new VulkanRHIBufferData();
-            data->buffer = inBuffer;
-            data->size   = inSize;
-            data->bHost  = inMapped != nullptr;
-            data->bOwned = false;
-            data->mapped = inMapped;
+            Renderer::VulkanRHIBufferData* data = new VulkanRHIBufferData();
+            data->buffer                        = inBuffer;
+            data->size                          = inSize;
+            data->bHost                         = inMapped != nullptr;
+            data->bOwned                        = false;
+            data->mapped                        = inMapped;
             return {data};
         }
 
@@ -925,21 +986,21 @@ namespace Chicane
             const VulkanImageInfo& inInfo, RHI::ImageKind inKind, RHI::ImageFormat inFormat, std::uint32_t inLayers
         )
         {
-            auto* data   = new VulkanRHIImageData();
-            data->info   = inInfo;
-            data->kind   = inKind;
-            data->format = inFormat;
-            data->layers = inLayers;
-            data->bOwned = false;
-            data->layout = rememberedLayout(data);
+            Renderer::VulkanRHIImageData* data = new VulkanRHIImageData();
+            data->info                         = inInfo;
+            data->kind                         = inKind;
+            data->format                       = inFormat;
+            data->layers                       = inLayers;
+            data->bOwned                       = false;
+            data->layout                       = rememberedLayout(data);
             return {data};
         }
 
         RHI::BindGroup VulkanRHIDevice::wrapDescriptorSet(vk::DescriptorSet inSet)
         {
-            auto* data   = new VulkanRHIGroupData();
-            data->set    = inSet;
-            data->bOwned = false;
+            Renderer::VulkanRHIGroupData* data = new VulkanRHIGroupData();
+            data->set                          = inSet;
+            data->bOwned                       = false;
             return {data};
         }
 

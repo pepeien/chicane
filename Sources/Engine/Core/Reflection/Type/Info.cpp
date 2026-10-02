@@ -12,14 +12,18 @@ namespace Chicane
         TypeIdex            inTypeIndex,
         const Constructors& inConstructors,
         const Methods&      inMethods,
-        const Fields&       inFields
+        const Fields&       inFields,
+        Stringifier         inStringifier,
+        AnyStringifier      inAnyStringifier
     )
         : property(std::move(inProperty)),
           size(inSize),
           typeIndex(inTypeIndex),
           constructors(std::move(inConstructors)),
           methods(std::move(inMethods)),
-          fields(std::move(inFields))
+          fields(std::move(inFields)),
+          stringifier(inStringifier),
+          anyStringifier(inAnyStringifier)
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
@@ -28,7 +32,9 @@ namespace Chicane
           typeIndex(std::nullopt),
           constructors({}),
           methods({}),
-          fields({})
+          fields({}),
+          stringifier(nullptr),
+          anyStringifier(nullptr)
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const
@@ -112,11 +118,14 @@ namespace Chicane
                 return {};
             }
 
-            if (bHasCrossedPointer)
+            const bool bCrossedPointer = static_cast<bool>(bHasCrossedPointer);
+
+            if (bCrossedPointer)
             {
                 ptrOffset += currentField->offset;
             }
-            else
+
+            if (!bCrossedPointer)
             {
                 offset += currentField->offset;
             }

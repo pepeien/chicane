@@ -19,11 +19,11 @@ namespace Chicane
             std::uint32_t specificity() const;
 
         public:
-            ComponentStatus                    status   = ComponentStatus::None;
-            std::vector<StyleSiblingSelector>  siblings = {};
-            String                             tag      = String::sEmpty();
-            String                             id       = String::sEmpty();
-            std::vector<String>                classes  = {};
+            ComponentStatus                   status   = ComponentStatus::None;
+            std::vector<StyleSiblingSelector> siblings = {};
+            String                            tag      = String::sEmpty();
+            String                            id       = String::sEmpty();
+            std::vector<String>               classes  = {};
         };
     }
 }

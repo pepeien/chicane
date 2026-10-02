@@ -39,11 +39,16 @@ namespace Chicane
                 return true;
             }
 
-            if (value.endsWith(Size::PIXEL_UNIT))
+            const bool bValueEndsPixel = static_cast<bool>(value.endsWith(Size::PIXEL_UNIT));
+
+            if (bValueEndsPixel)
             {
                 value = value.substr(0, value.size() - std::strlen(Size::PIXEL_UNIT)).trim();
             }
-            else if (value.endsWith(Size::EM_UNIT))
+
+            const bool bValueEndsEm = !bValueEndsPixel && (value.endsWith(Size::EM_UNIT));
+
+            if (bValueEndsEm)
             {
                 value = value.substr(0, value.size() - std::strlen(Size::EM_UNIT)).trim();
             }
@@ -184,11 +189,16 @@ namespace Chicane
         {
             String value = inValue.trim().toLower();
 
-            if (value.endsWith(Style::TRANSFORM_DEGREE_UNIT))
+            const bool bValueEndsDegree = static_cast<bool>(value.endsWith(Style::TRANSFORM_DEGREE_UNIT));
+
+            if (bValueEndsDegree)
             {
                 value = value.substr(0, value.size() - std::strlen(Style::TRANSFORM_DEGREE_UNIT)).trim();
             }
-            else if (value.endsWith(Style::TRANSFORM_RADIAN_UNIT))
+
+            const bool bValueEndsRadian = !bValueEndsDegree && (value.endsWith(Style::TRANSFORM_RADIAN_UNIT));
+
+            if (bValueEndsRadian)
             {
                 value = value.substr(0, value.size() - std::strlen(Style::TRANSFORM_RADIAN_UNIT)).trim();
 
@@ -199,7 +209,10 @@ namespace Chicane
 
                 return std::strtof(value.toChar(), nullptr) * Math::RAD_TO_DEG;
             }
-            else if (value.endsWith(Style::TRANSFORM_TURN_UNIT))
+
+            const bool bValueEndsTurn = !bValueEndsDegree && (value.endsWith(Style::TRANSFORM_TURN_UNIT));
+
+            if (bValueEndsTurn)
             {
                 value = value.substr(0, value.size() - std::strlen(Style::TRANSFORM_TURN_UNIT)).trim();
 
@@ -326,16 +339,22 @@ namespace Chicane
 
             if (positions.size() == 1)
             {
-                const String token = positions.front().toLower();
-                if (token.equals("top") || token.equals("bottom"))
+                const String token  = positions.front().toLower();
+                const bool   bTokenMatchesTopOrTokenMatchesBottom = static_cast<bool>(token.equals("top") || token.equals("bottom"));
+
+                if (bTokenMatchesTopOrTokenMatchesBottom)
                 {
                     result.y = parsePositionToken(token);
                 }
-                else if (token.equals("left") || token.equals("right"))
+
+                const bool bTokenMatchesLeftOrTokenMatchesRight = !bTokenMatchesTopOrTokenMatchesBottom && (token.equals("left") || token.equals("right"));
+
+                if (bTokenMatchesLeftOrTokenMatchesRight)
                 {
                     result.x = parsePositionToken(token);
                 }
-                else
+
+                if (!bTokenMatchesTopOrTokenMatchesBottom && !bTokenMatchesLeftOrTokenMatchesRight)
                 {
                     result.x = parsePositionToken(token);
                 }
@@ -491,13 +510,18 @@ namespace Chicane
             result.type = bIsLinear ? StyleGradientType::Linear : StyleGradientType::Radial;
             result.axis = bIsLinear ? Vec2(0.0f, 1.0f) : Vec2(0.5f, 0.5f);
 
-            std::size_t start = 0;
-            if (bIsLinear && isLinearDirection(args.front()))
+            std::size_t start  = 0;
+            const bool  bLinearAndLinearDirection = static_cast<bool>(bIsLinear && isLinearDirection(args.front()));
+
+            if (bLinearAndLinearDirection)
             {
                 result.axis = parseLinearAxis(args.front());
                 start       = 1;
             }
-            else if (bIsRadial && isRadialShape(args.front()))
+
+            const bool bRadialAndRadialShape = !bLinearAndLinearDirection && (bIsRadial && isRadialShape(args.front()));
+
+            if (bRadialAndRadialShape)
             {
                 result.axis = parseRadialCenter(args.front());
                 start       = 1;

@@ -43,8 +43,10 @@ namespace Chicane
             setSize(inParent->getSize());
             setPosition(inParent->getPosition());
 
-            Primitive primitive = getPrimitive();
-            if (!primitive.outline.empty())
+            Primitive  primitive = getPrimitive();
+            const bool bOutlineEmpty    = static_cast<bool>(!primitive.outline.empty());
+
+            if (bOutlineEmpty)
             {
                 const float scale    = std::max(std::fabs(inScale), 1e-4f);
                 const float dilation = 1.0f / scale;
@@ -76,7 +78,8 @@ namespace Chicane
 
                 setPrimitive(primitive);
             }
-            else
+
+            if (!bOutlineEmpty)
             {
                 setScale(std::max(std::fabs(inScale), 1e-4f), std::max(std::fabs(inScale), 1e-4f));
                 setOffset(0.0f, 0.0f);

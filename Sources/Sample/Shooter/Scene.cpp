@@ -32,13 +32,20 @@ void Scene::onLoad()
 
 void Scene::activateLeftCamera()
 {
-    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
     {
-        camera->activate();
-    }
-    else
-    {
-        return;
+        Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID);
+
+        const bool bHasCamera = static_cast<bool>(camera);
+
+        if (bHasCamera)
+        {
+            camera->activate();
+        }
+
+        if (!bHasCamera)
+        {
+            return;
+        }
     }
 
     if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
@@ -54,13 +61,20 @@ void Scene::activateLeftCamera()
 
 void Scene::activateCenterCamera()
 {
-    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))
     {
-        camera->activate();
-    }
-    else
-    {
-        return;
+        Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID);
+
+        const bool bHasCamera = static_cast<bool>(camera);
+
+        if (bHasCamera)
+        {
+            camera->activate();
+        }
+
+        if (!bHasCamera)
+        {
+            return;
+        }
     }
 
     if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
@@ -76,13 +90,20 @@ void Scene::activateCenterCamera()
 
 void Scene::activateRightCamera()
 {
-    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID))
     {
-        camera->activate();
-    }
-    else
-    {
-        return;
+        Chicane::ACamera* camera = getActor<Chicane::ACamera>(RIGHT_CAMERA_ID);
+
+        const bool bHasCamera = static_cast<bool>(camera);
+
+        if (bHasCamera)
+        {
+            camera->activate();
+        }
+
+        if (!bHasCamera)
+        {
+            return;
+        }
     }
 
     if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
@@ -98,13 +119,20 @@ void Scene::activateRightCamera()
 
 void Scene::disableCameras()
 {
-    if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID))
     {
-        camera->deactivate();
-    }
-    else
-    {
-        return;
+        Chicane::ACamera* camera = getActor<Chicane::ACamera>(LEFT_CAMERA_ID);
+
+        const bool bHasCamera = static_cast<bool>(camera);
+
+        if (bHasCamera)
+        {
+            camera->deactivate();
+        }
+
+        if (!bHasCamera)
+        {
+            return;
+        }
     }
 
     if (Chicane::ACamera* camera = getActor<Chicane::ACamera>(CENTER_CAMERA_ID))

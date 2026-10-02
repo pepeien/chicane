@@ -111,9 +111,9 @@ namespace Chicane
 
         RHI::Buffer OpenGLRHIDevice::createBuffer(const RHI::BufferCreateInfo& inCreateInfo)
         {
-            auto* data  = new OpenGLRHIBufferData();
-            data->size  = inCreateInfo.size;
-            data->usage = inCreateInfo.usage;
+            Renderer::OpenGLRHIBufferData* data = new OpenGLRHIBufferData();
+            data->size                          = inCreateInfo.size;
+            data->usage                         = inCreateInfo.usage;
             glCreateBuffers(1, &data->id);
             glNamedBufferData(data->id, static_cast<GLsizeiptr>(inCreateInfo.size), nullptr, GL_DYNAMIC_DRAW);
             return {data};
@@ -121,11 +121,12 @@ namespace Chicane
 
         void OpenGLRHIDevice::destroyBuffer(RHI::Buffer inBuffer)
         {
-            auto* data = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
+            Renderer::OpenGLRHIBufferData* data = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
             if (!data)
             {
                 return;
             }
+
             if (data->bOwned && data->id)
             {
                 glDeleteBuffers(1, &data->id);
@@ -137,7 +138,7 @@ namespace Chicane
             RHI::Buffer inBuffer, const void* inData, std::size_t inSize, std::size_t inOffset
         )
         {
-            auto* data = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
+            Renderer::OpenGLRHIBufferData* data = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
             if (!data || !inData)
             {
                 return;
@@ -153,6 +154,7 @@ namespace Chicane
                 {
                     glCopyNamedBufferSubData(data->id, grown, 0, 0, static_cast<GLsizeiptr>(data->size));
                 }
+
                 if (data->bOwned && data->id)
                 {
                     glDeleteBuffers(1, &data->id);
@@ -175,17 +177,19 @@ namespace Chicane
 
         RHI::Image OpenGLRHIDevice::createImage(const RHI::ImageCreateInfo& inCreateInfo)
         {
-            auto* data   = new OpenGLRHIImageData();
-            data->kind   = inCreateInfo.kind;
-            data->format = inCreateInfo.format;
-            data->width  = inCreateInfo.width;
-            data->height = inCreateInfo.height;
-            data->layers = inCreateInfo.layers;
-            data->mips   = inCreateInfo.mipLevels;
-            data->bOwned = true;
+            Renderer::OpenGLRHIImageData* data = new OpenGLRHIImageData();
+            data->kind                         = inCreateInfo.kind;
+            data->format                       = inCreateInfo.format;
+            data->width                        = inCreateInfo.width;
+            data->height                       = inCreateInfo.height;
+            data->layers                       = inCreateInfo.layers;
+            data->mips                         = inCreateInfo.mipLevels;
+            data->bOwned                       = true;
 
             const GLenum internal = toGLInternal(inCreateInfo.format, inCreateInfo.kind);
-            if (inCreateInfo.kind == RHI::ImageKind::Cube)
+            const bool   bKindCube   = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
+
+            if (bKindCube)
             {
                 glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &data->texture);
                 glTextureStorage2D(
@@ -196,7 +200,10 @@ namespace Chicane
                     inCreateInfo.height
                 );
             }
-            else if (inCreateInfo.kind == RHI::ImageKind::Depth2DArray)
+
+            const bool bKindDepth2DArray = !bKindCube && (inCreateInfo.kind == RHI::ImageKind::Depth2DArray);
+
+            if (bKindDepth2DArray)
             {
                 glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &data->texture);
                 glTextureStorage3D(
@@ -208,7 +215,8 @@ namespace Chicane
                     inCreateInfo.layers
                 );
             }
-            else
+
+            if (!bKindCube && !bKindDepth2DArray)
             {
                 glCreateTextures(GL_TEXTURE_2D, 1, &data->texture);
                 glTextureStorage2D(
@@ -232,17 +240,19 @@ namespace Chicane
 
         void OpenGLRHIDevice::destroyImage(RHI::Image inImage)
         {
-            auto* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
+            Renderer::OpenGLRHIImageData* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
             if (!data)
             {
                 return;
             }
+
             if (data->bOwned)
             {
                 if (data->fbo)
                 {
                     glDeleteFramebuffers(1, &data->fbo);
                 }
+
                 if (data->texture && !data->bView)
                 {
                     glDeleteTextures(1, &data->texture);
@@ -255,13 +265,15 @@ namespace Chicane
             RHI::Image inImage, const void* inData, std::uint32_t inWidth, std::uint32_t inHeight, std::uint32_t inLayer
         )
         {
-            auto* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
+            Renderer::OpenGLRHIImageData* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
             if (!data || !inData)
             {
                 return;
             }
-            const GLenum type = data->format == RHI::ImageFormat::RGBA16F ? GL_HALF_FLOAT : GL_UNSIGNED_BYTE;
-            if (data->kind == RHI::ImageKind::Cube)
+            const GLenum type   = data->format == RHI::ImageFormat::RGBA16F ? GL_HALF_FLOAT : GL_UNSIGNED_BYTE;
+            const bool   bKindCube = static_cast<bool>(data->kind == RHI::ImageKind::Cube);
+
+            if (bKindCube)
             {
                 glTextureSubImage3D(
                     data->texture,
@@ -277,7 +289,8 @@ namespace Chicane
                     inData
                 );
             }
-            else
+
+            if (!bKindCube)
             {
                 glTextureSubImage2D(data->texture, 0, 0, 0, inWidth, inHeight, GL_RGBA, type, inData);
             }
@@ -285,7 +298,7 @@ namespace Chicane
 
         void OpenGLRHIDevice::generateMips(RHI::Image inImage)
         {
-            auto* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
+            Renderer::OpenGLRHIImageData* data = static_cast<OpenGLRHIImageData*>(inImage.handle);
             if (data)
             {
                 glGenerateTextureMipmap(data->texture);
@@ -294,13 +307,13 @@ namespace Chicane
 
         RHI::Image OpenGLRHIDevice::createImageView(RHI::Image inImage, std::uint32_t inLayer)
         {
-            auto* source = static_cast<OpenGLRHIImageData*>(inImage.handle);
-            auto* data   = new OpenGLRHIImageData(*source);
-            data->bOwned = true;
-            data->bView  = true;
-            data->layer  = inLayer;
-            data->kind   = RHI::ImageKind::Depth2D;
-            data->fbo    = 0;
+            Renderer::OpenGLRHIImageData* source = static_cast<OpenGLRHIImageData*>(inImage.handle);
+            Renderer::OpenGLRHIImageData* data   = new OpenGLRHIImageData(*source);
+            data->bOwned                         = true;
+            data->bView                          = true;
+            data->layer                          = inLayer;
+            data->kind                           = RHI::ImageKind::Depth2D;
+            data->fbo                            = 0;
             glCreateFramebuffers(1, &data->fbo);
             data->texture = source->texture;
             return {data};
@@ -335,7 +348,7 @@ namespace Chicane
 
         void OpenGLRHIDevice::updateBindGroup(RHI::BindGroup inGroup, const std::vector<RHI::BindResource>& inResources)
         {
-            auto* data = static_cast<OpenGLRHIGroupData*>(inGroup.handle);
+            Renderer::OpenGLRHIGroupData* data = static_cast<OpenGLRHIGroupData*>(inGroup.handle);
             if (data)
             {
                 data->resources = inResources;
@@ -395,6 +408,7 @@ namespace Chicane
             {
                 glDeleteShader(fragment);
             }
+
             if (!result)
             {
                 GLint logSize = 0;
@@ -409,12 +423,12 @@ namespace Chicane
 
         RHI::Pipeline OpenGLRHIDevice::createPipeline(const RHI::PipelineCreateInfo& inCreateInfo)
         {
-            auto* data       = new OpenGLRHIPipelineData();
-            data->createInfo = inCreateInfo;
-            data->program    = compileProgram(
+            Renderer::OpenGLRHIPipelineData* data = new OpenGLRHIPipelineData();
+            data->createInfo                      = inCreateInfo;
+            data->program                         = compileProgram(
                 shaderPath(inCreateInfo.vertexPath, ShaderType::Vertex),
                 inCreateInfo.fragmentPath.isEmpty() ? String()
-                                                       : shaderPath(inCreateInfo.fragmentPath, ShaderType::Fragment)
+                                                                            : shaderPath(inCreateInfo.fragmentPath, ShaderType::Fragment)
             );
             glCreateVertexArrays(1, &data->vao);
             for (const RHI::VertexAttribute& attribute : inCreateInfo.vertexAttributes)
@@ -433,7 +447,7 @@ namespace Chicane
 
         void OpenGLRHIDevice::destroyPipeline(RHI::Pipeline inPipeline)
         {
-            auto* data = static_cast<OpenGLRHIPipelineData*>(inPipeline.handle);
+            Renderer::OpenGLRHIPipelineData* data = static_cast<OpenGLRHIPipelineData*>(inPipeline.handle);
             if (!data)
             {
                 return;
@@ -473,24 +487,24 @@ namespace Chicane
             std::uint32_t    inFbo
         )
         {
-            auto* data    = new OpenGLRHIImageData();
-            data->texture = inTexture;
-            data->fbo     = inFbo;
-            data->kind    = inKind;
-            data->format  = inFormat;
-            data->width   = inWidth;
-            data->height  = inHeight;
-            data->bOwned  = false;
+            Renderer::OpenGLRHIImageData* data = new OpenGLRHIImageData();
+            data->texture                      = inTexture;
+            data->fbo                          = inFbo;
+            data->kind                         = inKind;
+            data->format                       = inFormat;
+            data->width                        = inWidth;
+            data->height                       = inHeight;
+            data->bOwned                       = false;
             return {data};
         }
 
         RHI::Buffer OpenGLRHIDevice::wrapBuffer(std::uint32_t inId, std::size_t inSize, RHI::BufferUsage inUsage)
         {
-            auto* data   = new OpenGLRHIBufferData();
-            data->id     = inId;
-            data->size   = inSize;
-            data->usage  = inUsage;
-            data->bOwned = false;
+            Renderer::OpenGLRHIBufferData* data = new OpenGLRHIBufferData();
+            data->id                            = inId;
+            data->size                          = inSize;
+            data->usage                         = inUsage;
+            data->bOwned                        = false;
             return {data};
         }
 

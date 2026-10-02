@@ -148,7 +148,8 @@ namespace Editor
             {
                 ioMethod.addParam(const_cast<void*>(static_cast<const void*>(inValue)));
             }
-            else
+
+            if constexpr (!std::is_pointer_v<Decayed>)
             {
                 ioMethod.addParam(std::forward<T>(inValue));
             }
@@ -177,7 +178,8 @@ namespace Editor
                         return;
                     }
                 }
-                else if constexpr ((std::is_same_v<std::decay_t<Args>, Chicane::String> && ...))
+
+                if constexpr (sizeof...(Args) != 0 && (std::is_same_v<std::decay_t<Args>, Chicane::String> && ...))
                 {
                     const std::vector<Chicane::String> args{inArgs...};
                     if (view->callLuaGlobal(name, args))

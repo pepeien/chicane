@@ -561,16 +561,21 @@ namespace Chicane
                 bool bWrap = false;
                 if (wordBreak != StyleWordBreak::Normal && wrapWidth > 0.0f && cursor.x > 0.0f)
                 {
-                    if (wordBreak == StyleWordBreak::BreakAll)
+                    const bool bWordBreakBreakAll = static_cast<bool>(wordBreak == StyleWordBreak::BreakAll);
+
+                    if (bWordBreakBreakAll)
                     {
                         bWrap = nextX > wrapWidth;
                     }
-                    else
+
+                    if (!bWordBreakBreakAll)
                     {
                         const bool bWordStart =
                             !isBreakableSpace(codepoint) && (!hasPrevious || isBreakableSpace(previousCode));
 
-                        if (bWordStart)
+                        const bool bWordStart2 = static_cast<bool>(bWordStart);
+
+                        if (bWordStart2)
                         {
                             const float wordWidth = measureWord(
                                 fontFamily,
@@ -587,7 +592,8 @@ namespace Chicane
                                 bWrap = wordWidth <= wrapWidth || nextX > wrapWidth;
                             }
                         }
-                        else
+
+                        if (!bWordStart2)
                         {
                             bWrap = nextX > wrapWidth;
                         }

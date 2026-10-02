@@ -138,6 +138,7 @@ namespace Chicane
             {
                 source = m_chains.front()->decode(0);
             }
+
             if (!source)
             {
                 source = m_data;
@@ -148,7 +149,7 @@ namespace Chicane
                 return false;
             }
 
-            auto chain = std::make_shared<ImageMipChain>(
+            std::shared_ptr<ImageMipChain> chain = std::make_shared<ImageMipChain>(
                 Image::sMakeMipChain(*source, Image::MAX_SIZE, m_bNormal || looksLikeNormal())
             );
             if (chain->isEmpty())
@@ -306,7 +307,8 @@ namespace Chicane
                     continue;
                 }
 
-                auto chain = std::make_shared<ImageMipChain>(Image::sMakeMipChain(*frame, Image::MAX_SIZE, bNormal));
+                std::shared_ptr<ImageMipChain> chain =
+                    std::make_shared<ImageMipChain>(Image::sMakeMipChain(*frame, Image::MAX_SIZE, bNormal));
                 chain->ensureDecoded(chain->streamTailMinMip());
                 m_chains.push_back(std::move(chain));
             }
@@ -379,8 +381,8 @@ namespace Chicane
                 return false;
             }
 
-            auto chain     = std::make_shared<ImageMipChain>();
-            chain->bNormal = m_bNormal || looksLikeNormal();
+            std::shared_ptr<ImageMipChain> chain = std::make_shared<ImageMipChain>();
+            chain->bNormal                       = m_bNormal || looksLikeNormal();
 
             std::uint32_t width  = getUint(WIDTH_ATTRIBUTE_NAME, 0);
             std::uint32_t height = getUint(HEIGHT_ATTRIBUTE_NAME, 0);
@@ -445,13 +447,24 @@ namespace Chicane
             chain->ensureDecoded(chain->streamTailMinMip());
             m_chains = {chain};
 
-            if (Image::Instance tail = chain->decode(chain->streamTailMinMip()))
             {
-                m_data = tail;
-            }
-            else if (Image::Instance top = chain->decode(0))
-            {
-                m_data = top;
+                Image::Instance tail = chain->decode(chain->streamTailMinMip());
+
+                Image::Instance top = chain->decode(0);
+
+                const bool bHasTail = static_cast<bool>(tail);
+
+                if (bHasTail)
+                {
+                    m_data = tail;
+                }
+
+                const bool bHasTop = !bHasTail && (top);
+
+                if (bHasTop)
+                {
+                    m_data = top;
+                }
             }
 
             return !chain->isEmpty();

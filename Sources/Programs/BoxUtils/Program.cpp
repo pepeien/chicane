@@ -375,14 +375,17 @@ void Program::createMesh(
         const Chicane::Vertex::Index base = 0;
         batch.vertices                    = data.vertices;
 
-        if (data.indices.empty())
+        const bool bIndicesEmpty = static_cast<bool>(data.indices.empty());
+
+        if (bIndicesEmpty)
         {
             for (Chicane::Vertex::Index i = 0; i < static_cast<Chicane::Vertex::Index>(data.vertices.size()); i++)
             {
                 batch.indices.push_back(base + i);
             }
         }
-        else
+
+        if (!bIndicesEmpty)
         {
             batch.indices = data.indices;
         }
@@ -529,28 +532,42 @@ namespace
         int                                face   = 0;
         std::array<std::pair<int, int>, 6> cells  = {};
 
-        if (width > 0 && height > 0 && (width % 4) == 0 && (height % 3) == 0 && (width / 4) == (height / 3))
+        const bool bHorizontalCross = static_cast<bool>(
+            width > 0 && height > 0 && (width % 4) == 0 && (height % 3) == 0 && (width / 4) == (height / 3)
+        );
+
+        if (bHorizontalCross)
         {
             face  = width / 4;
             cells = {
                 {{2, 1}, {0, 1}, {1, 1}, {3, 1}, {1, 0}, {1, 2}}
             };
         }
-        else if (width > 0 && height > 0 && (width % 3) == 0 && (height % 4) == 0 && (width / 3) == (height / 4))
+
+        const bool bVerticalCross = !bHorizontalCross && (width > 0 && height > 0 && (width % 3) == 0 && (height % 4) == 0 &&
+                                        (width / 3) == (height / 4));
+
+        if (bVerticalCross)
         {
             face  = width / 3;
             cells = {
                 {{2, 1}, {0, 1}, {1, 1}, {1, 3}, {1, 0}, {1, 2}}
             };
         }
-        else if (height > 0 && width == height * 6)
+
+        const bool bHorizontalStrip = !bHorizontalCross && !bVerticalCross && (height > 0 && width == height * 6);
+
+        if (bHorizontalStrip)
         {
             face  = height;
             cells = {
                 {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}}
             };
         }
-        else if (width > 0 && height == width * 6)
+
+        const bool bVerticalStrip = !bHorizontalCross && !bVerticalCross && !bHorizontalStrip && (width > 0 && height == width * 6);
+
+        if (bVerticalStrip)
         {
             face  = width;
             cells = {
@@ -648,7 +665,9 @@ void Program::createSky(
         directory = ".";
     }
 
-    if (textures.empty() && images.size() == 1)
+    const bool bTexturesEmptyAndImages1 = static_cast<bool>(textures.empty() && images.size() == 1);
+
+    if (bTexturesEmptyAndImages1)
     {
         const Chicane::Image source(images.front());
         if (!source.isHdr())
@@ -661,7 +680,10 @@ void Program::createSky(
             textures.push_back(writeSkyTexture(inId, images.front(), skyTexturePath(directory, inId, "")));
         }
     }
-    else if (textures.empty() && !images.empty())
+
+    const bool bTexturesEmptyAndImagesEmpty = !bTexturesEmptyAndImages1 && (textures.empty() && !images.empty());
+
+    if (bTexturesEmptyAndImagesEmpty)
     {
         static const std::array<Chicane::Box::SkySide, 6> sides = {
             Chicane::Box::SkySide::Right,
@@ -675,11 +697,16 @@ void Program::createSky(
         for (std::size_t index = 0; index < images.size(); index++)
         {
             Chicane::String suffix;
-            if (images.size() == 6 && index < sides.size())
+            const bool      bImages6AndIndexSize = static_cast<bool>(images.size() == 6 && index < sides.size());
+
+            if (bImages6AndIndexSize)
             {
                 suffix = Chicane::toString(sides.at(index));
             }
-            else if (images.size() > 1)
+
+            const bool bImagesOver1 = !bImages6AndIndexSize && (images.size() > 1);
+
+            if (bImagesOver1)
             {
                 suffix = Chicane::String(std::to_string(index));
             }
@@ -920,11 +947,14 @@ void Program::createSkeleton(
         }
     }
 
-    if (gltf)
+    const bool bHasGltf = static_cast<bool>(gltf);
+
+    if (bHasGltf)
     {
         bones = Chicane::Box::SkeletonGltf::parse(*gltf);
     }
-    else
+
+    if (!bHasGltf)
     {
         for (const Chicane::String& source : inSources)
         {
@@ -1182,13 +1212,17 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
         }
     };
 
-    if (root.isFile())
+    const bool bFile = static_cast<bool>(root.isFile());
+
+    if (bFile)
     {
         collect(root);
     }
-    else
+
+    if (!bFile)
     {
-        for (const auto& entry : std::filesystem::recursive_directory_iterator(root.toStandard()))
+        for (const std::filesystem::directory_entry& entry :
+             std::filesystem::recursive_directory_iterator(root.toStandard()))
         {
             if (!entry.is_regular_file())
             {

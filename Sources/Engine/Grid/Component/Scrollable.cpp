@@ -550,20 +550,26 @@ namespace Chicane
         {
             const Vec2 maxScroll = getScrollMax();
 
-            if (canScrollX())
+            const bool bCanScrollX = static_cast<bool>(canScrollX());
+
+            if (bCanScrollX)
             {
                 m_currentPosition.x = std::clamp(m_currentPosition.x, 0.0f, maxScroll.x);
             }
-            else
+
+            if (!bCanScrollX)
             {
                 m_currentPosition.x = 0.0f;
             }
 
-            if (canScrollY())
+            const bool bCanScrollY = static_cast<bool>(canScrollY());
+
+            if (bCanScrollY)
             {
                 m_currentPosition.y = std::clamp(m_currentPosition.y, 0.0f, maxScroll.y);
             }
-            else
+
+            if (!bCanScrollY)
             {
                 m_currentPosition.y = 0.0f;
             }
@@ -636,23 +642,33 @@ namespace Chicane
                 ensureScrollBarParts(m_horizontalBar);
             }
 
-            if (m_verticalBar.bIsVisible)
+            const bool bVisible2 = static_cast<bool>(m_verticalBar.bIsVisible);
+
+            if (bVisible2)
             {
                 syncScrollBarPart(m_verticalBar.trackBar, m_verticalBar.track, SCROLL_BAR_TRACK_COLOR, 0.0f);
                 syncScrollBarPart(m_verticalBar.thumbBar, m_verticalBar.thumb, SCROLL_BAR_THUMB_COLOR, 0.1f);
             }
-            else if (m_verticalBar.trackBar)
+
+            const bool bTrackBar2 = !bVisible2 && (m_verticalBar.trackBar);
+
+            if (bTrackBar2)
             {
                 m_verticalBar.trackBar->hide();
                 m_verticalBar.thumbBar->hide();
             }
 
-            if (m_horizontalBar.bIsVisible)
+            const bool bVisible = static_cast<bool>(m_horizontalBar.bIsVisible);
+
+            if (bVisible)
             {
                 syncScrollBarPart(m_horizontalBar.trackBar, m_horizontalBar.track, SCROLL_BAR_TRACK_COLOR, 0.0f);
                 syncScrollBarPart(m_horizontalBar.thumbBar, m_horizontalBar.thumb, SCROLL_BAR_THUMB_COLOR, 0.1f);
             }
-            else if (m_horizontalBar.trackBar)
+
+            const bool bTrackBar = !bVisible && (m_horizontalBar.trackBar);
+
+            if (bTrackBar)
             {
                 m_horizontalBar.trackBar->hide();
                 m_horizontalBar.thumbBar->hide();

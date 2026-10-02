@@ -214,16 +214,12 @@ namespace Chicane
 
         inline Vec3 min(const Vec3& inValue) const
         {
-            return Vec3(
-                x < inValue.x ? x : inValue.x, y < inValue.y ? y : inValue.y, z < inValue.z ? z : inValue.z
-            );
+            return Vec3(x < inValue.x ? x : inValue.x, y < inValue.y ? y : inValue.y, z < inValue.z ? z : inValue.z);
         }
 
         inline Vec3 max(const Vec3& inValue) const
         {
-            return Vec3(
-                x > inValue.x ? x : inValue.x, y > inValue.y ? y : inValue.y, z > inValue.z ? z : inValue.z
-            );
+            return Vec3(x > inValue.x ? x : inValue.x, y > inValue.y ? y : inValue.y, z > inValue.z ? z : inValue.z);
         }
 
         inline Vec3 cross(const Vec3& inValue) const

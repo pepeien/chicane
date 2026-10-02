@@ -161,11 +161,16 @@ namespace Chicane
 
             layout();
 
-            if (m_resize.panel)
+            const bool bPanel = static_cast<bool>(m_resize.panel);
+
+            if (bPanel)
             {
                 applyResizeCursor(m_resize.panel->getSide());
             }
-            else if (m_drag.panel && m_drag.bIsActive)
+
+            const bool bPanelAndActive = !bPanel && (m_drag.panel && m_drag.bIsActive);
+
+            if (bPanelAndActive)
             {
                 applyDragCursor();
             }
@@ -375,13 +380,16 @@ namespace Chicane
                 DockRegion  region;
                 const float offset = (slice + gap) * static_cast<float>(i);
 
-                if (bShouldSplitX)
+                const bool bSplitX = static_cast<bool>(bShouldSplitX);
+
+                if (bSplitX)
                 {
                     const float left  = inRemaining.left + offset;
                     const float right = (i + 1 == inPanels.size()) ? inRemaining.right : left + slice;
                     region.box.set(inRemaining.top, left, inRemaining.bottom, right);
                 }
-                else
+
+                if (!bSplitX)
                 {
                     const float top    = inRemaining.top + offset;
                     const float bottom = (i + 1 == inPanels.size()) ? inRemaining.bottom : top + slice;
@@ -768,11 +776,14 @@ namespace Chicane
         {
             if (m_drag.panel && m_drag.bIsActive)
             {
-                if (m_drag.drop == DockSide::Float)
+                const bool bDropFloat = static_cast<bool>(m_drag.drop == DockSide::Float);
+
+                if (bDropFloat)
                 {
                     m_drag.panel->setSide(DockSide::Float);
                 }
-                else
+
+                if (!bDropFloat)
                 {
                     m_drag.panel->clearExtent();
                     m_drag.panel->setFloatSize(Vec2::sZero());
@@ -917,11 +928,14 @@ namespace Chicane
 
             float extent = available;
 
-            if (inPanel->hasExtent())
+            const bool bHasExtent = static_cast<bool>(inPanel->hasExtent());
+
+            if (bHasExtent)
             {
                 extent = inPanel->getExtent();
             }
-            else
+
+            if (!bHasExtent)
             {
                 const String size =
                     inPanel->getSizeValue().isEmpty() ? String(DockPanel::DEFAULT_SIZE) : inPanel->getSizeValue();

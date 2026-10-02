@@ -106,6 +106,7 @@ namespace Chicane
                     inLogicalDevice.destroySampler(image.sampler);
                     image.sampler = nullptr;
                 }
+
                 if (image.view)
                 {
                     inLogicalDevice.destroyImageView(image.view);

@@ -38,6 +38,7 @@ namespace Chicane
                 {
                     device.destroyFramebuffer(objects.framebuffer);
                 }
+
                 if (objects.pass)
                 {
                     device.destroyRenderPass(objects.pass);
@@ -58,6 +59,7 @@ namespace Chicane
             {
                 return vk::AttachmentLoadOp::eClear;
             }
+
             if (inOp == RHI::LoadOp::DontCare)
             {
                 return vk::AttachmentLoadOp::eDontCare;
@@ -193,8 +195,8 @@ namespace Chicane
 
             if (inCreateInfo.bHasColor)
             {
-                auto*                     image = static_cast<VulkanRHIImageData*>(inCreateInfo.color.image.handle);
-                vk::AttachmentDescription color;
+                Renderer::VulkanRHIImageData* image = static_cast<VulkanRHIImageData*>(inCreateInfo.color.image.handle);
+                vk::AttachmentDescription     color;
                 color.format        = image->info.format != vk::Format::eUndefined ? image->info.format
                                                                                    : m_device->toVkFormat(image->format);
                 color.samples       = vk::SampleCountFlagBits::e1;
@@ -211,8 +213,8 @@ namespace Chicane
 
             if (inCreateInfo.bHasDepth)
             {
-                auto*                     image = static_cast<VulkanRHIImageData*>(inCreateInfo.depth.image.handle);
-                vk::AttachmentDescription depth;
+                Renderer::VulkanRHIImageData* image = static_cast<VulkanRHIImageData*>(inCreateInfo.depth.image.handle);
+                vk::AttachmentDescription     depth;
                 depth.format         = image->info.format != vk::Format::eUndefined ? image->info.format
                                                                                     : m_device->toVkFormat(image->format);
                 depth.samples        = vk::SampleCountFlagBits::e1;
@@ -236,6 +238,7 @@ namespace Chicane
                 subpass.colorAttachmentCount = 1;
                 subpass.pColorAttachments    = &colorRef;
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 subpass.pDepthStencilAttachment = &depthRef;
@@ -259,6 +262,7 @@ namespace Chicane
             {
                 views.push_back(static_cast<VulkanRHIImageData*>(inCreateInfo.color.image.handle)->info.view);
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 views.push_back(static_cast<VulkanRHIImageData*>(inCreateInfo.depth.image.handle)->info.view);
@@ -291,6 +295,7 @@ namespace Chicane
                     setLayout(m_passColor, attachmentLayout(m_passColor));
                 }
             }
+
             if (m_passDepth)
             {
                 if (inCreateInfo.depth.load == RHI::LoadOp::Load)
@@ -313,6 +318,7 @@ namespace Chicane
                 );
                 clears.push_back(color);
             }
+
             if (inCreateInfo.bHasDepth)
             {
                 clears.push_back(vk::ClearDepthStencilValue(1.0f, 0));
@@ -333,6 +339,7 @@ namespace Chicane
             {
                 m_device->rememberLayout(m_passColor, attachmentLayout(m_passColor));
             }
+
             if (m_passDepth)
             {
                 m_device->rememberLayout(m_passDepth, attachmentLayout(m_passDepth));
@@ -346,12 +353,14 @@ namespace Chicane
                 m_commands.endRenderPass();
                 m_bInPass = false;
             }
+
             if (m_pass || m_framebuffer)
             {
                 m_retiredPasses[commandKey(m_commands)].push_back({m_pass, m_framebuffer});
                 m_pass        = nullptr;
                 m_framebuffer = nullptr;
             }
+
             if (m_passColor && m_passColor->bIsSampled && !m_passColor->bPresent)
             {
                 setLayout(m_passColor, shaderReadLayout(m_passColor));
@@ -368,21 +377,21 @@ namespace Chicane
 
         void VulkanRHICommandList::bindGroup(std::uint32_t inSet, RHI::BindGroup inGroup)
         {
-            auto* group = static_cast<VulkanRHIGroupData*>(inGroup.handle);
+            Renderer::VulkanRHIGroupData* group = static_cast<VulkanRHIGroupData*>(inGroup.handle);
             m_pipeline->pipeline.bind(m_commands, inSet, group->set);
         }
 
         void VulkanRHICommandList::bindVertexBuffer(RHI::Buffer inBuffer)
         {
-            auto*                buffer     = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
-            const vk::Buffer     buffers[1] = {buffer->buffer.instance};
-            const vk::DeviceSize offsets[1] = {0};
+            Renderer::VulkanRHIBufferData* buffer     = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
+            const vk::Buffer               buffers[1] = {buffer->buffer.instance};
+            const vk::DeviceSize           offsets[1] = {0};
             m_commands.bindVertexBuffers(0, 1, buffers, offsets);
         }
 
         void VulkanRHICommandList::bindIndexBuffer(RHI::Buffer inBuffer)
         {
-            auto* buffer = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
+            Renderer::VulkanRHIBufferData* buffer = static_cast<VulkanRHIBufferData*>(inBuffer.handle);
             m_commands.bindIndexBuffer(buffer->buffer.instance, 0, vk::IndexType::eUint32);
         }
 
@@ -453,8 +462,8 @@ namespace Chicane
             std::uint32_t inHeight
         )
         {
-            auto* source = static_cast<VulkanRHIImageData*>(inSource.handle);
-            auto* dest   = static_cast<VulkanRHIImageData*>(inDestination.handle);
+            Renderer::VulkanRHIImageData* source = static_cast<VulkanRHIImageData*>(inSource.handle);
+            Renderer::VulkanRHIImageData* dest   = static_cast<VulkanRHIImageData*>(inDestination.handle);
             if (!source || !dest)
             {
                 return;
@@ -605,7 +614,7 @@ namespace Chicane
 
         void VulkanRHICommandList::prepareShaderRead(RHI::Image inImage)
         {
-            auto* image = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* image = static_cast<VulkanRHIImageData*>(inImage.handle);
             if (!image)
             {
                 return;
@@ -616,7 +625,7 @@ namespace Chicane
 
         void VulkanRHICommandList::preparePresent(RHI::Image inImage)
         {
-            auto* image = static_cast<VulkanRHIImageData*>(inImage.handle);
+            Renderer::VulkanRHIImageData* image = static_cast<VulkanRHIImageData*>(inImage.handle);
             if (!image)
             {
                 return;

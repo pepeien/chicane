@@ -74,7 +74,9 @@ namespace Chicane
 
             const float step = inDeltaTime * std::max(0.0f, m_speed);
 
-            if (m_remainingDelay > 0.0f)
+            const bool bRemainingDelayPositive = static_cast<bool>(m_remainingDelay > 0.0f);
+
+            if (bRemainingDelayPositive)
             {
                 m_remainingDelay -= step;
 
@@ -86,7 +88,8 @@ namespace Chicane
                 m_elapsed        = -m_remainingDelay;
                 m_remainingDelay = 0.0f;
             }
-            else
+
+            if (!bRemainingDelayPositive)
             {
                 m_elapsed += step;
             }

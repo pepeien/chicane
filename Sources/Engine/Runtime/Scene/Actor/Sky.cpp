@@ -37,17 +37,20 @@ namespace Chicane
         const int count = width * height;
         for (int index = 0; index < count; index++)
         {
-            float red   = 0.0f;
-            float green = 0.0f;
-            float blue  = 0.0f;
-            if (floats)
+            float      red    = 0.0f;
+            float      green  = 0.0f;
+            float      blue   = 0.0f;
+            const bool bHasFloats = static_cast<bool>(floats);
+
+            if (bHasFloats)
             {
                 const float* pixel = floats + static_cast<std::size_t>(index) * static_cast<std::size_t>(channel);
                 red                = pixel[0];
                 green              = channel > 1 ? pixel[1] : red;
                 blue               = channel > 2 ? pixel[2] : red;
             }
-            else
+
+            if (!bHasFloats)
             {
                 const unsigned char* pixel =
                     bytes + static_cast<std::size_t>(index) * static_cast<std::size_t>(channel);

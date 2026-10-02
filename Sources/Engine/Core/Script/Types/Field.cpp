@@ -96,8 +96,10 @@ namespace Chicane
                     return false;
                 }
 
-                int value = 0;
-                if (lua_type(inState, inIndex) == LUA_TSTRING)
+                int        value  = 0;
+                const bool bTypeString = static_cast<bool>(lua_type(inState, inIndex) == LUA_TSTRING);
+
+                if (bTypeString)
                 {
                     const String name  = lua_tostring(inState, inIndex);
                     bool         found = false;
@@ -119,11 +121,15 @@ namespace Chicane
                         return false;
                     }
                 }
-                else if (lua_isnumber(inState, inIndex))
+
+                const bool bIsNumber = !bTypeString && (lua_isnumber(inState, inIndex));
+
+                if (bIsNumber)
                 {
                     value = static_cast<int>(lua_tointeger(inState, inIndex));
                 }
-                else
+
+                if (!bTypeString && !bIsNumber)
                 {
                     return false;
                 }

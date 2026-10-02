@@ -3,6 +3,7 @@
 #include <cmath>
 #include <filesystem>
 #include <list>
+#include <mutex>
 #include <system_error>
 #include <unordered_map>
 #include <vector>
@@ -32,7 +33,8 @@ namespace Chicane
     {
         static AssetObservable                                                    g_assetObservable   = {};
         static PreviewObservable                                                  g_previewObservable = {};
-        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache             = {};
+        static std::recursive_mutex                                               g_cacheMutex;
+        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache = {};
 
         static std::unordered_map<FileSystem::Path, PreviewCacheEntry>                     g_previewCache   = {};
         static std::list<FileSystem::Path>                                                 g_previewOrder   = {};
@@ -463,6 +465,7 @@ namespace Chicane
                 {
                     label = family.getName();
                 }
+
                 if (label.isEmpty())
                 {
                     label = font.getId();
@@ -497,6 +500,7 @@ namespace Chicane
                 {
                     modelPath = sky.getKind() == SkyKind::Panorama ? Sky::DOME_SOURCE : Sky::BOX_SOURCE;
                 }
+
                 if (FileSystem::exists(modelPath))
                 {
                     const Model             model(modelPath);
@@ -606,31 +610,47 @@ namespace Chicane
 
         static bool hasAsset(const FileSystem::Path& inSource)
         {
+            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+
             return g_cache.find(inSource) != g_cache.end();
         }
 
         template <class T = Asset>
         static const T* getAsset(const FileSystem::Path& inSource)
         {
-            if (!hasAsset(inSource))
+            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+            const auto                            found = g_cache.find(inSource);
+            if (found == g_cache.end())
             {
                 return nullptr;
             }
 
-            return dynamic_cast<const T*>(g_cache.at(inSource).get());
+            return dynamic_cast<const T*>(found->second.get());
         }
 
         template <class T = Asset>
         static const T* addAsset(const FileSystem::Path& inSource)
         {
-            if (!hasAsset(inSource))
+            const Asset* created = nullptr;
+            const T*     result  = nullptr;
             {
-                g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
+                std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+                const auto                            found = g_cache.find(inSource);
+                if (found == g_cache.end())
+                {
+                    g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
+                    created = g_cache.at(inSource).get();
+                }
 
-                g_assetObservable.next(g_cache.at(inSource).get());
+                result = dynamic_cast<const T*>(g_cache.at(inSource).get());
             }
 
-            return getAsset<T>(inSource);
+            if (created)
+            {
+                g_assetObservable.next(created);
+            }
+
+            return result;
         }
 
         static const Sound* loadSound(const FileSystem::Path& inFilePath)
@@ -868,7 +888,8 @@ namespace Chicane
 
         std::vector<const Asset*> getById(const String& inId)
         {
-            std::vector<const Asset*> result;
+            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+            std::vector<const Asset*>             result;
 
             for (const auto& [path, asset] : g_cache)
             {
@@ -885,8 +906,9 @@ namespace Chicane
 
         const Font* findFont(const String& inFamily, float inWeight)
         {
-            const Font* result    = nullptr;
-            float       bestDelta = 0.0f;
+            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+            const Font*                           result    = nullptr;
+            float                                 bestDelta = 0.0f;
 
             for (const auto& [path, asset] : g_cache)
             {

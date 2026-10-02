@@ -133,20 +133,26 @@ namespace Chicane
                 return;
             }
 
-            if (inGroup.getBone().isEmpty())
+            const bool bBoneEmpty = static_cast<bool>(inGroup.getBone().isEmpty());
+
+            if (bBoneEmpty)
             {
                 foundGroupNode.removeAttribute(MeshGroup::BONE_ATTRIBUTE_NAME);
             }
-            else
+
+            if (!bBoneEmpty)
             {
                 foundGroupNode.setAttribute(MeshGroup::BONE_ATTRIBUTE_NAME, inGroup.getBone());
             }
 
-            if (inGroup.getEmissiveStrength() == 1.0f)
+            const bool bEmissiveStrengthEqual1 = static_cast<bool>(inGroup.getEmissiveStrength() == 1.0f);
+
+            if (bEmissiveStrengthEqual1)
             {
                 foundGroupNode.removeAttribute(MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME);
             }
-            else
+
+            if (!bEmissiveStrengthEqual1)
             {
                 foundGroupNode.setAttribute(
                     MeshGroup::EMISSIVE_STRENGTH_ATTRIBUTE_NAME,
@@ -154,11 +160,14 @@ namespace Chicane
                 );
             }
 
-            if (inGroup.getTileSize() <= 0.0f)
+            const bool bTileSizeNonPositive = static_cast<bool>(inGroup.getTileSize() <= 0.0f);
+
+            if (bTileSizeNonPositive)
             {
                 foundGroupNode.removeAttribute(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME);
             }
-            else
+
+            if (!bTileSizeNonPositive)
             {
                 foundGroupNode.setAttribute(
                     MeshGroup::TILE_SIZE_ATTRIBUTE_NAME,
@@ -328,7 +337,7 @@ namespace Chicane
                 return;
             }
 
-            for (const auto& groupNode : getXML().getChildren())
+            for (const XmlNode& groupNode : getXML().getChildren())
             {
                 const String name = groupNode.getName();
 
@@ -344,7 +353,7 @@ namespace Chicane
                 group.setTileSize(groupNode.parseFloat(MeshGroup::TILE_SIZE_ATTRIBUTE_NAME, 0.0f));
                 group.setTransform(groupNode);
 
-                for (const auto& assetNode : groupNode.getChildren())
+                for (const XmlNode& assetNode : groupNode.getChildren())
                 {
                     const String currentTag = assetNode.getName();
 

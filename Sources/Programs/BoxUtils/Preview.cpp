@@ -48,6 +48,7 @@ bool bakePreviewsWithRuntime(const std::vector<Chicane::FileSystem::Path>& inAss
             renderer->disableFeature(Chicane::Renderer::RendererFeature::HDR);
             renderer->disableFeature(Chicane::Renderer::RendererFeature::Outline);
         }
+
         if (Chicane::Window* window = Chicane::Window::sGetCurrent())
         {
             window->disableResizing();

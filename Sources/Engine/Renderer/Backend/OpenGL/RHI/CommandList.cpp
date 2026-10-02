@@ -15,7 +15,9 @@ namespace Chicane
 
         void OpenGLRHICommandList::applyPipelineState(const RHI::PipelineCreateInfo& inCreateInfo)
         {
-            if (inCreateInfo.bHasDepthTest)
+            const bool bDepthTest = static_cast<bool>(inCreateInfo.bHasDepthTest);
+
+            if (bDepthTest)
             {
                 glEnable(GL_DEPTH_TEST);
                 glDepthMask(inCreateInfo.bHasDepthWrite ? GL_TRUE : GL_FALSE);
@@ -36,16 +38,20 @@ namespace Chicane
                 }
                 glDepthFunc(depthFunc);
             }
-            else
+
+            if (!bDepthTest)
             {
                 glDisable(GL_DEPTH_TEST);
             }
 
-            if (inCreateInfo.cull == CullingMode::None)
+            const bool bCullNone = static_cast<bool>(inCreateInfo.cull == CullingMode::None);
+
+            if (bCullNone)
             {
                 glDisable(GL_CULL_FACE);
             }
-            else
+
+            if (!bCullNone)
             {
                 glEnable(GL_CULL_FACE);
                 glCullFace(inCreateInfo.cull == CullingMode::Front ? GL_FRONT : GL_BACK);
@@ -53,29 +59,38 @@ namespace Chicane
             }
 
             glPolygonMode(GL_FRONT_AND_BACK, inCreateInfo.fill == RHI::FillMode::Line ? GL_LINE : GL_FILL);
-            if (inCreateInfo.fill == RHI::FillMode::Line)
+            const bool bFillLine = static_cast<bool>(inCreateInfo.fill == RHI::FillMode::Line);
+
+            if (bFillLine)
             {
                 glEnable(GL_POLYGON_OFFSET_LINE);
                 glPolygonOffset(-1.25f, -1.0f);
             }
-            else
+
+            if (!bFillLine)
             {
                 glDisable(GL_POLYGON_OFFSET_LINE);
                 glPolygonOffset(0.0f, 0.0f);
             }
 
-            if (inCreateInfo.blend == RHI::BlendMode::None)
+            const bool bBlendNone = static_cast<bool>(inCreateInfo.blend == RHI::BlendMode::None);
+
+            if (bBlendNone)
             {
                 glDisable(GL_BLEND);
             }
-            else
+
+            if (!bBlendNone)
             {
                 glEnable(GL_BLEND);
-                if (inCreateInfo.blend == RHI::BlendMode::Additive)
+                const bool bBlendAdditive = static_cast<bool>(inCreateInfo.blend == RHI::BlendMode::Additive);
+
+                if (bBlendAdditive)
                 {
                     glBlendFunc(GL_ONE, GL_ONE);
                 }
-                else
+
+                if (!bBlendAdditive)
                 {
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 }
@@ -88,20 +103,26 @@ namespace Chicane
                 inCreateInfo.bHasColorWrite ? GL_TRUE : GL_FALSE
             );
 
-            if (inCreateInfo.stencil == RHI::StencilMode::None)
+            const bool bStencilNone = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::None);
+
+            if (bStencilNone)
             {
                 glDisable(GL_STENCIL_TEST);
             }
-            else
+
+            if (!bStencilNone)
             {
                 glEnable(GL_STENCIL_TEST);
-                if (inCreateInfo.stencil == RHI::StencilMode::WriteReplace)
+                const bool bStencilWriteReplace = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
+
+                if (bStencilWriteReplace)
                 {
                     glStencilMask(0xFF);
                     glStencilFunc(GL_ALWAYS, 1, 0xFF);
                     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
                 }
-                else
+
+                if (!bStencilWriteReplace)
                 {
                     glStencilMask(0x00);
                     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
@@ -114,48 +135,62 @@ namespace Chicane
         {
             for (const RHI::BindResource& resource : inGroup->resources)
             {
-                if (resource.type == RHI::BindingType::SampledImage)
+                const bool bTypeSampledImage = static_cast<bool>(resource.type == RHI::BindingType::SampledImage);
+
+                if (bTypeSampledImage)
                 {
-                    auto* image   = static_cast<OpenGLRHIImageData*>(resource.image.handle);
-                    auto* sampler = static_cast<OpenGLRHISamplerData*>(resource.sampler.handle);
-                    glBindTextureUnit(resource.binding, image->texture);
+                    OpenGLRHIImageData* image = static_cast<OpenGLRHIImageData*>(resource.image.handle);
+                    glBindTextureUnit(resource.binding + resource.arrayIndex, image->texture);
+
+                    OpenGLRHISamplerData* sampler = static_cast<OpenGLRHISamplerData*>(resource.sampler.handle);
                     if (sampler)
                     {
-                        GLenum minFilter = GL_LINEAR;
-                        if (sampler->createInfo.bHasMip)
+                        GLenum     minFilter = GL_LINEAR;
+                        const bool bMip    = static_cast<bool>(sampler->createInfo.bHasMip);
+
+                        if (bMip)
                         {
                             minFilter = sampler->createInfo.minFilter == RHI::SamplerFilter::Nearest
                                             ? GL_NEAREST_MIPMAP_LINEAR
                                             : GL_LINEAR_MIPMAP_LINEAR;
                         }
-                        else if (sampler->createInfo.minFilter == RHI::SamplerFilter::Nearest)
+
+                        const bool bMinFilterNearest = !bMip && (sampler->createInfo.minFilter == RHI::SamplerFilter::Nearest);
+
+                        if (bMinFilterNearest)
                         {
                             minFilter = GL_NEAREST;
                         }
                         const GLenum magFilter =
                             sampler->createInfo.magFilter == RHI::SamplerFilter::Nearest ? GL_NEAREST : GL_LINEAR;
+
                         glTextureParameteri(image->texture, GL_TEXTURE_MIN_FILTER, minFilter);
                         glTextureParameteri(image->texture, GL_TEXTURE_MAG_FILTER, magFilter);
                         glTextureParameteri(image->texture, GL_TEXTURE_MAX_LOD, sampler->createInfo.bHasMip ? 16 : 0);
+
                         GLenum wrap = GL_CLAMP_TO_EDGE;
                         if (sampler->createInfo.address == RHI::SamplerAddress::ClampToBorder)
                         {
                             wrap = GL_CLAMP_TO_BORDER;
                         }
-                        else if (sampler->createInfo.address == RHI::SamplerAddress::Repeat)
+
+                        if (sampler->createInfo.address == RHI::SamplerAddress::Repeat)
                         {
                             wrap = GL_REPEAT;
                         }
+
                         glTextureParameteri(image->texture, GL_TEXTURE_WRAP_S, wrap);
                         glTextureParameteri(image->texture, GL_TEXTURE_WRAP_T, wrap);
                         glTextureParameteri(image->texture, GL_TEXTURE_WRAP_R, wrap);
                     }
                 }
-                else
+
+                if (!bTypeSampledImage)
                 {
-                    auto*        buffer = static_cast<OpenGLRHIBufferData*>(resource.buffer.handle);
-                    const GLenum target =
+                    OpenGLRHIBufferData* buffer = static_cast<OpenGLRHIBufferData*>(resource.buffer.handle);
+                    const GLenum         target =
                         resource.type == RHI::BindingType::StorageBuffer ? GL_SHADER_STORAGE_BUFFER : GL_UNIFORM_BUFFER;
+
                     glBindBufferBase(target, resource.binding, buffer->id);
                 }
             }
@@ -166,18 +201,24 @@ namespace Chicane
             bool bDefault = false;
             if (inCreateInfo.bHasColor)
             {
-                auto* color = static_cast<OpenGLRHIImageData*>(inCreateInfo.color.image.handle);
-                if (!color || (!color->texture && !color->fbo))
+                Renderer::OpenGLRHIImageData* color = static_cast<OpenGLRHIImageData*>(inCreateInfo.color.image.handle);
+                const bool                    bNotHasColorOrFbo = static_cast<bool>(!color || (!color->texture && !color->fbo));
+
+                if (bNotHasColorOrFbo)
                 {
                     glBindFramebuffer(GL_FRAMEBUFFER, 0);
                     glDrawBuffer(GL_BACK);
                     bDefault = true;
                 }
-                else if (!color->bOwned && color->fbo)
+
+                const bool bNotOwnedAndFbo = !bNotHasColorOrFbo && (!color->bOwned && color->fbo);
+
+                if (bNotOwnedAndFbo)
                 {
                     glBindFramebuffer(GL_FRAMEBUFFER, color->fbo);
                 }
-                else
+
+                if (!bNotHasColorOrFbo && !bNotOwnedAndFbo)
                 {
                     glBindFramebuffer(GL_FRAMEBUFFER, color->fbo);
                     if (color->kind == RHI::ImageKind::Color2D || color->kind == RHI::ImageKind::Cube)
@@ -187,9 +228,10 @@ namespace Chicane
                     }
                 }
             }
+
             if (!bDefault && inCreateInfo.bHasDepth)
             {
-                auto* depth = static_cast<OpenGLRHIImageData*>(inCreateInfo.depth.image.handle);
+                Renderer::OpenGLRHIImageData* depth = static_cast<OpenGLRHIImageData*>(inCreateInfo.depth.image.handle);
                 if (!inCreateInfo.bHasColor)
                 {
                     glBindFramebuffer(GL_FRAMEBUFFER, depth->fbo);
@@ -200,11 +242,18 @@ namespace Chicane
                     inCreateInfo.bHasColor && static_cast<OpenGLRHIImageData*>(inCreateInfo.color.image.handle)->bOwned;
                 if (!inCreateInfo.bHasColor || bOwnedColor)
                 {
-                    if (depth->kind == RHI::ImageKind::Depth2DArray || depth->layer > 0 || depth->bView)
+                    const bool bKindDepth2DArrayOrLayerPositive = static_cast<bool>(
+                        depth->kind == RHI::ImageKind::Depth2DArray || depth->layer > 0 || depth->bView
+                    );
+
+                    if (bKindDepth2DArrayOrLayerPositive)
                     {
                         glFramebufferTextureLayer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth->texture, 0, depth->layer);
                     }
-                    else if (depth->texture)
+
+                    const bool bTexture = !bKindDepth2DArrayOrLayerPositive && (depth->texture);
+
+                    if (bTexture)
                     {
                         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth->texture, 0);
                     }
@@ -222,6 +271,7 @@ namespace Chicane
                 );
                 mask |= GL_COLOR_BUFFER_BIT;
             }
+
             if (inCreateInfo.bHasDepth && inCreateInfo.depth.load == RHI::LoadOp::Clear)
             {
                 glDepthMask(GL_TRUE);
@@ -229,6 +279,7 @@ namespace Chicane
                 glClearDepth(1.0);
                 mask |= GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
             }
+
             if (mask)
             {
                 glClear(mask);
@@ -265,7 +316,7 @@ namespace Chicane
 
         void OpenGLRHICommandList::bindVertexBuffer(RHI::Buffer inBuffer)
         {
-            auto* buffer = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
+            Renderer::OpenGLRHIBufferData* buffer = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
             glVertexArrayVertexBuffer(
                 m_pipeline->vao,
                 0,
@@ -277,8 +328,8 @@ namespace Chicane
 
         void OpenGLRHICommandList::bindIndexBuffer(RHI::Buffer inBuffer)
         {
-            auto* buffer  = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
-            m_indexBuffer = buffer->id;
+            Renderer::OpenGLRHIBufferData* buffer = static_cast<OpenGLRHIBufferData*>(inBuffer.handle);
+            m_indexBuffer                         = buffer->id;
             glVertexArrayElementBuffer(m_pipeline->vao, buffer->id);
         }
 
@@ -294,6 +345,7 @@ namespace Chicane
             {
                 return GL_TRIANGLE_STRIP;
             }
+
             if (inTopology == RHI::PrimitiveTopology::LineList)
             {
                 return GL_LINES;
@@ -371,8 +423,8 @@ namespace Chicane
             std::uint32_t inHeight
         )
         {
-            auto* source = static_cast<OpenGLRHIImageData*>(inSource.handle);
-            auto* dest   = static_cast<OpenGLRHIImageData*>(inDestination.handle);
+            Renderer::OpenGLRHIImageData* source = static_cast<OpenGLRHIImageData*>(inSource.handle);
+            Renderer::OpenGLRHIImageData* dest   = static_cast<OpenGLRHIImageData*>(inDestination.handle);
             if (!source || !dest)
             {
                 return;
@@ -420,6 +472,7 @@ namespace Chicane
             {
                 glGenerateTextureMipmap(dest->texture);
             }
+
             if (previous == 0)
             {
                 glReadBuffer(GL_BACK);

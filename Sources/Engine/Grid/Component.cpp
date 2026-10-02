@@ -166,19 +166,25 @@ namespace Chicane
             float        basis     = bIsRow ? available.x : available.y;
             const Style& style     = inBox->getStyle();
 
-            if (bIsRow)
+            const bool bRow = static_cast<bool>(bIsRow);
+
+            if (bRow)
             {
                 if (isWidthAuto(style) && !stretchesAutoWidth(inBox))
                 {
                     return 0.0f;
                 }
 
-                if (isWidthAuto(style) || style.isFillPercent(style.width.value.getRaw()))
+                const bool bWidthAutoOrFillPercent =
+                    static_cast<bool>(isWidthAuto(style) || style.isFillPercent(style.width.value.getRaw()));
+
+                if (bWidthAutoOrFillPercent)
                 {
                     basis -= (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get());
                     basis -= (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get());
                 }
-                else
+
+                if (!bWidthAutoOrFillPercent)
                 {
                     const float parsed = percentOfBasis(style.width.value.getRaw(), basis, SizeDirection::Horizontal);
                     if (parsed >= 0.0f)
@@ -189,19 +195,23 @@ namespace Chicane
 
                 basis -= style.insetHorizontal();
             }
-            else
+
+            if (!bRow)
             {
                 if (isHeightAuto(style))
                 {
                     return 0.0f;
                 }
 
-                if (style.isFillPercent(style.height.value.getRaw()))
+                const bool bFillPercent = static_cast<bool>(style.isFillPercent(style.height.value.getRaw()));
+
+                if (bFillPercent)
                 {
                     basis -= (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
                     basis -= (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get());
                 }
-                else
+
+                if (!bFillPercent)
                 {
                     const float parsed = percentOfBasis(style.height.value.getRaw(), basis, SizeDirection::Vertical);
                     if (parsed >= 0.0f)
@@ -341,11 +351,14 @@ namespace Chicane
 
                     if (parseText(inValue).equals("true", "1"))
                     {
-                        if (style.display.getRaw().isEmpty())
+                        const bool bDisplayEmpty = static_cast<bool>(style.display.getRaw().isEmpty());
+
+                        if (bDisplayEmpty)
                         {
                             style.display.set(StyleDisplay::Block);
                         }
-                        else
+
+                        if (!bDisplayEmpty)
                         {
                             style.display.refresh();
                         }
@@ -632,7 +645,9 @@ namespace Chicane
                     bool          bHasMatched = false;
                     std::uint32_t specificity = 0;
 
-                    if (!source.compiled.empty())
+                    const bool bCompiledEmpty = static_cast<bool>(!source.compiled.empty());
+
+                    if (bCompiledEmpty)
                     {
                         for (const StyleCompiledSelector& selector : source.compiled)
                         {
@@ -645,7 +660,8 @@ namespace Chicane
                             specificity = std::max(specificity, selector.specificity());
                         }
                     }
-                    else
+
+                    if (!bCompiledEmpty)
                     {
                         for (const String& selector : source.selectors)
                         {
@@ -853,7 +869,9 @@ namespace Chicane
                     const int   mainAutos = bShareMainAuto ? m_parent->countTrailingMainAutoMargins(this) : 0;
                     const float mainShare = mainAutos > 0 ? leftoverW / static_cast<float>(mainAutos) : leftoverW;
 
-                    if (bShareMainAuto && mainAutos > 0)
+                    const bool bShareMainAutoAndMainAutosPositive = static_cast<bool>(bShareMainAuto && mainAutos > 0);
+
+                    if (bShareMainAutoAndMainAutosPositive)
                     {
                         if (bIsLeftAuto)
                         {
@@ -865,16 +883,25 @@ namespace Chicane
                             marginRight = mainShare;
                         }
                     }
-                    else if (bIsParentCenter || (bIsLeftAuto && bIsRightAuto))
+
+                    const bool bParentCenterOrIsRightAuto = !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsLeftAuto && bIsRightAuto));
+
+                    if (bParentCenterOrIsRightAuto)
                     {
                         marginLeft  = leftoverW * 0.5f;
                         marginRight = leftoverW * 0.5f;
                     }
-                    else if (bIsLeftAuto)
+
+                    const bool bLeftAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto && (bIsLeftAuto);
+
+                    if (bLeftAuto)
                     {
                         marginLeft = leftoverW;
                     }
-                    else if (bIsRightAuto)
+
+                    const bool bRightAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto && !bLeftAuto && (bIsRightAuto);
+
+                    if (bRightAuto)
                     {
                         marginRight = leftoverW;
                     }
@@ -912,7 +939,9 @@ namespace Chicane
                         const int   mainAutos = bShareMainAuto ? m_parent->countTrailingMainAutoMargins(this) : 0;
                         const float mainShare = mainAutos > 0 ? leftoverH / static_cast<float>(mainAutos) : leftoverH;
 
-                        if (bShareMainAuto && mainAutos > 0)
+                        const bool bShareMainAutoAndMainAutosPositive = static_cast<bool>(bShareMainAuto && mainAutos > 0);
+
+                        if (bShareMainAutoAndMainAutosPositive)
                         {
                             if (bIsTopAuto)
                             {
@@ -924,16 +953,25 @@ namespace Chicane
                                 marginBottom = mainShare;
                             }
                         }
-                        else if (bIsParentCenter || (bIsTopAuto && bIsBottomAuto))
+
+                        const bool bParentCenterOrIsBottomAuto = !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsTopAuto && bIsBottomAuto));
+
+                        if (bParentCenterOrIsBottomAuto)
                         {
                             marginTop    = leftoverH * 0.5f;
                             marginBottom = leftoverH * 0.5f;
                         }
-                        else if (bIsTopAuto)
+
+                        const bool bTopAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto && (bIsTopAuto);
+
+                        if (bTopAuto)
                         {
                             marginTop = leftoverH;
                         }
-                        else if (bIsBottomAuto)
+
+                        const bool bBottomAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto && !bTopAuto && (bIsBottomAuto);
+
+                        if (bBottomAuto)
                         {
                             marginBottom = leftoverH;
                         }
@@ -983,24 +1021,33 @@ namespace Chicane
 
                 if (bHasLineStarted)
                 {
-                    if (bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit)
+                    const bool bWrapAndItemMainLineLimit = static_cast<bool>(bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit);
+
+                    if (bWrapAndItemMainLineLimit)
                     {
-                        if (bIsRow)
+                        const bool bRow = static_cast<bool>(bIsRow);
+
+                        if (bRow)
                         {
                             m_parent->setCursor(lineStart, m_parent->getCursor().y + m_parent->m_scratch + crossGap);
                         }
-                        else
+
+                        if (!bRow)
                         {
                             m_parent->setCursor(m_parent->getCursor().x + m_parent->m_scratch + crossGap, lineStart);
                         }
 
                         m_parent->m_scratch = 0.0f;
                     }
-                    else if (bIsRow)
+
+                    const bool bRow2 = !bWrapAndItemMainLineLimit && (bIsRow);
+
+                    if (bRow2)
                     {
                         m_parent->addCursor(mainGap, 0.0f);
                     }
-                    else
+
+                    if (!bWrapAndItemMainLineLimit && !bRow2)
                     {
                         m_parent->addCursor(0.0f, mainGap);
                     }
@@ -1011,11 +1058,14 @@ namespace Chicane
 
                 m_parent->m_scratch = std::max(m_parent->m_scratch, itemCross);
 
-                if (bIsRow)
+                const bool bRow3 = static_cast<bool>(bIsRow);
+
+                if (bRow3)
                 {
                     m_parent->addCursor(marginLeft + usedWidth + marginRight, 0.0f);
                 }
-                else
+
+                if (!bRow3)
                 {
                     m_parent->addCursor(0.0f, marginTop + usedHeight + marginBottom);
                 }
@@ -1126,11 +1176,14 @@ namespace Chicane
 
         void Component::setFlag(ComponentDirty inFlag, bool inEnabled)
         {
-            if (inEnabled)
+            const bool bHasEnabled = static_cast<bool>(inEnabled);
+
+            if (bHasEnabled)
             {
                 m_flags |= inFlag;
             }
-            else
+
+            if (!bHasEnabled)
             {
                 m_flags &= ~inFlag;
             }
@@ -1211,20 +1264,26 @@ namespace Chicane
                 return;
             }
 
-            if (inValue)
+            const bool bHasValue = static_cast<bool>(inValue);
+
+            if (bHasValue)
             {
                 m_status |= ComponentStatus::Hovered;
             }
-            else
+
+            if (!bHasValue)
             {
                 m_status &= ~ComponentStatus::Hovered;
             }
 
-            if (bShouldInvalidateSubtree)
+            const bool bInvalidateSubtree = static_cast<bool>(bShouldInvalidateSubtree);
+
+            if (bInvalidateSubtree)
             {
                 markStyleDirtySubtree();
             }
-            else
+
+            if (!bInvalidateSubtree)
             {
                 markStyleDirty();
             }
@@ -1246,20 +1305,26 @@ namespace Chicane
                 return;
             }
 
-            if (inValue)
+            const bool bHasValue = static_cast<bool>(inValue);
+
+            if (bHasValue)
             {
                 m_status |= ComponentStatus::Focused;
             }
-            else
+
+            if (!bHasValue)
             {
                 m_status &= ~ComponentStatus::Focused;
             }
 
-            if (bShouldInvalidateSubtree)
+            const bool bInvalidateSubtree = static_cast<bool>(bShouldInvalidateSubtree);
+
+            if (bInvalidateSubtree)
             {
                 markStyleDirtySubtree();
             }
-            else
+
+            if (!bInvalidateSubtree)
             {
                 markStyleDirty();
             }
@@ -1281,20 +1346,26 @@ namespace Chicane
                 return;
             }
 
-            if (inValue)
+            const bool bHasValue = static_cast<bool>(inValue);
+
+            if (bHasValue)
             {
                 m_status |= ComponentStatus::Dragging;
             }
-            else
+
+            if (!bHasValue)
             {
                 m_status &= ~ComponentStatus::Dragging;
             }
 
-            if (bShouldInvalidateSubtree)
+            const bool bInvalidateSubtree = static_cast<bool>(bShouldInvalidateSubtree);
+
+            if (bInvalidateSubtree)
             {
                 markStyleDirtySubtree();
             }
-            else
+
+            if (!bInvalidateSubtree)
             {
                 markStyleDirty();
             }
@@ -1316,20 +1387,26 @@ namespace Chicane
                 return;
             }
 
-            if (inValue)
+            const bool bHasValue = static_cast<bool>(inValue);
+
+            if (bHasValue)
             {
                 m_status |= ComponentStatus::Selected;
             }
-            else
+
+            if (!bHasValue)
             {
                 m_status &= ~ComponentStatus::Selected;
             }
 
-            if (bShouldInvalidateSubtree)
+            const bool bInvalidateSubtree = static_cast<bool>(bShouldInvalidateSubtree);
+
+            if (bInvalidateSubtree)
             {
                 markStyleDirtySubtree();
             }
-            else
+
+            if (!bInvalidateSubtree)
             {
                 markStyleDirty();
             }
@@ -1342,11 +1419,14 @@ namespace Chicane
                 return;
             }
 
-            if (inValue)
+            const bool bHasValue = static_cast<bool>(inValue);
+
+            if (bHasValue)
             {
                 m_status |= ComponentStatus::Culled;
             }
-            else
+
+            if (!bHasValue)
             {
                 m_status &= ~ComponentStatus::Culled;
             }
@@ -1556,7 +1636,9 @@ namespace Chicane
 
             const bool bStyleRefreshed = hasFlag(ComponentDirty::Style);
 
-            if (bStyleRefreshed)
+            const bool bStyleRefreshed2 = static_cast<bool>(bStyleRefreshed);
+
+            if (bStyleRefreshed2)
             {
                 const LayoutMetrics before = LayoutMetrics::sCapture(style);
 
@@ -1570,7 +1652,8 @@ namespace Chicane
                     markLayoutDirty();
                 }
             }
-            else
+
+            if (!bStyleRefreshed2)
             {
                 bool bAnimatedDisplay = false;
 
@@ -1619,11 +1702,16 @@ namespace Chicane
 
                 const StylePropertyDirty dirty = m_animator.getDirty();
 
-                if (has(dirty, StylePropertyDirty::Subtree))
+                const bool bHasSubtree = static_cast<bool>(has(dirty, StylePropertyDirty::Subtree));
+
+                if (bHasSubtree)
                 {
                     markPaintDirtySubtree();
                 }
-                else if (has(dirty, StylePropertyDirty::Paint))
+
+                const bool bHasPaint = !bHasSubtree && (has(dirty, StylePropertyDirty::Paint));
+
+                if (bHasPaint)
                 {
                     markPaintDirty();
                 }
@@ -1647,7 +1735,9 @@ namespace Chicane
                 markLayoutDirty();
             }
 
-            if (hasFlag(ComponentDirty::Layout) && bIsFlowLocked)
+            const bool bHasFlagAndFlowLocked = static_cast<bool>(hasFlag(ComponentDirty::Layout) && bIsFlowLocked);
+
+            if (bHasFlagAndFlowLocked)
             {
                 const Vec2 previousContent = getContentSize();
 
@@ -1673,7 +1763,10 @@ namespace Chicane
                     m_parent->markLayoutDirty();
                 }
             }
-            else if (hasFlag(ComponentDirty::Layout))
+
+            const bool bHasFlag = !bHasFlagAndFlowLocked && (hasFlag(ComponentDirty::Layout));
+
+            if (bHasFlag)
             {
                 refreshSize();
                 refreshPosition();
@@ -1914,11 +2007,14 @@ namespace Chicane
 
             std::size_t cursor = value.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
 
-            if (cursor == String::npos)
+            const bool bCursorMissing = static_cast<bool>(cursor == String::npos);
+
+            if (bCursorMissing)
             {
                 tag = value;
             }
-            else
+
+            if (!bCursorMissing)
             {
                 if (cursor > 0)
                 {
@@ -1949,11 +2045,16 @@ namespace Chicane
 
                 const String token = value.substr(0, length);
 
-                if (prefix == Style::CLASS_SELECTOR)
+                const bool bPrefixClass = static_cast<bool>(prefix == Style::CLASS_SELECTOR);
+
+                if (bPrefixClass)
                 {
                     classes.push_back(token);
                 }
-                else if (prefix == Style::ID_SELECTOR)
+
+                const bool bPrefixId = !bPrefixClass && (prefix == Style::ID_SELECTOR);
+
+                if (bPrefixId)
                 {
                     id = token;
                 }
@@ -2615,13 +2716,16 @@ namespace Chicane
                 const Vec4       radiusY  = ancestor->getStyle().radius.vertical();
                 const Vec4       clip     = Vec4(box.left, box.top, box.right, box.bottom);
 
-                if (filled == 0)
+                const bool bFilledZero = static_cast<bool>(filled == 0);
+
+                if (bFilledZero)
                 {
                     m_draw.innerClip        = clip;
                     m_draw.innerClipRadiusX = radiusX;
                     m_draw.innerClipRadiusY = radiusY;
                 }
-                else
+
+                if (!bFilledZero)
                 {
                     m_draw.outerClip        = clip;
                     m_draw.outerClipRadiusX = radiusX;
@@ -2934,7 +3038,7 @@ namespace Chicane
             }
 
             bool bWasAdopted = false;
-            for (const auto& child : inNode.getChildren())
+            for (const XmlNode& child : inNode.getChildren())
             {
                 if (sIsContentSlot(child))
                 {
@@ -2973,11 +3077,14 @@ namespace Chicane
             inComponent->setParent(this);
             inComponent->setStyleFile(inComponent->m_bHasOwnStyle ? inComponent->m_styleFile : m_styleFile);
 
-            if (inIndex >= m_children.size())
+            const bool bIndexSize = static_cast<bool>(inIndex >= m_children.size());
+
+            if (bIndexSize)
             {
                 m_children.push_back(inComponent);
             }
-            else
+
+            if (!bIndexSize)
             {
                 m_children.insert(m_children.begin() + static_cast<std::ptrdiff_t>(inIndex), inComponent);
             }
@@ -3101,7 +3208,9 @@ namespace Chicane
 
                 if (wrapMain > 0.0f)
                 {
-                    if (bIsRow)
+                    const bool bRow = static_cast<bool>(bIsRow);
+
+                    if (bRow)
                     {
                         const float percent =
                             percentOfBasis(style.width.value.getRaw(), wrapMain, SizeDirection::Horizontal);
@@ -3110,7 +3219,8 @@ namespace Chicane
                             size.x = percent;
                         }
                     }
-                    else
+
+                    if (!bRow)
                     {
                         const float percent =
                             percentOfBasis(style.height.value.getRaw(), wrapMain, SizeDirection::Vertical);
@@ -3389,18 +3499,23 @@ namespace Chicane
 
                 if (!bAfter)
                 {
-                    if (sibling == inChild)
+                    const bool bSiblingMatches = static_cast<bool>(sibling == inChild);
+
+                    if (bSiblingMatches)
                     {
                         bAfter = true;
                     }
-                    else
+
+                    if (!bSiblingMatches)
                     {
                         continue;
                     }
                 }
 
-                const Style& style = sibling->getStyle();
-                if (bIsRow)
+                const Style& style   = sibling->getStyle();
+                const bool   bRow = static_cast<bool>(bIsRow);
+
+                if (bRow)
                 {
                     if (style.margin.left.isRaw(Size::AUTO_KEYWORD))
                     {
@@ -3412,7 +3527,8 @@ namespace Chicane
                         ++count;
                     }
                 }
-                else
+
+                if (!bRow)
                 {
                     if (style.margin.top.isRaw(Size::AUTO_KEYWORD))
                     {
@@ -3796,16 +3912,25 @@ namespace Chicane
             Scope      scope(this);
             Projection projection(projected);
 
-            if (String(root.getName()).equals(getTag()))
             {
-                parse(root);
-                setId(getAttribute(ID_ATTRIBUTE_NAME));
-                setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
-                addChildren(getSource());
-            }
-            else if (Component* wrapper = sCreate(root))
-            {
-                addChild(wrapper);
+                Component* wrapper = sCreate(root);
+
+                const bool bNameMatchesTag = static_cast<bool>(String(root.getName()).equals(getTag()));
+
+                if (bNameMatchesTag)
+                {
+                    parse(root);
+                    setId(getAttribute(ID_ATTRIBUTE_NAME));
+                    setClassName(getAttribute(CLASS_ATTRIBUTE_NAME));
+                    addChildren(getSource());
+                }
+
+                const bool bHasWrapper = !bNameMatchesTag && (wrapper);
+
+                if (bHasWrapper)
+                {
+                    addChild(wrapper);
+                }
             }
 
             for (Component* child : projected)
@@ -4102,12 +4227,15 @@ namespace Chicane
                 const ReflectionTypeInfo* type     = nullptr;
                 void*                     instance = nullptr;
 
-                if (receiver.isEmpty())
+                const bool bReceiverEmpty = static_cast<bool>(receiver.isEmpty());
+
+                if (bReceiverEmpty)
                 {
                     type     = ReflectionTypeRegistry::sInstance().find(typeid(*node));
                     instance = const_cast<Component*>(node);
                 }
-                else
+
+                if (!bReceiverEmpty)
                 {
                     const ReflectionFieldAccessor accessor = node->getField(receiver);
                     if (!accessor.isValid() || !accessor.typeIndex.has_value())
@@ -4511,11 +4639,14 @@ namespace Chicane
 
                         if (fieldAddr)
                         {
-                            if (accessor.size == sizeof(void*))
+                            const bool bSizeVoid = static_cast<bool>(accessor.size == sizeof(void*));
+
+                            if (bSizeVoid)
                             {
                                 pointer = *reinterpret_cast<void* const*>(fieldAddr);
                             }
-                            else
+
+                            if (!bSizeVoid)
                             {
                                 pointer = const_cast<void*>(fieldAddr);
                             }

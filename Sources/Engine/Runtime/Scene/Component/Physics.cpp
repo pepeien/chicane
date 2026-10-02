@@ -587,11 +587,14 @@ namespace Chicane
         }
 
         Kerb::ObjectLayer resolved = body.layer;
-        if (body.preset != Kerb::CollisionPreset::Custom)
+        const bool        bPresetCustom   = static_cast<bool>(body.preset != Kerb::CollisionPreset::Custom);
+
+        if (bPresetCustom)
         {
             resolved = Kerb::resolveCollisionPreset(body.preset, body.motion).layer;
         }
-        else
+
+        if (!bPresetCustom)
         {
             resolved = Kerb::resolveObjectLayer(body.layer, body.motion);
         }

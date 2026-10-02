@@ -63,14 +63,17 @@ namespace Chicane
                     return;
                 }
 
-                if (token.startsWith(RGB_KEYWORD))
+                const bool bTokenStartsRgb = static_cast<bool>(token.startsWith(RGB_KEYWORD));
+
+                if (bTokenStartsRgb)
                 {
                     std::uint32_t start = token.firstOf('(') + 1;
                     std::uint32_t end   = token.lastOf(')');
 
                     result.append(normalizeColor(token.substr(start, end - start)));
                 }
-                else
+
+                if (!bTokenStartsRgb)
                 {
                     result.append(token);
                 }
@@ -80,22 +83,30 @@ namespace Chicane
 
             for (char character : inValue)
             {
-                if (character == '(')
+                const bool bOpenParen = static_cast<bool>(character == '(');
+
+                if (bOpenParen)
                 {
                     depth++;
                 }
-                else if (character == ')')
+
+                const bool bCloseParen = !bOpenParen && (character == ')');
+
+                if (bCloseParen)
                 {
                     depth--;
                 }
 
-                if (character == ',' && depth == 0)
+                const bool bCommaAndDepthZero = static_cast<bool>(character == ',' && depth == 0);
+
+                if (bCommaAndDepthZero)
                 {
                     flush(current);
 
                     current = "";
                 }
-                else
+
+                if (!bCommaAndDepthZero)
                 {
                     current.append(character);
                 }

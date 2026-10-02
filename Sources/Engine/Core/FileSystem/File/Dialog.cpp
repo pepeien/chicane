@@ -107,7 +107,9 @@ namespace Chicane
 
                 if (SUCCEEDED(dialog->Show(nullptr)))
                 {
-                    if (bCanSelectMany)
+                    const bool bSelectMany = static_cast<bool>(bCanSelectMany);
+
+                    if (bSelectMany)
                     {
                         IShellItemArray* items = nullptr;
                         dialog->GetResults(&items);
@@ -133,7 +135,8 @@ namespace Chicane
 
                         items->Release();
                     }
-                    else
+
+                    if (!bSelectMany)
                     {
                         IShellItem* item = nullptr;
                         dialog->GetResult(&item);
@@ -173,11 +176,14 @@ namespace Chicane
                 command.append(" --separator=','");
             }
 
-            if (filters.empty())
+            const bool bFiltersEmpty = static_cast<bool>(filters.empty());
+
+            if (bFiltersEmpty)
             {
                 command.append(" --file-filter='All files | *'");
             }
-            else
+
+            if (!bFiltersEmpty)
             {
                 String extensionsDisplay = "";
                 String extensionsFilter  = "";

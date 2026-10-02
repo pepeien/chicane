@@ -2,9 +2,7 @@
 
 namespace Chicane
 {
-    ReflectionProperty::ReflectionProperty(
-        Names  inNames, String inGroup, String inDescription, bool bInIsTransient
-    )
+    ReflectionProperty::ReflectionProperty(Names inNames, String inGroup, String inDescription, bool bInIsTransient)
         : names(std::move(inNames)),
           group(std::move(inGroup)),
           description(std::move(inDescription)),

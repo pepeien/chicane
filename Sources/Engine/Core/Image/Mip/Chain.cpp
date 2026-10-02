@@ -242,16 +242,22 @@ namespace Chicane
         const int width  = static_cast<int>(std::min(maxSize, sFloorPowerOfTwo(static_cast<std::uint32_t>(inWidth))));
         const int height = static_cast<int>(std::min(maxSize, sFloorPowerOfTwo(static_cast<std::uint32_t>(inHeight))));
 
-        Instance current;
-        if (width == inWidth && height == inHeight && inChannel == 4 && !inIsNormal)
+        Instance   current;
+        const bool bWidthMatches = static_cast<bool>(width == inWidth && height == inHeight && inChannel == 4 && !inIsNormal);
+
+        if (bWidthMatches)
         {
             current = std::make_shared<Image>(inPixels, inWidth, inHeight, inChannel, inChannel);
         }
-        else if (width == inWidth && height == inHeight)
+
+        const bool bWidthMatchesAndHeightMatches = !bWidthMatches && (width == inWidth && height == inHeight);
+
+        if (bWidthMatchesAndHeightMatches)
         {
             current = makeRgbaImage(inPixels, inWidth, inHeight, inChannel, inIsNormal);
         }
-        else
+
+        if (!bWidthMatches && !bWidthMatchesAndHeightMatches)
         {
             std::vector<Pixel> pixels(static_cast<std::size_t>(width) * height * 4);
             downsampleBox(inPixels, inWidth, inHeight, inChannel, pixels.data(), width, height, inIsNormal);

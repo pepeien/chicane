@@ -18,4 +18,9 @@ namespace Chicane
         delta = inDelta;
         rate  = delta > 0.0f ? static_cast<std::uint32_t>(1000.0f / delta) : 0;
     }
+
+    String FrameTelemetry::toString() const
+    {
+        return String::sSprint("%d FPS (%.4f ms)", rate, delta);
+    }
 }

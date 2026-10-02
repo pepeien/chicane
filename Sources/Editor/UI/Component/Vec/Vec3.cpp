@@ -149,13 +149,20 @@ namespace Editor
             const Chicane::String name = accessor.getName();
             if (name.equals("translation"))
             {
-                if (Chicane::Object* object = dynamic_cast<Chicane::Object*>(spatial))
                 {
-                    object->setTranslation(value);
-                }
-                else
-                {
-                    spatial->setAbsoluteTranslation(value);
+                    Chicane::Object* object = dynamic_cast<Chicane::Object*>(spatial);
+
+                    const bool bHasObject = static_cast<bool>(object);
+
+                    if (bHasObject)
+                    {
+                        object->setTranslation(value);
+                    }
+
+                    if (!bHasObject)
+                    {
+                        spatial->setAbsoluteTranslation(value);
+                    }
                 }
 
                 return;

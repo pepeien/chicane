@@ -25,6 +25,7 @@ namespace Chicane
             : m_settings({}),
               m_frames({}),
               m_currentFrame(0U),
+              m_viewTargets({}),
               m_polyResources({}),
               m_textureResources({}),
               m_skyResource({}),
@@ -92,11 +93,23 @@ namespace Chicane
                 m_textureResources.markAsClean();
             }
 
+            for (InstanceViewTarget& target : m_viewTargets)
+            {
+                target.frame.setFeature(getFeature());
+                target.frame.setup(m_polyResources);
+                target.frame.setup(m_skyResource);
+            }
+
             m_backend->onBeginRender();
             m_backend->onRender(currentFrame);
             m_backend->onEndRender();
 
             currentFrame.reset();
+            for (InstanceViewTarget& target : m_viewTargets)
+            {
+                target.frame.reset();
+            }
+            m_viewTargets.clear();
             resetResources();
             Debug::prune(true);
 
@@ -106,6 +119,64 @@ namespace Chicane
         void Instance::useCamera(const View& inData)
         {
             getCurrentFrame().useCamera(inData);
+        }
+
+        void Instance::useViewTarget(const String& inName)
+        {
+            if (!m_backend || inName.isEmpty() || inName.equals(SCREEN_TARGET_ID))
+            {
+                return;
+            }
+
+            m_backend->registerViewTarget(inName);
+            if (findTexture(inName) > Draw::InvalidId)
+            {
+                return;
+            }
+
+            DrawTextureData data;
+            data.reference   = inName;
+            data.bStreamable = false;
+            loadTexture(data);
+        }
+
+        void Instance::setViewTarget(const String& inName, Frame inFrame, std::uint32_t inWidth, std::uint32_t inHeight)
+        {
+            if (inName.isEmpty() || inName.equals(SCREEN_TARGET_ID) || inWidth == 0 || inHeight == 0)
+            {
+                return;
+            }
+
+            for (InstanceViewTarget& target : m_viewTargets)
+            {
+                if (!target.name.equals(inName))
+                {
+                    continue;
+                }
+
+                target.frame  = std::move(inFrame);
+                target.width  = inWidth;
+                target.height = inHeight;
+
+                return;
+            }
+
+            InstanceViewTarget target;
+            target.name   = inName;
+            target.frame  = std::move(inFrame);
+            target.width  = inWidth;
+            target.height = inHeight;
+            m_viewTargets.push_back(std::move(target));
+        }
+
+        void Instance::clearViewTargets()
+        {
+            m_viewTargets.clear();
+        }
+
+        const std::vector<InstanceViewTarget>& Instance::getViewTargets() const
+        {
+            return m_viewTargets;
         }
 
         void Instance::addLight(const Light::List& inData)

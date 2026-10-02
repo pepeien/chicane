@@ -70,12 +70,15 @@ namespace Editor
         float ray  = 0.0f;
         float axis = 0.0f;
 
-        if (std::fabs(denom) > 0.0001f)
+        const bool bDenomAbove0p0001 = static_cast<bool>(std::fabs(denom) > 0.0001f);
+
+        if (bDenomAbove0p0001)
         {
             ray  = (b * e - c * d) / denom;
             axis = (a * e - b * d) / denom;
         }
-        else
+
+        if (!bDenomAbove0p0001)
         {
             axis = e;
             ray  = 0.0f;
@@ -340,7 +343,7 @@ namespace Editor
         {
             if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
             {
-                return true;
+                return !node->getAttribute(Chicane::Grid::Component::ON_HOVER_ATTRIBUTE_NAME).isEmpty();
             }
 
             if (node->isRoot())
@@ -400,20 +403,27 @@ namespace Editor
 
         bool overHandle = false;
 
-        if (!window->isFocused() && !window->isTextInputActive() && isViewportHovered())
+        const bool bNotFocused =
+            static_cast<bool>(!window->isFocused() && !window->isTextInputActive() && isViewportHovered());
+
+        if (bNotFocused)
         {
             Chicane::SceneTraceRequest trace;
-            if (cursorTrace(inLocation, trace))
+            const bool                 bCursorTrace = static_cast<bool>(cursorTrace(inLocation, trace));
+
+            if (bCursorTrace)
             {
                 setHoveredHandle(hoveredHandle(trace));
                 overHandle = m_hovered != nullptr;
             }
-            else
+
+            if (!bCursorTrace)
             {
                 setHoveredHandle(nullptr);
             }
         }
-        else
+
+        if (!bNotFocused)
         {
             setHoveredHandle(nullptr);
         }
@@ -995,16 +1005,21 @@ namespace Editor
         m_dragStartT     = MIN_SCALE;
         m_dragStartAngle = 0.0f;
 
-        if (axis == GizmoAxis::Center)
+        const bool bAxisCenter = static_cast<bool>(axis == GizmoAxis::Center);
+
+        if (bAxisCenter)
         {
-            if (m_type == GizmoType::Scale)
+            const bool bTypeScale = static_cast<bool>(m_type == GizmoType::Scale);
+
+            if (bTypeScale)
             {
                 const float ray      = std::max(0.0f, (origin - rayOrigin).dot(rayDir));
                 const float distance = (rayOrigin + rayDir * ray - origin).length();
                 m_dragStartT         = std::max(distance, MIN_SCALE);
                 m_dragAxisDir        = Chicane::Vec3::sOne();
             }
-            else
+
+            if (!bTypeScale)
             {
                 Chicane::CCamera* camera = activeCamera();
                 if (!camera)
@@ -1019,7 +1034,10 @@ namespace Editor
                 }
             }
         }
-        else if (isPlaneAxis(axis))
+
+        const bool bPlaneAxis = !bAxisCenter && (isPlaneAxis(axis));
+
+        if (bPlaneAxis)
         {
             m_dragAxisDir = planeNormal(axis);
             if (!intersectPlane(rayOrigin, rayDir, origin, m_dragAxisDir, m_dragStartHit))
@@ -1029,7 +1047,10 @@ namespace Editor
 
             m_dragStartT = std::max((m_dragStartHit - origin).length(), MIN_SCALE);
         }
-        else if (m_type == GizmoType::Rotation)
+
+        const bool bTypeRotation = !bAxisCenter && !bPlaneAxis && (m_type == GizmoType::Rotation);
+
+        if (bTypeRotation)
         {
             m_dragAxisDir = axisDirection(axis);
             Chicane::Vec3 point;
@@ -1041,7 +1062,8 @@ namespace Editor
             m_dragStartAngle = angleOnPlane(point, origin, m_dragAxisDir);
             m_dragStartHit   = point;
         }
-        else
+
+        if (!bAxisCenter && !bPlaneAxis && !bTypeRotation)
         {
             m_dragAxisDir  = axisDirection(axis);
             float ray      = 0.0f;

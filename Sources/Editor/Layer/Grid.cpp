@@ -79,8 +79,8 @@ namespace Editor
 
     void LGrid::onRender(const Chicane::Renderer::Frame& inFrame, void* inData)
     {
-        auto* rhi    = static_cast<Chicane::Renderer::RHI::Frame*>(inData);
-        auto* device = m_backend->getRHIDevice();
+        Chicane::Renderer::RHI::Frame*  rhi    = static_cast<Chicane::Renderer::RHI::Frame*>(inData);
+        Chicane::Renderer::RHI::Device* device = m_backend->getRHIDevice();
 
         Chicane::Renderer::rhiReplaceGroup(
             device,

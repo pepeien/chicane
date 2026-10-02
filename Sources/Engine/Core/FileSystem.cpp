@@ -230,7 +230,7 @@ namespace Chicane
 
             std::vector<Item> result;
 
-            for (const auto& entry : std::filesystem::directory_iterator(inDir))
+            for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(inDir))
             {
                 Item item(entry.is_directory() ? ItemType::Folder : ItemType::File, entry.path());
                 if (item.type == ItemType::Folder && depth > 1)

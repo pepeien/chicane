@@ -32,25 +32,47 @@ namespace Editor
     {
         pinState = isPinned() ? PIN_STATE_UNPINNED_VALUE : PIN_STATE_PINNED_VALUE;
 
-        if (Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::sFindFrom(this))
         {
-            panel->setGrabbable(!isPinned());
-        }
-        else if (Chicane::Grid::Window* window = Chicane::Grid::Window::sFindFrom(this))
-        {
-            window->setGrabbable(!isPinned());
+            Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::sFindFrom(this);
+
+            Chicane::Grid::Window* window = Chicane::Grid::Window::sFindFrom(this);
+
+            const bool bHasPanel = static_cast<bool>(panel);
+
+            if (bHasPanel)
+            {
+                panel->setGrabbable(!isPinned());
+            }
+
+            const bool bHasWindow = !bHasPanel && (window);
+
+            if (bHasWindow)
+            {
+                window->setGrabbable(!isPinned());
+            }
         }
     }
 
     void DockHeader::onClose()
     {
-        if (Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::sFindFrom(this))
         {
-            panel->classList.add("--closed");
-        }
-        else if (Chicane::Grid::Window* window = Chicane::Grid::Window::sFindFrom(this))
-        {
-            window->dismiss();
+            Chicane::Grid::DockPanel* panel = Chicane::Grid::DockPanel::sFindFrom(this);
+
+            Chicane::Grid::Window* window = Chicane::Grid::Window::sFindFrom(this);
+
+            const bool bHasPanel = static_cast<bool>(panel);
+
+            if (bHasPanel)
+            {
+                panel->classList.add("--closed");
+            }
+
+            const bool bHasWindow = !bHasPanel && (window);
+
+            if (bHasWindow)
+            {
+                window->dismiss();
+            }
         }
     }
 

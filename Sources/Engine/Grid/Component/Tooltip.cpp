@@ -23,7 +23,7 @@ namespace Chicane
               panelState("hint"),
               contentDelay(DEFAULT_CONTENT_DELAY_IN_MS)
         {
-            for (const auto& child : inNode.getChildren())
+            for (const XmlNode& child : inNode.getChildren())
             {
                 if (child.isElement())
                 {
@@ -174,14 +174,19 @@ namespace Chicane
         {
             bool bReveal = false;
 
-            if (isPinned())
+            const bool bPinned = static_cast<bool>(isPinned());
+
+            if (bPinned)
             {
                 const String raw    = getAttribute(IS_OPEN_ATTRIBUTE_NAME);
                 const String parsed = hasParent() ? getParent()->parseText(raw).trim() : parseText(raw).trim();
 
                 bReveal = Xml::parseBool(parsed, false);
             }
-            else if (hasTitle || hasContent)
+
+            const bool bHasTitleOrHasContent = !bPinned && (hasTitle || hasContent);
+
+            if (bHasTitleOrHasContent)
             {
                 bReveal = isAnchorHovered(findAnchor()) || (isVisible && isHovered());
             }

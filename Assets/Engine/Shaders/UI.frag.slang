@@ -10,11 +10,13 @@ import Tonemap;
 [vk::binding(0, 0)] StructuredBuffer<PolyInstance2D> gComponents;
 [vk::binding(1, 0)] StructuredBuffer<float> gOutlines;
 [vk::binding(2, 0)] Sampler2D gBackdrop;
-[vk::binding(3, 0)] Sampler2D gScreenTarget;
+[vk::binding(3, 0)] Sampler2D gViewTargets[8];
 
 struct ScreenPush
 {
-    int4 data;
+    int4 header;
+    int4 ids0;
+    int4 ids1;
 }
 
 #ifdef CHICANE_VULKAN
@@ -52,12 +54,49 @@ struct VSOut
     float4 color : COLOR;
 }
 
+int viewTargetId(int slot)
+{
+    if (slot < 4)
+    {
+        return screen.ids0[slot];
+    }
+
+    return screen.ids1[slot - 4];
+}
+
+int findViewTarget(int textureIndex)
+{
+    for (int slot = 0; slot < 8; slot++)
+    {
+        int id = viewTargetId(slot);
+        if (id >= 0 && textureIndex == id)
+        {
+            return slot;
+        }
+    }
+
+    return -1;
+}
+
+float4 sampleViewTarget(int slot, float2 uv)
+{
+    if (slot == 0) return gViewTargets[0].Sample(uv);
+    if (slot == 1) return gViewTargets[1].Sample(uv);
+    if (slot == 2) return gViewTargets[2].Sample(uv);
+    if (slot == 3) return gViewTargets[3].Sample(uv);
+    if (slot == 4) return gViewTargets[4].Sample(uv);
+    if (slot == 5) return gViewTargets[5].Sample(uv);
+    if (slot == 6) return gViewTargets[6].Sample(uv);
+
+    return gViewTargets[7].Sample(uv);
+}
+
 float2 getUITextureUV(int textureIndex, float2 uv)
 {
     float2 result = saturate(uv);
 
 #ifdef CHICANE_VULKAN
-    if (textureIndex == screen.data.x)
+    if (findViewTarget(textureIndex) >= 0)
     {
         result.y = 1.0 - result.y;
     }
@@ -69,10 +108,11 @@ float2 getUITextureUV(int textureIndex, float2 uv)
 float4 sampleUITexture(int textureIndex, float2 uv)
 {
     float2 texUV = getUITextureUV(textureIndex, uv);
-    if (textureIndex == screen.data.x)
+    int    slot  = findViewTarget(textureIndex);
+    if (slot >= 0)
     {
-        float4 color = gScreenTarget.Sample(texUV);
-        float3 rgb   = screen.data.y != 0 ? acesTonemap(color.rgb) : saturate(color.rgb);
+        float4 color = sampleViewTarget(slot, texUV);
+        float3 rgb   = screen.header.y != 0 ? acesTonemap(color.rgb) : saturate(color.rgb);
         return float4(rgb, 1.0);
     }
 

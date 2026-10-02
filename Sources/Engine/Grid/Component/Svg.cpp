@@ -251,25 +251,38 @@ namespace Chicane
 
                 Mat3 local(1.0f);
 
-                if (name.equals(Svg::TRANSFORM_MATRIX) && params.size() >= Svg::MATRIX_PARAM_COUNT)
+                const bool bNameMatchesMatrixAndSizeMatrixParamCount =
+                    static_cast<bool>(name.equals(Svg::TRANSFORM_MATRIX) && params.size() >= Svg::MATRIX_PARAM_COUNT);
+
+                if (bNameMatchesMatrixAndSizeMatrixParamCount)
                 {
                     local[0] = Vec3(params[0], params[1], 0.0f);
                     local[1] = Vec3(params[2], params[3], 0.0f);
                     local[2] = Vec3(params[4], params[5], Svg::HOMOGENEOUS);
                 }
-                else if (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty())
+
+                const bool bNameMatchesTranslateAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty());
+
+                if (bNameMatchesTranslateAndParamsEmpty)
                 {
                     const Vec2 offset(params[0], params.size() > 1 ? params[1] : 0.0f);
 
                     local[2] = Vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
                 }
-                else if (name.equals(Svg::TRANSFORM_SCALE) && !params.empty())
+
+                const bool bNameMatchesScaleAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && (name.equals(Svg::TRANSFORM_SCALE) && !params.empty());
+
+                if (bNameMatchesScaleAndParamsEmpty)
                 {
                     const Vec2 scale(params[0], params.size() > 1 ? params[1] : params[0]);
                     local[0][0] = scale.x;
                     local[1][1] = scale.y;
                 }
-                else if (name.equals(Svg::TRANSFORM_ROTATE) && !params.empty())
+
+                const bool bNameMatchesRotateAndParamsEmpty =
+                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && (name.equals(Svg::TRANSFORM_ROTATE) && !params.empty());
+
+                if (bNameMatchesRotateAndParamsEmpty)
                 {
                     const float angle = degreesToRadians(params[0]);
                     const float cosA  = std::cos(angle);
@@ -278,7 +291,9 @@ namespace Chicane
                     rotate[0] = Vec3(cosA, sinA, 0.0f);
                     rotate[1] = Vec3(-sinA, cosA, 0.0f);
 
-                    if (params.size() >= Svg::ROTATE_ORIGIN_PARAM_COUNT)
+                    const bool bSizeRotateOriginParamCount = static_cast<bool>(params.size() >= Svg::ROTATE_ORIGIN_PARAM_COUNT);
+
+                    if (bSizeRotateOriginParamCount)
                     {
                         const Vec2 origin(params[1], params[2]);
                         Mat3       to(1.0f);
@@ -287,16 +302,25 @@ namespace Chicane
                         from[2] = Vec3(-origin.x, -origin.y, Svg::HOMOGENEOUS);
                         local   = to * rotate * from;
                     }
-                    else
+
+                    if (!bSizeRotateOriginParamCount)
                     {
                         local = rotate;
                     }
                 }
-                else if (name.equals(Svg::TRANSFORM_SKEW_X) && !params.empty())
+
+                const bool bNameMatchesSkewXAndParamsEmpty =
+                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty && (name.equals(Svg::TRANSFORM_SKEW_X) && !params.empty());
+
+                if (bNameMatchesSkewXAndParamsEmpty)
                 {
                     local[1][0] = std::tan(degreesToRadians(params[0]));
                 }
-                else if (name.equals(Svg::TRANSFORM_SKEW_Y) && !params.empty())
+
+                const bool bNameMatchesSkewYAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty && !bNameMatchesSkewXAndParamsEmpty &&
+                                    (name.equals(Svg::TRANSFORM_SKEW_Y) && !params.empty());
+
+                if (bNameMatchesSkewYAndParamsEmpty)
                 {
                     local[0][1] = std::tan(degreesToRadians(params[0]));
                 }
@@ -501,14 +525,17 @@ namespace Chicane
             {
                 result.origin.x = scanner.number();
             }
+
             if (scanner.hasNumber())
             {
                 result.origin.y = scanner.number();
             }
+
             if (scanner.hasNumber())
             {
                 result.size.x = scanner.number();
             }
+
             if (scanner.hasNumber())
             {
                 result.size.y = scanner.number();
@@ -1344,7 +1371,9 @@ namespace Chicane
 
                 const std::size_t count = points.size();
 
-                if (inPaint.lineJoin == SvgLineJoin::Miter)
+                const bool bLineJoinMiter = static_cast<bool>(inPaint.lineJoin == SvgLineJoin::Miter);
+
+                if (bLineJoinMiter)
                 {
                     std::vector<Vec2> left(count);
                     std::vector<Vec2> right(count);
@@ -1353,15 +1382,21 @@ namespace Chicane
                     {
                         Vec2 normal;
 
-                        if (!bIsClosed && i == 0)
+                        const bool bNotClosedAndIZero = static_cast<bool>(!bIsClosed && i == 0);
+
+                        if (bNotClosedAndIZero)
                         {
                             normal = sideNormal(points.at(1) - points.at(0));
                         }
-                        else if (!bIsClosed && i + 1 == count)
+
+                        const bool bNotClosedAndIMatches = !bNotClosedAndIZero && (!bIsClosed && i + 1 == count);
+
+                        if (bNotClosedAndIMatches)
                         {
                             normal = sideNormal(points.at(i) - points.at(i - 1));
                         }
-                        else
+
+                        if (!bNotClosedAndIZero && !bNotClosedAndIMatches)
                         {
                             const Vec2  prev       = points.at((i + count - 1) % count);
                             const Vec2  next       = points.at((i + 1) % count);
@@ -1370,11 +1405,14 @@ namespace Chicane
                             Vec2        join       = inN + outN;
                             const float joinLength = vecLength(join);
 
-                            if (joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH)
+                            const bool bJoinLengthStrokeJoinMinLength = static_cast<bool>(joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH);
+
+                            if (bJoinLengthStrokeJoinMinLength)
                             {
                                 normal = inN;
                             }
-                            else
+
+                            if (!bJoinLengthStrokeJoinMinLength)
                             {
                                 join.x /= joinLength;
                                 join.y /= joinLength;
@@ -1385,11 +1423,14 @@ namespace Chicane
                                     SvgPaint::STROKE_MITER_COSINE_MAX
                                 );
 
-                                if ((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT)
+                                const bool bCosineStrokeMiterLimit = static_cast<bool>((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT);
+
+                                if (bCosineStrokeMiterLimit)
                                 {
                                     normal = inN;
                                 }
-                                else
+
+                                if (!bCosineStrokeMiterLimit)
                                 {
                                     normal = scaleVec(join, 1.0f / cosine);
                                 }
@@ -1410,7 +1451,8 @@ namespace Chicane
                         emitQuad(left.back(), left.front(), right.front(), right.back());
                     }
                 }
-                else
+
+                if (!bLineJoinMiter)
                 {
                     auto emitSegment = [&](const Vec2& inStart, const Vec2& inEnd)
                     {
@@ -1621,15 +1663,23 @@ namespace Chicane
 
             Vec2 size = m_size;
 
-            if (bIsWidthAuto && bIsHeightAuto)
+            const bool bWidthAutoAndHeightAuto = static_cast<bool>(bIsWidthAuto && bIsHeightAuto);
+
+            if (bWidthAutoAndHeightAuto)
             {
                 size = m_intrinsic;
             }
-            else if (bIsWidthAuto && m_intrinsic.y > 0.0f)
+
+            const bool bWidthAutoAndYPositive = !bWidthAutoAndHeightAuto && (bIsWidthAuto && m_intrinsic.y > 0.0f);
+
+            if (bWidthAutoAndYPositive)
             {
                 size.x = size.y * (m_intrinsic.x / m_intrinsic.y);
             }
-            else if (bIsHeightAuto && m_intrinsic.x > 0.0f)
+
+            const bool bHeightAutoAndXPositive = !bWidthAutoAndHeightAuto && !bWidthAutoAndYPositive && (bIsHeightAuto && m_intrinsic.x > 0.0f);
+
+            if (bHeightAutoAndXPositive)
             {
                 size.y = size.x * (m_intrinsic.y / m_intrinsic.x);
             }
@@ -1742,11 +1792,16 @@ namespace Chicane
 
                     std::vector<Curve> contours;
 
-                    if (tag.equals(PATH_TAG))
+                    const bool bTagMatchesPath = static_cast<bool>(tag.equals(PATH_TAG));
+
+                    if (bTagMatchesPath)
                     {
                         contours = parsePath(parseText(attribute(child, D_ATTRIBUTE_NAME)));
                     }
-                    else if (tag.equals(CIRCLE_TAG))
+
+                    const bool bTagMatchesCircle = !bTagMatchesPath && (tag.equals(CIRCLE_TAG));
+
+                    if (bTagMatchesCircle)
                     {
                         const float radius = parseNumber(parseText(attribute(child, R_ATTRIBUTE_NAME)));
                         contours.push_back(makeEllipse(
@@ -1757,7 +1812,10 @@ namespace Chicane
                             Vec2(radius, radius)
                         ));
                     }
-                    else if (tag.equals(ELLIPSE_TAG))
+
+                    const bool bTagMatchesEllipse = !bTagMatchesPath && !bTagMatchesCircle && (tag.equals(ELLIPSE_TAG));
+
+                    if (bTagMatchesEllipse)
                     {
                         contours.push_back(makeEllipse(
                             Vec2(
@@ -1770,7 +1828,10 @@ namespace Chicane
                             )
                         ));
                     }
-                    else if (tag.equals(RECT_TAG))
+
+                    const bool bTagMatchesRect = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && (tag.equals(RECT_TAG));
+
+                    if (bTagMatchesRect)
                     {
                         contours.push_back(makeRect(
                             Vec2(
@@ -1787,7 +1848,10 @@ namespace Chicane
                             )
                         ));
                     }
-                    else if (tag.equals(LINE_TAG))
+
+                    const bool bTagMatchesLine = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && (tag.equals(LINE_TAG));
+
+                    if (bTagMatchesLine)
                     {
                         Curve line;
                         line.addPoint(Vec2(
@@ -1800,7 +1864,11 @@ namespace Chicane
                         ));
                         contours.push_back(line);
                     }
-                    else if (tag.equals(POLYLINE_TAG, POLYGON_TAG))
+
+                    const bool bTagMatchesPolygon = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && !bTagMatchesLine &&
+                                         (tag.equals(POLYLINE_TAG, POLYGON_TAG));
+
+                    if (bTagMatchesPolygon)
                     {
                         Curve                   poly;
                         const std::vector<Vec2> points =
@@ -1818,7 +1886,8 @@ namespace Chicane
 
                         contours.push_back(poly);
                     }
-                    else
+
+                    if (!bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && !bTagMatchesLine && !bTagMatchesPolygon)
                     {
                         walk(child, paint);
 

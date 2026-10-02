@@ -126,7 +126,9 @@ namespace Chicane
                 before
             );
 
-            if (bInShouldPresentToWindow)
+            const bool bPresentToWindow = static_cast<bool>(bInShouldPresentToWindow);
+
+            if (bPresentToWindow)
             {
                 vk::ImageCopy region;
                 region.srcSubresource.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -144,7 +146,8 @@ namespace Chicane
                     region
                 );
             }
-            else
+
+            if (!bPresentToWindow)
             {
                 vk::ClearColorValue clear;
                 clear.setFloat32({0.0f, 0.0f, 0.0f, 1.0f});

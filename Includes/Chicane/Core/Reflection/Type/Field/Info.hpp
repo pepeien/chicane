@@ -42,15 +42,15 @@ namespace Chicane
         const Names& getNames() const;
 
     public:
-        ReflectionProperty       property;
-        String                   typeName;
-        std::size_t              offset;
-        std::size_t              size;
-        TypeIndex                typeIndex;
-        bool                     bIsReflected;
-        bool                     bIsPointer;
-        bool                     bIsIterable;
-        TypeIndex                elementIndex;
-        ReflectionFieldIterable  iterable;
+        ReflectionProperty      property;
+        String                  typeName;
+        std::size_t             offset;
+        std::size_t             size;
+        TypeIndex               typeIndex;
+        bool                    bIsReflected;
+        bool                    bIsPointer;
+        bool                    bIsIterable;
+        TypeIndex               elementIndex;
+        ReflectionFieldIterable iterable;
     };
 }

@@ -110,11 +110,14 @@ namespace Chicane
                 Trace trace;
                 trace.vertices = inVertices;
 
-                if (inDuration <= 0.0f)
+                const bool bDurationNonPositive = static_cast<bool>(inDuration <= 0.0f);
+
+                if (bDurationNonPositive)
                 {
                     trace.bInWillExpireOneFrame = true;
                 }
-                else
+
+                if (!bDurationNonPositive)
                 {
                     trace.expireAt = Time() + Time::sFromSeconds(inDuration);
                 }

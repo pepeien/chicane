@@ -156,14 +156,19 @@ namespace Chicane
                 const Vec3 eye       = inLight.translation;
                 const Mat4 lightView = Mat4::sLookAt(eye, eye + inDirection, up);
 
-                float fovDegrees = std::clamp(inLight.fieldOfView, 1.0f, 179.0f);
-                float farPlane   = std::max(inLight.farClip, 1.0f);
-                if (inLight.type == LightType::Spot)
+                float      fovDegrees = std::clamp(inLight.fieldOfView, 1.0f, 179.0f);
+                float      farPlane   = std::max(inLight.farClip, 1.0f);
+                const bool bTypeSpot     = static_cast<bool>(inLight.type == LightType::Spot);
+
+                if (bTypeSpot)
                 {
                     fovDegrees = std::clamp(inLight.outerAngle, 1.0f, 89.0f) * 2.0f;
                     farPlane   = std::max(inLight.range, 1.0f);
                 }
-                else if (inLight.type == LightType::Point)
+
+                const bool bTypePoint = !bTypeSpot && (inLight.type == LightType::Point);
+
+                if (bTypePoint)
                 {
                     farPlane = std::max(inLight.range, 1.0f);
                 }
@@ -171,9 +176,8 @@ namespace Chicane
                 const float nearPlane = std::min(std::max(inLight.nearClip, 0.01f), farPlane * 0.5f);
                 farPlane              = std::max(farPlane, nearPlane + 0.1f);
 
-                const float aspect = static_cast<float>(SHADOW_MAP_WIDTH) / static_cast<float>(SHADOW_MAP_HEIGHT);
-                const Mat4  projection =
-                    Mat4::sPerspective(fovDegrees * Math::DEG_TO_RAD, aspect, nearPlane, farPlane);
+                const float aspect     = static_cast<float>(SHADOW_MAP_WIDTH) / static_cast<float>(SHADOW_MAP_HEIGHT);
+                const Mat4  projection = Mat4::sPerspective(fovDegrees * Math::DEG_TO_RAD, aspect, nearPlane, farPlane);
 
                 outLight.splits = Vec4(1.0e8f, 1.0e8f, 1.0e8f, 1.0e8f);
                 for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
@@ -368,19 +372,22 @@ namespace Chicane
 
                 if (caster >= 0)
                 {
-                    const Light& source = lights.at(static_cast<std::uint32_t>(caster));
+                    const Light& source           = lights.at(static_cast<std::uint32_t>(caster));
                     const Vec3   cascadeDirection = Vec3(
                         result.lights[caster].direction.x,
                         result.lights[caster].direction.y,
                         result.lights[caster].direction.z
                     );
 
-                    if (source.projection == ViewProjectionType::Perspective)
+                    const bool bProjectionPerspective = static_cast<bool>(source.projection == ViewProjectionType::Perspective);
+
+                    if (bProjectionPerspective)
                     {
                         result.info.y = 1.0f;
                         buildPerspective(result, source, cascadeDirection);
                     }
-                    else
+
+                    if (!bProjectionPerspective)
                     {
                         buildCascades(result, inCamera, cascadeDirection);
                     }

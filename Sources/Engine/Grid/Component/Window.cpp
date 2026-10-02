@@ -46,11 +46,14 @@ namespace Chicane
                 IS_OPEN_ATTRIBUTE_NAME,
                 [this](const String& inValue)
                 {
-                    if (inValue.isEmpty())
+                    const bool bValueEmpty = static_cast<bool>(inValue.isEmpty());
+
+                    if (bValueEmpty)
                     {
                         bIsVisible = true;
                     }
-                    else
+
+                    if (!bValueEmpty)
                     {
                         bIsVisible = Xml::parseBool(parseText(inValue).trim(), true);
                     }
@@ -62,6 +65,7 @@ namespace Chicane
                 [this](const String& inValue)
                 {
                     title = parseText(inValue).trim();
+
                     refreshTitleVisibility();
                 }
             );
@@ -71,6 +75,7 @@ namespace Chicane
                 [this](const String& inValue)
                 {
                     m_handleId = parseText(inValue).trim();
+
                     refreshTitleVisibility();
                 }
             );
@@ -199,6 +204,29 @@ namespace Chicane
         void Window::tick(float inDeltaTime)
         {
             refreshOpenState();
+
+            if (bIsVisible && style.isDisplay(StyleDisplay::None))
+            {
+                const bool bDisplayEmpty = static_cast<bool>(style.display.getRaw().isEmpty());
+
+                if (bDisplayEmpty)
+                {
+                    style.display.set(StyleDisplay::Block);
+                }
+
+                if (!bDisplayEmpty)
+                {
+                    style.display.refresh();
+                }
+
+                if (style.isDisplay(StyleDisplay::None))
+                {
+                    style.display.set(StyleDisplay::Block);
+                }
+
+                markLayoutDirtySubtree();
+            }
+
             Container::tick(inDeltaTime);
 
             if (!bIsVisible)
@@ -313,7 +341,9 @@ namespace Chicane
             const String condition = getAttribute(IF_DIRECTIVE_KEYWORD);
             if (!condition.isEmpty())
             {
-                bIsVisible = parseText(condition).equals("true", "1");
+                bIsVisible = Xml::parseBool(parseText(condition).trim(), true);
+
+                return;
             }
         }
 
@@ -418,20 +448,30 @@ namespace Chicane
             const float    grip = resizeGrip();
             std::uint8_t   edge = 0;
 
-            if (inLocation.x <= box.left + grip)
+            const bool bNearLeft = static_cast<bool>(inLocation.x <= box.left + grip);
+
+            if (bNearLeft)
             {
                 edge |= WINDOW_RESIZE_LEFT;
             }
-            else if (inLocation.x >= box.right - grip)
+
+            const bool bNearRight = !bNearLeft && (inLocation.x >= box.right - grip);
+
+            if (bNearRight)
             {
                 edge |= WINDOW_RESIZE_RIGHT;
             }
 
-            if (inLocation.y <= box.top + grip)
+            const bool bNearTop = static_cast<bool>(inLocation.y <= box.top + grip);
+
+            if (bNearTop)
             {
                 edge |= WINDOW_RESIZE_TOP;
             }
-            else if (inLocation.y >= box.bottom - grip)
+
+            const bool bNearBottom = !bNearTop && (inLocation.y >= box.bottom - grip);
+
+            if (bNearBottom)
             {
                 edge |= WINDOW_RESIZE_BOTTOM;
             }
@@ -457,27 +497,37 @@ namespace Chicane
             float width  = m_size.x;
             float height = m_size.y;
 
-            if (m_resizeEdge & WINDOW_RESIZE_LEFT)
+            const bool bLeft = static_cast<bool>(m_resizeEdge & WINDOW_RESIZE_LEFT);
+
+            if (bLeft)
             {
                 const float previous = width;
                 width -= delta.x;
                 style.width.clamp(width);
                 m_move.x += previous - width;
             }
-            else if (m_resizeEdge & WINDOW_RESIZE_RIGHT)
+
+            const bool bRight = !bLeft && (m_resizeEdge & WINDOW_RESIZE_RIGHT);
+
+            if (bRight)
             {
                 width += delta.x;
                 style.width.clamp(width);
             }
 
-            if (m_resizeEdge & WINDOW_RESIZE_TOP)
+            const bool bTop = static_cast<bool>(m_resizeEdge & WINDOW_RESIZE_TOP);
+
+            if (bTop)
             {
                 const float previous = height;
                 height -= delta.y;
                 style.height.clamp(height);
                 m_move.y += previous - height;
             }
-            else if (m_resizeEdge & WINDOW_RESIZE_BOTTOM)
+
+            const bool bBottom = !bTop && (m_resizeEdge & WINDOW_RESIZE_BOTTOM);
+
+            if (bBottom)
             {
                 height += delta.y;
                 style.height.clamp(height);

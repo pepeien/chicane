@@ -485,11 +485,14 @@ namespace Chicane
     {
         m_settings.backend = inBackend;
 
-        if (!hasInstance())
+        const bool bNoInstance = static_cast<bool>(!hasInstance());
+
+        if (bNoInstance)
         {
             initInstance();
         }
-        else
+
+        if (!bNoInstance)
         {
             restart();
         }
@@ -624,11 +627,14 @@ namespace Chicane
             return;
         }
 
-        if (isFocused())
+        const bool bFocused = static_cast<bool>(isFocused());
+
+        if (bFocused)
         {
             blur();
         }
-        else
+
+        if (!bFocused)
         {
             focus();
         }
@@ -893,11 +899,14 @@ namespace Chicane
             return;
         }
 
-        if (SDL_MaximizeWindow(static_cast<SDL_Window*>(m_instance)))
+        const bool bMaximizeWindow = static_cast<bool>(SDL_MaximizeWindow(static_cast<SDL_Window*>(m_instance)));
+
+        if (bMaximizeWindow)
         {
             SDL_SyncWindow(static_cast<SDL_Window*>(m_instance));
         }
-        else
+
+        if (!bMaximizeWindow)
         {
             emmitWarning("Failed to maximize the window");
         }

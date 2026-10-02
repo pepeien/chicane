@@ -516,7 +516,9 @@ namespace Chicane
             std::vector<Vec3> tangents(outModel.vertices.size(), Vec3::sZero());
             std::vector<Vec3> bitangents(outModel.vertices.size(), Vec3::sZero());
 
-            if (outModel.indices.size() >= 3)
+            const bool bIndicesAtLeast3 = static_cast<bool>(outModel.indices.size() >= 3);
+
+            if (bIndicesAtLeast3)
             {
                 for (std::size_t i = 0; i + 2 < outModel.indices.size(); i += 3)
                 {
@@ -530,7 +532,8 @@ namespace Chicane
                     );
                 }
             }
-            else
+
+            if (!bIndicesAtLeast3)
             {
                 for (Vertex::Index i = 0; i + 2 < static_cast<Vertex::Index>(outModel.vertices.size()); i += 3)
                 {

@@ -293,16 +293,24 @@ namespace Editor
     static void assignTransformAttribute(Chicane::Object& inItem, AttributeField& ioField, CoordinateSpace inSpace)
     {
         const bool bIsRelative = inSpace == CoordinateSpace::Relative;
-        if (ioField.name.equals("translation"))
+        const bool bNameMatchesTranslation      = static_cast<bool>(ioField.name.equals("translation"));
+
+        if (bNameMatchesTranslation)
         {
             ioField.vector = bIsRelative ? inItem.getRelativeTranslation() : inItem.getTranslation();
         }
-        else if (ioField.name.equals("rotation"))
+
+        const bool bNameMatchesRotation = !bNameMatchesTranslation && (ioField.name.equals("rotation"));
+
+        if (bNameMatchesRotation)
         {
             ioField.vector =
                 bIsRelative ? inItem.getRelativeRotation().getAngles() : inItem.getAbsoluteRotation().getAngles();
         }
-        else if (ioField.name.equals("scale"))
+
+        const bool bNameMatchesScale = !bNameMatchesTranslation && !bNameMatchesRotation && (ioField.name.equals("scale"));
+
+        if (bNameMatchesScale)
         {
             ioField.vector = bIsRelative ? inItem.getRelativeScale() : inItem.getAbsoluteScale();
         }
@@ -313,35 +321,52 @@ namespace Editor
     static void applyTransformAttribute(Chicane::Object& inItem, const AttributeField& inField, CoordinateSpace inSpace)
     {
         const bool bIsRelative = inSpace == CoordinateSpace::Relative;
-        if (inField.name.equals("translation"))
+        const bool bNameMatchesTranslation      = static_cast<bool>(inField.name.equals("translation"));
+
+        if (bNameMatchesTranslation)
         {
-            if (bIsRelative)
+            const bool bRelative = static_cast<bool>(bIsRelative);
+
+            if (bRelative)
             {
                 inItem.setRelativeTranslation(inField.vector);
             }
-            else
+
+            if (!bRelative)
             {
                 inItem.setTranslation(inField.vector);
             }
         }
-        else if (inField.name.equals("rotation"))
+
+        const bool bNameMatchesRotation = !bNameMatchesTranslation && (inField.name.equals("rotation"));
+
+        if (bNameMatchesRotation)
         {
-            if (bIsRelative)
+            const bool bRelative = static_cast<bool>(bIsRelative);
+
+            if (bRelative)
             {
                 inItem.setRelativeRotation(inField.vector);
             }
-            else
+
+            if (!bRelative)
             {
                 inItem.setAbsoluteRotation(inField.vector);
             }
         }
-        else if (inField.name.equals("scale"))
+
+        const bool bNameMatchesScale = !bNameMatchesTranslation && !bNameMatchesRotation && (inField.name.equals("scale"));
+
+        if (bNameMatchesScale)
         {
-            if (bIsRelative)
+            const bool bRelative = static_cast<bool>(bIsRelative);
+
+            if (bRelative)
             {
                 inItem.setRelativeScale(inField.vector);
             }
-            else
+
+            if (!bRelative)
             {
                 inItem.setAbsoluteScale(inField.vector);
             }
@@ -388,12 +413,18 @@ namespace Editor
             return;
         }
 
-        Chicane::String value = inField.text;
-        if (inField.type == AttributeFieldType::Bool)
+        Chicane::String value  = inField.text;
+        const bool      bTypeBool = static_cast<bool>(inField.type == AttributeFieldType::Bool);
+
+        if (bTypeBool)
         {
             value = inField.bIsChecked ? "true" : "false";
         }
-        else if (inField.type == AttributeFieldType::Vec3 || inField.type == AttributeFieldType::Color)
+
+        const bool bTypeVec3OrTypeColor =
+            !bTypeBool && (inField.type == AttributeFieldType::Vec3 || inField.type == AttributeFieldType::Color);
+
+        if (bTypeVec3OrTypeColor)
         {
             value = formatVec3(inField.vector);
         }
@@ -438,15 +469,26 @@ namespace Editor
                 return;
             }
 
-            if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
             {
-                ioField.vector = *value;
-                ioField.text   = formatVec3(*value);
-            }
-            else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
-            {
-                ioField.vector = rotator->getAngles();
-                ioField.text   = formatVec3(ioField.vector);
+                const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem);
+
+                const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem);
+
+                const bool bHasValue = static_cast<bool>(value);
+
+                if (bHasValue)
+                {
+                    ioField.vector = *value;
+                    ioField.text   = formatVec3(*value);
+                }
+
+                const bool bHasRotator = !bHasValue && (rotator);
+
+                if (bHasRotator)
+                {
+                    ioField.vector = rotator->getAngles();
+                    ioField.text   = formatVec3(ioField.vector);
+                }
             }
 
             return;
@@ -500,6 +542,7 @@ namespace Editor
           scaleState(STATE_IDLE),
           selectedFolderPath(Chicane::String::sEmpty()),
           selectedAssetName(Chicane::String::sEmpty()),
+          bIsViewPreviewOpen(false),
           m_activeWorkspace(WORKSPACE_VIEWPORT),
           m_expandedOutlinerItems({}),
           m_editingOutlinerItem(nullptr),
@@ -630,20 +673,6 @@ namespace Editor
             }
         );
         inController->bindEvent(
-            Chicane::Input::MouseButton::Left,
-            Chicane::Input::Status::Pressed,
-            [this, listening]()
-            {
-                if (!listening || !*listening)
-                {
-                    return;
-                }
-
-                pickAt(m_cursor);
-            }
-        );
-
-        inController->bindEvent(
             Chicane::Input::KeyboardButton::Delete,
             Chicane::Input::Status::Pressed,
             [this, listening]()
@@ -710,11 +739,12 @@ namespace Editor
     bool HomeView::isViewportAt(const Chicane::Vec2& inLocation) const
     {
         Chicane::Grid::Component* hit = getHitAt(inLocation);
+
         for (Chicane::Grid::Component* node = hit; node != nullptr; node = node->getParent())
         {
             if (node->getTag().equals(Chicane::Grid::Viewport::TAG_ID))
             {
-                return true;
+                return !node->getAttribute(Chicane::Grid::Component::ON_CLICK_ATTRIBUTE_NAME).isEmpty();
             }
 
             if (node->isRoot())
@@ -762,12 +792,7 @@ namespace Editor
         }
 
         Chicane::SceneTraceRequest trace;
-        if (!scene->trace(
-                trace,
-                inLocation,
-                Chicane::Instance::sInstance().getScreenViewportRect(),
-                cameras.back()
-            ))
+        if (!scene->trace(trace, inLocation, Chicane::Instance::sInstance().getScreenViewportRect(), cameras.back()))
         {
             return;
         }
@@ -783,12 +808,34 @@ namespace Editor
         onItemSelection(scene->pickObject(trace));
     }
 
+    void HomeView::onViewportHover()
+    {}
+
+    void HomeView::onViewportClick()
+    {
+        const SDL_MouseButtonFlags buttons = SDL_GetMouseState(nullptr, nullptr);
+        if ((buttons & SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) == 0)
+        {
+            return;
+        }
+
+        pickAt(m_cursor);
+    }
+
+    void HomeView::onViewportFocus()
+    {}
+
+    void HomeView::onViewportBlur()
+    {}
+
     void HomeView::onItemSelection(Chicane::Object* inItem)
     {
         if (m_editingOutlinerItem && m_editingOutlinerItem != inItem)
         {
             commitOutlinerEdit(false);
         }
+
+        syncViewPreview(inItem);
 
         if (selectedItem == inItem)
         {
@@ -805,11 +852,14 @@ namespace Editor
 
         const std::size_t expanded = m_expandedOutlinerItems.size();
         expandOutlinerAncestors(selectedItem);
-        if (m_expandedOutlinerItems.size() != expanded)
+        const bool bSizeDiffers = static_cast<bool>(m_expandedOutlinerItems.size() != expanded);
+
+        if (bSizeDiffers)
         {
             requestOutlinerRebuild();
         }
-        else
+
+        if (!bSizeDiffers)
         {
             syncOutlinerSelection();
         }
@@ -937,12 +987,16 @@ namespace Editor
 
         selectedItem    = nullptr;
         bIsItemSelected = false;
+        syncViewPreview(nullptr);
 
-        if (bIsAssetsWorkspace)
+        const bool bAssetsWorkspace = static_cast<bool>(bIsAssetsWorkspace);
+
+        if (bAssetsWorkspace)
         {
             Application::sInstance().activateViewerScene();
         }
-        else
+
+        if (!bAssetsWorkspace)
         {
             Application::sInstance().activateHomeScene();
         }
@@ -1063,19 +1117,29 @@ namespace Editor
                 return false;
             }
 
-            if (field.type == AttributeFieldType::Bool)
+            const bool bTypeBool = static_cast<bool>(field.type == AttributeFieldType::Bool);
+
+            if (bTypeBool)
             {
                 field.bIsChecked = inValue.toBool() || inValue.equals("true", "1", "yes", "checked");
             }
-            else if (field.type == AttributeFieldType::Vec3)
+
+            const bool bTypeVec3 = !bTypeBool && (field.type == AttributeFieldType::Vec3);
+
+            if (bTypeVec3)
             {
                 field.vector = parseVec3(inValue, field.vector);
                 field.text   = formatVec3(field.vector);
             }
-            else if (field.type == AttributeFieldType::Color)
+
+            const bool bTypeColor = !bTypeBool && !bTypeVec3 && (field.type == AttributeFieldType::Color);
+
+            if (bTypeColor)
             {
-                const Chicane::String color = inValue.trim();
-                if (color.startsWith("#") || color.startsWith("rgb"))
+                const Chicane::String color  = inValue.trim();
+                const bool            bColorStartsTextOrColorStartsRgb = static_cast<bool>(color.startsWith("#") || color.startsWith("rgb"));
+
+                if (bColorStartsTextOrColorStartsRgb)
                 {
                     const Chicane::Color::Rgba rgba = Chicane::Color::toRgba(color);
                     field.vector                    = Chicane::Vec3(
@@ -1084,14 +1148,18 @@ namespace Editor
                         static_cast<float>(rgba.b) / 255.0f
                     );
                 }
-                else
+
+                if (!bColorStartsTextOrColorStartsRgb)
                 {
                     field.vector = parseVec3(inValue, field.vector);
                 }
 
                 field.text = formatVec3(field.vector);
             }
-            else if (field.type == AttributeFieldType::Float)
+
+            const bool bTypeFloat = !bTypeBool && !bTypeVec3 && !bTypeColor && (field.type == AttributeFieldType::Float);
+
+            if (bTypeFloat)
             {
                 field.text = inValue;
                 if (!isCompleteFloat(inValue))
@@ -1099,7 +1167,8 @@ namespace Editor
                     return true;
                 }
             }
-            else
+
+            if (!bTypeBool && !bTypeVec3 && !bTypeColor && !bTypeFloat)
             {
                 field.text = inValue;
             }
@@ -1265,6 +1334,38 @@ namespace Editor
         selectedAssetName = inName;
     }
 
+    void HomeView::onViewPreviewClose()
+    {
+        bIsViewPreviewOpen = false;
+        Chicane::Instance::sInstance().setViewTarget("View", nullptr);
+    }
+
+    void HomeView::syncViewPreview(Chicane::Object* inItem)
+    {
+        Chicane::CView* view = dynamic_cast<Chicane::CView*>(inItem);
+        if (!view && inItem)
+        {
+            for (Chicane::Object* child : inItem->getAttachments())
+            {
+                view = dynamic_cast<Chicane::CView*>(child);
+                if (view && !view->isTransient())
+                {
+                    break;
+                }
+
+                view = nullptr;
+            }
+        }
+
+        if (view && view->isTransient())
+        {
+            view = nullptr;
+        }
+
+        bIsViewPreviewOpen = view != nullptr;
+        Chicane::Instance::sInstance().setViewTarget("View", view);
+    }
+
     void HomeView::onExplorerAssetDrop(Chicane::String inPath)
     {
         if (inPath.isEmpty())
@@ -1341,6 +1442,7 @@ namespace Editor
         {
             selectedItem    = nullptr;
             bIsItemSelected = false;
+            syncViewPreview(nullptr);
 
             scene->setSelection(nullptr);
 
@@ -1371,12 +1473,12 @@ namespace Editor
         if (inIsVisible)
         {
             OutlinerNode node;
-            node.item         = inObject;
-            node.label        = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
-            node.icon         = outlinerIcon(inObject);
-            node.indent       = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
+            node.item          = inObject;
+            node.label         = inObject == m_editingOutlinerItem ? m_outlinerEditId : inObject->getId();
+            node.icon          = outlinerIcon(inObject);
+            node.indent        = Chicane::String::sSprint("%.2fem", static_cast<float>(inDepth) * 0.85f);
             node.expandState   = !bHasChildren ? OUTLINER_EXPAND_LEAF
-                                : bIsExpanded  ? OUTLINER_EXPAND_EXPANDED
+                                 : bIsExpanded ? OUTLINER_EXPAND_EXPANDED
                                                : OUTLINER_EXPAND_COLLAPSED;
             node.bHasChildren  = bHasChildren;
             node.bIsLeaf       = !bHasChildren;
@@ -1458,8 +1560,10 @@ namespace Editor
 
         if (!id.isEmpty() && !id.equals(item->getId()))
         {
-            std::shared_ptr<Scene> scene = workspaceScene(bIsAssetsWorkspace);
-            if (scene)
+            std::shared_ptr<Scene> scene  = workspaceScene(bIsAssetsWorkspace);
+            const bool             bHasScene = static_cast<bool>(scene);
+
+            if (bHasScene)
             {
                 Chicane::Object* existing = scene->getObject(id);
                 if (!existing || existing == item)
@@ -1467,7 +1571,8 @@ namespace Editor
                     item->setId(id);
                 }
             }
-            else
+
+            if (!bHasScene)
             {
                 item->setId(id);
             }
@@ -1596,11 +1701,16 @@ namespace Editor
 
             Chicane::String group        = info.getGroup();
             const bool      bIsTypeGroup = !group.isEmpty() && group.equals(inType.getGroup());
-            if (!inFallbackGroup.isEmpty() && (group.isEmpty() || bIsTypeGroup))
+            const bool bFallbackGroupEmptyAndEmpty = static_cast<bool>(!inFallbackGroup.isEmpty() && (group.isEmpty() || bIsTypeGroup));
+
+            if (bFallbackGroupEmptyAndEmpty)
             {
                 group = inFallbackGroup;
             }
-            else if (group.isEmpty())
+
+            const bool bGroupEmpty = !bFallbackGroupEmptyAndEmpty && (group.isEmpty());
+
+            if (bGroupEmpty)
             {
                 group = inType.getGroup();
                 if (group.isEmpty())
@@ -1627,86 +1737,133 @@ namespace Editor
             field.description = info.getDescription();
             field.type        = AttributeFieldType::Text;
 
-            if (const Chicane::ReflectionEnumInfo* enumeration = findEnum(accessor.typeName))
             {
-                field.type = AttributeFieldType::Enum;
-                field.text = accessor.toString(&inItem);
+                const Chicane::ReflectionEnumInfo* enumeration = findEnum(accessor.typeName);
 
-                for (const Chicane::ReflectionEnumeratorInfo& enumerator : enumeration->enumerators)
+                const bool bHasEnumeration = static_cast<bool>(enumeration);
+
+                if (bHasEnumeration)
                 {
-                    const Chicane::String option = typeTail(enumerator.name);
-                    field.options.push_back(option);
-                    if (field.text.equals(enumerator.name, option))
+                    field.type = AttributeFieldType::Enum;
+                    field.text = accessor.toString(&inItem);
+
+                    for (const Chicane::ReflectionEnumeratorInfo& enumerator : enumeration->enumerators)
                     {
-                        field.text = option;
+                        const Chicane::String option = typeTail(enumerator.name);
+                        field.options.push_back(option);
+                        const bool bTextMatchesOption = static_cast<bool>(field.text.equals(enumerator.name, option));
+
+                        if (bTextMatchesOption)
+                        {
+                            field.text = option;
+                        }
+
+                        const bool bEnumeratorZeroAndTextEmpty = !bTextMatchesOption && (enumerator.value == 0 && field.text.isEmpty());
+
+                        if (bEnumeratorZeroAndTextEmpty)
+                        {
+                            field.text = option;
+                        }
                     }
-                    else if (enumerator.value == 0 && field.text.isEmpty())
+                }
+
+                const bool bBool = !bHasEnumeration && (accessor.isType<bool>());
+
+                if (bBool)
+                {
+                    field.type        = AttributeFieldType::Bool;
+                    const bool* value = accessor.getValue<bool>(&inItem);
+                    field.bIsChecked  = value && *value;
+                }
+
+                const bool bNameMatchesColor = !bHasEnumeration && !bBool && (name.equals("color"));
+
+                if (bNameMatchesColor)
+                {
+                    field.type = AttributeFieldType::Color;
+                    if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
                     {
-                        field.text = option;
+                        field.vector = *value;
+                        field.text   = formatVec3(*value);
                     }
                 }
-            }
-            else if (accessor.isType<bool>())
-            {
-                field.type        = AttributeFieldType::Bool;
-                const bool* value = accessor.getValue<bool>(&inItem);
-                field.bIsChecked  = value && *value;
-            }
-            else if (name.equals("color"))
-            {
-                field.type = AttributeFieldType::Color;
-                if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
+
+                const bool bVec3OrRotator = !bHasEnumeration && !bBool && !bNameMatchesColor &&
+                                     (accessor.isType<Chicane::Vec3>() || accessor.isType<Chicane::Rotator>());
+
+                if (bVec3OrRotator)
                 {
-                    field.vector = *value;
-                    field.text   = formatVec3(*value);
+                    field.type = AttributeFieldType::Vec3;
+                    {
+                        const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem);
+
+                        const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem);
+
+                        const bool bTransformAttribute = static_cast<bool>(isTransformAttribute(name));
+
+                        if (bTransformAttribute)
+                        {
+                            assignTransformAttribute(inItem, field, inSpace);
+                        }
+
+                        const bool bHasValue = !bTransformAttribute && (value);
+
+                        if (bHasValue)
+                        {
+                            field.vector = *value;
+                            field.text   = formatVec3(field.vector);
+                        }
+
+                        const bool bHasRotator = !bTransformAttribute && !bHasValue && (rotator);
+
+                        if (bHasRotator)
+                        {
+                            field.vector = rotator->getAngles();
+                            field.text   = formatVec3(field.vector);
+                        }
+
+                        if (!bTransformAttribute && !bHasValue && !bHasRotator)
+                        {
+                            field.text = formatVec3(field.vector);
+                        }
+                    }
                 }
-            }
-            else if (accessor.isType<Chicane::Vec3>() || accessor.isType<Chicane::Rotator>())
-            {
-                field.type = AttributeFieldType::Vec3;
-                if (isTransformAttribute(name))
+
+                const bool bFloat = !bHasEnumeration && !bBool && !bNameMatchesColor && !bVec3OrRotator && (accessor.isType<float>());
+
+                if (bFloat)
                 {
-                    assignTransformAttribute(inItem, field, inSpace);
-                }
-                else if (const Chicane::Vec3* value = accessor.getValue<Chicane::Vec3>(&inItem))
-                {
-                    field.vector = *value;
-                    field.text   = formatVec3(field.vector);
-                }
-                else if (const Chicane::Rotator* rotator = accessor.getValue<Chicane::Rotator>(&inItem))
-                {
-                    field.vector = rotator->getAngles();
-                    field.text   = formatVec3(field.vector);
-                }
-                else
-                {
-                    field.text = formatVec3(field.vector);
-                }
-            }
-            else if (accessor.isType<float>())
-            {
-                field.type = AttributeFieldType::Float;
-                field.text = accessor.toString(&inItem);
-            }
-            else if (accessor.isType<Chicane::String>() || accessor.isType<Chicane::FileSystem::Path>() ||
-                     accessor.isType<int>())
-            {
-                field.type = AttributeFieldType::Text;
-                if (accessor.isType<Chicane::FileSystem::Path>())
-                {
-                    const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
-                    field.text                            = path ? path->toString() : Chicane::String::sEmpty();
-                    field.type                            = AttributeFieldType::Asset;
-                    field.kind                            = name;
-                }
-                else
-                {
+                    field.type = AttributeFieldType::Float;
                     field.text = accessor.toString(&inItem);
                 }
-            }
-            else
-            {
-                continue;
+
+                const bool bStringOrPath = !bHasEnumeration && !bBool && !bNameMatchesColor && !bVec3OrRotator && !bFloat &&
+                                     (accessor.isType<Chicane::String>() ||
+                                      accessor.isType<Chicane::FileSystem::Path>() || accessor.isType<int>());
+
+                if (bStringOrPath)
+                {
+                    field.type         = AttributeFieldType::Text;
+                    const bool bPath = static_cast<bool>(accessor.isType<Chicane::FileSystem::Path>());
+
+                    if (bPath)
+                    {
+                        const Chicane::FileSystem::Path* path = accessor.getValue<Chicane::FileSystem::Path>(&inItem);
+                        field.text                            = path ? path->toString() : Chicane::String::sEmpty();
+                        field.type                            = AttributeFieldType::Asset;
+                        field.kind                            = name;
+                    }
+
+                    if (!bPath)
+                    {
+                        field.text = accessor.toString(&inItem);
+                    }
+                }
+
+                if (!bHasEnumeration && !bBool && !bNameMatchesColor && !bVec3OrRotator && !bFloat && !bStringOrPath)
+                {
+                    continue;
+                }
             }
 
             pushAttributeField(ioGroups, field);

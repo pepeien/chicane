@@ -63,16 +63,25 @@ namespace Chicane
             m_sourceWidth    = 1;
             m_sourceHeight   = 1;
 
-            if (inCreateInfo.texture)
             {
-                m_sourceWidth    = std::max(1u, inCreateInfo.texture->width);
-                m_sourceHeight   = std::max(1u, inCreateInfo.texture->height);
-                m_residentMinMip = inCreateInfo.texture->residentMinMip;
-            }
-            else if (const Image::Instance image = inCreateInfo.image.lock())
-            {
-                m_sourceWidth  = static_cast<std::uint32_t>(std::max(1, image->getWidth()));
-                m_sourceHeight = static_cast<std::uint32_t>(std::max(1, image->getHeight()));
+                const Image::Instance image = inCreateInfo.image.lock();
+
+                const bool bTexture = static_cast<bool>(inCreateInfo.texture);
+
+                if (bTexture)
+                {
+                    m_sourceWidth    = std::max(1u, inCreateInfo.texture->width);
+                    m_sourceHeight   = std::max(1u, inCreateInfo.texture->height);
+                    m_residentMinMip = inCreateInfo.texture->residentMinMip;
+                }
+
+                const bool bHasImage = !bTexture && (image);
+
+                if (bHasImage)
+                {
+                    m_sourceWidth  = static_cast<std::uint32_t>(std::max(1, image->getWidth()));
+                    m_sourceHeight = static_cast<std::uint32_t>(std::max(1, image->getHeight()));
+                }
             }
 
             m_sourceWidth  = std::min(m_sourceWidth, TEXTURE_MAX_SIZE);
@@ -142,11 +151,16 @@ namespace Chicane
                 const std::uint32_t sourceLevel = m_residentMinMip + gpuLevel;
                 Image::Instance     image;
 
-                if (chain)
+                const bool bHasChain = static_cast<bool>(chain);
+
+                if (bHasChain)
                 {
                     image = chain->decode(sourceLevel);
                 }
-                else if (gpuLevel == 0)
+
+                const bool bGpuLevelZero = !bHasChain && (gpuLevel == 0);
+
+                if (bGpuLevelZero)
                 {
                     image = inCreateInfo.image.lock();
                 }
@@ -172,13 +186,18 @@ namespace Chicane
                 VulkanBuffer stagingBuffer;
                 stagingBuffer.init(bufferCreateInfo);
 
-                void* writeLocation = stagingBuffer.map();
-                if (image->getWidth() == static_cast<int>(levelWidth) &&
-                    image->getHeight() == static_cast<int>(levelHeight) && image->getPixels())
+                void*      writeLocation = stagingBuffer.map();
+                const bool bWidthLevelWidth        = static_cast<bool>(
+                    image->getWidth() == static_cast<int>(levelWidth) &&
+                    image->getHeight() == static_cast<int>(levelHeight) && image->getPixels()
+                );
+
+                if (bWidthLevelWidth)
                 {
                     std::memcpy(writeLocation, image->getPixels(), static_cast<std::size_t>(bufferCreateInfo.size));
                 }
-                else
+
+                if (!bWidthLevelWidth)
                 {
                     std::vector<Image::Pixel> resized(static_cast<std::size_t>(bufferCreateInfo.size));
                     image->blit(resized.data(), static_cast<int>(levelWidth), static_cast<int>(levelHeight));

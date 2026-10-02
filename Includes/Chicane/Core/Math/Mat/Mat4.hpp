@@ -54,9 +54,7 @@ namespace Chicane
             return result;
         }
 
-        static inline Mat4 sOrtho(
-            float inLeft, float inRight, float inBottom, float inTop, float inNear, float inFar
-        )
+        static inline Mat4 sOrtho(float inLeft, float inRight, float inBottom, float inTop, float inNear, float inFar)
         {
             Mat4 result(1.0f);
             result[0][0] = 2.0f / (inRight - inLeft);
@@ -73,7 +71,7 @@ namespace Chicane
         {
             const float half = std::tan(inFieldOfView * 0.5f);
 
-            Mat4 result(0.0f);
+            Mat4        result(0.0f);
             result[0][0] = 1.0f / (inAspect * half);
             result[1][1] = 1.0f / half;
             result[2][2] = -(inFar + inNear) / (inFar - inNear);
@@ -89,7 +87,7 @@ namespace Chicane
             const Vec3 side    = forward.cross(inUp).normalize();
             const Vec3 up      = side.cross(forward);
 
-            Mat4 result(1.0f);
+            Mat4       result(1.0f);
             result[0][0] = side.x;
             result[1][0] = side.y;
             result[2][0] = side.z;
@@ -115,7 +113,8 @@ namespace Chicane
             {
                 for (std::uint32_t row = 0; row < 4; row++)
                 {
-                    result[column][row] = (inLeft[0][row] * inRight[column][0]) + (inLeft[1][row] * inRight[column][1]) +
+                    result[column][row] = (inLeft[0][row] * inRight[column][0]) +
+                                          (inLeft[1][row] * inRight[column][1]) +
                                           (inLeft[2][row] * inRight[column][2]) + (inLeft[3][row] * inRight[column][3]);
                 }
             }
@@ -140,9 +139,12 @@ namespace Chicane
         friend inline Vec3 operator*(const Mat4& inMatrix, const Vec3& inValue)
         {
             return Vec3(
-                (inMatrix[0][0] * inValue.x) + (inMatrix[1][0] * inValue.y) + (inMatrix[2][0] * inValue.z) + inMatrix[3][0],
-                (inMatrix[0][1] * inValue.x) + (inMatrix[1][1] * inValue.y) + (inMatrix[2][1] * inValue.z) + inMatrix[3][1],
-                (inMatrix[0][2] * inValue.x) + (inMatrix[1][2] * inValue.y) + (inMatrix[2][2] * inValue.z) + inMatrix[3][2]
+                (inMatrix[0][0] * inValue.x) + (inMatrix[1][0] * inValue.y) + (inMatrix[2][0] * inValue.z) +
+                    inMatrix[3][0],
+                (inMatrix[0][1] * inValue.x) + (inMatrix[1][1] * inValue.y) + (inMatrix[2][1] * inValue.z) +
+                    inMatrix[3][1],
+                (inMatrix[0][2] * inValue.x) + (inMatrix[1][2] * inValue.y) + (inMatrix[2][2] * inValue.z) +
+                    inMatrix[3][2]
             );
         }
 

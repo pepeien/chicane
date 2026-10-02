@@ -129,10 +129,12 @@ namespace Chicane
             {
                 rotation[0] = column0 / scaleX;
             }
+
             if (scaleY > 1e-8f)
             {
                 rotation[1] = column1 / scaleY;
             }
+
             if (scaleZ > 1e-8f)
             {
                 rotation[2] = column2 / scaleZ;

@@ -78,7 +78,7 @@ namespace Chicane
             {
                 const ComponentBox* box =
                     static_cast<const ComponentBox*>(lua_touserdata(inState, lua_upvalueindex(1)));
-                const auto* method =
+                const ReflectionTypeMethodInfo* method =
                     static_cast<const ReflectionTypeMethodInfo*>(lua_touserdata(inState, lua_upvalueindex(2)));
                 if (!box || !method || !liveOwner(box) || !box->instance)
                 {

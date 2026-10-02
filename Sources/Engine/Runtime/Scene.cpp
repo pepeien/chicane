@@ -5,12 +5,28 @@
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Channel.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 #include "Chicane/Runtime/Scene/Script.hpp"
 #include "Chicane/Runtime/Track.hpp"
 
 namespace Chicane
 {
+    static void evaluateMeshPoses(Scene& inScene)
+    {
+        std::vector<CMesh*> meshes;
+        for (CMesh* mesh : inScene.getComponents<CMesh>())
+        {
+            if (mesh && mesh->hasSkeleton())
+            {
+                meshes.push_back(mesh);
+            }
+        }
+
+        WorkerPool::sParallel(meshes.size(), [&meshes](std::size_t index) { meshes.at(index)->evaluatePose(); });
+    }
+
     Scene::Scene()
         : m_bIsLoaded(false),
           m_actorCount(0),
@@ -97,6 +113,7 @@ namespace Chicane
 
         tickActors(inDeltaTime);
         tickComponents(inDeltaTime);
+        evaluateMeshPoses(*this);
 
         flushSpatial();
 
@@ -276,7 +293,8 @@ namespace Chicane
 
         std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
 
-        auto& typed = m_actors[std::type_index(typeid(*inActor))];
+        std::unordered_map<std::type_index, std::vector<Actor*>>::mapped_type& typed =
+            m_actors[std::type_index(typeid(*inActor))];
         typed.push_back(inActor);
         m_actorCount++;
 
@@ -304,7 +322,8 @@ namespace Chicane
 
         std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
 
-        auto& typed = m_components[std::type_index(typeid(*inComponent))];
+        std::unordered_map<std::type_index, std::vector<Component*>>::mapped_type& typed =
+            m_components[std::type_index(typeid(*inComponent))];
         typed.push_back(inComponent);
         m_componentCount++;
 
@@ -709,7 +728,9 @@ namespace Chicane
             return;
         }
 
-        if (found != m_objectCells.end())
+        const bool bFoundEnd = static_cast<bool>(found != m_objectCells.end());
+
+        if (bFoundEnd)
         {
             for (std::uint64_t key : found->second)
             {
@@ -718,7 +739,8 @@ namespace Chicane
 
             found->second = keys;
         }
-        else
+
+        if (!bFoundEnd)
         {
             found = m_objectCells.emplace(inObject, keys).first;
         }

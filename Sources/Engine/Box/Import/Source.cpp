@@ -179,13 +179,16 @@ namespace Chicane
                     continue;
                 }
 
-                const String name = sanitizeName(image.id);
-                if (index == 0)
+                const String name   = sanitizeName(image.id);
+                const bool   bIndexZero = static_cast<bool>(index == 0);
+
+                if (bIndexZero)
                 {
                     written[index].path = inDirectory / (inId + getTypeExtension(AssetType::Texture));
                     written[index].id   = inId;
                 }
-                else
+
+                if (!bIndexZero)
                 {
                     written[index].path = inDirectory / inId / (name + getTypeExtension(AssetType::Texture));
                     written[index].id   = inId + "/" + name;
@@ -477,15 +480,18 @@ namespace Chicane
             for (const auto& [reference, data] : scene.geometry)
             {
                 PreviewGeometryBatch batch;
-                batch.vertices = data.vertices;
-                if (data.indices.empty())
+                batch.vertices    = data.vertices;
+                const bool bIndicesEmpty = static_cast<bool>(data.indices.empty());
+
+                if (bIndicesEmpty)
                 {
                     for (Vertex::Index index = 0; index < static_cast<Vertex::Index>(data.vertices.size()); index++)
                     {
                         batch.indices.push_back(index);
                     }
                 }
-                else
+
+                if (!bIndicesEmpty)
                 {
                     batch.indices = data.indices;
                 }
@@ -548,6 +554,7 @@ namespace Chicane
             {
                 directory = inSource.parent();
             }
+
             if (directory.isEmpty())
             {
                 directory = ".";

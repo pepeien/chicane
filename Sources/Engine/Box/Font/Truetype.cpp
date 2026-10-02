@@ -262,7 +262,9 @@ namespace Chicane
                 }
 
                 FT_MM_Var* variation = nullptr;
-                if (FT_Get_MM_Var(face, &variation) == 0 && variation)
+                const bool bHasVariation    = static_cast<bool>(FT_Get_MM_Var(face, &variation) == 0 && variation);
+
+                if (bHasVariation)
                 {
                     std::vector<FT_Fixed> coordinates(variation->num_axis);
 
@@ -294,7 +296,10 @@ namespace Chicane
 
                     FT_Done_MM_Var(library, variation);
                 }
-                else if (inWeight >= 0.0f)
+
+                const bool bWeightNonNegative = !bHasVariation && (inWeight >= 0.0f);
+
+                if (bWeightNonNegative)
                 {
                     weight = inWeight;
                 }

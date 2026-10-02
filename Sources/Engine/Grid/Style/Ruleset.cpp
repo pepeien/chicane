@@ -70,11 +70,14 @@ namespace Chicane
                     }
 
                     std::size_t cursor = part.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
-                    if (cursor == String::npos)
+                    const bool  bCursorMissing = static_cast<bool>(cursor == String::npos);
+
+                    if (bCursorMissing)
                     {
                         compiledPart.tag = part;
                     }
-                    else
+
+                    if (!bCursorMissing)
                     {
                         if (cursor > 0)
                         {
@@ -102,11 +105,16 @@ namespace Chicane
                         const std::size_t length = (next == String::npos) ? part.size() : next;
                         const String      token  = part.substr(0, length);
 
-                        if (prefix == Style::CLASS_SELECTOR)
+                        const bool bPrefixClass = static_cast<bool>(prefix == Style::CLASS_SELECTOR);
+
+                        if (bPrefixClass)
                         {
                             compiledPart.classes.push_back(token);
                         }
-                        else if (prefix == Style::ID_SELECTOR)
+
+                        const bool bPrefixId = !bPrefixClass && (prefix == Style::ID_SELECTOR);
+
+                        if (bPrefixId)
                         {
                             compiledPart.id = token;
                         }

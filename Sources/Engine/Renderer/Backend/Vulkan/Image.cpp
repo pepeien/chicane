@@ -132,7 +132,11 @@ namespace Chicane
                 vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
                 vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
 
-                if (inOldLayout == vk::ImageLayout::eUndefined && inNewLayout == vk::ImageLayout::eTransferDstOptimal)
+                const bool bToTransferDstOptimal = static_cast<bool>(
+                    inOldLayout == vk::ImageLayout::eUndefined && inNewLayout == vk::ImageLayout::eTransferDstOptimal
+                );
+
+                if (bToTransferDstOptimal)
                 {
                     barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                     barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
@@ -140,9 +144,12 @@ namespace Chicane
                     sourceStage      = vk::PipelineStageFlagBits::eBottomOfPipe;
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
-                else if (inOldLayout == vk::ImageLayout::eUndefined &&
-                         (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
-                          inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal))
+
+                const bool bToDepthStencilAttachmentOptimal = !bToTransferDstOptimal && (inOldLayout == vk::ImageLayout::eUndefined &&
+                                                (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
+                                                 inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal));
+
+                if (bToDepthStencilAttachmentOptimal)
                 {
                     barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                     barrier.dstAccessMask =

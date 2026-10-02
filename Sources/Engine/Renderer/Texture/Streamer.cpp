@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
-#include "Chicane/Core/Worker.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 #include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 
@@ -311,7 +311,7 @@ namespace Chicane
             const std::shared_ptr<TextureStreamerMailbox> mailbox = m_mailbox;
             m_inFlight.insert(key);
 
-            Worker::sSubmit(
+            WorkerPool::sDetach(
                 [mailbox, mips, id, inMip]()
                 {
                     if (!mailbox || !mips || inMip >= mips->levels.size())

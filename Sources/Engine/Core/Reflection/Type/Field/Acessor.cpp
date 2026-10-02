@@ -371,6 +371,19 @@ namespace Chicane
             return static_cast<String>(*value);
         }
 
+        if (typeIndex.has_value())
+        {
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeIndex.value()))
+            {
+                if (type->stringifier && type->size == size)
+                {
+                    const char* field = address(inInstance);
+
+                    return field != nullptr ? type->stringifier(field) : String();
+                }
+            }
+        }
+
         if (elementIndex.has_value())
         {
             if (const ReflectionTypeInfo* elementType = ReflectionTypeRegistry::sInstance().find(elementIndex.value()))

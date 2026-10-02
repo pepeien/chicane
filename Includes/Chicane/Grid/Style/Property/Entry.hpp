@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Property/Dirty.hpp"
@@ -14,8 +15,8 @@ namespace Chicane
         struct CHICANE_GRID StylePropertyEntry
         {
         public:
-            using Read  = bool (*)(const Style& inStyle, float* outValues);
-            using Write = void (*)(Style& outStyle, const float* inValues);
+            using Read  = std::function<bool(const Style& inStyle, float* outValues)>;
+            using Write = std::function<void(Style& outStyle, const float* inValues)>;
 
         public:
             const char*        name  = "";

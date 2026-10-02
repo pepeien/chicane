@@ -117,46 +117,64 @@ namespace Chicane
 
             const String animationName = outStyle.animation.name.trim();
 
-            if (animationName.isEmpty() || animationName.equals(Style::ANIMATION_NAME_NONE))
             {
-                m_animator.stopPlayer();
-                m_animationClip = "";
-            }
-            else if (!m_animationClip.equals(animationName) || !m_animator.hasPlayer())
-            {
-                const StyleKeyframe::List* frames = findKeyframes(animationName);
+                Drift::Player* player = m_animator.getPlayer();
 
-                if (frames && !frames->empty() && outStyle.animation.duration > 0.0f)
+                const bool bAnimationNameEmptyOrNone =
+                    static_cast<bool>(animationName.isEmpty() || animationName.equals(Style::ANIMATION_NAME_NONE));
+
+                if (bAnimationNameEmptyOrNone)
                 {
-                    m_animator.play(makeAnimationClip(*frames));
+                    m_animator.stopPlayer();
+                    m_animationClip = "";
+                }
 
-                    if (Drift::Player* player = m_animator.getPlayer())
+                const bool bAnimationClipMatchesAnimationNameOrNoPlayer = !bAnimationNameEmptyOrNone && (!m_animationClip.equals(animationName) || !m_animator.hasPlayer());
+
+                if (bAnimationClipMatchesAnimationNameOrNoPlayer)
+                {
+                    const StyleKeyframe::List* frames = findKeyframes(animationName);
+
+                    if (frames && !frames->empty() && outStyle.animation.duration > 0.0f)
                     {
-                        player->setDelay(outStyle.animation.delay);
-                        player->setDirection(
-                            outStyle.animation.bIsReverse ? Drift::Direction::Reverse : Drift::Direction::Forward
-                        );
-                        player->setFillForwards(outStyle.animation.bShouldFillForwards);
-                        player->setFillBackwards(outStyle.animation.bShouldFillBackwards);
+                        m_animator.play(makeAnimationClip(*frames));
 
-                        if (outStyle.animation.bIsPaused)
+                        if (Drift::Player* player = m_animator.getPlayer())
                         {
-                            player->pause();
+                            player->setDelay(outStyle.animation.delay);
+                            player->setDirection(
+                                outStyle.animation.bIsReverse ? Drift::Direction::Reverse : Drift::Direction::Forward
+                            );
+                            player->setFillForwards(outStyle.animation.bShouldFillForwards);
+                            player->setFillBackwards(outStyle.animation.bShouldFillBackwards);
+
+                            if (outStyle.animation.bIsPaused)
+                            {
+                                player->pause();
+                            }
                         }
+
+                        m_animationClip = animationName;
+                    }
+                }
+
+                const bool bHasPlayer = !bAnimationNameEmptyOrNone && !bAnimationClipMatchesAnimationNameOrNoPlayer && (player);
+
+                if (bHasPlayer)
+                {
+                    const bool bPaused2 = static_cast<bool>(outStyle.animation.bIsPaused);
+
+                    if (bPaused2)
+                    {
+                        player->pause();
                     }
 
-                    m_animationClip = animationName;
-                }
-            }
-            else if (Drift::Player* player = m_animator.getPlayer())
-            {
-                if (outStyle.animation.bIsPaused)
-                {
-                    player->pause();
-                }
-                else if (player->isPaused())
-                {
-                    player->play();
+                    const bool bPaused = !bPaused2 && (player->isPaused());
+
+                    if (bPaused)
+                    {
+                        player->play();
+                    }
                 }
             }
 

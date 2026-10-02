@@ -2,7 +2,11 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Renderer/Draw/Particle.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 #include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer/Shadow.hpp"
 #include "Chicane/Renderer/Shadow/Light.hpp"
 
 namespace Chicane
@@ -15,12 +19,18 @@ namespace Chicane
               m_rhi(nullptr),
               m_VRAM(0U),
               m_gpuDelta(0.0f),
+              m_bPreviewPass(false),
+              m_previewViewport({}),
+              m_viewSlots({}),
+              m_viewSlotCount(0),
+              m_viewPlaceholder({}),
               m_status(BackendStatus::Shutdown)
         {}
 
         void Backend::onInit()
         {
             m_status = BackendStatus::Running;
+            registerViewTarget(SCREEN_TARGET_ID);
         }
 
         void Backend::onShutdown()
@@ -307,7 +317,7 @@ namespace Chicane
 
         Draw::Id Backend::getScreenTextureId() const
         {
-            return Draw::InvalidId;
+            return viewTargetTexture(0);
         }
 
         bool Backend::isScreenComposited(const Frame& inFrame) const
@@ -333,6 +343,426 @@ namespace Chicane
         void Backend::setGpuDelta(float inMilliseconds)
         {
             m_gpuDelta = inMilliseconds;
+        }
+
+        int Backend::registerViewTarget(const String& inName)
+        {
+            if (inName.isEmpty())
+            {
+                return -1;
+            }
+
+            const int existing = viewTargetSlot(inName);
+            if (existing >= 0)
+            {
+                return existing;
+            }
+
+            if (m_viewSlotCount >= VIEW_TARGET_MAX)
+            {
+                return -1;
+            }
+
+            const std::uint32_t slot = m_viewSlotCount++;
+            m_viewSlots[slot].name   = inName;
+
+            return static_cast<int>(slot);
+        }
+
+        int Backend::viewTargetSlot(const String& inName) const
+        {
+            for (std::uint32_t slot = 0; slot < m_viewSlotCount; slot++)
+            {
+                if (m_viewSlots[slot].name.equals(inName))
+                {
+                    return static_cast<int>(slot);
+                }
+            }
+
+            return -1;
+        }
+
+        void Backend::assignViewTargetTexture(std::uint32_t inSlot, Draw::Id inTexture)
+        {
+            if (inSlot >= m_viewSlotCount)
+            {
+                return;
+            }
+
+            m_viewSlots[inSlot].texture = inTexture;
+        }
+
+        Draw::Id Backend::viewTargetTexture(std::uint32_t inSlot) const
+        {
+            if (inSlot >= m_viewSlotCount)
+            {
+                return Draw::InvalidId;
+            }
+
+            return m_viewSlots[inSlot].texture;
+        }
+
+        RHI::Image Backend::viewTargetImage(std::uint32_t inSlot) const
+        {
+            if (inSlot == 0 || inSlot >= m_viewSlotCount || !m_viewSlots[inSlot].color.handle)
+            {
+                return {};
+            }
+
+            return m_viewSlots[inSlot].color;
+        }
+
+        RHI::Image Backend::viewPlaceholder() const
+        {
+            return m_viewPlaceholder;
+        }
+
+        void Backend::discardViewTarget(RHI::Image)
+        {}
+
+        void Backend::ensureViewPlaceholder()
+        {
+            if (!m_rhi || m_viewPlaceholder.handle)
+            {
+                return;
+            }
+
+            RHI::ImageCreateInfo placeholder;
+            placeholder.kind       = RHI::ImageKind::Color2D;
+            placeholder.format     = m_rhi->sceneColorFormat();
+            placeholder.width      = 1;
+            placeholder.height     = 1;
+            placeholder.bIsSampled = true;
+            placeholder.bHasColor  = true;
+            m_viewPlaceholder      = m_rhi->createImage(placeholder);
+        }
+
+        void Backend::ensureViewTarget(std::uint32_t inSlot, std::uint32_t inWidth, std::uint32_t inHeight)
+        {
+            if (!m_rhi || inSlot == 0 || inSlot >= m_viewSlotCount || inWidth == 0 || inHeight == 0)
+            {
+                return;
+            }
+
+            BackendViewTargetSlot& slot = m_viewSlots[inSlot];
+            if (!slot.camera.handle)
+            {
+                RHI::BufferCreateInfo camera;
+                camera.size           = sizeof(View);
+                camera.usage          = RHI::BufferUsage::Uniform;
+                camera.bHasHostAccess = true;
+                slot.camera           = m_rhi->createBuffer(camera);
+
+                RHI::BufferCreateInfo light;
+                light.size           = sizeof(ShadowLight);
+                light.usage          = RHI::BufferUsage::Storage;
+                light.bHasHostAccess = true;
+                slot.light           = m_rhi->createBuffer(light);
+
+                RHI::BufferCreateInfo instances;
+                instances.size  = std::max(getResourceBudget(Resource::SceneInstances), sizeof(DrawPoly3DInstance));
+                instances.usage = RHI::BufferUsage::Storage;
+                instances.bHasHostAccess = true;
+                slot.instances           = m_rhi->createBuffer(instances);
+
+                RHI::BufferCreateInfo particles;
+                particles.size           = sizeof(DrawParticle) * MAX_PARTICLES;
+                particles.usage          = RHI::BufferUsage::Storage;
+                particles.bHasHostAccess = true;
+                slot.particles           = m_rhi->createBuffer(particles);
+            }
+
+            if (slot.color.handle && slot.width == inWidth && slot.height == inHeight)
+            {
+                return;
+            }
+
+            if (slot.color.handle)
+            {
+                m_rhi->destroyImage(slot.color);
+                slot.color = {};
+            }
+
+            if (slot.depth.handle)
+            {
+                m_rhi->destroyImage(slot.depth);
+                slot.depth = {};
+            }
+
+            RHI::ImageCreateInfo color;
+            color.kind       = RHI::ImageKind::Color2D;
+            color.format     = m_rhi->sceneColorFormat();
+            color.width      = inWidth;
+            color.height     = inHeight;
+            color.bIsSampled = true;
+            color.bHasColor  = true;
+            slot.color       = m_rhi->createImage(color);
+
+            RHI::ImageCreateInfo depth;
+            depth.kind       = RHI::ImageKind::Depth2D;
+            depth.format     = m_rhi->sceneDepthFormat();
+            depth.width      = inWidth;
+            depth.height     = inHeight;
+            depth.bIsSampled = false;
+            depth.bHasColor  = false;
+            depth.bHasDepth  = true;
+            slot.depth       = m_rhi->createImage(depth);
+
+            slot.width  = inWidth;
+            slot.height = inHeight;
+        }
+
+        void Backend::destroyViewTargets()
+        {
+            if (!m_rhi)
+            {
+                return;
+            }
+
+            auto killImage = [&](RHI::Image& inImage)
+            {
+                if (!inImage.handle)
+                {
+                    return;
+                }
+
+                m_rhi->destroyImage(inImage);
+                inImage = {};
+            };
+            auto killBuffer = [&](RHI::Buffer& inBuffer)
+            {
+                if (!inBuffer.handle)
+                {
+                    return;
+                }
+
+                m_rhi->destroyBuffer(inBuffer);
+                inBuffer = {};
+            };
+
+            killImage(m_viewPlaceholder);
+            for (BackendViewTargetSlot& slot : m_viewSlots)
+            {
+                killImage(slot.color);
+                killImage(slot.depth);
+                killBuffer(slot.camera);
+                killBuffer(slot.light);
+                killBuffer(slot.instances);
+                killBuffer(slot.particles);
+                slot.width  = 0;
+                slot.height = 0;
+            }
+        }
+
+        void Backend::prepareViewTargets()
+        {
+            if (!m_rhi || !m_renderer)
+            {
+                return;
+            }
+
+            ensureViewPlaceholder();
+            for (const InstanceViewTarget& target : m_renderer->getViewTargets())
+            {
+                const int slot = viewTargetSlot(target.name);
+                if (slot <= 0)
+                {
+                    continue;
+                }
+
+                ensureViewTarget(static_cast<std::uint32_t>(slot), target.width, target.height);
+            }
+        }
+
+        void Backend::renderViewTargets(RHI::Frame& ioFrame, bool bFlipY)
+        {
+            if (!m_renderer)
+            {
+                return;
+            }
+
+            for (const InstanceViewTarget& target : m_renderer->getViewTargets())
+            {
+                const int slot = viewTargetSlot(target.name);
+                if (slot <= 0)
+                {
+                    continue;
+                }
+
+                const std::uint32_t index = static_cast<std::uint32_t>(slot);
+                discardViewTarget(m_viewSlots[index].color);
+                discardViewTarget(m_viewSlots[index].depth);
+                uploadViewTarget(index, target.frame, bFlipY);
+                drawViewTarget(index, target.frame, ioFrame);
+            }
+        }
+
+        void Backend::uploadViewTarget(std::uint32_t inSlot, const Frame& inFrame, bool bFlipY)
+        {
+            if (!m_rhi || inSlot >= m_viewSlotCount || !m_viewSlots[inSlot].camera.handle)
+            {
+                return;
+            }
+
+            BackendViewTargetSlot& slot = m_viewSlots[inSlot];
+
+            View camera = inFrame.getCamera();
+            if (bFlipY)
+            {
+                camera.flipY();
+            }
+            camera.depthZeroToOne();
+            m_rhi->updateBuffer(slot.camera, &camera, sizeof(View));
+
+            ShadowLight light =
+                Shadow::build(inFrame.getCamera(), inFrame.getLights(), inFrame.hasFeature(RendererFeature::Light));
+            for (std::uint32_t cascade = 0; cascade < SHADOW_CASCADE_COUNT; cascade++)
+            {
+                if (bFlipY)
+                {
+                    light.projections[cascade][1][1] *= -1.0f;
+                }
+
+                Mat4 depth                 = Mat4::One;
+                depth[2][2]                = 0.5f;
+                depth[3][2]                = 0.5f;
+                light.projections[cascade] = depth * light.projections[cascade];
+            }
+            m_rhi->updateBuffer(slot.light, &light, sizeof(ShadowLight));
+
+            const DrawPoly3DInstance::List& instances = inFrame.getInstances3D();
+            if (!instances.empty())
+            {
+                m_rhi->updateBuffer(slot.instances, instances.data(), sizeof(DrawPoly3DInstance) * instances.size());
+            }
+
+            const DrawParticle::List& particles = inFrame.getParticles();
+            const std::uint32_t       count     = std::min(static_cast<std::uint32_t>(particles.size()), MAX_PARTICLES);
+            if (count > 0)
+            {
+                m_rhi->updateBuffer(slot.particles, particles.data(), sizeof(DrawParticle) * count);
+            }
+        }
+
+        void Backend::drawViewTarget(std::uint32_t inSlot, const Frame& inFrame, RHI::Frame& ioFrame)
+        {
+            if (!m_renderer || inSlot >= m_viewSlotCount || !m_viewSlots[inSlot].color.handle)
+            {
+                return;
+            }
+
+            BackendViewTargetSlot& slot   = m_viewSlots[inSlot];
+            const std::uint32_t    width  = slot.width;
+            const std::uint32_t    height = slot.height;
+
+            struct Restore
+            {
+                Backend*      backend;
+                RHI::Frame&   frame;
+                std::uint32_t index;
+                std::uint32_t width;
+                std::uint32_t height;
+                RHI::Image    color;
+                RHI::Image    depth;
+                RHI::Buffer   camera;
+                RHI::Buffer   light;
+                RHI::Buffer   instances;
+                RHI::Buffer   particles;
+
+                Restore(
+                    Backend*      inBackend,
+                    RHI::Frame&   inFrame,
+                    std::uint32_t inIndex,
+                    std::uint32_t inWidth,
+                    std::uint32_t inHeight,
+                    RHI::Image    inColor,
+                    RHI::Image    inDepth,
+                    RHI::Buffer   inCamera,
+                    RHI::Buffer   inLight,
+                    RHI::Buffer   inInstances,
+                    RHI::Buffer   inParticles
+                )
+                    : backend(inBackend),
+                      frame(inFrame),
+                      index(inIndex),
+                      width(inWidth),
+                      height(inHeight),
+                      color(inColor),
+                      depth(inDepth),
+                      camera(inCamera),
+                      light(inLight),
+                      instances(inInstances),
+                      particles(inParticles)
+                {}
+
+                ~Restore()
+                {
+                    backend->m_bPreviewPass = false;
+                    frame.frameIndex        = index;
+                    frame.width             = width;
+                    frame.height            = height;
+                    frame.sceneColor        = color;
+                    frame.sceneDepth        = depth;
+                    frame.cameraBuffer      = camera;
+                    frame.lightBuffer       = light;
+                    frame.instance3DBuffer  = instances;
+                    frame.particleBuffer    = particles;
+                }
+            } restore(
+                this,
+                ioFrame,
+                ioFrame.frameIndex,
+                ioFrame.width,
+                ioFrame.height,
+                ioFrame.sceneColor,
+                ioFrame.sceneDepth,
+                ioFrame.cameraBuffer,
+                ioFrame.lightBuffer,
+                ioFrame.instance3DBuffer,
+                ioFrame.particleBuffer
+            );
+
+            ioFrame.frameIndex       = m_renderer->getFrameInFlighCount() + inSlot;
+            ioFrame.width            = width;
+            ioFrame.height           = height;
+            ioFrame.sceneColor       = slot.color;
+            ioFrame.sceneDepth       = slot.depth;
+            ioFrame.cameraBuffer     = slot.camera;
+            ioFrame.lightBuffer      = slot.light;
+            ioFrame.instance3DBuffer = slot.instances;
+            ioFrame.particleBuffer   = slot.particles;
+
+            m_previewViewport.position = Vec2::sZero();
+            m_previewViewport.size     = Vec2(static_cast<float>(width), static_cast<float>(height));
+            m_previewViewport.depth    = Vec2(0.0f, 1.0f);
+            m_bPreviewPass             = true;
+
+            renderLayers(
+                inFrame,
+                &ioFrame,
+                [](const Layer* inLayer)
+                {
+                    if (!inLayer)
+                    {
+                        return false;
+                    }
+
+                    const String& id = inLayer->getId();
+                    return id.equals(SCENE_SKY_LAYER_ID) || id.equals(SCENE_SHADOW_LAYER_ID) ||
+                           id.equals(SCENE_MESH_LAYER_ID) || id.equals(SCENE_PARTICLE_LAYER_ID);
+                }
+            );
+        }
+
+        RHI::Scissor Backend::previewScissor() const
+        {
+            RHI::Scissor result;
+            result.x      = static_cast<std::int32_t>(m_previewViewport.position.x);
+            result.y      = static_cast<std::int32_t>(m_previewViewport.position.y);
+            result.width  = static_cast<std::uint32_t>(m_previewViewport.size.x);
+            result.height = static_cast<std::uint32_t>(m_previewViewport.size.y);
+
+            return result;
         }
 
         void Backend::renderLayers(

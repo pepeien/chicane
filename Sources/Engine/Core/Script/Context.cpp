@@ -309,11 +309,14 @@ namespace Chicane
             }
 
             const char* message = lua_tostring(m_state, -1);
-            if (inPrefix && inPrefix[0] != '\0')
+            const bool  bHasPrefixAndPrefixValue  = static_cast<bool>(inPrefix && inPrefix[0] != '\0');
+
+            if (bHasPrefixAndPrefixValue)
             {
                 Log::error("%s: %s", inPrefix, message ? message : "unknown error");
             }
-            else
+
+            if (!bHasPrefixAndPrefixValue)
             {
                 Log::error("%s", message ? message : "unknown Lua error");
             }

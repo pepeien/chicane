@@ -281,16 +281,23 @@ namespace Chicane
 
         void DockPanel::refreshSize()
         {
-            if (const DockRegion* slot = region())
             {
-                setSize(
-                    std::max(0.0f, slot->box.right - slot->box.left),
-                    std::max(0.0f, slot->box.bottom - slot->box.top)
-                );
-            }
-            else
-            {
-                Component::refreshSize();
+                const DockRegion* slot = region();
+
+                const bool bHasSlot = static_cast<bool>(slot);
+
+                if (bHasSlot)
+                {
+                    setSize(
+                        std::max(0.0f, slot->box.right - slot->box.left),
+                        std::max(0.0f, slot->box.bottom - slot->box.top)
+                    );
+                }
+
+                if (!bHasSlot)
+                {
+                    Component::refreshSize();
+                }
             }
 
             refreshOrientation();

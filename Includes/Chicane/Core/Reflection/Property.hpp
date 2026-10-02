@@ -15,10 +15,7 @@ namespace Chicane
 
     public:
         ReflectionProperty(
-            Names  inNames        = {},
-            String inGroup        = {},
-            String inDescription  = {},
-            bool   bInIsTransient = false
+            Names inNames = {}, String inGroup = {}, String inDescription = {}, bool bInIsTransient = false
         );
 
     public:

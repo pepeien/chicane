@@ -27,8 +27,8 @@ namespace Chicane
             {
                 for (std::uint32_t row = 0; row < 3; row++)
                 {
-                    result[column][row] = (inLeft[0][row] * inRight[column][0]) + (inLeft[1][row] * inRight[column][1]) +
-                                          (inLeft[2][row] * inRight[column][2]);
+                    result[column][row] = (inLeft[0][row] * inRight[column][0]) +
+                                          (inLeft[1][row] * inRight[column][1]) + (inLeft[2][row] * inRight[column][2]);
                 }
             }
 
@@ -56,15 +56,15 @@ namespace Chicane
 
         inline Mat3 inverse() const
         {
-            const Vec3 column0((*this)[0][0], (*this)[0][1], (*this)[0][2]);
-            const Vec3 column1((*this)[1][0], (*this)[1][1], (*this)[1][2]);
-            const Vec3 column2((*this)[2][0], (*this)[2][1], (*this)[2][2]);
+            const Vec3  column0((*this)[0][0], (*this)[0][1], (*this)[0][2]);
+            const Vec3  column1((*this)[1][0], (*this)[1][1], (*this)[1][2]);
+            const Vec3  column2((*this)[2][0], (*this)[2][1], (*this)[2][2]);
             const float inverseDeterminant = 1.0f / column0.dot(column1.cross(column2));
             const Vec3  row0               = column1.cross(column2) * inverseDeterminant;
             const Vec3  row1               = column2.cross(column0) * inverseDeterminant;
             const Vec3  row2               = column0.cross(column1) * inverseDeterminant;
 
-            Mat3 result(1.0f);
+            Mat3        result(1.0f);
             result[0][0] = row0.x;
             result[0][1] = row1.x;
             result[0][2] = row2.x;

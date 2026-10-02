@@ -1,8 +1,10 @@
 #pragma once
 
+#include <any>
 #include <cstddef>
 #include <functional>
 #include <optional>
+#include <type_traits>
 #include <vector>
 
 #include "Chicane/Core.hpp"
@@ -17,12 +19,14 @@ namespace Chicane
     struct CHICANE_CORE ReflectionTypeInfo
     {
     public:
-        using TypeIdex     = std::optional<std::type_index>;
-        using Names        = ReflectionProperty::Names;
-        using Fields       = std::vector<ReflectionFieldInfo>;
-        using Methods      = std::vector<ReflectionTypeMethodInfo>;
-        using Constructor  = std::function<void*(std::vector<std::any>)>;
-        using Constructors = std::vector<Constructor>;
+        using TypeIdex       = std::optional<std::type_index>;
+        using Names          = ReflectionProperty::Names;
+        using Fields         = std::vector<ReflectionFieldInfo>;
+        using Methods        = std::vector<ReflectionTypeMethodInfo>;
+        using Constructor    = std::function<void*(std::vector<std::any>)>;
+        using Constructors   = std::vector<Constructor>;
+        using Stringifier    = std::function<String(const void*)>;
+        using AnyStringifier = std::function<String(const std::any&)>;
 
     public:
         static constexpr inline char OBJECT_SEPARATOR = '.';
@@ -34,9 +38,23 @@ namespace Chicane
             TypeIdex            inTypeIndex,
             const Constructors& inConstructors,
             const Methods&      inMethods,
-            const Fields&       inFields
+            const Fields&       inFields,
+            Stringifier         inStringifier,
+            AnyStringifier      inAnyStringifier
         );
         ReflectionTypeInfo();
+
+        template <typename T>
+        static Stringifier sMakeStringifier()
+        {
+            return sMakeStringifier<T>(std::bool_constant<std::is_convertible_v<const T&, String>>{});
+        }
+
+        template <typename T>
+        static AnyStringifier sMakeAnyStringifier()
+        {
+            return sMakeAnyStringifier<T>(std::bool_constant<std::is_convertible_v<const T&, String>>{});
+        }
 
     public:
         bool containsName(const String& inValue) const;
@@ -90,5 +108,50 @@ namespace Chicane
         Constructors       constructors;
         Methods            methods;
         Fields             fields;
+        Stringifier        stringifier;
+        AnyStringifier     anyStringifier;
+
+    private:
+        template <typename T>
+        static String sStringify(const void* inInstance)
+        {
+            return static_cast<String>(*static_cast<const T*>(inInstance));
+        }
+
+        template <typename T>
+        static String sStringifyAny(const std::any& inValue)
+        {
+            const T* value = std::any_cast<T>(&inValue);
+            if (!value)
+            {
+                return {};
+            }
+
+            return static_cast<String>(*value);
+        }
+
+        template <typename T>
+        static Stringifier sMakeStringifier(std::true_type)
+        {
+            return &sStringify<T>;
+        }
+
+        template <typename T>
+        static Stringifier sMakeStringifier(std::false_type)
+        {
+            return {};
+        }
+
+        template <typename T>
+        static AnyStringifier sMakeAnyStringifier(std::true_type)
+        {
+            return &sStringifyAny<T>;
+        }
+
+        template <typename T>
+        static AnyStringifier sMakeAnyStringifier(std::false_type)
+        {
+            return {};
+        }
     };
 }

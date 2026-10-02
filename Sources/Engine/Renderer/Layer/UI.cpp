@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Feature.hpp"
@@ -63,8 +64,9 @@ namespace Chicane
             binding.bIsVertex   = false;
             binding.bIsFragment = true;
             layout.bindings.push_back(binding);
-            binding.binding     = RHI_BINDING_UI_SCREEN;
+            binding.binding     = RHI_BINDING_UI_VIEWS;
             binding.type        = RHI::BindingType::SampledImage;
+            binding.count       = VIEW_TARGET_MAX;
             binding.bIsVertex   = false;
             binding.bIsFragment = true;
             layout.bindings.push_back(binding);
@@ -208,27 +210,43 @@ namespace Chicane
 
             auto bindUi = [&]()
             {
-                rhiReplaceGroup(
-                    device,
-                    m_groups,
-                    rhi->frameIndex,
-                    m_layout,
+                std::vector<RHI::BindResource> resources = {
+                    {RHI_BINDING_UI_INSTANCES, RHI::BindingType::StorageBuffer, rhi->instance2DBuffer, {}, {}, 0},
+                    {RHI_BINDING_UI_GLYPHS,    RHI::BindingType::StorageBuffer, m_glyphBuffer,         {}, {}, 0},
+                    {RHI_BINDING_UI_BACKDROP,
+                     RHI::BindingType::SampledImage,
+                     {},
+                     m_backdrops[rhi->frameIndex].image,
+                     m_backdropSampler,                                                                        0}
+                };
+
+                const RHI::Image placeholder = m_backend->viewPlaceholder();
+                for (std::uint32_t slot = 0; slot < VIEW_TARGET_MAX; slot++)
+                {
+                    RHI::Image image  = placeholder;
+                    const bool bSlotZeroAndHandle = static_cast<bool>(slot == 0 && rhi->sceneColor.handle);
+
+                    if (bSlotZeroAndHandle)
                     {
-                        {RHI_BINDING_UI_INSTANCES, RHI::BindingType::StorageBuffer, rhi->instance2DBuffer, {}, {}, 0},
-                        {RHI_BINDING_UI_GLYPHS,    RHI::BindingType::StorageBuffer, m_glyphBuffer,         {}, {}, 0},
-                        {RHI_BINDING_UI_BACKDROP,
-                         RHI::BindingType::SampledImage,
-                         {},
-                         m_backdrops[rhi->frameIndex].image,
-                         m_backdropSampler,                                                                        0},
-                        {RHI_BINDING_UI_SCREEN,
-                         RHI::BindingType::SampledImage,
-                         {},
-                         rhi->sceneColor,
-                         rhi->linearSampler,
-                         0                                                                                          }
+                        image = rhi->sceneColor;
+                    }
+
+                    if (!bSlotZeroAndHandle)
+                    {
+                        const RHI::Image target = m_backend->viewTargetImage(slot);
+
+                        if (target.handle)
+                        {
+                            image = target;
+                        }
+                    }
+
+                    resources.push_back(
+                        {RHI_BINDING_UI_VIEWS, RHI::BindingType::SampledImage, {}, image, rhi->linearSampler, slot}
+                    );
                 }
-                );
+
+                rhiReplaceGroup(device, m_groups, rhi->frameIndex, m_layout, resources);
             };
 
             bool bIsPass = false;
@@ -260,8 +278,25 @@ namespace Chicane
                 rhi->commands->bindGroup(0, m_groups[rhi->frameIndex]);
                 rhi->commands->bindGroup(1, rhi->textureTable);
                 RHI::ScreenPush push;
-                push.data[0] = static_cast<std::int32_t>(m_backend->getScreenTextureId());
-                push.data[1] = inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0;
+                push.header[0] = static_cast<std::int32_t>(VIEW_TARGET_MAX);
+                push.header[1] = inFrame.hasFeature(RendererFeature::HDR) ? 1 : 0;
+                push.ids0.fill(Draw::InvalidId);
+                push.ids1.fill(Draw::InvalidId);
+                for (std::uint32_t slot = 0; slot < VIEW_TARGET_MAX; slot++)
+                {
+                    const std::int32_t id     = static_cast<std::int32_t>(m_backend->viewTargetTexture(slot));
+                    const bool         bSlotBelow4 = static_cast<bool>(slot < 4);
+
+                    if (bSlotBelow4)
+                    {
+                        push.ids0[slot] = id;
+                    }
+
+                    if (!bSlotBelow4)
+                    {
+                        push.ids1[slot - 4] = id;
+                    }
+                }
                 rhi->commands->pushConstants(&push, sizeof(push));
                 rhi->commands->bindVertexBuffer(m_vertexBuffer);
                 rhi->commands->bindIndexBuffer(m_indexBuffer);
@@ -284,6 +319,7 @@ namespace Chicane
                     {
                         return;
                     }
+
                     if (bHasRunBackdrop)
                     {
                         endPass();
@@ -311,6 +347,7 @@ namespace Chicane
                         runCount        = 1;
                         continue;
                     }
+
                     if (bHasBackdrop != bHasRunBackdrop || bHasBackdrop)
                     {
                         flush();

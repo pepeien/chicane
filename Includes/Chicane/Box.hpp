@@ -40,7 +40,7 @@ namespace Chicane
         template <typename T>
         inline const T* getById(const String& inId)
         {
-            for (auto asset : getById(inId))
+            for (const Box::Asset* asset : getById(inId))
             {
                 if (const T* result = dynamic_cast<const T*>(asset))
                 {

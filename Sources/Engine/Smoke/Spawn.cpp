@@ -87,6 +87,7 @@ namespace Chicane
             {
                 origin = inPlay.transform.getTranslation();
             }
+
             if (anchor.equals(
                     ANCHOR_TYPE_DESTINATION,
                     ANCHOR_TYPE_IMPACT,
@@ -122,24 +123,35 @@ namespace Chicane
                 particle.additive   = additive;
                 particle.rotation   = randomFloat(0.0f, Math::TWO_PI);
 
-                Vec3 offset = Vec3::sZero();
-                if (shape.equals(SHAPE_TYPE_SPHERE))
+                Vec3       offset = Vec3::sZero();
+                const bool bSphere = static_cast<bool>(shape.equals(SHAPE_TYPE_SPHERE));
+
+                if (bSphere)
                 {
                     offset = randomDirection() * randomFloat(0.0f, randomFloat(radius.from, radius.to));
                 }
-                else if (shape.equals(SHAPE_TYPE_BOX) && inPlay.bHasBeam && beamLength > 0.0f)
+
+                const bool bBoxBeam = !bSphere && (shape.equals(SHAPE_TYPE_BOX) && inPlay.bHasBeam && beamLength > 0.0f);
+
+                if (bBoxBeam)
                 {
                     const float t = randomFloat(0.0f, 1.0f);
                     offset        = beam * (beamLength * t);
                     particle.axis = beam;
                 }
-                else if (shape.equals(SHAPE_TYPE_BOX))
+
+                const bool bBox = !bSphere && !bBoxBeam && (shape.equals(SHAPE_TYPE_BOX));
+
+                if (bBox)
                 {
                     const float extent = randomFloat(radius.from, radius.to);
                     offset =
                         Vec3(randomFloat(-extent, extent), randomFloat(-extent, extent), randomFloat(-extent, extent));
                 }
-                else if (shape.equals(SHAPE_TYPE_CONE) && inPlay.bHasBeam)
+
+                const bool bConeBeam = !bSphere && !bBoxBeam && !bBox && (shape.equals(SHAPE_TYPE_CONE) && inPlay.bHasBeam);
+
+                if (bConeBeam)
                 {
                     offset            = Vec3::sZero();
                     const float angle = randomFloat(spread.from, spread.to) * Math::DEG_TO_RAD;

@@ -199,6 +199,7 @@ namespace Chicane
                 logicalDevice.destroyImageView(depthImage.view);
                 depthImage.view = nullptr;
             }
+
             if (depthImage.sampler)
             {
                 logicalDevice.destroySampler(depthImage.sampler);

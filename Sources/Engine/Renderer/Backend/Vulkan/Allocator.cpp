@@ -143,13 +143,16 @@ namespace Chicane
             VmaAllocationCreateInfo allocationInfo = {};
             const bool              bHostVisible =
                 static_cast<bool>(inCreateInfo.memoryProperties & vk::MemoryPropertyFlagBits::eHostVisible);
-            if (bHostVisible)
+            const bool bHostVisible2 = static_cast<bool>(bHostVisible);
+
+            if (bHostVisible2)
             {
                 allocationInfo.usage = VMA_MEMORY_USAGE_AUTO;
                 allocationInfo.flags =
                     VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT;
             }
-            else
+
+            if (!bHostVisible2)
             {
                 allocationInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
             }
@@ -214,12 +217,15 @@ namespace Chicane
             VmaAllocationCreateInfo allocationInfo = {};
             const bool              bHostVisible =
                 static_cast<bool>(inMemoryCreateInfo.properties & vk::MemoryPropertyFlagBits::eHostVisible);
-            if (bHostVisible)
+            const bool bHostVisible2 = static_cast<bool>(bHostVisible);
+
+            if (bHostVisible2)
             {
                 allocationInfo.usage = VMA_MEMORY_USAGE_AUTO;
                 allocationInfo.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
             }
-            else
+
+            if (!bHostVisible2)
             {
                 allocationInfo.usage = VMA_MEMORY_USAGE_AUTO_PREFER_DEVICE;
             }

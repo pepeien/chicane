@@ -131,9 +131,10 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+            std::lock_guard<std::recursive_mutex>                                  lock(m_objectMutex);
 
-            auto&                                 typed = m_actors[std::type_index(typeid(T))];
+            std::unordered_map<std::type_index, std::vector<Actor*>>::mapped_type& typed =
+                m_actors[std::type_index(typeid(T))];
             typed.push_back(new T(inParams...));
 
             Actor* added = typed.back();
@@ -233,9 +234,10 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+            std::lock_guard<std::recursive_mutex>                                      lock(m_objectMutex);
 
-            auto&                                 typed = m_components[std::type_index(typeid(T))];
+            std::unordered_map<std::type_index, std::vector<Component*>>::mapped_type& typed =
+                m_components[std::type_index(typeid(T))];
             typed.push_back(new T(inParams...));
 
             Component* added = typed.back();
@@ -419,7 +421,8 @@ namespace Chicane
                     }
                 }
             }
-            else if constexpr (std::is_same_v<T, Actor>)
+
+            if constexpr (!std::is_same_v<T, Object> && std::is_same_v<T, Actor>)
             {
                 for (const auto& entry : m_actors)
                 {
@@ -429,7 +432,8 @@ namespace Chicane
                     }
                 }
             }
-            else if constexpr (std::is_same_v<T, Component>)
+
+            if constexpr (!std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && std::is_same_v<T, Component>)
             {
                 for (const auto& entry : m_components)
                 {
@@ -439,7 +443,9 @@ namespace Chicane
                     }
                 }
             }
-            else if constexpr (std::is_base_of_v<Actor, T>)
+
+            if constexpr (!std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
+                          std::is_base_of_v<Actor, T>)
             {
                 auto found = m_actors.find(std::type_index(typeid(T)));
                 if (found == m_actors.end() || found->second.empty())
@@ -452,7 +458,9 @@ namespace Chicane
                     append(actor);
                 }
             }
-            else if constexpr (std::is_base_of_v<Component, T>)
+
+            if constexpr (!std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
+                          !std::is_base_of_v<Actor, T> && std::is_base_of_v<Component, T>)
             {
                 auto found = m_components.find(std::type_index(typeid(T)));
                 if (found == m_components.end() || found->second.empty())

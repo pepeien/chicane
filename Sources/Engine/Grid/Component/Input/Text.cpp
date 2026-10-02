@@ -291,12 +291,15 @@ namespace Chicane
         {
             refreshValue();
 
-            const String raw = getAttribute(VALUE_ATTRIBUTE_NAME);
-            if (!isFocused() && isReference(raw))
+            const String raw    = getAttribute(VALUE_ATTRIBUTE_NAME);
+            const bool   bNotFocusedAndReference = static_cast<bool>(!isFocused() && isReference(raw));
+
+            if (bNotFocusedAndReference)
             {
                 setText(raw);
             }
-            else
+
+            if (!bNotFocusedAndReference)
             {
                 setText(value);
             }
@@ -443,9 +446,9 @@ namespace Chicane
                 deleteSelection();
             }
 
-            std::vector<char32_t> codes    = value.toUnicode();
-            const auto            incoming = inText.toUnicode();
-            const std::size_t     at       = std::min(m_caret, codes.size());
+            std::vector<char32_t>       codes    = value.toUnicode();
+            const std::vector<char32_t> incoming = inText.toUnicode();
+            const std::size_t           at       = std::min(m_caret, codes.size());
 
             codes.insert(codes.begin() + static_cast<std::ptrdiff_t>(at), incoming.begin(), incoming.end());
             value       = fromCodepoints(codes);

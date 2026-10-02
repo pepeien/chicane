@@ -1,6 +1,6 @@
 #include "Chicane/Grid/Component/Svg/Tessellation.hpp"
 
-#include "Chicane/Core/Worker.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
 namespace Chicane
 {
@@ -34,7 +34,7 @@ namespace Chicane
                 m_inFlight.insert(inKey);
             }
 
-            Worker::sSubmit(
+            WorkerPool::sDetach(
                 [inKey, inBuild = std::move(inBuild)]()
                 {
                     Primitive primitive;

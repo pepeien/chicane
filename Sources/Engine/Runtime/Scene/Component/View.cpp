@@ -199,9 +199,8 @@ namespace Chicane
             break;
 
         case ViewProjectionType::Perspective:
-            m_data.projection = Mat4::sPerspective(
-                getFieldOfView() * Math::DEG_TO_RAD, aspectRatio, m_data.clip.x, m_data.clip.y
-            );
+            m_data.projection =
+                Mat4::sPerspective(getFieldOfView() * Math::DEG_TO_RAD, aspectRatio, m_data.clip.x, m_data.clip.y);
 
             break;
 
