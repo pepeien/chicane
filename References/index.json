@@ -4501,6 +4501,41 @@
                         "children": []
                     },
                     {
+                        "title": "Script",
+                        "filename": "Script",
+                        "path": "Grid/Component/Script",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Script.hpp",
+                            "namespace": "Chicane::Grid::ComponentScript",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": [
+                            {
+                                "title": "Subscription",
+                                "filename": "Subscription",
+                                "path": "Grid/Component/Script/Subscription",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Script/Subscription.hpp",
+                                    "namespace": "Chicane::Grid::ComponentScriptSubscription",
+                                    "types": [],
+                                    "enums": [],
+                                    "constructors": [],
+                                    "destructors": [],
+                                    "functions": [],
+                                    "members": [],
+                                    "description": null
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "ScrollBar",
                         "filename": "ScrollBar",
                         "path": "Grid/Component/ScrollBar",
@@ -4833,41 +4868,6 @@
                                         "source": {
                                             "header": "Includes/Chicane/Grid/Component/View/InputQueue/Event.hpp",
                                             "namespace": "Chicane::Grid::ViewInputQueueEvent",
-                                            "types": [],
-                                            "enums": [],
-                                            "constructors": [],
-                                            "destructors": [],
-                                            "functions": [],
-                                            "members": [],
-                                            "description": null
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Script",
-                                "filename": "Script",
-                                "path": "Grid/Component/View/Script",
-                                "source": {
-                                    "header": "Includes/Chicane/Grid/Component/View/Script.hpp",
-                                    "namespace": "Chicane::Grid::ViewScript",
-                                    "types": [],
-                                    "enums": [],
-                                    "constructors": [],
-                                    "destructors": [],
-                                    "functions": [],
-                                    "members": [],
-                                    "description": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Subscription",
-                                        "filename": "Subscription",
-                                        "path": "Grid/Component/View/Script/Subscription",
-                                        "source": {
-                                            "header": "Includes/Chicane/Grid/Component/View/Script/Subscription.hpp",
-                                            "namespace": "Chicane::Grid::ViewScriptSubscription",
                                             "types": [],
                                             "enums": [],
                                             "constructors": [],

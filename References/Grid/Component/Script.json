@@ -1,10 +1,10 @@
 {
     "title": "Script",
     "filename": "Script",
-    "path": "Grid/Component/View/Script",
+    "path": "Grid/Component/Script",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/View/Script.hpp",
-        "namespace": "Chicane::Grid::ViewScript",
+        "header": "Includes/Chicane/Grid/Component/Script.hpp",
+        "namespace": "Chicane::Grid::ComponentScript",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "ViewScript",
+                "name": "ComponentScript",
                 "parameters": [
                     {
                         "type": {
@@ -32,7 +32,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_VIEWSCRIPT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_COMPONENTSCRIPT_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -46,10 +46,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~ViewScript",
+                "name": "~ComponentScript",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_~VIEWSCRIPT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_~COMPONENTSCRIPT_DESCRIPTION"
             }
         ],
         "functions": [
@@ -77,7 +77,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_LOAD_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -103,7 +103,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_TICK_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_TICK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -147,7 +147,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_CALLGLOBAL_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_CALLGLOBAL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -173,7 +173,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_SETONLOAD_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_SETONLOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -199,7 +199,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_SETONTICK_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_SETONTICK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -235,7 +235,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_PUSHFIND_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_PUSHFIND_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -252,7 +252,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_VIEWSCRIPT_ISBOUND_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_ISBOUND_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -288,7 +288,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_SUBSCRIBE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_SUBSCRIBE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -314,7 +314,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_UNSUBSCRIBE_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_UNSUBSCRIBE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -331,7 +331,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_VIEWSCRIPT_HOST_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_HOST_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -348,7 +348,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_VIEWSCRIPT_VIEW_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_VIEW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -363,7 +363,7 @@
                 "name": "context",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_CONTEXT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_CONTEXT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -378,7 +378,7 @@
                 "name": "bind",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_BIND_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_BIND_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -393,7 +393,7 @@
                 "name": "clearSubscriptions",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_VIEWSCRIPT_CLEARSUBSCRIPTIONS_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_CLEARSUBSCRIPTIONS_DESCRIPTION"
             }
         ],
         "members": [
@@ -411,7 +411,7 @@
                     "templates": []
                 },
                 "name": "EXTENSION",
-                "description": "CHICANE_GRID_VIEWSCRIPT_EXTENSION_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_EXTENSION_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -424,7 +424,7 @@
                     "templates": []
                 },
                 "name": "m_host",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_HOST_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_HOST_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -437,7 +437,7 @@
                     "templates": []
                 },
                 "name": "m_context",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_CONTEXT_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_CONTEXT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -450,7 +450,7 @@
                     "templates": []
                 },
                 "name": "m_onLoad",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_ONLOAD_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_ONLOAD_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -463,7 +463,7 @@
                     "templates": []
                 },
                 "name": "m_onTick",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_ONTICK_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_ONTICK_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -476,7 +476,7 @@
                     "templates": []
                 },
                 "name": "m_bClosing",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_BCLOSING_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_BCLOSING_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -489,18 +489,18 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ViewScriptSubscription",
+                            "name": "ComponentScriptSubscription",
                             "suffix": "",
-                            "path": "Grid/Component/View/Script/Subscription",
+                            "path": "Grid/Component/Script/Subscription",
                             "templates": []
                         }
                     ]
                 },
                 "name": "m_subscriptions",
-                "description": "CHICANE_GRID_VIEWSCRIPT_M_SUBSCRIPTIONS_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENTSCRIPT_M_SUBSCRIPTIONS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_VIEWSCRIPT_DESCRIPTION"
+        "description": "CHICANE_GRID_COMPONENTSCRIPT_DESCRIPTION"
     },
     "children": []
 }

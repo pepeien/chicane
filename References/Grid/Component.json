@@ -210,6 +210,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "sCreate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inTemplate"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_SCREATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -3580,6 +3608,67 @@
                 "description": "CHICANE_GRID_COMPONENT_PARSETEXT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "callScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "String",
+                                    "suffix": "",
+                                    "path": "Core/String",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inArgs"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_CALLSCRIPT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "releaseScript",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_RELEASESCRIPT_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -4001,93 +4090,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "loadScript",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem/Path",
-                            "templates": []
-                        },
-                        "name": "inTemplate"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_LOADSCRIPT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "callScript",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inName"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "String",
-                                    "suffix": "",
-                                    "path": "Core/String",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inArgs"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_CALLSCRIPT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "releaseScript",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_RELEASESCRIPT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -4783,6 +4785,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETPERIPHERALS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadScript",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inTemplate"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_LOADSCRIPT_DESCRIPTION"
             }
         ],
         "members": [
@@ -5487,9 +5515,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ViewScript",
+                            "name": "ComponentScript",
                             "suffix": "",
-                            "path": "Grid/Component/View/Script",
+                            "path": "Grid/Component/Script",
                             "templates": []
                         }
                     ]
