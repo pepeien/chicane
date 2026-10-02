@@ -2,11 +2,11 @@
 
 #include <cstdint>
 #include <functional>
-#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
+
+#include "Chicane/Core/Mailbox.hpp"
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component/Svg/Tessellation/Ready.hpp"
@@ -42,9 +42,8 @@ namespace Chicane
             void finish(const std::string& inKey, Primitive inPrimitive);
 
         private:
-            std::mutex                                 m_mutex;
             std::unordered_set<std::string>            m_inFlight;
-            std::vector<SvgTessellationReady>          m_ready;
+            Mailbox<SvgTessellationReady>              m_ready;
             std::unordered_map<std::string, Primitive> m_cache;
             std::uint64_t                              m_generation = 0;
         };

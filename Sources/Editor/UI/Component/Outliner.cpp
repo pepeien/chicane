@@ -173,14 +173,14 @@ namespace Editor
             const Chicane::ReflectionFieldAccessor accessor = row->getField("node");
             if (!accessor.isValid() || !accessor.isType<OutlinerNode>())
             {
-                row->setSelected(false);
+                row->setSelected(false, false);
                 continue;
             }
 
             const void* instance =
                 accessor.boundInstance != nullptr ? accessor.boundInstance : static_cast<const void*>(row);
             const OutlinerNode* entry = accessor.getValue<OutlinerNode>(instance);
-            row->setSelected(entry && entry->item == selected);
+            row->setSelected(entry && entry->item == selected, false);
         }
     }
 

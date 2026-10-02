@@ -12,7 +12,7 @@
     </Container>
     <Container dir:if="{{ bHasStage }}" class="asset-manager__stage">
         <Container class="asset-manager__viewport">
-            <Viewport />
+            <Viewport onHover="true" />
             <Container dir:if="{{ bHasPreviewShape }}" class="asset-manager__shape">
                 <Input::Select
                     value="{{ previewShape }}"

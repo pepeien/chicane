@@ -96,7 +96,7 @@ namespace Chicane
                     return false;
                 }
 
-                int        value  = 0;
+                int        value       = 0;
                 const bool bTypeString = static_cast<bool>(lua_type(inState, inIndex) == LUA_TSTRING);
 
                 if (bTypeString)

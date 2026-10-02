@@ -67,8 +67,9 @@ namespace Editor
             }
         }
 
-        const bool bTypeMouseButtonDownOrTypeMouseButtonUp = !bTypeMouseMotion && (inEvent.type == Chicane::WindowEventType::MouseButtonDown ||
-                                        inEvent.type == Chicane::WindowEventType::MouseButtonUp);
+        const bool bTypeMouseButtonDownOrTypeMouseButtonUp =
+            !bTypeMouseMotion && (inEvent.type == Chicane::WindowEventType::MouseButtonDown ||
+                                  inEvent.type == Chicane::WindowEventType::MouseButtonUp);
 
         if (bTypeMouseButtonDownOrTypeMouseButtonUp)
         {

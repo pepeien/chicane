@@ -436,8 +436,8 @@ namespace Chicane
                 const std::uint32_t dstRow = y * width * 4;
                 for (std::uint32_t x = 0; x < width; ++x)
                 {
-                    const std::uint32_t src    = srcRow + x * 4;
-                    const std::uint32_t dst    = dstRow + x * 4;
+                    const std::uint32_t src           = srcRow + x * 4;
+                    const std::uint32_t dst           = dstRow + x * 4;
                     const bool          bSwapRedBlue2 = static_cast<bool>(bSwapRedBlue);
 
                     if (bSwapRedBlue2)

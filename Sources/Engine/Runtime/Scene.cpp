@@ -39,14 +39,16 @@ namespace Chicane
           m_cellSize(SceneTraceRequest::DEFAULT_CELL_SIZE),
           m_cells({}),
           m_objectCells({}),
-          m_objectMutex(),
+          m_owner(),
+          m_mutations(),
           m_bus(),
           m_sceneScript()
     {}
 
     Scene::~Scene()
     {
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        claim();
+        drainMutations();
 
         deleteComponents();
         deleteActors();
@@ -102,7 +104,8 @@ namespace Chicane
 
     void Scene::tick(float inDeltaTime)
     {
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        claim();
+        drainMutations();
 
         pumpEvents();
 
@@ -118,6 +121,44 @@ namespace Chicane
         flushSpatial();
 
         onTick(inDeltaTime);
+    }
+
+    void Scene::claim()
+    {
+        m_owner.store(std::this_thread::get_id(), std::memory_order_release);
+    }
+
+    bool Scene::ownsObjects() const
+    {
+        const std::thread::id owner = m_owner.load(std::memory_order_acquire);
+
+        return owner == std::thread::id() || owner == std::this_thread::get_id();
+    }
+
+    void Scene::runOnOwner(std::function<void()> inWork)
+    {
+        if (!inWork)
+        {
+            return;
+        }
+
+        if (ownsObjects())
+        {
+            inWork();
+
+            return;
+        }
+
+        m_mutations.push(std::move(inWork));
+    }
+
+    void Scene::drainMutations()
+    {
+        std::vector<std::function<void()>> mutations = m_mutations.drain();
+        for (std::function<void()>& mutation : mutations)
+        {
+            mutation();
+        }
     }
 
     void Scene::open(const FileSystem::Path& inFilepath)
@@ -202,6 +243,13 @@ namespace Chicane
 
     void Scene::clearSerializable()
     {
+        if (!ownsObjects())
+        {
+            runOnOwner([this]() { clearSerializable(); });
+
+            return;
+        }
+
         std::vector<Component*> components = getComponents();
         for (Component* component : components)
         {
@@ -291,7 +339,12 @@ namespace Chicane
             return nullptr;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            runOnOwner([this, inActor]() { adoptActor(inActor); });
+
+            return inActor;
+        }
 
         std::unordered_map<std::type_index, std::vector<Actor*>>::mapped_type& typed =
             m_actors[std::type_index(typeid(*inActor))];
@@ -320,7 +373,12 @@ namespace Chicane
             return nullptr;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            runOnOwner([this, inComponent]() { adoptComponent(inComponent); });
+
+            return inComponent;
+        }
 
         std::unordered_map<std::type_index, std::vector<Component*>>::mapped_type& typed =
             m_components[std::type_index(typeid(*inComponent))];
@@ -393,9 +451,20 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            const std::type_index type(typeid(*inActor));
+            runOnOwner([this, inActor, type]() { unlinkActor(inActor, type); });
 
-        auto typed = m_actors.find(std::type_index(typeid(*inActor)));
+            return;
+        }
+
+        unlinkActor(inActor, std::type_index(typeid(*inActor)));
+    }
+
+    void Scene::unlinkActor(Actor* inActor, const std::type_index& inType)
+    {
+        auto typed = m_actors.find(inType);
         if (typed == m_actors.end())
         {
             return;
@@ -476,9 +545,20 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            const std::type_index type(typeid(*inComponent));
+            runOnOwner([this, inComponent, type]() { unlinkComponent(inComponent, type); });
 
-        auto typed = m_components.find(std::type_index(typeid(*inComponent)));
+            return;
+        }
+
+        unlinkComponent(inComponent, std::type_index(typeid(*inComponent)));
+    }
+
+    void Scene::unlinkComponent(Component* inComponent, const std::type_index& inType)
+    {
+        auto typed = m_components.find(inType);
         if (typed == m_components.end())
         {
             return;
@@ -717,7 +797,12 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            runOnOwner([this, inObject]() { updateSpatial(inObject); });
+
+            return;
+        }
 
         std::vector<std::uint64_t> keys;
         collectCellKeys(inObject, keys);
@@ -758,7 +843,12 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+        if (!ownsObjects())
+        {
+            runOnOwner([this, inObject]() { removeSpatial(inObject); });
+
+            return;
+        }
 
         auto found = m_objectCells.find(inObject);
         if (found == m_objectCells.end())

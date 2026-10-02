@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <mutex>
 
+#include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Time.hpp"
 
@@ -14,8 +14,23 @@ namespace Chicane
     {
         namespace Debug
         {
-            static Trace::List g_traces      = {};
-            static std::mutex  g_tracesMutex = {};
+            enum class TraceCommandKind : std::uint8_t
+            {
+                Push,
+                Prune
+            };
+
+            struct TraceCommand
+            {
+            public:
+                TraceCommandKind kind            = TraceCommandKind::Push;
+                Vertex::List     vertices        = {};
+                float            duration        = 0.0f;
+                bool             bExpireOneFrame = false;
+            };
+
+            static Mailbox<TraceCommand> g_commands;
+            static Trace::List           g_traces = {};
 
             static Vec3 toWorld(const Vec3& inCenter, const QuatFloat& inRotation, const Vec3& inLocal)
             {
@@ -54,23 +69,8 @@ namespace Chicane
                 );
             }
 
-            Vertex::List getVertices()
+            static void applyPush(Vertex::List inVertices, float inDuration)
             {
-                std::lock_guard<std::mutex> lock(g_tracesMutex);
-                pruneLocked(false);
-
-                Vertex::List result;
-                for (const Trace& trace : g_traces)
-                {
-                    result.insert(result.end(), trace.vertices.begin(), trace.vertices.end());
-                }
-
-                return result;
-            }
-
-            void push(const Vertex::List& inVertices, float inDuration)
-            {
-                std::lock_guard<std::mutex> lock(g_tracesMutex);
                 pruneLocked(false);
 
                 if (inDuration < 0.0f)
@@ -90,7 +90,7 @@ namespace Chicane
                     }
 
                     Trace trace;
-                    trace.vertices      = inVertices;
+                    trace.vertices      = std::move(inVertices);
                     trace.bIsPersistant = true;
                     g_traces.push_back(std::move(trace));
 
@@ -108,7 +108,7 @@ namespace Chicane
                 }
 
                 Trace trace;
-                trace.vertices = inVertices;
+                trace.vertices = std::move(inVertices);
 
                 const bool bDurationNonPositive = static_cast<bool>(inDuration <= 0.0f);
 
@@ -125,10 +125,44 @@ namespace Chicane
                 g_traces.push_back(std::move(trace));
             }
 
+            static void applyCommands()
+            {
+                for (TraceCommand& command : g_commands.drain())
+                {
+                    if (command.kind == TraceCommandKind::Prune)
+                    {
+                        pruneLocked(command.bExpireOneFrame);
+
+                        continue;
+                    }
+
+                    applyPush(std::move(command.vertices), command.duration);
+                }
+            }
+
+            Vertex::List getVertices()
+            {
+                applyCommands();
+                pruneLocked(false);
+
+                Vertex::List result;
+                for (const Trace& trace : g_traces)
+                {
+                    result.insert(result.end(), trace.vertices.begin(), trace.vertices.end());
+                }
+
+                return result;
+            }
+
+            void push(const Vertex::List& inVertices, float inDuration)
+            {
+                g_commands.push({TraceCommandKind::Push, inVertices, inDuration, false});
+            }
+
             void prune(bool bInWillExpireOneFrame)
             {
-                std::lock_guard<std::mutex> lock(g_tracesMutex);
-                pruneLocked(bInWillExpireOneFrame);
+                g_commands.push({TraceCommandKind::Prune, {}, 0.0f, bInWillExpireOneFrame});
+                applyCommands();
             }
 
             constexpr int SWEEP_RINGS = 4;

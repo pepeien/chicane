@@ -171,7 +171,7 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
     {
     case Chicane::Input::GamepadAxis::LeftX:
     case Chicane::Input::GamepadAxis::LeftY: {
-        const float value  = std::abs(inEvent.value) <= GAMEPAD_DEADZONE ? 0.0f : inEvent.value;
+        const float value      = std::abs(inEvent.value) <= GAMEPAD_DEADZONE ? 0.0f : inEvent.value;
         const bool  bAxisLeftY = static_cast<bool>(inEvent.axis == Chicane::Input::GamepadAxis::LeftY);
 
         if (bAxisLeftY)

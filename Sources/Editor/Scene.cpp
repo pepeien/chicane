@@ -1,5 +1,6 @@
 #include "Editor/Scene.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -28,7 +29,7 @@ namespace Editor
 {
     static constexpr inline const char* CAMERA_HELPER_MESH = "Assets/Editor/Meshes/Camera.bmsh";
     static constexpr inline const char* LIGHT_HELPER_MESH  = "Assets/Editor/Meshes/Gizmo/Arrow.bmsh";
-    static constexpr inline float       LIGHT_HELPER_SCALE = 0.125f;
+    static constexpr inline const float LIGHT_HELPER_SCALE = 0.125f;
 
     Scene::Scene()
         : Chicane::Scene(),
@@ -36,7 +37,9 @@ namespace Editor
           m_selected(nullptr),
           m_helperSubscription({}),
           m_helpers({}),
-          m_bSyncingHelpers(false)
+          m_outlined({}),
+          m_bSyncingHelpers(false),
+          m_bSelectionUsesHelpers(false)
     {}
 
     Scene::~Scene()
@@ -52,7 +55,7 @@ namespace Editor
         spawnLights();
         spawnCharacter();
         spawnGizmo();
-        open(DEFAULT_TRACK);
+        open(DEFAULT_SCRIPT);
     }
 
     void Scene::onTick(float inDeltaTime)
@@ -90,35 +93,136 @@ namespace Editor
         }
 
         m_selected = inItem;
-        syncHelpers();
 
-        for (Chicane::CMesh* mesh : getComponents<Chicane::CMesh>())
+        if (!ownsObjects())
         {
-            bool bSelected = inItem != nullptr && (mesh == inItem || mesh->getParent() == inItem);
-            if (!bSelected && inItem)
-            {
-                for (auto& [target, helper] : m_helpers)
-                {
-                    if (helper.mesh != mesh)
-                    {
-                        continue;
-                    }
+            runOnOwner([this]() { applySelection(); });
 
-                    bSelected = helperBelongsTo(target, inItem);
-
-                    break;
-                }
-            }
-
-            mesh->setIsOutlined(bSelected);
+            return;
         }
+
+        applySelection();
+    }
+
+    void Scene::applySelection()
+    {
+        const bool bUsesHelpers = selectionUsesHelpers(m_selected);
+        if (m_bSelectionUsesHelpers || bUsesHelpers)
+        {
+            syncHelpers();
+        }
+
+        m_bSelectionUsesHelpers = bUsesHelpers;
+        updateSelectionOutline();
 
         if (!m_gizmo)
         {
             return;
         }
 
-        m_gizmo->setTarget(inItem);
+        m_gizmo->setTarget(m_selected);
+    }
+
+    void Scene::updateSelectionOutline()
+    {
+        std::vector<Chicane::CMesh*> next;
+        collectSelectionMeshes(m_selected, next);
+
+        const std::vector<Chicane::CMesh*> live = getComponents<Chicane::CMesh>();
+
+        for (Chicane::CMesh* mesh : m_outlined)
+        {
+            const bool bLive = mesh && std::find(live.begin(), live.end(), mesh) != live.end();
+            if (!bLive)
+            {
+                continue;
+            }
+
+            if (std::find(next.begin(), next.end(), mesh) != next.end())
+            {
+                continue;
+            }
+
+            mesh->setIsOutlined(false);
+        }
+
+        for (Chicane::CMesh* mesh : next)
+        {
+            if (!mesh)
+            {
+                continue;
+            }
+
+            mesh->setIsOutlined(true);
+        }
+
+        m_outlined = std::move(next);
+    }
+
+    void Scene::collectSelectionMeshes(Chicane::Object* inItem, std::vector<Chicane::CMesh*>& outMeshes) const
+    {
+        if (!inItem)
+        {
+            return;
+        }
+
+        auto add = [&outMeshes](Chicane::CMesh* inMesh)
+        {
+            if (!inMesh)
+            {
+                return;
+            }
+
+            if (std::find(outMeshes.begin(), outMeshes.end(), inMesh) != outMeshes.end())
+            {
+                return;
+            }
+
+            outMeshes.push_back(inMesh);
+        };
+
+        add(dynamic_cast<Chicane::CMesh*>(inItem));
+
+        for (Chicane::Object* child : inItem->getAttachments())
+        {
+            add(dynamic_cast<Chicane::CMesh*>(child));
+        }
+
+        for (const auto& [target, helper] : m_helpers)
+        {
+            if (!helper.mesh || !helperBelongsTo(target, inItem))
+            {
+                continue;
+            }
+
+            add(helper.mesh);
+        }
+    }
+
+    bool Scene::selectionUsesHelpers(const Chicane::Object* inItem) const
+    {
+        if (!inItem)
+        {
+            return false;
+        }
+
+        for (Chicane::CCamera* camera : getComponents<Chicane::CCamera>())
+        {
+            if (camera && helperBelongsTo(camera, inItem))
+            {
+                return true;
+            }
+        }
+
+        for (Chicane::CLight* light : getComponents<Chicane::CLight>())
+        {
+            if (light && helperBelongsTo(light, inItem))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Gizmo* Scene::getGizmo() const
@@ -188,6 +292,13 @@ namespace Editor
             return;
         }
 
+        if (!ownsObjects())
+        {
+            runOnOwner([this, inObject]() { destroyObjectTree(inObject); });
+
+            return;
+        }
+
         const std::vector<Chicane::Object*> attachments = inObject->getAttachments();
         for (Chicane::Object* child : attachments)
         {
@@ -213,6 +324,13 @@ namespace Editor
 
     void Scene::syncHelpers()
     {
+        if (!ownsObjects())
+        {
+            runOnOwner([this]() { syncHelpers(); });
+
+            return;
+        }
+
         if (m_bSyncingHelpers)
         {
             return;

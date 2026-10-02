@@ -15,13 +15,12 @@
 #include "Chicane/Grid/Component.hpp"
 #include "Chicane/Grid/Component/Container.hpp"
 #include "Chicane/Grid/Component/View/InputQueue.hpp"
+#include "Chicane/Grid/Route.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class ViewScript;
-
         CH_TYPE(Manual)
         class CHICANE_GRID View : public Container
         {
@@ -59,7 +58,11 @@ namespace Chicane
             void receive(const String& inName, const String& inData);
             void pumpEvents();
             bool callLuaGlobal(const String& inName, const std::vector<String>& inArgs = {});
-            void loadViewScript(const FileSystem::Path& inTemplate);
+
+            void addRoute(const Route& inRoute);
+            void navigate(const String& inPath);
+            const String& getRoute() const;
+            const Route* findRoute(const String& inPath) const;
 
             // Hierarchy
             std::vector<Component*> getChildrenAt(const Vec2& inLocation) const;
@@ -88,6 +91,8 @@ namespace Chicane
         protected:
             // Routing
             String                          m_path;
+            String                          m_route;
+            std::vector<Route>              m_routes;
 
             // Interaction
             Component*                      m_hovered;
@@ -100,7 +105,6 @@ namespace Chicane
 
             // Script
             Script::Bus                     m_bus;
-            std::unique_ptr<ViewScript>     m_viewScript;
         };
     }
 }

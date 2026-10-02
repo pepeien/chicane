@@ -113,7 +113,8 @@ namespace Chicane
             if (!bStencilNone)
             {
                 glEnable(GL_STENCIL_TEST);
-                const bool bStencilWriteReplace = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
+                const bool bStencilWriteReplace =
+                    static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
 
                 if (bStencilWriteReplace)
                 {
@@ -146,7 +147,7 @@ namespace Chicane
                     if (sampler)
                     {
                         GLenum     minFilter = GL_LINEAR;
-                        const bool bMip    = static_cast<bool>(sampler->createInfo.bHasMip);
+                        const bool bMip      = static_cast<bool>(sampler->createInfo.bHasMip);
 
                         if (bMip)
                         {
@@ -155,7 +156,8 @@ namespace Chicane
                                             : GL_LINEAR_MIPMAP_LINEAR;
                         }
 
-                        const bool bMinFilterNearest = !bMip && (sampler->createInfo.minFilter == RHI::SamplerFilter::Nearest);
+                        const bool bMinFilterNearest =
+                            !bMip && (sampler->createInfo.minFilter == RHI::SamplerFilter::Nearest);
 
                         if (bMinFilterNearest)
                         {
@@ -202,7 +204,7 @@ namespace Chicane
             if (inCreateInfo.bHasColor)
             {
                 Renderer::OpenGLRHIImageData* color = static_cast<OpenGLRHIImageData*>(inCreateInfo.color.image.handle);
-                const bool                    bNotHasColorOrFbo = static_cast<bool>(!color || (!color->texture && !color->fbo));
+                const bool bNotHasColorOrFbo        = static_cast<bool>(!color || (!color->texture && !color->fbo));
 
                 if (bNotHasColorOrFbo)
                 {

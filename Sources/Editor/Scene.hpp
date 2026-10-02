@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 
 #include <Chicane/Core/Event/Subscription.hpp>
 #include <Chicane/Core/FileSystem.hpp>
@@ -18,7 +19,7 @@ namespace Editor
     class Scene : public Chicane::Scene
     {
     public:
-        static constexpr inline const char* DEFAULT_TRACK = "Assets/Editor/Levels/Default.track";
+        static constexpr inline const char* DEFAULT_SCRIPT = "Assets/Editor/Scenes/Default.track";
 
     public:
         Scene();
@@ -48,6 +49,10 @@ namespace Editor
 
     private:
         void destroyObjectTree(Chicane::Object* inObject);
+        void applySelection();
+        void updateSelectionOutline();
+        void collectSelectionMeshes(Chicane::Object* inItem, std::vector<Chicane::CMesh*>& outMeshes) const;
+        bool selectionUsesHelpers(const Chicane::Object* inItem) const;
 
         void syncHelpers();
         void poseHelper(Chicane::Object* inTarget);
@@ -68,6 +73,8 @@ namespace Editor
 
         ComponentsSubscription                            m_helperSubscription;
         std::unordered_map<Chicane::Object*, SceneHelper> m_helpers;
+        std::vector<Chicane::CMesh*>                      m_outlined;
         bool                                              m_bSyncingHelpers;
+        bool                                              m_bSelectionUsesHelpers;
     };
 }

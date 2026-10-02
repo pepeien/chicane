@@ -635,7 +635,7 @@ namespace Chicane
             float      channel = m_floats[i];
             if (!bAlpha)
             {
-                channel           = channel / (1.0f + std::max(channel, 0.0f));
+                channel                         = channel / (1.0f + std::max(channel, 0.0f));
                 const bool bChannelAtMost0p0031 = static_cast<bool>(channel <= 0.0031308f);
 
                 if (bChannelAtMost0p0031)

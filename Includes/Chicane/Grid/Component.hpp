@@ -43,6 +43,8 @@ namespace Chicane
 {
     namespace Grid
     {
+        class ViewScript;
+
         CH_TYPE(Manual)
         class CHICANE_GRID Component : public Animatable, public Serializable
         {
@@ -149,12 +151,6 @@ namespace Chicane
             CH_FUNCTION()
             void addClassName(const String& inValue);
 
-            template <typename T, typename... Args>
-            inline void addClassName(T inFirst, Args... inRest)
-            {
-                classList.add(inFirst, inRest...);
-            }
-
         public:
             // Checkers
             bool isRoot() const;
@@ -200,6 +196,12 @@ namespace Chicane
             ClassList& getClassList();
             const ClassList& getClassList() const;
             void setClassList(const ClassList& inValue);
+
+            template <typename T, typename... Args>
+            inline void addClassName(T inFirst, Args... inRest)
+            {
+                classList.add(inFirst, inRest...);
+            }
 
             // Directive
             void refreshDirectives();
@@ -368,6 +370,11 @@ namespace Chicane
             }
 
             void load(const FileSystem::Path& inTemplate, const FileSystem::Path& inStyle = {});
+
+            void loadScript(const FileSystem::Path& inTemplate);
+            bool callScript(const String& inName, const std::vector<String>& inArgs = {}) const;
+            void releaseScript();
+
             void addProjectedContent(const XmlNode& inSlot);
 
             void refreshClassName();
@@ -469,6 +476,9 @@ namespace Chicane
             std::vector<Component*>        m_forInstances;
             String                         m_forVariable;
             std::any                       m_forSource;
+
+            // Script
+            std::unique_ptr<ViewScript>    m_script;
         };
     }
 }

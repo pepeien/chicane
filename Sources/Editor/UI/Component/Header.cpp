@@ -1,7 +1,5 @@
 #include "Editor/UI/Component/Header.reflected.hpp"
 
-#include <mutex>
-
 #include <Chicane/Core/Input/Keyboard/Button.hpp>
 #include <Chicane/Core/Input/Keyboard/Event.hpp>
 #include <Chicane/Core/Input/Mouse/Button.hpp>
@@ -24,11 +22,7 @@ namespace Editor
           theme(Chicane::String::sEmpty()),
           viewportTabState(Chicane::String::sEmpty()),
           assetsTabState(Chicane::String::sEmpty()),
-          m_moveWindow(nullptr),
-          m_moveHitMutex(),
-          m_moveBounds({}),
-          m_moveControls({}),
-          m_moveOverlays({})
+          m_moveWindow(nullptr)
     {
         import <Logo>();
         import <HeaderMenu>();
@@ -239,27 +233,25 @@ namespace Editor
             }
         }
 
-        std::lock_guard<std::mutex> lock(m_moveHitMutex);
-        m_moveBounds   = bounds;
-        m_moveControls = std::move(controls);
-        m_moveOverlays = std::move(overlays);
+        const std::uint8_t published = m_moveHitIndex.load(std::memory_order_relaxed);
+        const std::uint8_t write     = static_cast<std::uint8_t>(1u - published);
+        m_moveHits[write].bounds     = bounds;
+        m_moveHits[write].controls   = std::move(controls);
+        m_moveHits[write].overlays   = std::move(overlays);
+        m_moveHitIndex.store(write, std::memory_order_release);
     }
 
     bool Header::isMoveRegion(int inX, int inY) const
     {
-        std::unique_lock<std::mutex> lock(m_moveHitMutex, std::try_to_lock);
-        if (!lock.owns_lock())
-        {
-            return false;
-        }
+        const MoveHitSnapshot& hit = m_moveHits[m_moveHitIndex.load(std::memory_order_acquire)];
 
         const Chicane::Vec2 location(static_cast<float>(inX), static_cast<float>(inY));
-        if (m_moveBounds.isEmpty() || !m_moveBounds.contains(location))
+        if (hit.bounds.isEmpty() || !hit.bounds.contains(location))
         {
             return false;
         }
 
-        for (const Chicane::Bounds2D& box : m_moveControls)
+        for (const Chicane::Bounds2D& box : hit.controls)
         {
             if (box.contains(location))
             {
@@ -267,7 +259,7 @@ namespace Editor
             }
         }
 
-        for (const Chicane::Bounds2D& box : m_moveOverlays)
+        for (const Chicane::Bounds2D& box : hit.overlays)
         {
             if (box.contains(location))
             {

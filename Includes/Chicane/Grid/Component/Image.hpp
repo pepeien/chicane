@@ -26,8 +26,8 @@ namespace Chicane
             static constexpr inline const char* PLAYBACK_RATE_ATTRIBUTE_NAME = "playback-rate";
 
             // Values
-            static constexpr inline float       GIF_MAX_FPS      = 24.0f;
-            static constexpr inline float       GIF_MIN_FRAME_MS = 1000.0f / GIF_MAX_FPS;
+            static constexpr inline const float GIF_MAX_FPS      = 24.0f;
+            static constexpr inline const float GIF_MIN_FRAME_MS = 1000.0f / GIF_MAX_FPS;
 
         public:
             CH_CONSTRUCTOR()

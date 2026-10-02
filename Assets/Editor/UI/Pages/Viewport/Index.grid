@@ -1,0 +1,55 @@
+<Editor::Page::Viewport class="home__content">
+    <Window
+        class="view-preview"
+        title="View"
+        isOpen="{{ bIsViewPreviewOpen }}"
+        isGrabbable="true"
+        isResizable="true"
+        onClose="{{ onViewPreviewClose() }}"
+    >
+        <Viewport target="View" />
+    </Window>
+    <DockPanel isGrabbable="false">
+        <Editor::Toolbar
+            orientation="{{ orientation }}"
+            translateState="{{ translateState }}"
+            rotateState="{{ rotateState }}"
+            scaleState="{{ scaleState }}"
+            onTrackSave="{{ onTrackSave }}"
+            onGizmoTranslate="{{ onGizmoTranslate }}"
+            onGizmoRotate="{{ onGizmoRotate }}"
+            onGizmoScale="{{ onGizmoScale }}"
+            onSpawn="{{ onSpawn }}"
+        />
+        <Editor::Telemetry />
+        <Viewport
+            focusable="true"
+            onHover="{{ onViewportHover() }}"
+            onClick="{{ onViewportClick() }}"
+            onFocus="{{ onViewportFocus() }}"
+            onBlur="{{ onViewportBlur() }}"
+        />
+    </DockPanel>
+    <DockPanel side="left" size="15%" handle="outlinerHeader">
+        <Editor::Outliner
+            onItemSelection="{{ onItemSelection }}"
+            onItemToggle="{{ onItemToggle }}"
+            onItemEdit="{{ onItemEdit }}"
+            onItemIdInput="{{ onItemIdInput }}"
+            onItemIdCommit="{{ onItemIdCommit }}"
+        />
+    </DockPanel>
+    <DockPanel side="right" size="20%" handle="attributesHeader">
+        <Editor::Attributes
+            onAttributeCommit="{{ onAttributeCommit }}"
+        />
+    </DockPanel>
+    <DockPanel side="bottom" size="35%" handle="explorerHeader">
+        <Editor::Explorer
+            orientation="{{ orientation }}"
+            onFolder="{{ onExplorerFolder }}"
+            onAsset="{{ onExplorerAsset }}"
+            onAssetDrop="{{ onExplorerAssetDrop }}"
+        />
+    </DockPanel>
+</Editor::Page::Viewport>

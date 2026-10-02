@@ -102,7 +102,8 @@ namespace Chicane
                     depth++;
                 }
 
-                const bool bCharacterClosingAndDepthPositive = !bCharacterOpening && (character == METHOD_PARAMS_CLOSING && depth > 0);
+                const bool bCharacterClosingAndDepthPositive =
+                    !bCharacterOpening && (character == METHOD_PARAMS_CLOSING && depth > 0);
 
                 if (bCharacterClosingAndDepthPositive)
                 {

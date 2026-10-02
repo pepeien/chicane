@@ -25,7 +25,8 @@ namespace Chicane
         Count
     };
 
-    static constexpr inline std::uint8_t TEXTURE_MATERIAL_COUNT = static_cast<std::uint8_t>(TextureMaterial::Count);
+    static constexpr inline const std::uint8_t TEXTURE_MATERIAL_COUNT =
+        static_cast<std::uint8_t>(TextureMaterial::Count);
 
     CHICANE_CORE String toString(TextureMaterial inValue);
     CHICANE_CORE TextureMaterial toTextureMaterial(const String& inValue);

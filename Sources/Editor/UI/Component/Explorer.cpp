@@ -54,9 +54,9 @@ namespace Editor
     static constexpr inline const char* SELECTED = "selected";
 
     static constexpr inline const char* ICON_DEFAULT_SIZE            = "7em";
-    static constexpr inline float       ICON_DEFAULT_SIZE_PERCENTAGE = 40.0f;
-    static constexpr inline float       ICON_DEFAULT_SIZE_FACTOR     = 0.25f;
-    static constexpr inline float       DRAG_GHOST_THRESHOLD_PX      = 6.0f;
+    static constexpr inline const float ICON_DEFAULT_SIZE_PERCENTAGE = 40.0f;
+    static constexpr inline const float ICON_DEFAULT_SIZE_FACTOR     = 0.25f;
+    static constexpr inline const float DRAG_GHOST_THRESHOLD_PX      = 6.0f;
 
     Explorer::Explorer(const Chicane::XmlNode& inNode)
         : Chicane::Grid::Container(inNode),

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <mutex>
 #include <unordered_set>
 #include <vector>
 
@@ -9,6 +8,7 @@
 #include "Chicane/Box/Asset/Preview.hpp"
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Mailbox.hpp"
 
 namespace Chicane
 {
@@ -32,12 +32,19 @@ namespace Chicane
             void drain(std::vector<std::unique_ptr<AssetPreview>>& outReady);
 
         private:
+            struct Ready
+            {
+            public:
+                FileSystem::Path              path;
+                std::unique_ptr<AssetPreview> preview;
+            };
+
+        private:
             void finish(const FileSystem::Path& inFilePath, std::unique_ptr<AssetPreview> inPreview);
 
         private:
-            std::mutex                                 m_mutex;
-            std::unordered_set<FileSystem::Path>       m_inFlight;
-            std::vector<std::unique_ptr<AssetPreview>> m_ready;
+            std::unordered_set<FileSystem::Path> m_inFlight;
+            Mailbox<Ready>                       m_ready;
         };
     }
 }

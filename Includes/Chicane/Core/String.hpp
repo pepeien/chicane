@@ -20,7 +20,7 @@ namespace Chicane
     struct CHICANE_CORE String
     {
     public:
-        static constexpr inline std::size_t npos = std::string::npos;
+        static constexpr inline const std::size_t npos = std::string::npos;
 
     public:
         static inline const String& sEmpty()

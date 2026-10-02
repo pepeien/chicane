@@ -34,14 +34,14 @@ namespace Chicane
         static constexpr inline const char* ABSOLUTE_ROTATION_ATTRIBUTE_NAME    = "absoluteRotation";
         static constexpr inline const char* ABSOLUTE_SCALE_ATTRIBUTE_NAME       = "absoluteScale";
 
-        static constexpr inline float       DEFAULT_BOUNDS_SIZE = 1.0f;
+        static constexpr inline const float DEFAULT_BOUNDS_SIZE = 1.0f;
 
     public:
         Object();
         virtual ~Object();
 
     protected:
-        void beginRefresh() override;
+        bool beginRefresh() override;
         void endRefresh() override;
         void onRefresh() override;
         void onAttributeChange(const String& inName, const String& inValue) override;

@@ -21,16 +21,16 @@ namespace Chicane
     {
         namespace Debug
         {
-            static constexpr inline std::size_t TRACE_CAPACITY = 32;
+            static constexpr inline const std::size_t TRACE_CAPACITY = 32;
 
-            static inline const Vec4            MESH_COLOR           = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-            static inline const Vec4            BOUNDS_COLOR         = Vec4(1.0f, 0.75f, 0.2f, 1.0f);
-            static inline const Vec4            TRACE_COLOR          = Vec4(0.2f, 0.9f, 1.0f, 1.0f);
-            static inline const Vec4            COLLIDER_COLOR       = Vec4(0.3f, 1.0f, 0.4f, 1.0f);
-            static inline const Vec4            SKELETON_COLOR       = Vec4(0.0f, 0.82f, 1.0f, 1.0f);
-            static inline const Vec4            SKELETON_JOINT_COLOR = Vec4(0.35f, 0.95f, 1.0f, 1.0f);
+            static inline const Vec4                  MESH_COLOR           = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+            static inline const Vec4                  BOUNDS_COLOR         = Vec4(1.0f, 0.75f, 0.2f, 1.0f);
+            static inline const Vec4                  TRACE_COLOR          = Vec4(0.2f, 0.9f, 1.0f, 1.0f);
+            static inline const Vec4                  COLLIDER_COLOR       = Vec4(0.3f, 1.0f, 0.4f, 1.0f);
+            static inline const Vec4                  SKELETON_COLOR       = Vec4(0.0f, 0.82f, 1.0f, 1.0f);
+            static inline const Vec4                  SKELETON_JOINT_COLOR = Vec4(0.35f, 0.95f, 1.0f, 1.0f);
 
-            CHICANE_RENDERER                    Vertex::List getVertices();
+            CHICANE_RENDERER                          Vertex::List getVertices();
 
             CHICANE_RENDERER void push(const Vertex::List& inVertices, float inDuration = Trace::DEFAULT_DURATION);
             CHICANE_RENDERER void prune(bool bInWillExpireOneFrame = false);

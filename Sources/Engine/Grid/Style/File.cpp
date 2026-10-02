@@ -305,7 +305,8 @@ namespace Chicane
                         depth++;
                     }
 
-                    const bool bCharacterClosingAndDepthPositive = !bCharacterOpening && (character == Style::RULESET_CLOSING && depth > 0);
+                    const bool bCharacterClosingAndDepthPositive =
+                        !bCharacterOpening && (character == Style::RULESET_CLOSING && depth > 0);
 
                     if (bCharacterClosingAndDepthPositive)
                     {
@@ -398,7 +399,8 @@ namespace Chicane
 
                     String resolvedSelector;
 
-                    const bool bStartsSelectorInheritance = static_cast<bool>(trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE));
+                    const bool bStartsSelectorInheritance =
+                        static_cast<bool>(trimmedSelector.startsWith(Style::SELECTOR_INHERITANCE));
 
                     if (bStartsSelectorInheritance)
                     {
@@ -412,7 +414,8 @@ namespace Chicane
                                                                                      Style::SELECTOR_SEPARATOR_SPACE
                                                                                  );
 
-                        const bool bParentHasPseudoAndCompoundContinuation = static_cast<bool>(bParentHasPseudo && isCompoundContinuation);
+                        const bool bParentHasPseudoAndCompoundContinuation =
+                            static_cast<bool>(bParentHasPseudo && isCompoundContinuation);
 
                         if (bParentHasPseudoAndCompoundContinuation)
                         {

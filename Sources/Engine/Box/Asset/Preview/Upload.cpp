@@ -1,13 +1,12 @@
 #include "Chicane/Box/Asset/Preview/Upload.hpp"
 
-#include <mutex>
+#include "Chicane/Core/Mailbox.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        static std::mutex                 g_mutex   = {};
-        static std::vector<PreviewUpload> g_pending = {};
+        static Mailbox<PreviewUpload> g_pending;
 
         void PreviewUpload::sEnqueue(const String& inReference, const Image::Instance& inImage)
         {
@@ -16,14 +15,12 @@ namespace Chicane
                 return;
             }
 
-            std::lock_guard<std::mutex> lock(g_mutex);
-            g_pending.push_back({inReference, inImage});
+            g_pending.push({inReference, inImage});
         }
 
         void PreviewUpload::sDrain(std::vector<PreviewUpload>& outPending)
         {
-            std::lock_guard<std::mutex> lock(g_mutex);
-            outPending.swap(g_pending);
+            outPending = g_pending.drain();
         }
     }
 }

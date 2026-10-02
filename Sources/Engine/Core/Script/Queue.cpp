@@ -6,17 +6,12 @@ namespace Chicane
     {
         void Queue::push(Event inEvent)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_pending.push_back(std::move(inEvent));
+            m_pending.push(std::move(inEvent));
         }
 
         std::vector<Event> Queue::drain()
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            std::vector<Event>          pending = std::move(m_pending);
-            m_pending.clear();
-
-            return pending;
+            return m_pending.drain();
         }
     }
 }

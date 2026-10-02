@@ -14,14 +14,50 @@
 
 namespace Editor
 {
-    static constexpr inline const float ORBIT_SPEED     = 0.4f;
-    static constexpr inline const float PAN_SPEED       = 0.0025f;
-    static constexpr inline const float ZOOM_DRAG_SPEED = 0.01f;
-    static constexpr inline const float ZOOM_WHEEL      = 0.85f;
-    static constexpr inline const float MIN_DISTANCE    = 0.25f;
-    static constexpr inline const float MAX_DISTANCE    = 100000.0f;
-    static constexpr inline const float MIN_PITCH       = -89.0f;
-    static constexpr inline const float MAX_PITCH       = 89.0f;
+    static void viewBasis(
+        float inYaw, float inPitch, Chicane::Vec3& outRight, Chicane::Vec3& outUp, Chicane::Vec3& outForward
+    )
+    {
+        const Chicane::QuatFloat orientation =
+            Chicane::Rotator(0.0f, 0.0f, inYaw).get() * Chicane::Rotator(inPitch, 0.0f, 0.0f).get();
+        const Chicane::Rotator axes(orientation);
+
+        outRight   = axes.getRight().normalize();
+        outUp      = axes.getUp().normalize();
+        outForward = axes.getForward().normalize();
+    }
+
+    static constexpr std::uint8_t buttonBit(Chicane::Input::MouseButton inButton)
+    {
+        return static_cast<std::uint8_t>(1u << (static_cast<std::uint8_t>(inButton) - 1u));
+    }
+
+    static Chicane::Input::KeyboardButtonModifier modifierFrom(Chicane::Input::KeyboardButton inButton)
+    {
+        switch (inButton)
+        {
+        case Chicane::Input::KeyboardButton::LShift:
+            return Chicane::Input::KeyboardButtonModifier::LeftShift;
+
+        case Chicane::Input::KeyboardButton::RShift:
+            return Chicane::Input::KeyboardButtonModifier::RightShift;
+
+        case Chicane::Input::KeyboardButton::LCtrl:
+            return Chicane::Input::KeyboardButtonModifier::LeftCtrl;
+
+        case Chicane::Input::KeyboardButton::RCtrl:
+            return Chicane::Input::KeyboardButtonModifier::RightCtrl;
+
+        case Chicane::Input::KeyboardButton::LAlt:
+            return Chicane::Input::KeyboardButtonModifier::LeftAlt;
+
+        case Chicane::Input::KeyboardButton::RAlt:
+            return Chicane::Input::KeyboardButtonModifier::RightAlt;
+
+        default:
+            return Chicane::Input::KeyboardButtonModifier::None;
+        }
+    }
 
     Navigation::Navigation()
         : m_character(nullptr),
@@ -30,12 +66,8 @@ namespace Editor
           m_pitch(-40.0f),
           m_distance(Chicane::Box::AssetPreview::START_DISTANCE),
           m_pivot(Chicane::Vec3(0.0f, 0.0f, 0.45f)),
-          m_bShift(false),
-          m_bCtrl(false),
-          m_bAlt(false),
-          m_bMiddle(false),
-          m_bLeft(false),
-          m_bRight(false),
+          m_modifiers(Chicane::Input::KeyboardButtonModifier::None),
+          m_buttons(0),
           m_type(NavigationType::None)
     {}
 
@@ -114,7 +146,8 @@ namespace Editor
         m_pivot                    = inPivot;
         const Chicane::Vec3 offset = inPosition - inPivot;
         const float         horiz  = std::sqrt(offset.x * offset.x + offset.y * offset.y);
-        m_distance                 = std::sqrt(offset.dot(offset));
+
+        m_distance = std::sqrt(offset.dot(offset));
         if (m_distance < MIN_DISTANCE)
         {
             m_distance = MIN_DISTANCE;
@@ -173,22 +206,22 @@ namespace Editor
         switch (inButton)
         {
         case Chicane::Input::MouseButton::Left:
-            m_bLeft = bInIsHeld;
-
-            break;
-
         case Chicane::Input::MouseButton::Middle:
-            m_bMiddle = bInIsHeld;
-
-            break;
-
         case Chicane::Input::MouseButton::Right:
-            m_bRight = bInIsHeld;
-
             break;
 
         default:
             return;
+        }
+
+        const std::uint8_t bit = buttonBit(inButton);
+        if (bInIsHeld)
+        {
+            m_buttons |= bit;
+        }
+        else
+        {
+            m_buttons &= static_cast<std::uint8_t>(~bit);
         }
 
         if (bInIsHeld)
@@ -225,29 +258,16 @@ namespace Editor
 
     void Navigation::onModifierKey(Chicane::Input::KeyboardButton inButton, bool bInIsHeld)
     {
-        switch (inButton)
+        const Chicane::Input::KeyboardButtonModifier flag = modifierFrom(inButton);
+        if (flag == Chicane::Input::KeyboardButtonModifier::None)
         {
-        case Chicane::Input::KeyboardButton::LShift:
-        case Chicane::Input::KeyboardButton::RShift:
-            m_bShift = bInIsHeld;
-
-            break;
-
-        case Chicane::Input::KeyboardButton::LCtrl:
-        case Chicane::Input::KeyboardButton::RCtrl:
-            m_bCtrl = bInIsHeld;
-
-            break;
-
-        case Chicane::Input::KeyboardButton::LAlt:
-        case Chicane::Input::KeyboardButton::RAlt:
-            m_bAlt = bInIsHeld;
-
-            break;
-
-        default:
-            break;
+            return;
         }
+
+        const std::uint16_t bits = static_cast<std::uint16_t>(m_modifiers);
+        const std::uint16_t mask = static_cast<std::uint16_t>(flag);
+        const std::uint16_t next = bInIsHeld ? (bits | mask) : (bits & static_cast<std::uint16_t>(~mask));
+        m_modifiers              = static_cast<Chicane::Input::KeyboardButtonModifier>(next);
     }
 
     void Navigation::apply()
@@ -260,11 +280,35 @@ namespace Editor
         m_pitch    = std::clamp(m_pitch, MIN_PITCH, MAX_PITCH);
         m_distance = std::clamp(m_distance, MIN_DISTANCE, MAX_DISTANCE);
 
-        m_character->setAbsoluteRotation(0.0f, 0.0f, m_yaw);
-        m_camera->setRelativeRotation(m_pitch, 0.0f, 0.0f);
+        const float         yaw      = m_yaw;
+        const float         pitch    = m_pitch;
+        const float         distance = m_distance;
+        const Chicane::Vec3 pivot    = m_pivot;
 
-        const Chicane::Vec3 forward = m_camera->getForward().normalize();
-        m_character->setAbsoluteTranslation(m_pivot - forward * m_distance);
+        Chicane::ACharacter* character = m_character;
+        Chicane::CCamera*    camera    = m_camera;
+
+        const auto commit = [character, camera, yaw, pitch, distance, pivot]()
+        {
+            Chicane::Vec3 right;
+            Chicane::Vec3 up;
+            Chicane::Vec3 forward;
+            viewBasis(yaw, pitch, right, up, forward);
+
+            character->setAbsoluteRotation(0.0f, 0.0f, yaw);
+            camera->setRelativeRotation(pitch, 0.0f, 0.0f);
+            character->setAbsoluteTranslation(pivot - forward * distance);
+        };
+
+        const std::shared_ptr<Chicane::Scene> scene = Chicane::Instance::sInstance().getScene();
+        if (scene && !scene->ownsObjects())
+        {
+            scene->runOnOwner(commit);
+
+            return;
+        }
+
+        commit();
     }
 
     void Navigation::orbit(float inYaw, float inPitch)
@@ -282,10 +326,14 @@ namespace Editor
             return;
         }
 
-        const float         scale = m_distance * PAN_SPEED;
-        const Chicane::Vec3 delta =
-            m_camera->getRight().normalize() * (-inX * scale) + m_camera->getUp().normalize() * (inY * scale);
-        m_pivot += delta;
+        Chicane::Vec3 right   = Chicane::Vec3::sZero();
+        Chicane::Vec3 up      = Chicane::Vec3::sZero();
+        Chicane::Vec3 forward = Chicane::Vec3::sZero();
+        viewBasis(m_yaw, m_pitch, right, up, forward);
+
+        const float scale = m_distance * PAN_SPEED;
+        m_pivot += right * (-inX * scale) + up * (inY * scale);
+
         apply();
     }
 
@@ -312,23 +360,23 @@ namespace Editor
         {
             if (Gizmo* gizmo = scene->getGizmo())
             {
-                if (gizmo->isDragging() || (m_bLeft && gizmo->isHandleHovered()))
+                if (gizmo->isDragging() || (has(Chicane::Input::MouseButton::Left) && gizmo->isHandleHovered()))
                 {
                     return;
                 }
             }
         }
 
-        if (m_bMiddle)
+        if (has(Chicane::Input::MouseButton::Middle))
         {
-            if (m_bShift)
+            if (has(Chicane::Input::KeyboardButtonModifier::Shift))
             {
                 m_type = NavigationType::Pan;
 
                 return;
             }
 
-            if (m_bCtrl)
+            if (has(Chicane::Input::KeyboardButtonModifier::Ctrl))
             {
                 m_type = NavigationType::Zoom;
 
@@ -340,19 +388,19 @@ namespace Editor
             return;
         }
 
-        if (!m_bAlt)
+        if (!has(Chicane::Input::KeyboardButtonModifier::Alt))
         {
             return;
         }
 
-        if (m_bLeft)
+        if (has(Chicane::Input::MouseButton::Left))
         {
-            m_type = m_bShift ? NavigationType::Pan : NavigationType::Orbit;
+            m_type = has(Chicane::Input::KeyboardButtonModifier::Shift) ? NavigationType::Pan : NavigationType::Orbit;
 
             return;
         }
 
-        if (m_bRight)
+        if (has(Chicane::Input::MouseButton::Right))
         {
             m_type = NavigationType::Zoom;
         }
@@ -360,12 +408,28 @@ namespace Editor
 
     void Navigation::stop()
     {
-        if (m_bMiddle || (m_bAlt && (m_bLeft || m_bRight)))
+        const bool bMouseHeld = has(Chicane::Input::MouseButton::Middle) ||
+                                (has(Chicane::Input::KeyboardButtonModifier::Alt) &&
+                                 (has(Chicane::Input::MouseButton::Left) || has(Chicane::Input::MouseButton::Right)));
+        if (bMouseHeld)
         {
             return;
         }
 
         m_type = NavigationType::None;
+    }
+
+    bool Navigation::has(Chicane::Input::KeyboardButtonModifier inModifier) const
+    {
+        const std::uint16_t bits = static_cast<std::uint16_t>(m_modifiers);
+        const std::uint16_t mask = static_cast<std::uint16_t>(inModifier);
+
+        return (bits & mask) != 0;
+    }
+
+    bool Navigation::has(Chicane::Input::MouseButton inButton) const
+    {
+        return (m_buttons & buttonBit(inButton)) != 0;
     }
 
     bool Navigation::isViewportHovered() const
@@ -377,9 +441,10 @@ namespace Editor
         }
 
         std::unordered_set<const Chicane::Grid::Component*> visited;
-        std::vector<Chicane::Grid::Component*>              stack;
-        stack.push_back(view.get());
         visited.insert(view.get());
+
+        std::vector<Chicane::Grid::Component*> stack;
+        stack.push_back(view.get());
 
         while (!stack.empty())
         {

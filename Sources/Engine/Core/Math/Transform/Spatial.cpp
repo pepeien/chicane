@@ -53,7 +53,10 @@ namespace Chicane
 
     void SpatialTransform::refresh()
     {
-        beginRefresh();
+        if (!beginRefresh())
+        {
+            return;
+        }
 
         m_relative.syncMatrix();
         m_absolute.syncMatrix();

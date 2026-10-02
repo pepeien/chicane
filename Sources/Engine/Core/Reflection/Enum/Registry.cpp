@@ -26,7 +26,7 @@ namespace Chicane
             return &found->second;
         }
 
-        String     name   = inValue.trim();
+        String     name                 = inValue.trim();
         const bool bNameStartsEnumClass = static_cast<bool>(name.startsWith("enum class "));
 
         if (bNameStartsEnumClass)

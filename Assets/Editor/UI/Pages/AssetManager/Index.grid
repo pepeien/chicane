@@ -1,0 +1,25 @@
+<Editor::Page::AssetManager class="home__content">
+    <DockPanel isGrabbable="false" handle="assetManagerHeader">
+        <Editor::AssetManager
+            selectedFolderPath="{{ selectedFolderPath }}"
+            selectedAssetName="{{ selectedAssetName }}"
+        />
+    </DockPanel>
+    <DockPanel side="left" size="18%" handle="explorerHeader">
+        <Editor::Explorer
+            orientation="{{ orientation }}"
+            onFolder="{{ onExplorerFolder }}"
+            onAsset="{{ onExplorerAsset }}"
+            onAssetDrop="{{ onExplorerAssetDrop }}"
+        />
+    </DockPanel>
+    <DockPanel side="right" size="15%" handle="outlinerHeader">
+        <Editor::Outliner
+            onItemSelection="{{ onItemSelection }}"
+            onItemToggle="{{ onItemToggle }}"
+            onItemEdit="{{ onItemEdit }}"
+            onItemIdInput="{{ onItemIdInput }}"
+            onItemIdCommit="{{ onItemIdCommit }}"
+        />
+    </DockPanel>
+</Editor::Page::AssetManager>

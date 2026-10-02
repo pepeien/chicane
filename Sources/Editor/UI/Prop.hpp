@@ -169,22 +169,35 @@ namespace Editor
                 return;
             }
 
-            if (Chicane::Grid::View* view = findView(inComponent))
+            if constexpr (sizeof...(Args) == 0)
             {
-                if constexpr (sizeof...(Args) == 0)
+                for (Chicane::Grid::Component* node = inComponent; node != nullptr; node = node->getParent())
                 {
-                    if (view->callLuaGlobal(name))
+                    if (node->callScript(name))
                     {
                         return;
                     }
-                }
 
-                if constexpr (sizeof...(Args) != 0 && (std::is_same_v<std::decay_t<Args>, Chicane::String> && ...))
+                    if (node->isRoot())
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if constexpr (sizeof...(Args) != 0 && (std::is_same_v<std::decay_t<Args>, Chicane::String> && ...))
+            {
+                const std::vector<Chicane::String> args{inArgs...};
+                for (Chicane::Grid::Component* node = inComponent; node != nullptr; node = node->getParent())
                 {
-                    const std::vector<Chicane::String> args{inArgs...};
-                    if (view->callLuaGlobal(name, args))
+                    if (node->callScript(name, args))
                     {
                         return;
+                    }
+
+                    if (node->isRoot())
+                    {
+                        break;
                     }
                 }
             }

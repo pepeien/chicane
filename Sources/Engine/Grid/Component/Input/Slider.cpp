@@ -178,8 +178,8 @@ namespace Chicane
                 std::swap(min, max);
             }
 
-            const String raw    = getAttribute(VALUE_ATTRIBUTE_NAME);
-            const bool   bRawEmptyAndReference = static_cast<bool>(!raw.isEmpty() && (isReference(raw) || !m_bIsEdited));
+            const String raw                 = getAttribute(VALUE_ATTRIBUTE_NAME);
+            const bool bRawEmptyAndReference = static_cast<bool>(!raw.isEmpty() && (isReference(raw) || !m_bIsEdited));
 
             if (bRawEmptyAndReference)
             {

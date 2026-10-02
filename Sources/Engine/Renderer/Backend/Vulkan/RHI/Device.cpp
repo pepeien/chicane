@@ -104,12 +104,12 @@ namespace Chicane
             data->bOwned                        = true;
 
             VulkanBufferCreateInfo info;
-            info.logicalDevice  = m_backend->logicalDevice;
-            info.physicalDevice = m_backend->physicalDevice;
-            info.allocator      = &m_backend->allocator;
-            info.size           = inCreateInfo.size;
-            info.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc;
-            const bool bUsageVertex   = static_cast<bool>(inCreateInfo.usage == RHI::BufferUsage::Vertex);
+            info.logicalDevice      = m_backend->logicalDevice;
+            info.physicalDevice     = m_backend->physicalDevice;
+            info.allocator          = &m_backend->allocator;
+            info.size               = inCreateInfo.size;
+            info.usage              = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eTransferSrc;
+            const bool bUsageVertex = static_cast<bool>(inCreateInfo.usage == RHI::BufferUsage::Vertex);
 
             if (bUsageVertex)
             {
@@ -123,7 +123,8 @@ namespace Chicane
                 info.usage |= vk::BufferUsageFlagBits::eIndexBuffer;
             }
 
-            const bool bUsageUniform = !bUsageVertex && !bUsageIndex && (inCreateInfo.usage == RHI::BufferUsage::Uniform);
+            const bool bUsageUniform =
+                !bUsageVertex && !bUsageIndex && (inCreateInfo.usage == RHI::BufferUsage::Uniform);
 
             if (bUsageUniform)
             {
@@ -200,7 +201,8 @@ namespace Chicane
 
                 VulkanBuffer grown;
                 grown.init(info);
-                const bool bHostAndMappedAndSizePositive = static_cast<bool>(data->bHost && data->mapped && data->size > 0);
+                const bool bHostAndMappedAndSizePositive =
+                    static_cast<bool>(data->bHost && data->mapped && data->size > 0);
 
                 if (bHostAndMappedAndSizePositive)
                 {
@@ -286,7 +288,7 @@ namespace Chicane
             viewCreateInfo.mipLevels     = inCreateInfo.mipLevels;
             viewCreateInfo.format        = data->info.format;
             viewCreateInfo.logicalDevice = m_backend->logicalDevice;
-            const bool bKindCube            = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
+            const bool bKindCube         = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
 
             if (bKindCube)
             {
@@ -302,7 +304,8 @@ namespace Chicane
                 viewCreateInfo.aspect = vk::ImageAspectFlagBits::eDepth;
             }
 
-            const bool bKindDepth2D = !bKindCube && !bKindDepth2DArray && (inCreateInfo.kind == RHI::ImageKind::Depth2D);
+            const bool bKindDepth2D =
+                !bKindCube && !bKindDepth2DArray && (inCreateInfo.kind == RHI::ImageKind::Depth2D);
 
             if (bKindDepth2D)
             {
@@ -486,7 +489,8 @@ namespace Chicane
                 inCreateInfo.magFilter == RHI::SamplerFilter::Nearest ? vk::Filter::eNearest : vk::Filter::eLinear;
             info.mipmapMode   = inCreateInfo.bHasMip ? vk::SamplerMipmapMode::eLinear : vk::SamplerMipmapMode::eNearest;
             info.addressModeU = vk::SamplerAddressMode::eClampToEdge;
-            const bool bAddressClampToBorder = static_cast<bool>(inCreateInfo.address == RHI::SamplerAddress::ClampToBorder);
+            const bool bAddressClampToBorder =
+                static_cast<bool>(inCreateInfo.address == RHI::SamplerAddress::ClampToBorder);
 
             if (bAddressClampToBorder)
             {
@@ -532,8 +536,8 @@ namespace Chicane
             for (const RHI::Binding& binding : inCreateInfo.bindings)
             {
                 bidings.indices.push_back(binding.binding);
-                vk::DescriptorType type   = vk::DescriptorType::eUniformBuffer;
-                const bool         bTypeStorageBuffer = static_cast<bool>(binding.type == RHI::BindingType::StorageBuffer);
+                vk::DescriptorType type       = vk::DescriptorType::eUniformBuffer;
+                const bool bTypeStorageBuffer = static_cast<bool>(binding.type == RHI::BindingType::StorageBuffer);
 
                 if (bTypeStorageBuffer)
                 {
@@ -753,10 +757,10 @@ namespace Chicane
             }
 
             vk::PipelineDepthStencilStateCreateInfo depth;
-            depth.depthTestEnable  = inCreateInfo.bHasDepthTest;
-            depth.depthWriteEnable = inCreateInfo.bHasDepthWrite;
-            depth.depthCompareOp   = toVkCompare(inCreateInfo.depthCompare);
-            const bool bStencilWriteReplace     = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
+            depth.depthTestEnable           = inCreateInfo.bHasDepthTest;
+            depth.depthWriteEnable          = inCreateInfo.bHasDepthWrite;
+            depth.depthCompareOp            = toVkCompare(inCreateInfo.depthCompare);
+            const bool bStencilWriteReplace = static_cast<bool>(inCreateInfo.stencil == RHI::StencilMode::WriteReplace);
 
             if (bStencilWriteReplace)
             {
@@ -773,7 +777,8 @@ namespace Chicane
                 depth.back              = stencil;
             }
 
-            const bool bStencilTestNotEqual = !bStencilWriteReplace && (inCreateInfo.stencil == RHI::StencilMode::TestNotEqual);
+            const bool bStencilTestNotEqual =
+                !bStencilWriteReplace && (inCreateInfo.stencil == RHI::StencilMode::TestNotEqual);
 
             if (bStencilTestNotEqual)
             {
@@ -819,14 +824,16 @@ namespace Chicane
             }
 
             vk::PipelineInputAssemblyStateCreateInfo assembly = VulkanGraphicsPipeline::sCreateInputAssemblyState();
-            const bool bTopologyTriangleStrip = static_cast<bool>(inCreateInfo.topology == RHI::PrimitiveTopology::TriangleStrip);
+            const bool                               bTopologyTriangleStrip =
+                static_cast<bool>(inCreateInfo.topology == RHI::PrimitiveTopology::TriangleStrip);
 
             if (bTopologyTriangleStrip)
             {
                 assembly.topology = vk::PrimitiveTopology::eTriangleStrip;
             }
 
-            const bool bTopologyLineList = !bTopologyTriangleStrip && (inCreateInfo.topology == RHI::PrimitiveTopology::LineList);
+            const bool bTopologyLineList =
+                !bTopologyTriangleStrip && (inCreateInfo.topology == RHI::PrimitiveTopology::LineList);
 
             if (bTopologyLineList)
             {

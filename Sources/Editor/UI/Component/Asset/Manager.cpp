@@ -2,7 +2,6 @@
 
 #include <exception>
 #include <iostream>
-#include <mutex>
 #include <vector>
 
 #include <Chicane/Box/Asset.hpp>
@@ -17,6 +16,7 @@
 #include <Chicane/Box/Sound.hpp>
 #include <Chicane/Box/Texture.hpp>
 #include <Chicane/Core/FileSystem/File/Dialog.hpp>
+#include <Chicane/Core/Mailbox.hpp>
 #include <Chicane/Core/FileSystem/Item/Type.hpp>
 #include <Chicane/Core/Worker/Pool.hpp>
 
@@ -27,18 +27,30 @@
 
 namespace Editor
 {
-    static std::mutex                             g_importMutex;
-    static std::vector<Chicane::FileSystem::Path> g_imported;
-    static std::vector<Chicane::String>           g_importErrors;
+    struct ImportNotice
+    {
+    public:
+        bool                      bError = false;
+        Chicane::FileSystem::Path path;
+        Chicane::String           message;
+    };
+
+    static Chicane::Mailbox<ImportNotice> g_imports;
 
     static void applyImported(AssetManager& outManager)
     {
         std::vector<Chicane::FileSystem::Path> imported;
         std::vector<Chicane::String>           errors;
+        for (ImportNotice& notice : g_imports.drain())
         {
-            std::lock_guard<std::mutex> lock(g_importMutex);
-            imported.swap(g_imported);
-            errors.swap(g_importErrors);
+            if (notice.bError)
+            {
+                errors.push_back(std::move(notice.message));
+
+                continue;
+            }
+
+            imported.push_back(std::move(notice.path));
         }
 
         for (const Chicane::String& error : errors)
@@ -211,18 +223,15 @@ namespace Editor
                             try
                             {
                                 const Chicane::Box::ImportResult result = Chicane::Box::importSource(source);
-                                std::lock_guard<std::mutex>      lock(g_importMutex);
-                                g_imported.push_back(result.primary);
+                                g_imports.push({false, result.primary, {}});
                             }
                             catch (const std::exception& exception)
                             {
-                                std::lock_guard<std::mutex> lock(g_importMutex);
-                                g_importErrors.push_back(exception.what());
+                                g_imports.push({true, {}, exception.what()});
                             }
                             catch (...)
                             {
-                                std::lock_guard<std::mutex> lock(g_importMutex);
-                                g_importErrors.push_back("Import failed");
+                                g_imports.push({true, {}, "Import failed"});
                             }
                         }
                     );
@@ -378,9 +387,9 @@ namespace Editor
         assetId   = asset.getId();
         assetType = Chicane::toString(asset.getType());
 
-        const Chicane::String payload     = asset.getPayload();
-        constexpr std::size_t sourceLimit = 4096;
-        const bool            bSizeSourceLimit      = static_cast<bool>(payload.size() > sourceLimit);
+        const Chicane::String payload          = asset.getPayload();
+        constexpr std::size_t sourceLimit      = 4096;
+        const bool            bSizeSourceLimit = static_cast<bool>(payload.size() > sourceLimit);
 
         if (bSizeSourceLimit)
         {

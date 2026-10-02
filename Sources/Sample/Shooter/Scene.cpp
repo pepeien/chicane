@@ -13,7 +13,7 @@ static constexpr inline const std::uint32_t APPLE_DEPTH_COUNT   = 2;
 static constexpr inline const std::uint32_t APPLE_COLUMN_COUNT  = 5;
 static constexpr inline const std::uint32_t APPLE_ROW_COUNT     = 2;
 static constexpr inline const float         APPLE_STEP          = 20.0f;
-static constexpr inline float               WORLD_GRAVITY_SCALE = 10.0f;
+static constexpr inline const float         WORLD_GRAVITY_SCALE = 10.0f;
 
 Scene::Scene()
     : Chicane::Scene()
@@ -25,7 +25,7 @@ void Scene::onLoad()
         Chicane::Kerb::Gravity::sDown(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
     );
 
-    open(DEFAULT_TRACK);
+    open(DEFAULT_SCRIPT);
 
     spawnApples();
 }

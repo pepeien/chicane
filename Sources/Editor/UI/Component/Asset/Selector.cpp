@@ -43,7 +43,7 @@ namespace Editor
         dialog.bCanSelectMany = false;
         dialog.title          = "Select " + typeLabel();
 
-        const Chicane::Box::AssetType type   = assetType();
+        const Chicane::Box::AssetType type           = assetType();
         const bool                    bTypeUndefined = static_cast<bool>(type == Chicane::Box::AssetType::Undefined);
 
         if (bTypeUndefined)

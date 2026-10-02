@@ -1,10 +1,11 @@
 #pragma once
 
 #include <algorithm>
+#include <atomic>
 #include <cstdint>
 #include <functional>
 #include <memory>
-#include <mutex>
+#include <thread>
 #include <type_traits>
 #include <typeindex>
 #include <unordered_map>
@@ -12,6 +13,7 @@
 #include <vector>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Script/Bus.hpp"
@@ -58,6 +60,10 @@ namespace Chicane
         void unload();
 
         void tick(float inDeltaTime);
+
+        void claim();
+        bool ownsObjects() const;
+        void runOnOwner(std::function<void()> inWork);
 
         std::uint64_t subscribe(const String& inName, std::function<void(const String&)> inCallback);
         void unsubscribe(std::uint64_t inToken);
@@ -131,28 +137,7 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            std::lock_guard<std::recursive_mutex>                                  lock(m_objectMutex);
-
-            std::unordered_map<std::type_index, std::vector<Actor*>>::mapped_type& typed =
-                m_actors[std::type_index(typeid(T))];
-            typed.push_back(new T(inParams...));
-
-            Actor* added = typed.back();
-            m_actorCount++;
-
-            attachObject(added, "Actor");
-
-            if (isLoaded())
-            {
-                added->onLoad();
-            }
-
-            if (!m_actorsObservable.isEmpty())
-            {
-                m_actorsObservable.next(getActors());
-            }
-
-            return static_cast<T*>(added);
+            return static_cast<T*>(adoptActor(new T(inParams...)));
         }
 
         void removeActor(Actor* inActor);
@@ -234,28 +219,7 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            std::lock_guard<std::recursive_mutex>                                      lock(m_objectMutex);
-
-            std::unordered_map<std::type_index, std::vector<Component*>>::mapped_type& typed =
-                m_components[std::type_index(typeid(T))];
-            typed.push_back(new T(inParams...));
-
-            Component* added = typed.back();
-            m_componentCount++;
-
-            attachObject(added, "Component");
-
-            if (isLoaded())
-            {
-                added->onLoad();
-            }
-
-            if (!m_componentsObservable.isEmpty())
-            {
-                m_componentsObservable.next(getComponents());
-            }
-
-            return static_cast<T*>(added);
+            return static_cast<T*>(adoptComponent(new T(inParams...)));
         }
 
         void removeComponent(Component* inComponent);
@@ -366,11 +330,9 @@ namespace Chicane
                 return false;
             }
 
-            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
+            std::unordered_set<const Object*> ignored(inIgnored.begin(), inIgnored.end());
 
-            std::unordered_set<const Object*>     ignored(inIgnored.begin(), inIgnored.end());
-
-            auto                                  append = [&](Object* object)
+            auto                              append = [&](Object* object)
             {
                 if (!object || ignored.find(object) != ignored.end())
                 {
@@ -523,21 +485,10 @@ namespace Chicane
             return found->second.size();
         }
 
-        inline void lockObjects() const { m_objectMutex.lock(); }
-        inline void unlockObjects() const { m_objectMutex.unlock(); }
-
-        template <class Function>
-        inline void withObjectLock(Function&& inFunction) const
-        {
-            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
-            inFunction();
-        }
-
         template <class Function>
         inline void forEachInFrustum(const ViewFrustum& inFrustum, Function&& inFunction) const
         {
-            std::lock_guard<std::recursive_mutex> lock(m_objectMutex);
-            std::unordered_set<Object*>           seen;
+            std::unordered_set<Object*> seen;
 
             for (const auto& [key, cell] : m_cells)
             {
@@ -584,6 +535,9 @@ namespace Chicane
         void assignUniqueId(Object* inObject, const String& inFallback);
         String makeUniqueId(const String& inBase) const;
         void ensureUniqueId(const String& inId, const Object* inIgnored) const;
+        void drainMutations();
+        void unlinkActor(Actor* inActor, const std::type_index& inType);
+        void unlinkComponent(Component* inComponent, const std::type_index& inType);
 
     private:
         bool                                                         m_bIsLoaded;
@@ -602,7 +556,8 @@ namespace Chicane
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
 
-        mutable std::recursive_mutex                                 m_objectMutex;
+        std::atomic<std::thread::id>                                 m_owner;
+        Mailbox<std::function<void()>>                               m_mutations;
 
         Script::Bus                                                  m_bus;
         std::unique_ptr<SceneScript>                                 m_sceneScript;

@@ -308,8 +308,8 @@ namespace Chicane
                 return;
             }
 
-            const char* message = lua_tostring(m_state, -1);
-            const bool  bHasPrefixAndPrefixValue  = static_cast<bool>(inPrefix && inPrefix[0] != '\0');
+            const char* message                  = lua_tostring(m_state, -1);
+            const bool  bHasPrefixAndPrefixValue = static_cast<bool>(inPrefix && inPrefix[0] != '\0');
 
             if (bHasPrefixAndPrefixValue)
             {

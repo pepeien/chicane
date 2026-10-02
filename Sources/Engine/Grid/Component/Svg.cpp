@@ -261,7 +261,9 @@ namespace Chicane
                     local[2] = Vec3(params[4], params[5], Svg::HOMOGENEOUS);
                 }
 
-                const bool bNameMatchesTranslateAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty());
+                const bool bNameMatchesTranslateAndParamsEmpty =
+                    !bNameMatchesMatrixAndSizeMatrixParamCount &&
+                    (name.equals(Svg::TRANSFORM_TRANSLATE) && !params.empty());
 
                 if (bNameMatchesTranslateAndParamsEmpty)
                 {
@@ -270,7 +272,9 @@ namespace Chicane
                     local[2] = Vec3(offset.x, offset.y, Svg::HOMOGENEOUS);
                 }
 
-                const bool bNameMatchesScaleAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && (name.equals(Svg::TRANSFORM_SCALE) && !params.empty());
+                const bool bNameMatchesScaleAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount &&
+                                                             !bNameMatchesTranslateAndParamsEmpty &&
+                                                             (name.equals(Svg::TRANSFORM_SCALE) && !params.empty());
 
                 if (bNameMatchesScaleAndParamsEmpty)
                 {
@@ -280,7 +284,8 @@ namespace Chicane
                 }
 
                 const bool bNameMatchesRotateAndParamsEmpty =
-                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && (name.equals(Svg::TRANSFORM_ROTATE) && !params.empty());
+                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty &&
+                    !bNameMatchesScaleAndParamsEmpty && (name.equals(Svg::TRANSFORM_ROTATE) && !params.empty());
 
                 if (bNameMatchesRotateAndParamsEmpty)
                 {
@@ -291,7 +296,8 @@ namespace Chicane
                     rotate[0] = Vec3(cosA, sinA, 0.0f);
                     rotate[1] = Vec3(-sinA, cosA, 0.0f);
 
-                    const bool bSizeRotateOriginParamCount = static_cast<bool>(params.size() >= Svg::ROTATE_ORIGIN_PARAM_COUNT);
+                    const bool bSizeRotateOriginParamCount =
+                        static_cast<bool>(params.size() >= Svg::ROTATE_ORIGIN_PARAM_COUNT);
 
                     if (bSizeRotateOriginParamCount)
                     {
@@ -310,15 +316,19 @@ namespace Chicane
                 }
 
                 const bool bNameMatchesSkewXAndParamsEmpty =
-                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty && (name.equals(Svg::TRANSFORM_SKEW_X) && !params.empty());
+                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty &&
+                    !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty &&
+                    (name.equals(Svg::TRANSFORM_SKEW_X) && !params.empty());
 
                 if (bNameMatchesSkewXAndParamsEmpty)
                 {
                     local[1][0] = std::tan(degreesToRadians(params[0]));
                 }
 
-                const bool bNameMatchesSkewYAndParamsEmpty = !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty && !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty && !bNameMatchesSkewXAndParamsEmpty &&
-                                    (name.equals(Svg::TRANSFORM_SKEW_Y) && !params.empty());
+                const bool bNameMatchesSkewYAndParamsEmpty =
+                    !bNameMatchesMatrixAndSizeMatrixParamCount && !bNameMatchesTranslateAndParamsEmpty &&
+                    !bNameMatchesScaleAndParamsEmpty && !bNameMatchesRotateAndParamsEmpty &&
+                    !bNameMatchesSkewXAndParamsEmpty && (name.equals(Svg::TRANSFORM_SKEW_Y) && !params.empty());
 
                 if (bNameMatchesSkewYAndParamsEmpty)
                 {
@@ -1405,7 +1415,8 @@ namespace Chicane
                             Vec2        join       = inN + outN;
                             const float joinLength = vecLength(join);
 
-                            const bool bJoinLengthStrokeJoinMinLength = static_cast<bool>(joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH);
+                            const bool bJoinLengthStrokeJoinMinLength =
+                                static_cast<bool>(joinLength < SvgPaint::STROKE_JOIN_MIN_LENGTH);
 
                             if (bJoinLengthStrokeJoinMinLength)
                             {
@@ -1423,7 +1434,8 @@ namespace Chicane
                                     SvgPaint::STROKE_MITER_COSINE_MAX
                                 );
 
-                                const bool bCosineStrokeMiterLimit = static_cast<bool>((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT);
+                                const bool bCosineStrokeMiterLimit =
+                                    static_cast<bool>((1.0f / cosine) > SvgPaint::STROKE_MITER_LIMIT);
 
                                 if (bCosineStrokeMiterLimit)
                                 {
@@ -1677,7 +1689,8 @@ namespace Chicane
                 size.x = size.y * (m_intrinsic.x / m_intrinsic.y);
             }
 
-            const bool bHeightAutoAndXPositive = !bWidthAutoAndHeightAuto && !bWidthAutoAndYPositive && (bIsHeightAuto && m_intrinsic.x > 0.0f);
+            const bool bHeightAutoAndXPositive =
+                !bWidthAutoAndHeightAuto && !bWidthAutoAndYPositive && (bIsHeightAuto && m_intrinsic.x > 0.0f);
 
             if (bHeightAutoAndXPositive)
             {
@@ -1829,7 +1842,8 @@ namespace Chicane
                         ));
                     }
 
-                    const bool bTagMatchesRect = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && (tag.equals(RECT_TAG));
+                    const bool bTagMatchesRect =
+                        !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && (tag.equals(RECT_TAG));
 
                     if (bTagMatchesRect)
                     {
@@ -1849,7 +1863,8 @@ namespace Chicane
                         ));
                     }
 
-                    const bool bTagMatchesLine = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && (tag.equals(LINE_TAG));
+                    const bool bTagMatchesLine = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse &&
+                                                 !bTagMatchesRect && (tag.equals(LINE_TAG));
 
                     if (bTagMatchesLine)
                     {
@@ -1865,8 +1880,9 @@ namespace Chicane
                         contours.push_back(line);
                     }
 
-                    const bool bTagMatchesPolygon = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && !bTagMatchesLine &&
-                                         (tag.equals(POLYLINE_TAG, POLYGON_TAG));
+                    const bool bTagMatchesPolygon = !bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse &&
+                                                    !bTagMatchesRect && !bTagMatchesLine &&
+                                                    (tag.equals(POLYLINE_TAG, POLYGON_TAG));
 
                     if (bTagMatchesPolygon)
                     {
@@ -1887,7 +1903,8 @@ namespace Chicane
                         contours.push_back(poly);
                     }
 
-                    if (!bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect && !bTagMatchesLine && !bTagMatchesPolygon)
+                    if (!bTagMatchesPath && !bTagMatchesCircle && !bTagMatchesEllipse && !bTagMatchesRect &&
+                        !bTagMatchesLine && !bTagMatchesPolygon)
                     {
                         walk(child, paint);
 

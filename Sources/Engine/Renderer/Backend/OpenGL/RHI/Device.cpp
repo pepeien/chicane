@@ -186,8 +186,8 @@ namespace Chicane
             data->mips                         = inCreateInfo.mipLevels;
             data->bOwned                       = true;
 
-            const GLenum internal = toGLInternal(inCreateInfo.format, inCreateInfo.kind);
-            const bool   bKindCube   = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
+            const GLenum internal  = toGLInternal(inCreateInfo.format, inCreateInfo.kind);
+            const bool   bKindCube = static_cast<bool>(inCreateInfo.kind == RHI::ImageKind::Cube);
 
             if (bKindCube)
             {
@@ -270,7 +270,7 @@ namespace Chicane
             {
                 return;
             }
-            const GLenum type   = data->format == RHI::ImageFormat::RGBA16F ? GL_HALF_FLOAT : GL_UNSIGNED_BYTE;
+            const GLenum type      = data->format == RHI::ImageFormat::RGBA16F ? GL_HALF_FLOAT : GL_UNSIGNED_BYTE;
             const bool   bKindCube = static_cast<bool>(data->kind == RHI::ImageKind::Cube);
 
             if (bKindCube)

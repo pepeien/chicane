@@ -97,26 +97,29 @@ namespace Chicane
         {
             ViewScript* host = hostFrom(inState);
             const char* name = luaL_checkstring(inState, 1);
-            if (!host || !host->view())
+            if (!host || !host->host())
             {
                 return 0;
             }
 
-            View*                     view = host->view();
-            const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*view));
-            if (!type)
+            Component*                      bound  = host->host();
+            const ReflectionTypeInfo*       type   = ReflectionTypeRegistry::sInstance().find(typeid(*bound));
+            const ReflectionTypeMethodInfo* method = type ? type->findMethod(name) : nullptr;
+
+            if (!method && host->view() && host->view() != bound)
             {
-                return 0;
+                bound  = host->view();
+                type   = ReflectionTypeRegistry::sInstance().find(typeid(*bound));
+                method = type ? type->findMethod(name) : nullptr;
             }
 
-            const ReflectionTypeMethodInfo* method = type->findMethod(name);
             if (!method)
             {
                 return luaL_error(inState, "unknown method '%s'", name);
             }
 
             ReflectionTypeMethod result(method);
-            result.bind(view);
+            result.bind(bound);
 
             for (std::size_t i = 0; i < method->paramTypes.size(); i++)
             {
@@ -208,8 +211,8 @@ namespace Chicane
             {nullptr,       nullptr            }
         };
 
-        ViewScript::ViewScript(View* inView)
-            : m_view(inView),
+        ViewScript::ViewScript(Component* inHost)
+            : m_host(inHost),
               m_context(),
               m_onLoad(LUA_NOREF),
               m_onTick(LUA_NOREF),
@@ -271,9 +274,24 @@ namespace Chicane
             return m_context.pcall(static_cast<int>(inArgs.size()), 0);
         }
 
+        Component* ViewScript::host() const
+        {
+            return m_host;
+        }
+
         View* ViewScript::view() const
         {
-            return m_view;
+            if (!m_host)
+            {
+                return nullptr;
+            }
+
+            if (View* view = dynamic_cast<View*>(m_host))
+            {
+                return view;
+            }
+
+            return dynamic_cast<View*>(m_host->getRoot());
         }
 
         Script::Context& ViewScript::context()
@@ -288,14 +306,15 @@ namespace Chicane
 
         std::uint64_t ViewScript::subscribe(const String& inName, int inRef)
         {
-            if (!m_view || !isBound())
+            View* view = this->view();
+            if (!view || !isBound())
             {
                 m_context.unref(inRef);
 
                 return 0;
             }
 
-            const std::uint64_t token = m_view->subscribe(
+            const std::uint64_t token = view->subscribe(
                 inName,
                 [this, inRef](const String& inData)
                 {
@@ -317,9 +336,9 @@ namespace Chicane
 
         void ViewScript::unsubscribe(std::uint64_t inToken)
         {
-            if (m_view)
+            if (View* view = this->view())
             {
-                m_view->unsubscribe(inToken);
+                view->unsubscribe(inToken);
             }
 
             for (auto it = m_subscriptions.begin(); it != m_subscriptions.end(); ++it)
@@ -340,9 +359,9 @@ namespace Chicane
         {
             for (const ViewScriptSubscription& subscription : m_subscriptions)
             {
-                if (m_view)
+                if (View* view = this->view())
                 {
-                    m_view->unsubscribe(subscription.token);
+                    view->unsubscribe(subscription.token);
                 }
 
                 m_context.unref(subscription.ref);
@@ -365,7 +384,8 @@ namespace Chicane
 
         void ViewScript::pushFind(lua_State* inState, const char* inSelector)
         {
-            if (!m_view || !inSelector)
+            View* view = this->view();
+            if (!view || !inSelector)
             {
                 lua_pushnil(inState);
 
@@ -374,8 +394,8 @@ namespace Chicane
 
             const String            selector = inSelector;
             std::vector<Component*> tree;
-            tree.push_back(m_view);
-            m_view->appendChildrenFlat(tree);
+            tree.push_back(view);
+            view->appendChildrenFlat(tree);
 
             for (Component* component : tree)
             {

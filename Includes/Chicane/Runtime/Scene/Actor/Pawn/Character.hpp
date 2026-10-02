@@ -13,7 +13,7 @@ namespace Chicane
     class CHICANE_RUNTIME ACharacter : public APawn
     {
     public:
-        static constexpr inline float DEFAULT_JUMP_SPEED = 12.0f;
+        static constexpr inline const float DEFAULT_JUMP_SPEED = 12.0f;
 
     public:
         ACharacter();

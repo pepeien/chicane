@@ -1067,8 +1067,8 @@ namespace Chicane
                         }
                     }
 
-                    const bool bDataChunk =
-                        !bFmtChunk && (chunkId[0] == 'd' && chunkId[1] == 'a' && chunkId[2] == 't' && chunkId[3] == 'a');
+                    const bool bDataChunk = !bFmtChunk && (chunkId[0] == 'd' && chunkId[1] == 'a' &&
+                                                           chunkId[2] == 't' && chunkId[3] == 'a');
 
                     if (bDataChunk)
                     {
@@ -1094,7 +1094,8 @@ namespace Chicane
                         const unsigned char* sample = cursor + (channel * bytesPerSample);
                         float                value  = 0.0f;
 
-                        const bool bFormatFloatAndBits32 = static_cast<bool>(format == WAV_FORMAT_FLOAT && bits == WAV_BITS_32);
+                        const bool bFormatFloatAndBits32 =
+                            static_cast<bool>(format == WAV_FORMAT_FLOAT && bits == WAV_BITS_32);
 
                         if (bFormatFloatAndBits32)
                         {
@@ -1133,7 +1134,8 @@ namespace Chicane
                             value = static_cast<float>(decoded) / WAV_PCM24_SCALE;
                         }
 
-                        const bool bBits32 = !bFormatFloatAndBits32 && !bBits8 && !bBits16 && !bBits24 && (bits == WAV_BITS_32);
+                        const bool bBits32 =
+                            !bFormatFloatAndBits32 && !bBits8 && !bBits16 && !bBits24 && (bits == WAV_BITS_32);
 
                         if (bBits32)
                         {

@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -26,6 +25,7 @@
 #include <Jolt/Physics/PhysicsSystem.h>
 
 #include "Chicane/Core/Hash.hpp"
+#include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Kerb/Collision/Preset/Info.hpp"
 #include "Chicane/Kerb/Gravity.hpp"
 #include "Chicane/Kerb/Object/Layer.hpp"
@@ -82,8 +82,7 @@ namespace Chicane
             JPH::PhysicsSystem                                         system;
             std::unordered_map<Hash::Value, JPH::RefConst<JPH::Shape>> shapes;
             std::vector<JPH::BodyID>                                   ids;
-            std::mutex                                                 pendingMutex;
-            std::vector<PendingWrite>                                  pending;
+            Mailbox<PendingWrite>                                      pending;
             std::unordered_map<std::uint32_t, JPH::Vec3>               horizontalWish;
             std::unordered_map<std::uint32_t, JPH::RVec3>              previousPosition;
             Vec3                                                       gravity;
@@ -544,11 +543,7 @@ namespace Chicane
 
         void Engine::Implementation::applyPendingWrites()
         {
-            std::vector<PendingWrite> writes;
-            {
-                std::lock_guard<std::mutex> lock(pendingMutex);
-                writes.swap(pending);
-            }
+            const std::vector<PendingWrite> writes = pending.drain();
 
             JPH::BodyInterface& interface = bodies();
             for (const PendingWrite& write : writes)
@@ -680,7 +675,8 @@ namespace Chicane
                 );
             }
 
-            const bool bShapeCapsuleAndNotStatic = static_cast<bool>(inCreateInfo.shape == BodyShape::Capsule && !bIsStatic);
+            const bool bShapeCapsuleAndNotStatic =
+                static_cast<bool>(inCreateInfo.shape == BodyShape::Capsule && !bIsStatic);
 
             if (bShapeCapsuleAndNotStatic)
             {
@@ -850,8 +846,7 @@ namespace Chicane
                 return;
             }
 
-            std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
-            m_implementation->pending.push_back(
+            m_implementation->pending.push(
                 {PendingWriteKind::Impulse,
                  id,
                  Convert::toPhysicsPosition(inDirection * inForce),
@@ -878,8 +873,7 @@ namespace Chicane
                 return;
             }
 
-            std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
-            m_implementation->pending.push_back(
+            m_implementation->pending.push(
                 {PendingWriteKind::Velocity, id, Convert::toPhysicsPosition(inVelocity), JPH::Vec3::sZero()}
             );
         }
@@ -892,8 +886,7 @@ namespace Chicane
                 return;
             }
 
-            std::lock_guard<std::mutex> lock(m_implementation->pendingMutex);
-            m_implementation->pending.push_back(
+            m_implementation->pending.push(
                 {PendingWriteKind::HorizontalVelocity,
                  id,
                  Convert::toPhysicsPosition(Vec3(inVelocity.x, inVelocity.y, 0.0f)),

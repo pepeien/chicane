@@ -339,15 +339,17 @@ namespace Chicane
 
             if (positions.size() == 1)
             {
-                const String token  = positions.front().toLower();
-                const bool   bTokenMatchesTopOrTokenMatchesBottom = static_cast<bool>(token.equals("top") || token.equals("bottom"));
+                const String token = positions.front().toLower();
+                const bool   bTokenMatchesTopOrTokenMatchesBottom =
+                    static_cast<bool>(token.equals("top") || token.equals("bottom"));
 
                 if (bTokenMatchesTopOrTokenMatchesBottom)
                 {
                     result.y = parsePositionToken(token);
                 }
 
-                const bool bTokenMatchesLeftOrTokenMatchesRight = !bTokenMatchesTopOrTokenMatchesBottom && (token.equals("left") || token.equals("right"));
+                const bool bTokenMatchesLeftOrTokenMatchesRight =
+                    !bTokenMatchesTopOrTokenMatchesBottom && (token.equals("left") || token.equals("right"));
 
                 if (bTokenMatchesLeftOrTokenMatchesRight)
                 {
@@ -510,7 +512,7 @@ namespace Chicane
             result.type = bIsLinear ? StyleGradientType::Linear : StyleGradientType::Radial;
             result.axis = bIsLinear ? Vec2(0.0f, 1.0f) : Vec2(0.5f, 0.5f);
 
-            std::size_t start  = 0;
+            std::size_t start                     = 0;
             const bool  bLinearAndLinearDirection = static_cast<bool>(bIsLinear && isLinearDirection(args.front()));
 
             if (bLinearAndLinearDirection)

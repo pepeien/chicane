@@ -43,8 +43,8 @@ namespace Chicane
             setSize(inParent->getSize());
             setPosition(inParent->getPosition());
 
-            Primitive  primitive = getPrimitive();
-            const bool bOutlineEmpty    = static_cast<bool>(!primitive.outline.empty());
+            Primitive  primitive     = getPrimitive();
+            const bool bOutlineEmpty = static_cast<bool>(!primitive.outline.empty());
 
             if (bOutlineEmpty)
             {

@@ -11,24 +11,20 @@ namespace Chicane
         {
             const Path dir = inDir.lexicallyNormal();
 
+            const auto cached = m_cache.find(dir);
+            if (cached != m_cache.end())
             {
-                std::lock_guard<std::mutex> lock(m_mutex);
+                m_ready.push_back({dir, cached->second});
 
-                const auto cached = m_cache.find(dir);
-                if (cached != m_cache.end())
-                {
-                    m_ready.push_back({dir, cached->second});
-
-                    return;
-                }
-
-                if (m_inFlight.find(dir) != m_inFlight.end())
-                {
-                    return;
-                }
-
-                m_inFlight.insert(dir);
+                return;
             }
+
+            if (m_inFlight.find(dir) != m_inFlight.end())
+            {
+                return;
+            }
+
+            m_inFlight.insert(dir);
 
             Worker::sSubmit(
                 [dir]()
@@ -50,20 +46,19 @@ namespace Chicane
 
         void ListingService::drain(std::vector<Listing>& outReady)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            outReady.swap(m_ready);
-
-            for (const Listing& listing : outReady)
+            for (Listing& listing : m_mailbox.drain())
             {
+                m_cache[listing.path] = listing.children;
                 m_inFlight.erase(listing.path);
+                m_ready.push_back(std::move(listing));
             }
+
+            outReady.swap(m_ready);
         }
 
         void ListingService::finish(const Path& inDir, Item::List inChildren)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_cache[inDir] = inChildren;
-            m_ready.push_back({inDir, std::move(inChildren)});
+            m_mailbox.push({inDir, std::move(inChildren)});
         }
     }
 }

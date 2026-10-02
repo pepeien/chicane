@@ -65,22 +65,22 @@ namespace Chicane
             static constexpr inline const char* TRANSFORM_SKEW_Y    = "skewy";
 
             // Values
-            static constexpr inline float       UNSYNCED_SCALE          = -1.0f;
-            static constexpr inline int         NAMESPACE_PREFIX_LENGTH = 3;
+            static constexpr inline const float UNSYNCED_SCALE          = -1.0f;
+            static constexpr inline const int   NAMESPACE_PREFIX_LENGTH = 3;
 
-            static constexpr inline int         BEZIER_SEGMENTS           = 8;
-            static constexpr inline int         MATRIX_PARAM_COUNT        = 6;
-            static constexpr inline int         ROTATE_ORIGIN_PARAM_COUNT = 3;
-            static constexpr inline int         MIN_CONTOUR_POINTS        = 2;
-            static constexpr inline int         MIN_CLOSED_POINTS         = 3;
-            static constexpr inline float       MIN_LENGTH                = 1.0e-5f;
-            static constexpr inline float       KAPPA                     = 0.5522847498f;
-            static constexpr inline float       HALF                      = 0.5f;
-            static constexpr inline float       CHANNEL_MAX               = 255.0f;
-            static constexpr inline float       CONTROL_REFLECT           = 2.0f;
-            static constexpr inline float       ARC_CUBIC_OFFSET          = 4.0f;
-            static constexpr inline float       ARC_CUBIC_SCALE           = 3.0f;
-            static constexpr inline float       HOMOGENEOUS               = 1.0f;
+            static constexpr inline const int   BEZIER_SEGMENTS           = 8;
+            static constexpr inline const int   MATRIX_PARAM_COUNT        = 6;
+            static constexpr inline const int   ROTATE_ORIGIN_PARAM_COUNT = 3;
+            static constexpr inline const int   MIN_CONTOUR_POINTS        = 2;
+            static constexpr inline const int   MIN_CLOSED_POINTS         = 3;
+            static constexpr inline const float MIN_LENGTH                = 1.0e-5f;
+            static constexpr inline const float KAPPA                     = 0.5522847498f;
+            static constexpr inline const float HALF                      = 0.5f;
+            static constexpr inline const float CHANNEL_MAX               = 255.0f;
+            static constexpr inline const float CONTROL_REFLECT           = 2.0f;
+            static constexpr inline const float ARC_CUBIC_OFFSET          = 4.0f;
+            static constexpr inline const float ARC_CUBIC_SCALE           = 3.0f;
+            static constexpr inline const float HOMOGENEOUS               = 1.0f;
 
         public:
             CH_CONSTRUCTOR()

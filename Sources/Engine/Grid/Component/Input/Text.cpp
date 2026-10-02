@@ -291,7 +291,7 @@ namespace Chicane
         {
             refreshValue();
 
-            const String raw    = getAttribute(VALUE_ATTRIBUTE_NAME);
+            const String raw                     = getAttribute(VALUE_ATTRIBUTE_NAME);
             const bool   bNotFocusedAndReference = static_cast<bool>(!isFocused() && isReference(raw));
 
             if (bNotFocusedAndReference)

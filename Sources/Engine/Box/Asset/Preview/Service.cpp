@@ -8,15 +8,12 @@ namespace Chicane
     {
         void PreviewService::enqueue(const FileSystem::Path& inFilePath)
         {
+            if (m_inFlight.find(inFilePath) != m_inFlight.end())
             {
-                std::lock_guard<std::mutex> lock(m_mutex);
-                if (m_inFlight.find(inFilePath) != m_inFlight.end())
-                {
-                    return;
-                }
-
-                m_inFlight.insert(inFilePath);
+                return;
             }
+
+            m_inFlight.insert(inFilePath);
 
             Worker::sSubmit(
                 [inFilePath]()
@@ -38,19 +35,20 @@ namespace Chicane
 
         void PreviewService::drain(std::vector<std::unique_ptr<AssetPreview>>& outReady)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            outReady.swap(m_ready);
+            for (Ready& ready : m_ready.drain())
+            {
+                m_inFlight.erase(ready.path);
+
+                if (ready.preview)
+                {
+                    outReady.push_back(std::move(ready.preview));
+                }
+            }
         }
 
         void PreviewService::finish(const FileSystem::Path& inFilePath, std::unique_ptr<AssetPreview> inPreview)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_inFlight.erase(inFilePath);
-
-            if (inPreview)
-            {
-                m_ready.push_back(std::move(inPreview));
-            }
+            m_ready.push({inFilePath, std::move(inPreview)});
         }
     }
 }

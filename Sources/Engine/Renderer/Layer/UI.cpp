@@ -25,13 +25,13 @@ namespace Chicane
             RHI::BufferCreateInfo vertex;
             vertex.size  = std::min(m_backend->getResourceBudget(Resource::UIVertices), RESOURCE_MESH_INITIAL_BYTES);
             vertex.usage = RHI::BufferUsage::Vertex;
-            vertex.bHasHostAccess = false;
+            vertex.bHasHostAccess = true;
             m_vertexBuffer        = device->createBuffer(vertex);
 
             RHI::BufferCreateInfo index;
             index.size  = std::min(m_backend->getResourceBudget(Resource::UIIndices), RESOURCE_MESH_INITIAL_BYTES);
             index.usage = RHI::BufferUsage::Index;
-            index.bHasHostAccess = false;
+            index.bHasHostAccess = true;
             m_indexBuffer        = device->createBuffer(index);
 
             RHI::BufferCreateInfo glyph;
@@ -223,7 +223,7 @@ namespace Chicane
                 const RHI::Image placeholder = m_backend->viewPlaceholder();
                 for (std::uint32_t slot = 0; slot < VIEW_TARGET_MAX; slot++)
                 {
-                    RHI::Image image  = placeholder;
+                    RHI::Image image              = placeholder;
                     const bool bSlotZeroAndHandle = static_cast<bool>(slot == 0 && rhi->sceneColor.handle);
 
                     if (bSlotZeroAndHandle)
@@ -284,7 +284,7 @@ namespace Chicane
                 push.ids1.fill(Draw::InvalidId);
                 for (std::uint32_t slot = 0; slot < VIEW_TARGET_MAX; slot++)
                 {
-                    const std::int32_t id     = static_cast<std::int32_t>(m_backend->viewTargetTexture(slot));
+                    const std::int32_t id          = static_cast<std::int32_t>(m_backend->viewTargetTexture(slot));
                     const bool         bSlotBelow4 = static_cast<bool>(slot < 4);
 
                     if (bSlotBelow4)

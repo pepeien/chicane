@@ -19,7 +19,7 @@ namespace Chicane
                 using List = std::vector<Trace>;
 
             public:
-                static constexpr inline float DEFAULT_DURATION = 2.0f;
+                static constexpr inline const float DEFAULT_DURATION = 2.0f;
 
             public:
                 Vertex::List vertices              = {};

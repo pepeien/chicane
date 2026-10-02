@@ -37,9 +37,9 @@ namespace Chicane
         const int count = width * height;
         for (int index = 0; index < count; index++)
         {
-            float      red    = 0.0f;
-            float      green  = 0.0f;
-            float      blue   = 0.0f;
+            float      red        = 0.0f;
+            float      green      = 0.0f;
+            float      blue       = 0.0f;
             const bool bHasFloats = static_cast<bool>(floats);
 
             if (bHasFloats)

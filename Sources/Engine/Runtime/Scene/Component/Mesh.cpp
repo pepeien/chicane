@@ -391,7 +391,7 @@ namespace Chicane
             return;
         }
 
-        const auto found  = m_animationById.find(id);
+        const auto found     = m_animationById.find(id);
         const bool bFoundEnd = static_cast<bool>(found == m_animationById.end());
 
         if (bFoundEnd)

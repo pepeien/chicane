@@ -22,7 +22,7 @@ namespace Chicane
                     return VK_FALSE;
                 }
 
-                String     prefix = "General";
+                String     prefix                  = "General";
                 const bool bMessageTypePerformance = static_cast<bool>(
                     inMessageType == VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT
                 );
@@ -33,8 +33,9 @@ namespace Chicane
                 }
 
                 const bool bMessageTypeValidation =
-                    !bMessageTypePerformance && (inMessageType ==
-                                VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT);
+                    !bMessageTypePerformance &&
+                    (inMessageType ==
+                     VkDebugUtilsMessageTypeFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT);
 
                 if (bMessageTypeValidation)
                 {
@@ -51,7 +52,7 @@ namespace Chicane
                     prefix = "Device";
                 }
 
-                String     color  = Color::HEX_COLOR_WHITE;
+                String     color                   = Color::HEX_COLOR_WHITE;
                 const bool bMessageSeverityWarning = static_cast<bool>(
                     inMessageSeverity ==
                     VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT
@@ -63,8 +64,9 @@ namespace Chicane
                 }
 
                 const bool bMessageSeverityError =
-                    !bMessageSeverityWarning && (inMessageSeverity ==
-                                VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT);
+                    !bMessageSeverityWarning &&
+                    (inMessageSeverity ==
+                     VkDebugUtilsMessageSeverityFlagBitsEXT::VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT);
 
                 if (bMessageSeverityError)
                 {

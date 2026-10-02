@@ -145,9 +145,10 @@ namespace Chicane
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
 
-                const bool bToDepthStencilAttachmentOptimal = !bToTransferDstOptimal && (inOldLayout == vk::ImageLayout::eUndefined &&
-                                                (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
-                                                 inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal));
+                const bool bToDepthStencilAttachmentOptimal =
+                    !bToTransferDstOptimal && (inOldLayout == vk::ImageLayout::eUndefined &&
+                                               (inNewLayout == vk::ImageLayout::eDepthStencilReadOnlyOptimal ||
+                                                inNewLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal));
 
                 if (bToDepthStencilAttachmentOptimal)
                 {

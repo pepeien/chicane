@@ -11,8 +11,8 @@ namespace Chicane
         {
         public:
             // Values
-            static constexpr inline float DEFAULT_WIDTH  = 300.0f;
-            static constexpr inline float DEFAULT_HEIGHT = 150.0f;
+            static constexpr inline const float DEFAULT_WIDTH  = 300.0f;
+            static constexpr inline const float DEFAULT_HEIGHT = 150.0f;
 
         public:
             Vec2 origin = Vec2::sZero();

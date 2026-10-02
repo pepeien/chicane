@@ -15,7 +15,7 @@ namespace Chicane
         SpatialTransform();
 
     protected:
-        inline virtual void beginRefresh() { return; }
+        inline virtual bool beginRefresh() { return true; }
         inline virtual void endRefresh() { return; }
         inline virtual void onRefresh() { return; }
 
@@ -132,7 +132,7 @@ namespace Chicane
 
         void lookAt(const Vec3& inTarget);
 
-    private:
+    protected:
         void refresh();
 
     private:

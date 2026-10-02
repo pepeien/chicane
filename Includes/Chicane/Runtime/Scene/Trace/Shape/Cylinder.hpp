@@ -9,7 +9,7 @@ namespace Chicane
     class CHICANE_RUNTIME SceneTraceShapeCylinder : public SceneTraceShape
     {
     public:
-        static constexpr inline std::uint32_t DEFAULT_SEGEMENT_COUNT = 16;
+        static constexpr inline const std::uint32_t DEFAULT_SEGEMENT_COUNT = 16;
 
     public:
         explicit SceneTraceShapeCylinder(float inRadius, std::uint32_t inSegmentCount = DEFAULT_SEGEMENT_COUNT);

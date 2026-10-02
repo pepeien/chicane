@@ -17,7 +17,7 @@ namespace Chicane
             static constexpr inline const char* TAG_ID = "DockDrop";
 
             // Values
-            static constexpr inline float       BORDER_RADIUS_IN_PX = 4.0f;
+            static constexpr inline const float BORDER_RADIUS_IN_PX = 4.0f;
 
         public:
             DockDrop();

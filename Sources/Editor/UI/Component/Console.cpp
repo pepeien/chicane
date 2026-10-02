@@ -393,8 +393,8 @@ namespace Editor
             return;
         }
 
-        const int  count  = static_cast<int>(suggestions.size());
-        int        next   = static_cast<int>(m_highlighted) + inDelta;
+        const int  count         = static_cast<int>(suggestions.size());
+        int        next          = static_cast<int>(m_highlighted) + inDelta;
         const bool bNextNegative = static_cast<bool>(next < 0);
 
         if (bNextNegative)

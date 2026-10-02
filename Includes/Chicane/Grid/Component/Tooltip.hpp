@@ -27,7 +27,7 @@ namespace Chicane
             static constexpr inline const char* DESCRIPTION_DELAY_ATTRIBUTE_NAME = "contentDelay";
 
             // Values
-            static constexpr inline float       DEFAULT_CONTENT_DELAY_IN_MS = 400.0f;
+            static constexpr inline const float DEFAULT_CONTENT_DELAY_IN_MS = 400.0f;
 
         public:
             CH_CONSTRUCTOR()

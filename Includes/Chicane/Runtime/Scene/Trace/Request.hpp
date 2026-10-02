@@ -25,9 +25,9 @@ namespace Chicane
     {
     public:
         // Values
-        static constexpr inline float         DEFAULT_CELL_SIZE      = 64.0f;
-        static constexpr inline float         DEFAULT_DURATION       = 2.0f;
-        static constexpr inline std::uint32_t DEFAULT_SEGEMENT_COUNT = 16;
+        static constexpr inline const float         DEFAULT_CELL_SIZE      = 64.0f;
+        static constexpr inline const float         DEFAULT_DURATION       = 2.0f;
+        static constexpr inline const std::uint32_t DEFAULT_SEGEMENT_COUNT = 16;
 
     public:
         CH_FUNCTION()

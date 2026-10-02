@@ -123,7 +123,7 @@ namespace Chicane
                 particle.additive   = additive;
                 particle.rotation   = randomFloat(0.0f, Math::TWO_PI);
 
-                Vec3       offset = Vec3::sZero();
+                Vec3       offset  = Vec3::sZero();
                 const bool bSphere = static_cast<bool>(shape.equals(SHAPE_TYPE_SPHERE));
 
                 if (bSphere)
@@ -131,7 +131,8 @@ namespace Chicane
                     offset = randomDirection() * randomFloat(0.0f, randomFloat(radius.from, radius.to));
                 }
 
-                const bool bBoxBeam = !bSphere && (shape.equals(SHAPE_TYPE_BOX) && inPlay.bHasBeam && beamLength > 0.0f);
+                const bool bBoxBeam =
+                    !bSphere && (shape.equals(SHAPE_TYPE_BOX) && inPlay.bHasBeam && beamLength > 0.0f);
 
                 if (bBoxBeam)
                 {
@@ -149,7 +150,8 @@ namespace Chicane
                         Vec3(randomFloat(-extent, extent), randomFloat(-extent, extent), randomFloat(-extent, extent));
                 }
 
-                const bool bConeBeam = !bSphere && !bBoxBeam && !bBox && (shape.equals(SHAPE_TYPE_CONE) && inPlay.bHasBeam);
+                const bool bConeBeam =
+                    !bSphere && !bBoxBeam && !bBox && (shape.equals(SHAPE_TYPE_CONE) && inPlay.bHasBeam);
 
                 if (bConeBeam)
                 {

@@ -586,8 +586,8 @@ namespace Chicane
             return;
         }
 
-        Kerb::ObjectLayer resolved = body.layer;
-        const bool        bPresetCustom   = static_cast<bool>(body.preset != Kerb::CollisionPreset::Custom);
+        Kerb::ObjectLayer resolved      = body.layer;
+        const bool        bPresetCustom = static_cast<bool>(body.preset != Kerb::CollisionPreset::Custom);
 
         if (bPresetCustom)
         {

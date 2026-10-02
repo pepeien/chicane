@@ -69,7 +69,7 @@ namespace Chicane
                         continue;
                     }
 
-                    std::size_t cursor = part.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
+                    std::size_t cursor         = part.firstOfChars(Style::CLASS_SELECTOR, Style::ID_SELECTOR);
                     const bool  bCursorMissing = static_cast<bool>(cursor == String::npos);
 
                     if (bCursorMissing)

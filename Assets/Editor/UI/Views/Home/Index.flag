@@ -19,17 +19,6 @@ local function applyWorkspace(name)
     view.assetsTabState       = isViewport and IDLE or ACTIVE
 end
 
-local function applyGizmo(kind)
-    local view = home()
-    if not view then
-        return
-    end
-
-    view.translateState = kind == "translate" and ACTIVE or IDLE
-    view.rotateState    = kind == "rotate" and ACTIVE or IDLE
-    view.scaleState     = kind == "scale" and ACTIVE or IDLE
-end
-
 function onWorkspaceViewport()
     applyWorkspace("viewport")
     Instance.invoke("onWorkspaceViewport")
@@ -45,40 +34,6 @@ function onThemeSwitch(value)
     if view then
         view.theme = value or ""
     end
-end
-
-function onGizmoTranslate()
-    applyGizmo("translate")
-    Instance.invoke("onGizmoTranslate")
-end
-
-function onGizmoRotate()
-    applyGizmo("rotate")
-    Instance.invoke("onGizmoRotate")
-end
-
-function onGizmoScale()
-    applyGizmo("scale")
-    Instance.invoke("onGizmoScale")
-end
-
-function onExplorerFolder(path)
-    local view = home()
-    if view then
-        view.selectedFolderPath = path or ""
-        view.selectedAssetName  = ""
-    end
-end
-
-function onExplorerAsset(name)
-    local view = home()
-    if view then
-        view.selectedAssetName = name or ""
-    end
-end
-
-function onAttributeCommit(name, value)
-    Instance.invoke("onAttributeCommit", name or "", value or "")
 end
 
 function onTrackNew()
@@ -111,18 +66,6 @@ end
 
 function onAssetImport()
     Instance.invoke("onAssetImport")
-end
-
-function onSpawnActor()
-    Instance.invoke("onSpawnActor")
-end
-
-function onSpawnMesh()
-    Instance.invoke("onSpawnMesh")
-end
-
-function onSpawn(typeName)
-    Instance.invoke("onSpawn", typeName or "")
 end
 
 function onExplorerAssetDrop(path)

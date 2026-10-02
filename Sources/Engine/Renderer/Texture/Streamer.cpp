@@ -266,11 +266,7 @@ namespace Chicane
 
         void TextureStreamer::pumpDecoded(DrawTextureResource& inResources)
         {
-            std::vector<TextureStreamerDecodeResult> ready;
-            {
-                std::lock_guard<std::mutex> lock(m_mailbox->mutex);
-                ready.swap(m_mailbox->ready);
-            }
+            const std::vector<TextureStreamerDecodeResult> ready = m_mailbox->ready.drain();
 
             for (const TextureStreamerDecodeResult& result : ready)
             {
@@ -314,20 +310,20 @@ namespace Chicane
             WorkerPool::sDetach(
                 [mailbox, mips, id, inMip]()
                 {
-                    if (!mailbox || !mips || inMip >= mips->levels.size())
+                    Image::Instance image;
+                    if (mailbox && mips && inMip < mips->levels.size())
                     {
-                        return;
+                        const Image::Raw& encoded = mips->levels[inMip].encoded;
+                        if (!encoded.empty())
+                        {
+                            image = std::make_shared<Image>(encoded, ImageVendor::Png);
+                        }
                     }
 
-                    const Image::Raw& encoded = mips->levels[inMip].encoded;
-                    if (encoded.empty())
+                    if (mailbox)
                     {
-                        return;
+                        mailbox->ready.push({id, inMip, image});
                     }
-
-                    Image::Instance             image = std::make_shared<Image>(encoded, ImageVendor::Png);
-                    std::lock_guard<std::mutex> lock(mailbox->mutex);
-                    mailbox->ready.push_back({id, inMip, image});
                 }
             );
         }

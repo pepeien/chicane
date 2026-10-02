@@ -261,8 +261,8 @@ namespace Chicane
                     }
                 }
 
-                FT_MM_Var* variation = nullptr;
-                const bool bHasVariation    = static_cast<bool>(FT_Get_MM_Var(face, &variation) == 0 && variation);
+                FT_MM_Var* variation     = nullptr;
+                const bool bHasVariation = static_cast<bool>(FT_Get_MM_Var(face, &variation) == 0 && variation);
 
                 if (bHasVariation)
                 {

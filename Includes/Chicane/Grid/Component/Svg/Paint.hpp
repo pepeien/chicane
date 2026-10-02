@@ -41,16 +41,16 @@ namespace Chicane
             static constexpr inline const char* LINEJOIN_TYPE_MITER            = "miter";
             static constexpr inline const char* LINEJOIN_TYPE_ROUND            = "round";
             static constexpr inline const char* LINEJOIN_TYPE_BEVEL            = "bevel";
-            static constexpr inline float       STROKE_WIDTH_DEFAULT_VALUE     = 1.0f;
-            static constexpr inline float       STROKE_MITER_LIMIT             = 4.0f;
-            static constexpr inline float       STROKE_JOIN_MIN_LENGTH         = 1.0e-4f;
-            static constexpr inline float       STROKE_MITER_COSINE_MIN        = 0.15f;
-            static constexpr inline float       STROKE_MITER_COSINE_MAX        = 1.0f;
-            static constexpr inline int         STROKE_ARC_SEGMENTS            = 16;
+            static constexpr inline const float STROKE_WIDTH_DEFAULT_VALUE     = 1.0f;
+            static constexpr inline const float STROKE_MITER_LIMIT             = 4.0f;
+            static constexpr inline const float STROKE_JOIN_MIN_LENGTH         = 1.0e-4f;
+            static constexpr inline const float STROKE_MITER_COSINE_MIN        = 0.15f;
+            static constexpr inline const float STROKE_MITER_COSINE_MAX        = 1.0f;
+            static constexpr inline const int   STROKE_ARC_SEGMENTS            = 16;
 
             // Opacity
             static constexpr inline const char* OPACITY_ATTRIBUTE_NAME = "opacity";
-            static constexpr inline float       OPACITY_DEFAULT_VALUE  = 1.0f;
+            static constexpr inline const float OPACITY_DEFAULT_VALUE  = 1.0f;
 
             // Transform
             static constexpr inline const char* TRANSFORM_ATTRIBUTE_NAME = "transform";

@@ -81,21 +81,24 @@ namespace Chicane
             const String head = compact.substr(0, stepMark);
             const String tail = compact.substr(stepMark + 1);
 
-            const bool bHeadEmptyOrHeadMatchesPseudoStepPlus = static_cast<bool>(head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS));
+            const bool bHeadEmptyOrHeadMatchesPseudoStepPlus =
+                static_cast<bool>(head.isEmpty() || head.equals(Style::PSEUDO_STEP_PLUS));
 
             if (bHeadEmptyOrHeadMatchesPseudoStepPlus)
             {
                 outStep = Style::PSEUDO_SINGLE_STEP;
             }
 
-            const bool bHeadMatchesPseudoStepMinus = !bHeadEmptyOrHeadMatchesPseudoStepPlus && (head.equals(Style::PSEUDO_STEP_MINUS));
+            const bool bHeadMatchesPseudoStepMinus =
+                !bHeadEmptyOrHeadMatchesPseudoStepPlus && (head.equals(Style::PSEUDO_STEP_MINUS));
 
             if (bHeadMatchesPseudoStepMinus)
             {
                 outStep = Style::PSEUDO_NEGATIVE_STEP;
             }
 
-            const bool bNotParseInteger = !bHeadEmptyOrHeadMatchesPseudoStepPlus && !bHeadMatchesPseudoStepMinus && (!parseInteger(head, outStep));
+            const bool bNotParseInteger = !bHeadEmptyOrHeadMatchesPseudoStepPlus && !bHeadMatchesPseudoStepMinus &&
+                                          (!parseInteger(head, outStep));
 
             if (bNotParseInteger)
             {
@@ -1177,7 +1180,8 @@ namespace Chicane
                         specific = &transition;
                     }
 
-                    const bool bSCoversProperty = !bPropertyMatchesTarget && (sCoversProperty(transition.property, target));
+                    const bool bSCoversProperty =
+                        !bPropertyMatchesTarget && (sCoversProperty(transition.property, target));
 
                     if (bSCoversProperty)
                     {
@@ -1884,7 +1888,8 @@ namespace Chicane
         {
             String result = "";
 
-            const bool bValueStartsRgbOrValueStartsRgba = static_cast<bool>(inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD));
+            const bool bValueStartsRgbOrValueStartsRgba =
+                static_cast<bool>(inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD));
 
             if (bValueStartsRgbOrValueStartsRgba)
             {
@@ -1968,7 +1973,7 @@ namespace Chicane
                 return size;
             }
 
-            const float gaps   = static_cast<float>(count - 1);
+            const float gaps          = static_cast<float>(count - 1);
             const bool  bDirectionRow = static_cast<bool>(style.flex.direction.get() == StyleFlexDirection::Row);
 
             if (bDirectionRow)

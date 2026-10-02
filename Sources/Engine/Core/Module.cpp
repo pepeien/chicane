@@ -1,6 +1,5 @@
 #include "Chicane/Core/Module.hpp"
 
-#include <mutex>
 #include <unordered_map>
 
 #include <SDL3/SDL_loadso.h>
@@ -14,13 +13,6 @@ namespace Chicane
 {
     namespace Module
     {
-        static std::mutex& mutex()
-        {
-            static std::mutex instance;
-
-            return instance;
-        }
-
         static std::unordered_map<String, Entry>& entries()
         {
             static std::unordered_map<String, Entry> instance;
@@ -79,8 +71,6 @@ namespace Chicane
             const FileSystem::Path path = resolvePath(inPath);
             const String           key  = keyFor(path);
 
-            std::lock_guard lock(mutex());
-
             return entries().find(key) != entries().end();
         }
 
@@ -94,12 +84,9 @@ namespace Chicane
             const FileSystem::Path path = resolvePath(inPath);
             const String           key  = keyFor(path);
 
+            if (entries().find(key) != entries().end())
             {
-                std::lock_guard lock(mutex());
-                if (entries().find(key) != entries().end())
-                {
-                    return true;
-                }
+                return true;
             }
 
             SDL_SharedObject* handle = SDL_LoadObject(path.toString().toChar());
@@ -131,10 +118,7 @@ namespace Chicane
             entry.handle   = handle;
             entry.shutdown = reinterpret_cast<ShutdownFn>(SDL_LoadFunction(handle, "ChicaneModuleShutdown"));
 
-            {
-                std::lock_guard lock(mutex());
-                entries().emplace(key, entry);
-            }
+            entries().emplace(key, entry);
 
             Log::info("Loaded module [%s]", path.toString().toChar());
 
@@ -143,8 +127,6 @@ namespace Chicane
 
         void unloadAll()
         {
-            std::lock_guard lock(mutex());
-
             for (auto& [path, entry] : entries())
             {
                 if (entry.shutdown)

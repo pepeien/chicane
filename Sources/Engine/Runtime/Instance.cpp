@@ -218,7 +218,8 @@ namespace Chicane
         view.clip.x        = inView.getNearClip();
         view.clip.y        = inView.getFarClip();
 
-        const bool bProjectionTypeOrthographic = static_cast<bool>(inView.getProjectionType() == ViewProjectionType::Orthographic);
+        const bool bProjectionTypeOrthographic =
+            static_cast<bool>(inView.getProjectionType() == ViewProjectionType::Orthographic);
 
         if (bProjectionTypeOrthographic)
         {
@@ -453,8 +454,7 @@ namespace Chicane
           m_sceneThread({}),
           m_sceneCommandBuffers({}),
           m_viewTargetBuffers({}),
-          m_viewTargetMutex(),
-          m_viewTargets({}),
+          m_publishedViewTargets(std::make_shared<ViewTargetMap>()),
           m_sceneWriteIndex(0),
           m_sceneReadIndex(1),
           m_sceneBusyIndex(3),
@@ -997,6 +997,7 @@ namespace Chicane
                     continue;
                 }
 
+                scene->claim();
                 scene->pumpEvents();
 
                 m_telemetry.physics.start();
@@ -1043,333 +1044,325 @@ namespace Chicane
         const Vec<2, std::uint32_t> screenViewport     = getScreenViewport();
         const Vec<2, std::uint32_t> rendererResolution = getRendererResolution();
 
-        inScene->withObjectLock(
-            [&]()
+        for (CCamera* camera : inScene->getActiveComponents<CCamera>())
+        {
+            camera->onResize(screenViewport);
+
+            command.camera = camera->getData();
+
+            activeCamera = camera;
+        }
+
+        for (CLight* light : inScene->getActiveComponents<CLight>())
+        {
+            light->onResize(rendererResolution);
+
+            command.lights.push_back(light->getLight());
+        }
+
+        std::unordered_set<CMesh*> submittedMeshes;
+
+        auto submitMesh = [&](CMesh* mesh)
+        {
+            if (!mesh || !mesh->isActive() || !mesh->hasMesh() || !submittedMeshes.insert(mesh).second)
             {
-                for (CCamera* camera : inScene->getActiveComponents<CCamera>())
+                return;
+            }
+
+            const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
+            if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
+            {
+                return;
+            }
+
+            const Mat4& matrix = mesh->getMatrix();
+
+            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+            {
+                Renderer::DrawPoly3DCommandMesh subcommand;
+                subcommand.model                     = resolveModelDrawId(group.getModel());
+                subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
+                subcommand.instance.flags            = mesh->getFlags();
+                subcommand.instance.emissiveStrength = group.getEmissiveStrength() * mesh->getEmissiveStrength();
+                subcommand.instance.tileSize         = group.getTileSize();
+
+                const Box::Material* material = nullptr;
+                if (group.hasMaterial())
                 {
-                    camera->onResize(screenViewport);
-
-                    command.camera = camera->getData();
-
-                    activeCamera = camera;
+                    material = Box::load<Box::Material>(group.getMaterial().getSource());
                 }
 
-                for (CLight* light : inScene->getActiveComponents<CLight>())
+                for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
                 {
-                    light->onResize(rendererResolution);
+                    const TextureMaterial type           = static_cast<TextureMaterial>(slot);
+                    const bool bHasMaterialAndHasTexture = static_cast<bool>(material && material->hasTexture(type));
 
-                    command.lights.push_back(light->getLight());
+                    if (bHasMaterialAndHasTexture)
+                    {
+                        subcommand.textures[slot] = material->getTexture(type).getReference();
+                    }
+
+                    const bool bTypeAlbedo = !bHasMaterialAndHasTexture && (type == TextureMaterial::Albedo);
+
+                    if (bTypeAlbedo)
+                    {
+                        subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
+                    }
                 }
 
-                std::unordered_set<CMesh*> submittedMeshes;
+                command.meshes.emplace_back(std::move(subcommand));
+            }
+        };
 
-                auto submitMesh = [&](CMesh* mesh)
+        const bool bHasActiveCamera = static_cast<bool>(activeCamera != nullptr);
+
+        if (bHasActiveCamera)
+        {
+            inScene->forEachInFrustum(
+                activeCamera->getFrustum(),
+                [&submitMesh](Object* object)
                 {
-                    if (!mesh || !mesh->isActive() || !mesh->hasMesh() || !submittedMeshes.insert(mesh).second)
+                    if (!object || typeid(*object) != typeid(CMesh))
                     {
                         return;
                     }
 
-                    const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
-                    if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
-                    {
-                        return;
-                    }
+                    submitMesh(static_cast<CMesh*>(object));
+                }
+            );
 
-                    const Mat4& matrix = mesh->getMatrix();
-
-                    for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-                    {
-                        Renderer::DrawPoly3DCommandMesh subcommand;
-                        subcommand.model          = resolveModelDrawId(group.getModel());
-                        subcommand.instance.model = matrix * mesh->getGroupMatrix(group);
-                        subcommand.instance.flags = mesh->getFlags();
-                        subcommand.instance.emissiveStrength =
-                            group.getEmissiveStrength() * mesh->getEmissiveStrength();
-                        subcommand.instance.tileSize = group.getTileSize();
-
-                        const Box::Material* material = nullptr;
-                        if (group.hasMaterial())
-                        {
-                            material = Box::load<Box::Material>(group.getMaterial().getSource());
-                        }
-
-                        for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
-                        {
-                            const TextureMaterial type   = static_cast<TextureMaterial>(slot);
-                            const bool            bHasMaterialAndHasTexture = static_cast<bool>(material && material->hasTexture(type));
-
-                            if (bHasMaterialAndHasTexture)
-                            {
-                                subcommand.textures[slot] = material->getTexture(type).getReference();
-                            }
-
-                            const bool bTypeAlbedo = !bHasMaterialAndHasTexture && (type == TextureMaterial::Albedo);
-
-                            if (bTypeAlbedo)
-                            {
-                                subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
-                            }
-                        }
-
-                        command.meshes.emplace_back(std::move(subcommand));
-                    }
-                };
-
-                const bool bHasActiveCamera = static_cast<bool>(activeCamera != nullptr);
-
-                if (bHasActiveCamera)
+            std::vector<Object*> attached = {activeCamera};
+            while (!attached.empty())
+            {
+                Object* object = attached.back();
+                attached.pop_back();
+                if (!object)
                 {
-                    inScene->forEachInFrustum(
-                        activeCamera->getFrustum(),
-                        [&submitMesh](Object* object)
-                        {
-                            if (!object || typeid(*object) != typeid(CMesh))
-                            {
-                                return;
-                            }
-
-                            submitMesh(static_cast<CMesh*>(object));
-                        }
-                    );
-
-                    std::vector<Object*> attached = {activeCamera};
-                    while (!attached.empty())
-                    {
-                        Object* object = attached.back();
-                        attached.pop_back();
-                        if (!object)
-                        {
-                            continue;
-                        }
-
-                        if (CMesh* mesh = dynamic_cast<CMesh*>(object))
-                        {
-                            submitMesh(mesh);
-                        }
-
-                        const std::vector<Object*>& children = object->getAttachments();
-                        attached.insert(attached.end(), children.begin(), children.end());
-                    }
+                    continue;
                 }
 
-                if (!bHasActiveCamera)
+                if (CMesh* mesh = dynamic_cast<CMesh*>(object))
                 {
-                    for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
-                    {
-                        submitMesh(mesh);
-                    }
+                    submitMesh(mesh);
                 }
 
-                for (ASky* sky : inScene->getActors<ASky>())
+                const std::vector<Object*>& children = object->getAttachments();
+                attached.insert(attached.end(), children.begin(), children.end());
+            }
+        }
+
+        if (!bHasActiveCamera)
+        {
+            for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
+            {
+                submitMesh(mesh);
+            }
+        }
+
+        for (ASky* sky : inScene->getActors<ASky>())
+        {
+            const Box::Sky* asset = sky->getSky();
+            if (!asset)
+            {
+                continue;
+            }
+
+            Renderer::DrawSkyData data;
+            data.reference = asset->getFilepath();
+            data.model     = resolveModelDrawId(asset->getModel());
+            data.kind      = asset->getKind() == Box::SkyKind::Panorama ? Renderer::DrawSkyKind::Panorama
+                                                                        : Renderer::DrawSkyKind::Cube;
+            data.exposure  = sky->getExposure();
+            data.bVisible  = sky->isVisible();
+
+            for (const Box::AssetReference& texture : asset->getTextures())
+            {
+                data.textures.push_back(texture.getReference());
+            }
+
+            command.sky = data;
+        }
+
+        for (const Smoke::Particle& particle : Smoke::Engine::sInstance().getParticles())
+        {
+            Renderer::DrawParticle draw;
+            draw.positionRotation = Vec4(particle.position, particle.rotation);
+            draw.sizeAge          = Vec4(particle.size.x, particle.size.y, particle.age, particle.additive);
+            draw.color            = particle.color;
+            draw.axis             = Vec4(particle.axis, 0.0f);
+
+            command.particles.push_back(draw);
+        }
+
+        Vertex::List debugLines;
+        Vertex::List skyLines;
+        if (hasSceneFeature(Renderer::RendererFeature::Bounds))
+        {
+            for (Actor* actor : inScene->getActors())
+            {
+                if (!actor)
                 {
-                    const Box::Sky* asset = sky->getSky();
-                    if (!asset)
-                    {
-                        continue;
-                    }
-
-                    Renderer::DrawSkyData data;
-                    data.reference = asset->getFilepath();
-                    data.model     = resolveModelDrawId(asset->getModel());
-                    data.kind      = asset->getKind() == Box::SkyKind::Panorama ? Renderer::DrawSkyKind::Panorama
-                                                                                : Renderer::DrawSkyKind::Cube;
-                    data.exposure  = sky->getExposure();
-                    data.bVisible  = sky->isVisible();
-
-                    for (const Box::AssetReference& texture : asset->getTextures())
-                    {
-                        data.textures.push_back(texture.getReference());
-                    }
-
-                    command.sky = data;
+                    continue;
                 }
 
-                for (const Smoke::Particle& particle : Smoke::Engine::sInstance().getParticles())
-                {
-                    Renderer::DrawParticle draw;
-                    draw.positionRotation = Vec4(particle.position, particle.rotation);
-                    draw.sizeAge          = Vec4(particle.size.x, particle.size.y, particle.age, particle.additive);
-                    draw.color            = particle.color;
-                    draw.axis             = Vec4(particle.axis, 0.0f);
+                Renderer::Debug::appendBounds(debugLines, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR);
+            }
+        }
 
-                    command.particles.push_back(draw);
+        if (hasSceneFeature(Renderer::RendererFeature::Colliders))
+        {
+            for (CPhysics* physics : inScene->getComponents<CPhysics>())
+            {
+                if (!physics)
+                {
+                    continue;
                 }
 
-                Vertex::List debugLines;
-                Vertex::List skyLines;
-                if (hasSceneFeature(Renderer::RendererFeature::Bounds))
-                {
-                    for (Actor* actor : inScene->getActors())
-                    {
-                        if (!actor)
-                        {
-                            continue;
-                        }
+                physics->appendDebugWireframe(debugLines, Renderer::Debug::COLLIDER_COLOR);
+            }
+        }
 
-                        Renderer::Debug::appendBounds(debugLines, actor->getBounds(), Renderer::Debug::BOUNDS_COLOR);
-                    }
+        if (hasSceneFeature(Renderer::RendererFeature::Wireframe))
+        {
+            for (ASky* sky : inScene->getActors<ASky>())
+            {
+                const Box::Sky* asset = sky ? sky->getSky() : nullptr;
+                if (!sky || sky->isTransient() || !asset)
+                {
+                    continue;
                 }
 
-                if (hasSceneFeature(Renderer::RendererFeature::Colliders))
+                const Box::Model* model = Box::load<Box::Model>(asset->getModel().getSource());
+                if (!model)
                 {
-                    for (CPhysics* physics : inScene->getComponents<CPhysics>())
-                    {
-                        if (!physics)
-                        {
-                            continue;
-                        }
-
-                        physics->appendDebugWireframe(debugLines, Renderer::Debug::COLLIDER_COLOR);
-                    }
+                    continue;
                 }
 
-                if (hasSceneFeature(Renderer::RendererFeature::Wireframe))
+                const Box::ModelParsed& parsed = model->getModel(asset->getModel().getReference());
+                if (parsed.vertices.empty())
                 {
-                    for (ASky* sky : inScene->getActors<ASky>())
-                    {
-                        const Box::Sky* asset = sky ? sky->getSky() : nullptr;
-                        if (!sky || sky->isTransient() || !asset)
-                        {
-                            continue;
-                        }
-
-                        const Box::Model* model = Box::load<Box::Model>(asset->getModel().getSource());
-                        if (!model)
-                        {
-                            continue;
-                        }
-
-                        const Box::ModelParsed& parsed = model->getModel(asset->getModel().getReference());
-                        if (parsed.vertices.empty())
-                        {
-                            continue;
-                        }
-
-                        const Vec3  cameraPos = activeCamera ? activeCamera->getTranslation() : sky->getTranslation();
-                        const float clip      = activeCamera ? std::max(activeCamera->getFarClip(), 1.0f) : 1000.0f;
-                        const float scale     = clip * (0.99f / std::sqrt(3.0f));
-
-                        Mat4 transform = Mat4::sTranslate(cameraPos) * Mat4::sScale(Vec3(scale));
-                        transform      = transform * parsed.transform.getMatrix();
-
-                        Renderer::Debug::appendMesh(
-                            skyLines,
-                            transform,
-                            parsed.vertices,
-                            parsed.indices,
-                            Renderer::Debug::MESH_COLOR
-                        );
-                    }
+                    continue;
                 }
 
-                Vertex::List skeletonLines;
-                if (hasSceneFeature(Renderer::RendererFeature::Skeletons))
-                {
-                    for (CMesh* mesh : inScene->getComponents<CMesh>())
-                    {
-                        if (!mesh)
-                        {
-                            continue;
-                        }
+                const Vec3  cameraPos = activeCamera ? activeCamera->getTranslation() : sky->getTranslation();
+                const float clip      = activeCamera ? std::max(activeCamera->getFarClip(), 1.0f) : 1000.0f;
+                const float scale     = clip * (0.99f / std::sqrt(3.0f));
 
-                        mesh->appendDebugWireframe(
-                            skeletonLines,
-                            command.meshes,
-                            Box::Model::SPHERE_REFERENCE,
-                            Renderer::Debug::SKELETON_COLOR
-                        );
-                    }
-                }
+                Mat4 transform = Mat4::sTranslate(cameraPos) * Mat4::sScale(Vec3(scale));
+                transform      = transform * parsed.transform.getMatrix();
 
-                if (!debugLines.empty())
-                {
-                    command.polys.push_back(makeLinePoly(std::move(debugLines)));
-                }
-
-                if (!skyLines.empty())
-                {
-                    command.polys.push_back(makeLinePoly(std::move(skyLines), Renderer::DrawPoly3DFlag::Foreground));
-                }
-
-                if (!skeletonLines.empty())
-                {
-                    command.polys.push_back(
-                        makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground)
-                    );
-                }
-
-                std::vector<std::pair<String, InstanceViewTargetBinding>> requests;
-                {
-                    std::lock_guard<std::mutex> lock(m_viewTargetMutex);
-                    requests.reserve(m_viewTargets.size());
-                    for (const auto& [name, binding] : m_viewTargets)
-                    {
-                        requests.emplace_back(name, binding);
-                    }
-                }
-
-                std::vector<Renderer::ViewTargetCommand>& views = m_viewTargetBuffers.at(index);
-                views.clear();
-
-                std::vector<std::pair<String, InstanceViewTargetBinding>> pending;
-                pending.reserve(requests.size());
-                for (const auto& [name, binding] : requests)
-                {
-                    if (!binding.view || binding.view->isTransient() || !sceneContains(*inScene, binding.view))
-                    {
-                        continue;
-                    }
-
-                    if (name.equals(Renderer::SCREEN_TARGET_ID) || binding.width == 0 || binding.height == 0)
-                    {
-                        continue;
-                    }
-
-                    pending.emplace_back(name, binding);
-                }
-
-                const std::vector<CMesh*>                meshes = inScene->getActiveComponents<CMesh>();
-                std::vector<Renderer::ViewTargetCommand> built(pending.size());
-                WorkerPool::sParallel(
-                    pending.size(),
-                    [&pending, &meshes, &command, &built](std::size_t index)
-                    {
-                        const String&                    name    = pending.at(index).first;
-                        const InstanceViewTargetBinding& binding = pending.at(index).second;
-
-                        ViewSettings settings;
-                        settings.projection  = binding.view->getProjectionType();
-                        settings.viewport    = {binding.width, binding.height};
-                        settings.aspectRatio = static_cast<float>(binding.width) / static_cast<float>(binding.height);
-                        settings.fieldOfView = binding.view->getFieldOfView();
-                        settings.nearClip    = binding.view->getNearClip();
-                        settings.farClip     = binding.view->getFarClip();
-
-                        ViewFrustum frustum;
-                        frustum.update(binding.view, settings);
-
-                        Renderer::ViewTargetCommand& draw = built.at(index);
-                        draw.name                         = name;
-                        draw.width                        = binding.width;
-                        draw.height                       = binding.height;
-                        draw.command.camera               = previewView(*binding.view, binding.width, binding.height);
-                        draw.command.lights               = command.lights;
-                        draw.command.sky                  = command.sky;
-                        draw.command.particles            = command.particles;
-
-                        gatherViewTargetMeshes(meshes, binding.view, frustum, draw.command.meshes);
-                    }
+                Renderer::Debug::appendMesh(
+                    skyLines,
+                    transform,
+                    parsed.vertices,
+                    parsed.indices,
+                    Renderer::Debug::MESH_COLOR
                 );
+            }
+        }
 
-                views.reserve(built.size());
-                for (Renderer::ViewTargetCommand& draw : built)
+        Vertex::List skeletonLines;
+        if (hasSceneFeature(Renderer::RendererFeature::Skeletons))
+        {
+            for (CMesh* mesh : inScene->getComponents<CMesh>())
+            {
+                if (!mesh)
                 {
-                    views.push_back(std::move(draw));
+                    continue;
                 }
+
+                mesh->appendDebugWireframe(
+                    skeletonLines,
+                    command.meshes,
+                    Box::Model::SPHERE_REFERENCE,
+                    Renderer::Debug::SKELETON_COLOR
+                );
+            }
+        }
+
+        if (!debugLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(debugLines)));
+        }
+
+        if (!skyLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(skyLines), Renderer::DrawPoly3DFlag::Foreground));
+        }
+
+        if (!skeletonLines.empty())
+        {
+            command.polys.push_back(makeLinePoly(std::move(skeletonLines), Renderer::DrawPoly3DFlag::Foreground));
+        }
+
+        std::vector<std::pair<String, InstanceViewTargetBinding>> requests;
+        {
+            const std::shared_ptr<const ViewTargetMap> targets = std::atomic_load(&m_publishedViewTargets);
+            requests.reserve(targets->size());
+            for (const auto& [name, binding] : *targets)
+            {
+                requests.emplace_back(name, binding);
+            }
+        }
+
+        std::vector<Renderer::ViewTargetCommand>& views = m_viewTargetBuffers.at(index);
+        views.clear();
+
+        std::vector<std::pair<String, InstanceViewTargetBinding>> pending;
+        pending.reserve(requests.size());
+        for (const auto& [name, binding] : requests)
+        {
+            if (!binding.view || binding.view->isTransient() || !sceneContains(*inScene, binding.view))
+            {
+                continue;
+            }
+
+            if (name.equals(Renderer::SCREEN_TARGET_ID) || binding.width == 0 || binding.height == 0)
+            {
+                continue;
+            }
+
+            pending.emplace_back(name, binding);
+        }
+
+        const std::vector<CMesh*>                meshes = inScene->getActiveComponents<CMesh>();
+        std::vector<Renderer::ViewTargetCommand> built(pending.size());
+        WorkerPool::sParallel(
+            pending.size(),
+            [&pending, &meshes, &command, &built](std::size_t index)
+            {
+                const String&                    name    = pending.at(index).first;
+                const InstanceViewTargetBinding& binding = pending.at(index).second;
+
+                ViewSettings settings;
+                settings.projection  = binding.view->getProjectionType();
+                settings.viewport    = {binding.width, binding.height};
+                settings.aspectRatio = static_cast<float>(binding.width) / static_cast<float>(binding.height);
+                settings.fieldOfView = binding.view->getFieldOfView();
+                settings.nearClip    = binding.view->getNearClip();
+                settings.farClip     = binding.view->getFarClip();
+
+                ViewFrustum frustum;
+                frustum.update(binding.view, settings);
+
+                Renderer::ViewTargetCommand& draw = built.at(index);
+                draw.name                         = name;
+                draw.width                        = binding.width;
+                draw.height                       = binding.height;
+                draw.command.camera               = previewView(*binding.view, binding.width, binding.height);
+                draw.command.lights               = command.lights;
+                draw.command.sky                  = command.sky;
+                draw.command.particles            = command.particles;
+
+                gatherViewTargetMeshes(meshes, binding.view, frustum, draw.command.meshes);
             }
         );
+
+        views.reserve(built.size());
+        for (Renderer::ViewTargetCommand& draw : built)
+        {
+            views.push_back(std::move(draw));
+        }
 
         m_sceneReadIndex.store(index, std::memory_order_release);
         m_sceneWriteIndex.store(
@@ -1489,15 +1482,18 @@ namespace Chicane
             return;
         }
 
-        std::lock_guard<std::mutex> lock(m_viewTargetMutex);
+        const std::shared_ptr<const ViewTargetMap> current = std::atomic_load(&m_publishedViewTargets);
+        ViewTargetMap                              next    = *current;
         if (!inView)
         {
-            m_viewTargets.erase(inName);
-
-            return;
+            next.erase(inName);
+        }
+        else
+        {
+            next[inName].view = inView;
         }
 
-        m_viewTargets[inName].view = inView;
+        std::atomic_store(&m_publishedViewTargets, std::make_shared<const ViewTargetMap>(std::move(next)));
     }
 
     void Instance::pushTrace(const SceneTraceRequest& inRequest)
@@ -1697,8 +1693,9 @@ namespace Chicane
             }
         }
 
-        std::lock_guard<std::mutex> lock(m_viewTargetMutex);
-        for (auto& [name, binding] : m_viewTargets)
+        const std::shared_ptr<const ViewTargetMap> current = std::atomic_load(&m_publishedViewTargets);
+        ViewTargetMap                              next    = *current;
+        for (auto& [name, binding] : next)
         {
             const std::map<String, std::pair<unsigned int, unsigned int>>::iterator found = sizes.find(name);
             if (found == sizes.end())
@@ -1712,6 +1709,8 @@ namespace Chicane
             binding.width  = std::min(found->second.first, Renderer::VIEW_TARGET_EXTENT_MAX);
             binding.height = std::min(found->second.second, Renderer::VIEW_TARGET_EXTENT_MAX);
         }
+
+        std::atomic_store(&m_publishedViewTargets, std::make_shared<const ViewTargetMap>(std::move(next)));
     }
 
     void Instance::buildUICommands(std::shared_ptr<Grid::View> inView)

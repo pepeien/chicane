@@ -141,7 +141,7 @@ namespace Chicane
             std::vector<Mat4> worlds(m_entries.size(), Mat4::One);
             for (std::size_t i = 0; i < m_entries.size(); i++)
             {
-                const Mat4 local  = m_entries[i].transform.getMatrix();
+                const Mat4 local                   = m_entries[i].transform.getMatrix();
                 const bool bParentIndexNonNegative = static_cast<bool>(m_entries[i].parentIndex >= 0);
 
                 if (bParentIndexNonNegative)

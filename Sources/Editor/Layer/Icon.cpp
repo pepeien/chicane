@@ -33,9 +33,9 @@ namespace Editor
     static constexpr inline const char* PATH_LIGHT_ENVIRONMENT = "Assets/Editor/Textures/Icons/Light/Environment.btex";
     static constexpr inline const char* PATH_SOUND             = "Assets/Editor/Textures/Icons/Sound.btex";
 
-    static constexpr inline float ICON_SIZE_SCALE = 0.045f;
-    static constexpr inline float ICON_SIZE_MIN   = 0.18f;
-    static constexpr inline float ICON_SIZE_MAX   = 0.85f;
+    static constexpr inline const float ICON_SIZE_SCALE = 0.045f;
+    static constexpr inline const float ICON_SIZE_MIN   = 0.18f;
+    static constexpr inline const float ICON_SIZE_MAX   = 0.85f;
 
     static void uploadTexture(const Chicane::Box::Texture* inTexture)
     {

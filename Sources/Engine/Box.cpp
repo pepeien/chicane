@@ -3,6 +3,7 @@
 #include <cmath>
 #include <filesystem>
 #include <list>
+#include <memory>
 #include <mutex>
 #include <system_error>
 #include <unordered_map>
@@ -31,10 +32,12 @@ namespace Chicane
 {
     namespace Box
     {
-        static AssetObservable                                                    g_assetObservable   = {};
-        static PreviewObservable                                                  g_previewObservable = {};
-        static std::recursive_mutex                                               g_cacheMutex;
-        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache = {};
+        using AssetCache = std::unordered_map<FileSystem::Path, std::shared_ptr<const Asset>>;
+
+        static AssetObservable                   g_assetObservable   = {};
+        static PreviewObservable                 g_previewObservable = {};
+        static std::recursive_mutex              g_cacheWriter;
+        static std::shared_ptr<const AssetCache> g_cache = std::make_shared<AssetCache>();
 
         static std::unordered_map<FileSystem::Path, PreviewCacheEntry>                     g_previewCache   = {};
         static std::list<FileSystem::Path>                                                 g_previewOrder   = {};
@@ -610,17 +613,17 @@ namespace Chicane
 
         static bool hasAsset(const FileSystem::Path& inSource)
         {
-            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
+            const std::shared_ptr<const AssetCache> cache = std::atomic_load(&g_cache);
 
-            return g_cache.find(inSource) != g_cache.end();
+            return cache->find(inSource) != cache->end();
         }
 
         template <class T = Asset>
         static const T* getAsset(const FileSystem::Path& inSource)
         {
-            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
-            const auto                            found = g_cache.find(inSource);
-            if (found == g_cache.end())
+            const std::shared_ptr<const AssetCache> cache = std::atomic_load(&g_cache);
+            const auto                              found = cache->find(inSource);
+            if (found == cache->end())
             {
                 return nullptr;
             }
@@ -634,15 +637,28 @@ namespace Chicane
             const Asset* created = nullptr;
             const T*     result  = nullptr;
             {
-                std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
-                const auto                            found = g_cache.find(inSource);
-                if (found == g_cache.end())
+                std::lock_guard<std::recursive_mutex> lock(g_cacheWriter);
+                std::shared_ptr<const AssetCache>     current = std::atomic_load(&g_cache);
+                auto                                  found   = current->find(inSource);
+                if (found == current->end())
                 {
-                    g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
-                    created = g_cache.at(inSource).get();
+                    const std::shared_ptr<const T> asset = std::make_shared<const T>(inSource);
+                    current                              = std::atomic_load(&g_cache);
+                    found                                = current->find(inSource);
+                    if (found == current->end())
+                    {
+                        const std::shared_ptr<AssetCache> next = std::make_shared<AssetCache>(*current);
+                        next->emplace(inSource, asset);
+                        std::atomic_store(&g_cache, std::shared_ptr<const AssetCache>(next));
+                        created = asset.get();
+                        result  = asset.get();
+                    }
                 }
 
-                result = dynamic_cast<const T*>(g_cache.at(inSource).get());
+                if (!result)
+                {
+                    result = dynamic_cast<const T*>(found->second.get());
+                }
             }
 
             if (created)
@@ -888,10 +904,10 @@ namespace Chicane
 
         std::vector<const Asset*> getById(const String& inId)
         {
-            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
-            std::vector<const Asset*>             result;
+            const std::shared_ptr<const AssetCache> cache = std::atomic_load(&g_cache);
+            std::vector<const Asset*>               result;
 
-            for (const auto& [path, asset] : g_cache)
+            for (const auto& [path, asset] : *cache)
             {
                 if (!asset->getId().equals(inId))
                 {
@@ -906,11 +922,11 @@ namespace Chicane
 
         const Font* findFont(const String& inFamily, float inWeight)
         {
-            std::lock_guard<std::recursive_mutex> lock(g_cacheMutex);
-            const Font*                           result    = nullptr;
-            float                                 bestDelta = 0.0f;
+            const std::shared_ptr<const AssetCache> cache     = std::atomic_load(&g_cache);
+            const Font*                             result    = nullptr;
+            float                                   bestDelta = 0.0f;
 
-            for (const auto& [path, asset] : g_cache)
+            for (const auto& [path, asset] : *cache)
             {
                 const Font* font = dynamic_cast<const Font*>(asset.get());
 

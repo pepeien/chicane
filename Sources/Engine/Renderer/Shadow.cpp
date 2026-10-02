@@ -158,7 +158,7 @@ namespace Chicane
 
                 float      fovDegrees = std::clamp(inLight.fieldOfView, 1.0f, 179.0f);
                 float      farPlane   = std::max(inLight.farClip, 1.0f);
-                const bool bTypeSpot     = static_cast<bool>(inLight.type == LightType::Spot);
+                const bool bTypeSpot  = static_cast<bool>(inLight.type == LightType::Spot);
 
                 if (bTypeSpot)
                 {
@@ -379,7 +379,8 @@ namespace Chicane
                         result.lights[caster].direction.z
                     );
 
-                    const bool bProjectionPerspective = static_cast<bool>(source.projection == ViewProjectionType::Perspective);
+                    const bool bProjectionPerspective =
+                        static_cast<bool>(source.projection == ViewProjectionType::Perspective);
 
                     if (bProjectionPerspective)
                     {

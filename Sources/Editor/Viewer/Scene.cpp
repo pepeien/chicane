@@ -22,7 +22,8 @@ namespace Editor
         {
             const Chicane::Vec3 look  = Chicane::Box::AssetPreview::VIEW_DIRECTION.normalize();
             Chicane::Vec3       right = look.cross(Chicane::Vec3::sUp());
-            const bool bRightExtentEpsilon = static_cast<bool>(right.dot(right) <= Chicane::Box::AssetPreview::EXTENT_EPSILON);
+            const bool          bRightExtentEpsilon =
+                static_cast<bool>(right.dot(right) <= Chicane::Box::AssetPreview::EXTENT_EPSILON);
 
             if (bRightExtentEpsilon)
             {

@@ -243,7 +243,8 @@ namespace Chicane
         const int height = static_cast<int>(std::min(maxSize, sFloorPowerOfTwo(static_cast<std::uint32_t>(inHeight))));
 
         Instance   current;
-        const bool bWidthMatches = static_cast<bool>(width == inWidth && height == inHeight && inChannel == 4 && !inIsNormal);
+        const bool bWidthMatches =
+            static_cast<bool>(width == inWidth && height == inHeight && inChannel == 4 && !inIsNormal);
 
         if (bWidthMatches)
         {

@@ -2,7 +2,7 @@
 
 #include <atomic>
 #include <map>
-#include <mutex>
+#include <memory>
 #include <thread>
 #include <vector>
 
@@ -220,45 +220,46 @@ namespace Chicane
 
     private:
         // Status
-        InstanceTelemetry                                     m_telemetry;
-        std::atomic<bool>                                     m_bIsRunning;
+        InstanceTelemetry      m_telemetry;
+        std::atomic<bool>      m_bIsRunning;
 
         // Scene
-        Controller*                                           m_controller;
-        ControllerObservable                                  m_controllerObservable;
+        Controller*            m_controller;
+        ControllerObservable   m_controllerObservable;
 
-        std::shared_ptr<Scene>                                m_scene;
-        std::thread                                           m_sceneThread;
+        std::shared_ptr<Scene> m_scene;
+        std::thread            m_sceneThread;
+
+        using ViewTargetMap = std::map<String, InstanceViewTargetBinding>;
 
         std::vector<Renderer::DrawPoly3DCommand>              m_sceneCommandBuffers;
         std::vector<std::vector<Renderer::ViewTargetCommand>> m_viewTargetBuffers;
-        std::mutex                                            m_viewTargetMutex;
-        std::map<String, InstanceViewTargetBinding>           m_viewTargets;
-        std::atomic<std::size_t>                              m_sceneWriteIndex;
-        std::atomic<std::size_t>                              m_sceneReadIndex;
-        std::atomic<std::size_t>                              m_sceneBusyIndex;
-        SceneObservable                                       m_sceneObservable;
+        std::shared_ptr<const ViewTargetMap>     m_publishedViewTargets = std::make_shared<ViewTargetMap>();
+        std::atomic<std::size_t>                 m_sceneWriteIndex;
+        std::atomic<std::size_t>                 m_sceneReadIndex;
+        std::atomic<std::size_t>                 m_sceneBusyIndex;
+        SceneObservable                          m_sceneObservable;
 
         // Grid
-        std::shared_ptr<Grid::View>                           m_view;
-        std::thread                                           m_viewThread;
-        std::vector<Renderer::DrawPoly2DCommand>              m_viewCommandBuffers;
-        std::vector<Grid::Component*>                         m_viewDrawables;
-        std::atomic<std::size_t>                              m_viewWriteIndex;
-        std::atomic<std::size_t>                              m_viewReadIndex;
-        std::atomic<std::uint32_t>                            m_screenViewportX;
-        std::atomic<std::uint32_t>                            m_screenViewportY;
-        std::atomic<std::uint32_t>                            m_screenViewportWidth;
-        std::atomic<std::uint32_t>                            m_screenViewportHeight;
-        ViewObservable                                        m_viewObservable;
+        std::shared_ptr<Grid::View>              m_view;
+        std::thread                              m_viewThread;
+        std::vector<Renderer::DrawPoly2DCommand> m_viewCommandBuffers;
+        std::vector<Grid::Component*>            m_viewDrawables;
+        std::atomic<std::size_t>                 m_viewWriteIndex;
+        std::atomic<std::size_t>                 m_viewReadIndex;
+        std::atomic<std::uint32_t>               m_screenViewportX;
+        std::atomic<std::uint32_t>               m_screenViewportY;
+        std::atomic<std::uint32_t>               m_screenViewportWidth;
+        std::atomic<std::uint32_t>               m_screenViewportHeight;
+        ViewObservable                           m_viewObservable;
 
         // Window
-        std::unique_ptr<Window>                               m_window;
+        std::unique_ptr<Window>                  m_window;
 
         // Renderer
-        std::unique_ptr<Renderer::Instance>                   m_renderer;
-        std::atomic<std::uint16_t>                            m_featureFlags;
-        std::atomic<std::uint32_t>                            m_rendererWidth;
-        std::atomic<std::uint32_t>                            m_rendererHeight;
+        std::unique_ptr<Renderer::Instance>      m_renderer;
+        std::atomic<std::uint16_t>               m_featureFlags;
+        std::atomic<std::uint32_t>               m_rendererWidth;
+        std::atomic<std::uint32_t>               m_rendererHeight;
     };
 }

@@ -544,8 +544,8 @@ namespace
             };
         }
 
-        const bool bVerticalCross = !bHorizontalCross && (width > 0 && height > 0 && (width % 3) == 0 && (height % 4) == 0 &&
-                                        (width / 3) == (height / 4));
+        const bool bVerticalCross = !bHorizontalCross && (width > 0 && height > 0 && (width % 3) == 0 &&
+                                                          (height % 4) == 0 && (width / 3) == (height / 4));
 
         if (bVerticalCross)
         {
@@ -565,7 +565,8 @@ namespace
             };
         }
 
-        const bool bVerticalStrip = !bHorizontalCross && !bVerticalCross && !bHorizontalStrip && (width > 0 && height == width * 6);
+        const bool bVerticalStrip =
+            !bHorizontalCross && !bVerticalCross && !bHorizontalStrip && (width > 0 && height == width * 6);
 
         if (bVerticalStrip)
         {

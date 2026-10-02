@@ -413,43 +413,49 @@ namespace Chicane
 
     void PreviewService::destroyActors(Scene& inScene)
     {
-        for (Actor* actor : m_actors)
-        {
-            if (!actor)
-            {
-                continue;
-            }
-
-            const std::vector<Object*> attachments = actor->getAttachments();
-            for (Object* attachment : attachments)
-            {
-                if (!attachment)
-                {
-                    continue;
-                }
-
-                attachment->detach();
-
-                if (Actor* attachedActor = dynamic_cast<Actor*>(attachment))
-                {
-                    inScene.removeActor(attachedActor);
-                    delete attachedActor;
-
-                    continue;
-                }
-
-                if (Component* component = dynamic_cast<Component*>(attachment))
-                {
-                    inScene.removeComponent(component);
-                    delete component;
-                }
-            }
-
-            inScene.removeActor(actor);
-            delete actor;
-        }
-
+        std::vector<Actor*> actors = std::move(m_actors);
         m_actors.clear();
+
+        inScene.runOnOwner(
+            [&inScene, actors = std::move(actors)]() mutable
+            {
+                for (Actor* actor : actors)
+                {
+                    if (!actor)
+                    {
+                        continue;
+                    }
+
+                    const std::vector<Object*> attachments = actor->getAttachments();
+                    for (Object* attachment : attachments)
+                    {
+                        if (!attachment)
+                        {
+                            continue;
+                        }
+
+                        attachment->detach();
+
+                        if (Actor* attachedActor = dynamic_cast<Actor*>(attachment))
+                        {
+                            inScene.removeActor(attachedActor);
+                            delete attachedActor;
+
+                            continue;
+                        }
+
+                        if (Component* component = dynamic_cast<Component*>(attachment))
+                        {
+                            inScene.removeComponent(component);
+                            delete component;
+                        }
+                    }
+
+                    inScene.removeActor(actor);
+                    delete actor;
+                }
+            }
+        );
     }
 
     void PreviewService::removeTempFiles()

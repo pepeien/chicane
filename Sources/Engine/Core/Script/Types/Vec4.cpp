@@ -47,14 +47,16 @@ namespace Chicane
                     value         = Vec4(checkVec3(inState, 2), w);
                 }
 
-                const bool bArgsAtLeast2AndVec2 = !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 && (args >= 2 && isVec2(inState, 2));
+                const bool bArgsAtLeast2AndVec2 =
+                    !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 && (args >= 2 && isVec2(inState, 2));
 
                 if (bArgsAtLeast2AndVec2)
                 {
                     value = Vec4(checkVec2(inState, 2));
                 }
 
-                const bool bArgsAtLeast2AndIsNumber = !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 && !bArgsAtLeast2AndVec2 && (args >= 2 && lua_isnumber(inState, 2));
+                const bool bArgsAtLeast2AndIsNumber = !bArgsAtLeast5 && !bArgsAtLeast2AndVec3 &&
+                                                      !bArgsAtLeast2AndVec2 && (args >= 2 && lua_isnumber(inState, 2));
 
                 if (bArgsAtLeast2AndIsNumber)
                 {

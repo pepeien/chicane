@@ -179,7 +179,7 @@ namespace Chicane
                     continue;
                 }
 
-                const String name   = sanitizeName(image.id);
+                const String name       = sanitizeName(image.id);
                 const bool   bIndexZero = static_cast<bool>(index == 0);
 
                 if (bIndexZero)
@@ -480,7 +480,7 @@ namespace Chicane
             for (const auto& [reference, data] : scene.geometry)
             {
                 PreviewGeometryBatch batch;
-                batch.vertices    = data.vertices;
+                batch.vertices           = data.vertices;
                 const bool bIndicesEmpty = static_cast<bool>(data.indices.empty());
 
                 if (bIndicesEmpty)

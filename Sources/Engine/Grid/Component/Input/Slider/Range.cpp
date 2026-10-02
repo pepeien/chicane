@@ -292,8 +292,8 @@ namespace Chicane
                 std::swap(nextLow, nextHigh);
             }
 
-            const float minimum = gap();
-            const bool  bModeSpan  = static_cast<bool>(inMode == InputRangeSliderDrag::Span);
+            const float minimum   = gap();
+            const bool  bModeSpan = static_cast<bool>(inMode == InputRangeSliderDrag::Span);
 
             if (bModeSpan)
             {

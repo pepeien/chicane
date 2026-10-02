@@ -55,39 +55,39 @@ namespace Chicane
 
         public:
             // Extension
-            static constexpr inline const char*      FILE_EXTENSION_NAME = "decal";
+            static constexpr inline const char*            FILE_EXTENSION_NAME = "decal";
 
             // Attribute
-            static constexpr inline const char*      ATTRIBUTE_NAME = "style";
+            static constexpr inline const char*            ATTRIBUTE_NAME = "style";
 
             // Reference
-            static constexpr inline const char*      REFERENCE_KEYWORD = "ref";
+            static constexpr inline const char*            REFERENCE_KEYWORD = "ref";
 
             // Import
-            static constexpr inline const char*      IMPORT_KEYWORD = "@import";
-            static constexpr inline const char*      URL_KEYWORD    = "url";
+            static constexpr inline const char*            IMPORT_KEYWORD = "@import";
+            static constexpr inline const char*            URL_KEYWORD    = "url";
 
             // Ruleset
-            static constexpr inline const char       COMMAND_ENDING   = ';';
-            static constexpr inline const char       VARIABLE_KEYWORD = '$';
-            static constexpr inline const char       RULESET_OPENING  = '{';
-            static constexpr inline const char       RULESET_CLOSING  = '}';
+            static constexpr inline const char             COMMAND_ENDING   = ';';
+            static constexpr inline const char             VARIABLE_KEYWORD = '$';
+            static constexpr inline const char             RULESET_OPENING  = '{';
+            static constexpr inline const char             RULESET_CLOSING  = '}';
 
             // Separator
-            static constexpr inline const char       ONELINE_SEPARATOR  = ' ';
-            static constexpr inline const char       SELECTOR_SEPARATOR = ',';
-            static constexpr inline const char       CLASS_SEPARATOR    = ' ';
+            static constexpr inline const char             ONELINE_SEPARATOR  = ' ';
+            static constexpr inline const char             SELECTOR_SEPARATOR = ',';
+            static constexpr inline const char             CLASS_SEPARATOR    = ' ';
 
             // Selectors
-            static constexpr inline const char       ID_SELECTOR              = '#';
-            static constexpr inline const char       CLASS_SELECTOR           = '.';
-            static constexpr inline const char       INCLUSIVE_SELECTOR       = '*';
-            static constexpr inline const char       SELECTOR_INHERITANCE     = '&';
-            static constexpr inline const char       SELECTOR_SEPARATOR_COMMA = ',';
-            static constexpr inline const char       SELECTOR_SEPARATOR_SPACE = ' ';
-            static constexpr inline const char       PSEUDO_CLASS_SELECTOR    = ':';
+            static constexpr inline const char             ID_SELECTOR              = '#';
+            static constexpr inline const char             CLASS_SELECTOR           = '.';
+            static constexpr inline const char             INCLUSIVE_SELECTOR       = '*';
+            static constexpr inline const char             SELECTOR_INHERITANCE     = '&';
+            static constexpr inline const char             SELECTOR_SEPARATOR_COMMA = ',';
+            static constexpr inline const char             SELECTOR_SEPARATOR_SPACE = ' ';
+            static constexpr inline const char             PSEUDO_CLASS_SELECTOR    = ':';
 
-            static constexpr inline StylePseudoClass PSEUDO_CLASSES[] = {
+            static constexpr inline const StylePseudoClass PSEUDO_CLASSES[] = {
                 {":hover",    ComponentStatus::Hovered },
                 {":focus",    ComponentStatus::Focused },
                 {":drag",     ComponentStatus::Dragging},
@@ -109,14 +109,14 @@ namespace Chicane
             static constexpr inline const char  PSEUDO_ARGUMENT_TAB   = '\t';
             static constexpr inline const char  PSEUDO_ARGUMENT_CLOSE = ')';
 
-            static constexpr inline int         PSEUDO_ZERO_STEP     = 0;
-            static constexpr inline int         PSEUDO_ODD_STEP      = 2;
-            static constexpr inline int         PSEUDO_ODD_OFFSET    = 1;
-            static constexpr inline int         PSEUDO_EVEN_STEP     = 2;
-            static constexpr inline int         PSEUDO_EVEN_OFFSET   = 0;
-            static constexpr inline int         PSEUDO_SINGLE_STEP   = 1;
-            static constexpr inline int         PSEUDO_NEGATIVE_STEP = -1;
-            static constexpr inline int         PSEUDO_ZERO_OFFSET   = 0;
+            static constexpr inline const int   PSEUDO_ZERO_STEP     = 0;
+            static constexpr inline const int   PSEUDO_ODD_STEP      = 2;
+            static constexpr inline const int   PSEUDO_ODD_OFFSET    = 1;
+            static constexpr inline const int   PSEUDO_EVEN_STEP     = 2;
+            static constexpr inline const int   PSEUDO_EVEN_OFFSET   = 0;
+            static constexpr inline const int   PSEUDO_SINGLE_STEP   = 1;
+            static constexpr inline const int   PSEUDO_NEGATIVE_STEP = -1;
+            static constexpr inline const int   PSEUDO_ZERO_OFFSET   = 0;
 
             // Display
             static constexpr inline const char* DISPLAY_ATTRIBUTE_NAME = "display";

@@ -31,10 +31,10 @@ namespace Chicane
             static constexpr inline const char* TAG_ID = "Dock";
 
             // Values
-            static constexpr inline float       HANDLE_THICKNESS = 10.0f;
-            static constexpr inline float       DRAG_THRESHOLD   = 6.0f;
-            static constexpr inline float       DROP_BAND_MIN    = 36.0f;
-            static constexpr inline float       DROP_BAND_RATIO  = 0.22f;
+            static constexpr inline const float HANDLE_THICKNESS = 10.0f;
+            static constexpr inline const float DRAG_THRESHOLD   = 6.0f;
+            static constexpr inline const float DROP_BAND_MIN    = 36.0f;
+            static constexpr inline const float DROP_BAND_RATIO  = 0.22f;
 
             static constexpr inline const char* DEFAULT_WIDTH_SIZE  = "20em";
             static constexpr inline const char* DEFAULT_HEIGHT_SIZE = "16em";

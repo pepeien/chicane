@@ -186,8 +186,8 @@ namespace Chicane
                 VulkanBuffer stagingBuffer;
                 stagingBuffer.init(bufferCreateInfo);
 
-                void*      writeLocation = stagingBuffer.map();
-                const bool bWidthLevelWidth        = static_cast<bool>(
+                void*      writeLocation    = stagingBuffer.map();
+                const bool bWidthLevelWidth = static_cast<bool>(
                     image->getWidth() == static_cast<int>(levelWidth) &&
                     image->getHeight() == static_cast<int>(levelHeight) && image->getPixels()
                 );

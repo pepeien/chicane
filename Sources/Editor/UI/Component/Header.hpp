@@ -1,6 +1,8 @@
 #pragma once
 
-#include <mutex>
+#include <array>
+#include <atomic>
+#include <cstdint>
 #include <vector>
 
 #include <Chicane/Core/Math/Bounds/2D.hpp>
@@ -85,10 +87,16 @@ namespace Editor
         Chicane::String assetsTabState;
 
     private:
-        void*                          m_moveWindow;
-        mutable std::mutex             m_moveHitMutex;
-        Chicane::Bounds2D              m_moveBounds;
-        std::vector<Chicane::Bounds2D> m_moveControls;
-        std::vector<Chicane::Bounds2D> m_moveOverlays;
+        struct MoveHitSnapshot
+        {
+        public:
+            Chicane::Bounds2D              bounds;
+            std::vector<Chicane::Bounds2D> controls;
+            std::vector<Chicane::Bounds2D> overlays;
+        };
+
+        void*                          m_moveWindow = nullptr;
+        std::array<MoveHitSnapshot, 2> m_moveHits;
+        std::atomic<std::uint8_t>      m_moveHitIndex = 0;
     };
 }

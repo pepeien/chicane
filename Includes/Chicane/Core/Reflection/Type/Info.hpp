@@ -29,7 +29,7 @@ namespace Chicane
         using AnyStringifier = std::function<String(const std::any&)>;
 
     public:
-        static constexpr inline char OBJECT_SEPARATOR = '.';
+        static constexpr inline const char OBJECT_SEPARATOR = '.';
 
     public:
         ReflectionTypeInfo(

@@ -129,7 +129,8 @@ namespace Chicane
                     m_animationClip = "";
                 }
 
-                const bool bAnimationClipMatchesAnimationNameOrNoPlayer = !bAnimationNameEmptyOrNone && (!m_animationClip.equals(animationName) || !m_animator.hasPlayer());
+                const bool bAnimationClipMatchesAnimationNameOrNoPlayer =
+                    !bAnimationNameEmptyOrNone && (!m_animationClip.equals(animationName) || !m_animator.hasPlayer());
 
                 if (bAnimationClipMatchesAnimationNameOrNoPlayer)
                 {
@@ -158,7 +159,8 @@ namespace Chicane
                     }
                 }
 
-                const bool bHasPlayer = !bAnimationNameEmptyOrNone && !bAnimationClipMatchesAnimationNameOrNoPlayer && (player);
+                const bool bHasPlayer =
+                    !bAnimationNameEmptyOrNone && !bAnimationClipMatchesAnimationNameOrNoPlayer && (player);
 
                 if (bHasPlayer)
                 {

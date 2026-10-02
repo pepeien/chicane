@@ -26,6 +26,7 @@
 #include "Chicane/Grid/Component/Scrollable.hpp"
 #include "Chicane/Grid/Component/StyleMatch.hpp"
 #include "Chicane/Grid/Component/View.hpp"
+#include "Chicane/Grid/Component/View/Script.hpp"
 
 namespace Chicane
 {
@@ -496,7 +497,8 @@ namespace Chicane
               m_draw({}),
               m_forInstances({}),
               m_forVariable(String::sEmpty()),
-              m_forSource({})
+              m_forSource({}),
+              m_script(nullptr)
         {
             style.setParent(this);
 
@@ -884,7 +886,8 @@ namespace Chicane
                         }
                     }
 
-                    const bool bParentCenterOrIsRightAuto = !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsLeftAuto && bIsRightAuto));
+                    const bool bParentCenterOrIsRightAuto =
+                        !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsLeftAuto && bIsRightAuto));
 
                     if (bParentCenterOrIsRightAuto)
                     {
@@ -892,14 +895,16 @@ namespace Chicane
                         marginRight = leftoverW * 0.5f;
                     }
 
-                    const bool bLeftAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto && (bIsLeftAuto);
+                    const bool bLeftAuto =
+                        !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto && (bIsLeftAuto);
 
                     if (bLeftAuto)
                     {
                         marginLeft = leftoverW;
                     }
 
-                    const bool bRightAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto && !bLeftAuto && (bIsRightAuto);
+                    const bool bRightAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsRightAuto &&
+                                            !bLeftAuto && (bIsRightAuto);
 
                     if (bRightAuto)
                     {
@@ -939,7 +944,8 @@ namespace Chicane
                         const int   mainAutos = bShareMainAuto ? m_parent->countTrailingMainAutoMargins(this) : 0;
                         const float mainShare = mainAutos > 0 ? leftoverH / static_cast<float>(mainAutos) : leftoverH;
 
-                        const bool bShareMainAutoAndMainAutosPositive = static_cast<bool>(bShareMainAuto && mainAutos > 0);
+                        const bool bShareMainAutoAndMainAutosPositive =
+                            static_cast<bool>(bShareMainAuto && mainAutos > 0);
 
                         if (bShareMainAutoAndMainAutosPositive)
                         {
@@ -954,7 +960,8 @@ namespace Chicane
                             }
                         }
 
-                        const bool bParentCenterOrIsBottomAuto = !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsTopAuto && bIsBottomAuto));
+                        const bool bParentCenterOrIsBottomAuto =
+                            !bShareMainAutoAndMainAutosPositive && (bIsParentCenter || (bIsTopAuto && bIsBottomAuto));
 
                         if (bParentCenterOrIsBottomAuto)
                         {
@@ -962,14 +969,16 @@ namespace Chicane
                             marginBottom = leftoverH * 0.5f;
                         }
 
-                        const bool bTopAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto && (bIsTopAuto);
+                        const bool bTopAuto =
+                            !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto && (bIsTopAuto);
 
                         if (bTopAuto)
                         {
                             marginTop = leftoverH;
                         }
 
-                        const bool bBottomAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto && !bTopAuto && (bIsBottomAuto);
+                        const bool bBottomAuto = !bShareMainAutoAndMainAutosPositive && !bParentCenterOrIsBottomAuto &&
+                                                 !bTopAuto && (bIsBottomAuto);
 
                         if (bBottomAuto)
                         {
@@ -1021,7 +1030,8 @@ namespace Chicane
 
                 if (bHasLineStarted)
                 {
-                    const bool bWrapAndItemMainLineLimit = static_cast<bool>(bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit);
+                    const bool bWrapAndItemMainLineLimit =
+                        static_cast<bool>(bCanWrap && (cursorMain + mainGap + itemMain) > lineLimit);
 
                     if (bWrapAndItemMainLineLimit)
                     {
@@ -1434,6 +1444,11 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
+            if (m_script)
+            {
+                m_script->tick(inDeltaTime);
+            }
+
             m_animationDelta = inDeltaTime;
             setFlag(ComponentDirty::LaidOut, false);
 
@@ -3512,8 +3527,8 @@ namespace Chicane
                     }
                 }
 
-                const Style& style   = sibling->getStyle();
-                const bool   bRow = static_cast<bool>(bIsRow);
+                const Style& style = sibling->getStyle();
+                const bool   bRow  = static_cast<bool>(bIsRow);
 
                 if (bRow)
                 {
@@ -3938,10 +3953,39 @@ namespace Chicane
                 addChild(child);
             }
 
-            if (View* view = dynamic_cast<View*>(this))
+            loadScript(inTemplate);
+        }
+
+        void Component::loadScript(const FileSystem::Path& inTemplate)
+        {
+            m_script.reset();
+
+            if (inTemplate.isEmpty())
             {
-                view->loadViewScript(inTemplate);
+                return;
             }
+
+            const FileSystem::Path script = inTemplate.withExtension(ViewScript::EXTENSION);
+            if (!FileSystem::exists(script))
+            {
+                return;
+            }
+
+            m_script = std::make_unique<ViewScript>(this);
+            if (!m_script->load(script))
+            {
+                m_script.reset();
+            }
+        }
+
+        bool Component::callScript(const String& inName, const std::vector<String>& inArgs) const
+        {
+            return m_script && m_script->callGlobal(inName, inArgs);
+        }
+
+        void Component::releaseScript()
+        {
+            m_script.reset();
         }
 
         void Component::addProjectedContent(const XmlNode& inSlot)
@@ -4534,13 +4578,10 @@ namespace Chicane
 
             const String name = signature.substr(0, signature.firstOf(METHOD_PARAMS_OPENING));
 
-            if (View* view = dynamic_cast<View*>(m_root ? m_root : const_cast<Component*>(this)))
+            std::vector<String> args;
+            if (parseLuaStringArgs(signature, args) && callScript(name, args))
             {
-                std::vector<String> args;
-                if (parseLuaStringArgs(signature, args) && view->callLuaGlobal(name, args))
-                {
-                    return {};
-                }
+                return {};
             }
 
             if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeid(*this)))

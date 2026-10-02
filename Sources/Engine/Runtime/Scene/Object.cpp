@@ -142,21 +142,20 @@ namespace Chicane
         }
     }
 
-    void Object::beginRefresh()
+    bool Object::beginRefresh()
     {
-        if (m_scene)
+        if (!m_scene || m_scene->ownsObjects())
         {
-            m_scene->lockObjects();
+            return true;
         }
+
+        m_scene->runOnOwner([this]() { refresh(); });
+
+        return false;
     }
 
     void Object::endRefresh()
-    {
-        if (m_scene)
-        {
-            m_scene->unlockObjects();
-        }
-    }
+    {}
 
     void Object::onRefresh()
     {

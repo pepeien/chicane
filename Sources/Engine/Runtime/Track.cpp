@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <mutex>
 #include <stdexcept>
 #include <typeindex>
 #include <unordered_map>
@@ -161,11 +160,9 @@ namespace Chicane
 
         static const Object* classDefaultObject(const Object& inObject)
         {
-            static std::mutex                                   mutex;
             static std::unordered_map<std::type_index, Object*> cache;
 
-            const std::type_index       index(typeid(inObject));
-            std::lock_guard<std::mutex> lock(mutex);
+            const std::type_index index(typeid(inObject));
 
             auto found = cache.find(index);
             if (found != cache.end())
@@ -196,7 +193,7 @@ namespace Chicane
 
             Actor*     actor     = dynamic_cast<Actor*>(instance);
             Component* component = actor ? nullptr : dynamic_cast<Component*>(instance);
-            const bool bHasActor    = static_cast<bool>(actor);
+            const bool bHasActor = static_cast<bool>(actor);
 
             if (bHasActor)
             {
@@ -281,7 +278,7 @@ namespace Chicane
                     continue;
                 }
 
-                const String value  = fieldValue(accessor, inObject);
+                const String value        = fieldValue(accessor, inObject);
                 const bool   bHasBaseline = static_cast<bool>(inBaseline);
 
                 if (bHasBaseline)
@@ -424,7 +421,7 @@ namespace Chicane
                 }
 
                 const Object* childBaseline = nullptr;
-                const bool    bNative        = static_cast<bool>(attachment->isNative());
+                const bool    bNative       = static_cast<bool>(attachment->isNative());
 
                 if (bNative)
                 {

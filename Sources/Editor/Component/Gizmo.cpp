@@ -19,9 +19,9 @@
 #include <Chicane/Runtime/Scene/Component/Camera.hpp>
 #include <Chicane/Runtime/Scene/Trace/Request.hpp>
 
+#include "Editor/UI/Component/Attributes/CoordinateSpace.hpp"
+#include "Editor/UI/Pages/Viewport.hpp"
 #include "Editor/UI/View/Home.hpp"
-
-#include <SDL3/SDL.h>
 
 namespace Editor
 {
@@ -359,7 +359,10 @@ namespace Editor
     {
         if (std::shared_ptr<HomeView> home = Chicane::Instance::sInstance().getView<HomeView>())
         {
-            return home->getCoordinateSpace() == CoordinateSpace::Relative;
+            if (Page::Viewport* page = Page::findViewport(home.get()))
+            {
+                return page->getCoordinateSpace() == CoordinateSpace::Relative;
+            }
         }
 
         return false;

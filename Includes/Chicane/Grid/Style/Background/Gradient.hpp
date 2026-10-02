@@ -22,7 +22,7 @@ namespace Chicane
             using ColorParser = std::function<Color::Rgba(const String&)>;
             using List        = std::vector<StyleGradient>;
 
-            static constexpr inline std::uint32_t MAX_STOPS = 8;
+            static constexpr inline const std::uint32_t MAX_STOPS = 8;
 
         public:
             static bool sIsDeclaration(const String& inValue);

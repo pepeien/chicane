@@ -24,15 +24,12 @@ namespace Chicane
                 return;
             }
 
+            if (m_inFlight.find(inKey) != m_inFlight.end())
             {
-                std::lock_guard<std::mutex> lock(m_mutex);
-                if (m_inFlight.find(inKey) != m_inFlight.end())
-                {
-                    return;
-                }
-
-                m_inFlight.insert(inKey);
+                return;
             }
+
+            m_inFlight.insert(inKey);
 
             WorkerPool::sDetach(
                 [inKey, inBuild = std::move(inBuild)]()
@@ -54,17 +51,7 @@ namespace Chicane
 
         bool SvgTessellation::pump()
         {
-            std::vector<SvgTessellationReady> ready;
-            {
-                std::lock_guard<std::mutex> lock(m_mutex);
-                ready.swap(m_ready);
-
-                for (const SvgTessellationReady& entry : ready)
-                {
-                    m_inFlight.erase(entry.key);
-                }
-            }
-
+            std::vector<SvgTessellationReady> ready = m_ready.drain();
             if (ready.empty())
             {
                 return false;
@@ -72,6 +59,7 @@ namespace Chicane
 
             for (SvgTessellationReady& entry : ready)
             {
+                m_inFlight.erase(entry.key);
                 m_cache[std::move(entry.key)] = std::move(entry.primitive);
             }
 
@@ -87,8 +75,7 @@ namespace Chicane
 
         void SvgTessellation::finish(const std::string& inKey, Primitive inPrimitive)
         {
-            std::lock_guard<std::mutex> lock(m_mutex);
-            m_ready.push_back({inKey, std::move(inPrimitive)});
+            m_ready.push({inKey, std::move(inPrimitive)});
         }
     }
 }

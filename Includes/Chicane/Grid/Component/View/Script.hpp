@@ -16,6 +16,7 @@ namespace Chicane
 {
     namespace Grid
     {
+        class Component;
         class View;
 
         class CHICANE_GRID ViewScript
@@ -24,7 +25,7 @@ namespace Chicane
             static constexpr inline const char* EXTENSION = ".flag";
 
         public:
-            explicit ViewScript(View* inView);
+            explicit ViewScript(Component* inHost);
             ~ViewScript();
 
         public:
@@ -40,6 +41,7 @@ namespace Chicane
             std::uint64_t subscribe(const String& inName, int inRef);
             void unsubscribe(std::uint64_t inToken);
 
+            Component* host() const;
             View* view() const;
             Script::Context& context();
 
@@ -48,7 +50,7 @@ namespace Chicane
             void clearSubscriptions();
 
         private:
-            View*                               m_view;
+            Component*                          m_host;
             Script::Context                     m_context;
             int                                 m_onLoad;
             int                                 m_onTick;

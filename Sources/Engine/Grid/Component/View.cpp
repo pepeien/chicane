@@ -23,14 +23,15 @@ namespace Chicane
         View::View()
             : Container(TAG_ID),
               m_path(""),
+              m_route(String::sEmpty()),
+              m_routes({}),
               m_hovered(nullptr),
               m_focused(nullptr),
               m_dragging(nullptr),
               m_inputs(std::make_unique<ViewInputQueue>()),
               m_pointer(WindowCursor::Default),
               m_roundedAncestors({}),
-              m_bus(),
-              m_viewScript()
+              m_bus()
         {
             m_root   = this;
             m_parent = this;
@@ -42,16 +43,30 @@ namespace Chicane
             load(inTemplate, inStyle);
         }
 
-        View::~View() = default;
+        static void releaseScripts(Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return;
+            }
+
+            const std::vector<Component*> children = inComponent->getChildren();
+            inComponent->releaseScript();
+
+            for (Component* child : children)
+            {
+                releaseScripts(child);
+            }
+        }
+
+        View::~View()
+        {
+            releaseScripts(this);
+        }
 
         void View::tick(float inDelta)
         {
             pumpEvents();
-
-            if (m_viewScript)
-            {
-                m_viewScript->tick(inDelta);
-            }
 
             Container::tick(inDelta);
 
@@ -154,29 +169,47 @@ namespace Chicane
 
         bool View::callLuaGlobal(const String& inName, const std::vector<String>& inArgs)
         {
-            return m_viewScript && m_viewScript->callGlobal(inName, inArgs);
+            return callScript(inName, inArgs);
         }
 
-        void View::loadViewScript(const FileSystem::Path& inTemplate)
+        void View::addRoute(const Route& inRoute)
         {
-            m_viewScript.reset();
-
-            if (inTemplate.isEmpty())
+            for (Route& route : m_routes)
             {
+                if (!route.path.equals(inRoute.path))
+                {
+                    continue;
+                }
+
+                route = inRoute;
+
                 return;
             }
 
-            const FileSystem::Path script = inTemplate.withExtension(ViewScript::EXTENSION);
-            if (!FileSystem::exists(script))
+            m_routes.push_back(inRoute);
+        }
+
+        void View::navigate(const String& inPath)
+        {
+            m_route = inPath;
+        }
+
+        const String& View::getRoute() const
+        {
+            return m_route;
+        }
+
+        const Route* View::findRoute(const String& inPath) const
+        {
+            for (const Route& route : m_routes)
             {
-                return;
+                if (route.path.equals(inPath))
+                {
+                    return &route;
+                }
             }
 
-            m_viewScript = std::make_unique<ViewScript>(this);
-            if (!m_viewScript->load(script))
-            {
-                m_viewScript.reset();
-            }
+            return nullptr;
         }
 
         std::vector<Component*> View::getChildrenAt(const Vec2& inLocation) const
