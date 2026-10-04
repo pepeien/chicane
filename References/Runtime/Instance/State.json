@@ -1,0 +1,51 @@
+{
+    "title": "InstanceState",
+    "filename": "State",
+    "path": "Runtime/Instance/State",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Instance/State.hpp",
+        "namespace": "Chicane::InstanceState",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Idle",
+                "description": "CHICANE_INSTANCESTATE_IDLE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Playing",
+                "description": "CHICANE_INSTANCESTATE_PLAYING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Paused",
+                "description": "CHICANE_INSTANCESTATE_PAUSED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INSTANCESTATE_DESCRIPTION"
+    },
+    "children": []
+}

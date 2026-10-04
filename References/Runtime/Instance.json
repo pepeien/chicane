@@ -324,6 +324,108 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "InstanceState",
+                    "suffix": "",
+                    "path": "Runtime/Instance/State",
+                    "templates": []
+                },
+                "name": "getState",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InstanceSystem",
+                            "suffix": "",
+                            "path": "Runtime/Instance/System",
+                            "templates": []
+                        },
+                        "name": "inSystem"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_GETSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isState",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InstanceSystem",
+                            "suffix": "",
+                            "path": "Runtime/Instance/System",
+                            "templates": []
+                        },
+                        "name": "inSystem"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InstanceState",
+                            "suffix": "",
+                            "path": "Runtime/Instance/State",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_INSTANCE_ISSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setState",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InstanceSystem",
+                            "suffix": "",
+                            "path": "Runtime/Instance/System",
+                            "templates": []
+                        },
+                        "name": "inSystem"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "InstanceState",
+                            "suffix": "",
+                            "path": "Runtime/Instance/State",
+                            "templates": []
+                        },
+                        "name": "inState"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INSTANCE_SETSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -1547,6 +1649,50 @@
                 },
                 "name": "m_bIsRunning",
                 "description": "CHICANE_INSTANCE_M_BISRUNNING_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::atomic",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "InstanceState",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        {
+                            "prefix": "",
+                            "name": "static_cast",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::size_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_states",
+                "description": "CHICANE_INSTANCE_M_STATES_DESCRIPTION"
             },
             {
                 "accessor": "private",

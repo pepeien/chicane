@@ -8490,6 +8490,40 @@
                         "children": []
                     },
                     {
+                        "title": "InstanceState",
+                        "filename": "State",
+                        "path": "Runtime/Instance/State",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Instance/State.hpp",
+                            "namespace": "Chicane::InstanceState",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "InstanceSystem",
+                        "filename": "System",
+                        "path": "Runtime/Instance/System",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Instance/System.hpp",
+                            "namespace": "Chicane::InstanceSystem",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Telemetry",
                         "filename": "Telemetry",
                         "path": "Runtime/Instance/Telemetry",

@@ -1,0 +1,73 @@
+{
+    "title": "InstanceSystem",
+    "filename": "System",
+    "path": "Runtime/Instance/System",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Instance/System.hpp",
+        "namespace": "Chicane::InstanceSystem",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UI",
+                "description": "CHICANE_INSTANCESYSTEM_UI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Physics",
+                "description": "CHICANE_INSTANCESYSTEM_PHYSICS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scene",
+                "description": "CHICANE_INSTANCESYSTEM_SCENE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Render",
+                "description": "CHICANE_INSTANCESYSTEM_RENDER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_INSTANCESYSTEM_COUNT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INSTANCESYSTEM_DESCRIPTION"
+    },
+    "children": []
+}
