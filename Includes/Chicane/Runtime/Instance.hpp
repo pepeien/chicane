@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <atomic>
 #include <map>
 #include <memory>
@@ -20,6 +21,8 @@
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Instance/CreateInfo.hpp"
+#include "Chicane/Runtime/Instance/State.hpp"
+#include "Chicane/Runtime/Instance/System.hpp"
 #include "Chicane/Runtime/Instance/ViewTargetBinding.hpp"
 #include "Chicane/Runtime/Instance/Telemetry.hpp"
 #include "Chicane/Runtime/Controller.hpp"
@@ -60,6 +63,11 @@ namespace Chicane
 
         // Telemetry
         const InstanceTelemetry& getTelemetry() const;
+
+        // State
+        InstanceState getState(InstanceSystem inSystem) const;
+        bool isState(InstanceSystem inSystem, InstanceState inState) const;
+        void setState(InstanceSystem inSystem, InstanceState inState);
 
         // Game
         bool hasController();
@@ -220,8 +228,9 @@ namespace Chicane
 
     private:
         // Status
-        InstanceTelemetry      m_telemetry;
-        std::atomic<bool>      m_bIsRunning;
+        InstanceTelemetry m_telemetry;
+        std::atomic<bool> m_bIsRunning;
+        std::array<std::atomic<InstanceState>, static_cast<std::size_t>(InstanceSystem::Count)> m_states;
 
         // Scene
         Controller*            m_controller;

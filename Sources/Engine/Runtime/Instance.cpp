@@ -448,6 +448,7 @@ namespace Chicane
     Instance::Instance()
         : m_telemetry({}),
           m_bIsRunning(false),
+          m_states({}),
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
@@ -542,10 +543,17 @@ namespace Chicane
     {
         snapshotRendererState();
         uploadPreviewTextures();
-        renderScene();
-        renderUI();
 
-        m_renderer->render();
+        if (!isState(InstanceSystem::Render, InstanceState::Paused))
+        {
+            renderScene();
+            renderUI();
+        }
+
+        if (m_renderer)
+        {
+            m_renderer->render();
+        }
     }
 
     void Instance::uploadPreviewTextures()
@@ -630,6 +638,33 @@ namespace Chicane
     const InstanceTelemetry& Instance::getTelemetry() const
     {
         return m_telemetry;
+    }
+
+    InstanceState Instance::getState(InstanceSystem inSystem) const
+    {
+        const std::size_t index = static_cast<std::size_t>(inSystem);
+        if (index >= m_states.size())
+        {
+            return InstanceState::Idle;
+        }
+
+        return m_states[index].load(std::memory_order_relaxed);
+    }
+
+    bool Instance::isState(InstanceSystem inSystem, InstanceState inState) const
+    {
+        return getState(inSystem) == inState;
+    }
+
+    void Instance::setState(InstanceSystem inSystem, InstanceState inState)
+    {
+        const std::size_t index = static_cast<std::size_t>(inSystem);
+        if (index >= m_states.size())
+        {
+            return;
+        }
+
+        m_states[index].store(inState, std::memory_order_relaxed);
     }
 
     bool Instance::hasController()
@@ -1000,27 +1035,33 @@ namespace Chicane
                 scene->claim();
                 scene->pumpEvents();
 
-                m_telemetry.physics.start();
+                if (!isState(InstanceSystem::Physics, InstanceState::Paused))
                 {
-                    Kerb::Engine::sInstance().tick(telemetry.frame.delta * 0.001f);
+                    m_telemetry.physics.start();
+                    {
+                        Kerb::Engine::sInstance().tick(telemetry.frame.delta * 0.001f);
+                    }
+                    m_telemetry.physics.end();
                 }
-                m_telemetry.physics.end();
 
-                m_telemetry.animation.start();
+                if (!isState(InstanceSystem::Scene, InstanceState::Paused))
                 {
-                    Drift::tick(telemetry.frame.delta);
+                    m_telemetry.animation.start();
+                    {
+                        Drift::tick(telemetry.frame.delta);
+                    }
+                    m_telemetry.animation.end();
+
+                    m_telemetry.scene.start();
+                    {
+                        scene->tick(telemetry.frame.delta);
+
+                        Smoke::tick(telemetry.frame.delta * 0.001f);
+
+                        buildSceneCommands(scene);
+                    }
+                    m_telemetry.scene.end();
                 }
-                m_telemetry.animation.end();
-
-                m_telemetry.scene.start();
-                {
-                    scene->tick(telemetry.frame.delta);
-
-                    Smoke::tick(telemetry.frame.delta * 0.001f);
-
-                    buildSceneCommands(scene);
-                }
-                m_telemetry.scene.end();
 
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
@@ -1584,6 +1625,7 @@ namespace Chicane
             const float       delta = std::min(Time::sMiliseconds(now - lastTick), 100.0f);
             lastTick                = now;
 
+            if (!isState(InstanceSystem::UI, InstanceState::Paused))
             {
                 m_telemetry.ui.start();
 

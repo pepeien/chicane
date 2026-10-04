@@ -14,7 +14,7 @@ Application::Application(int inArgCount, char* inArgValues[])
 
     // Window
     createInfo.window.title   = "Chicane Sample";
-    createInfo.window.display = 1;
+    createInfo.window.display = 0;
     createInfo.window.type    = Chicane::WindowType::Windowed;
     createInfo.window.backend = Chicane::WindowBackend::Vulkan;
 
