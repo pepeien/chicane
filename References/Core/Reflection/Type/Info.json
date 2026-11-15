@@ -157,6 +157,25 @@
                     ]
                 },
                 "description": "CHICANE_REFLECTIONTYPEINFO_ANYSTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "name": "AnyUnpacker",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "void *(const std::any &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_REFLECTIONTYPEINFO_ANYUNPACKER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -252,6 +271,16 @@
                             "templates": []
                         },
                         "name": "inAnyStringifier"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AnyUnpacker",
+                            "suffix": "",
+                            "path": "Core/Reflection/Type/Info",
+                            "templates": []
+                        },
+                        "name": "inAnyUnpacker"
                     }
                 ],
                 "modifiers": [],
@@ -476,6 +505,62 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "unpack",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_UNPACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "stringify",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::any",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_STRINGIFY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "T",
                     "suffix": "*",
@@ -544,6 +629,24 @@
                     "inline"
                 ],
                 "description": "CHICANE_REFLECTIONTYPEINFO_SMAKEANYSTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AnyUnpacker",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "sMakeAnyUnpacker",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_REFLECTIONTYPEINFO_SMAKEANYUNPACKER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -796,6 +899,19 @@
                 },
                 "name": "anyStringifier",
                 "description": "CHICANE_REFLECTIONTYPEINFO_ANYSTRINGIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AnyUnpacker",
+                    "suffix": "",
+                    "path": "Core/Reflection/Type/Info",
+                    "templates": []
+                },
+                "name": "anyUnpacker",
+                "description": "CHICANE_REFLECTIONTYPEINFO_ANYUNPACKER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_REFLECTIONTYPEINFO_DESCRIPTION"

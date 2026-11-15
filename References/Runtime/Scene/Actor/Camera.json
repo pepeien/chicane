@@ -27,36 +27,6 @@
         "destructors": [],
         "functions": [
             {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "activate",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_ACAMERA_ACTIVATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "deactivate",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_ACAMERA_DEACTIVATE_DESCRIPTION"
-            },
-            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {
@@ -66,15 +36,15 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "createDefaultComponents",
+                "name": "onLoad",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_ACAMERA_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_ACAMERA_ONLOAD_DESCRIPTION"
             }
         ],
         "members": [
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -83,8 +53,8 @@
                     "path": "Runtime/Scene/Component/Camera",
                     "templates": []
                 },
-                "name": "m_camera",
-                "description": "CHICANE_ACAMERA_M_CAMERA_DESCRIPTION"
+                "name": "component",
+                "description": "CHICANE_ACAMERA_COMPONENT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ACAMERA_DESCRIPTION"

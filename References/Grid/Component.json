@@ -5024,6 +5024,22 @@
             },
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "STYLE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_STYLE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",

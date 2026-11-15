@@ -124,6 +124,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Properties",
+                    "suffix": "",
+                    "path": "Grid/Style/Ruleset",
+                    "templates": []
+                },
+                "name": "sParseProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_GRID_STYLERULESET_SPARSEPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",

@@ -154,6 +154,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
+                    "name": "class Asset",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findLoaded",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FINDLOADED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
                     "name": "class Font",
                     "suffix": "*",
                     "path": "",
@@ -264,6 +290,47 @@
                     "inline"
                 ],
                 "description": "CHICANE_BOX_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "request",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_REQUEST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pump",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_PUMP_DESCRIPTION"
             },
             {
                 "accessor": "public",

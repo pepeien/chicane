@@ -4,7 +4,7 @@
     "path": "Runtime/Scene/Component/Mesh",
     "source": {
         "header": "Includes/Chicane/Runtime/Scene/Component/Mesh.hpp",
-        "namespace": "Chicane::CMesh",
+        "namespace": "Chicane::CMesh::DrawGroup",
         "types": [],
         "enums": [],
         "constructors": [
@@ -477,6 +477,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendDrawMeshes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Renderer::DrawPoly3DCommandMesh::List",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/3D/Command/Mesh",
+                            "templates": []
+                        },
+                        "name": "outMeshes"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_APPENDDRAWMESHES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "Renderer::DrawPoly3DFlag",
                     "suffix": "",
                     "path": "Renderer/Draw/Poly/3D/Flag",
@@ -858,6 +886,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildDrawGroups",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CMESH_REBUILDDRAWGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "String",
                     "suffix": "",
                     "path": "Core/String",
@@ -908,6 +951,34 @@
                     "const"
                 ],
                 "description": "CHICANE_CMESH_FINDBOUNDBONE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "getGroupMatrix",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawGroup",
+                            "suffix": "&",
+                            "path": "Runtime/Scene/Component/Mesh",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CMESH_GETGROUPMATRIX_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -1144,9 +1215,123 @@
                 },
                 "name": "m_skins",
                 "description": "CHICANE_CMESH_M_SKINS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawGroup",
+                            "suffix": "",
+                            "path": "Runtime/Scene/Component/Mesh",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_drawGroups",
+                "description": "CHICANE_CMESH_M_DRAWGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer::Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "model",
+                "description": "CHICANE_CMESH_DRAWGROUP_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::Draw::Reference",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "TEXTURE_MATERIAL_COUNT",
+                            "suffix": "",
+                            "path": "d0/d54/namespaceChicane_1abddb286a84cea3c1f056ece8bca9bb23",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "textures",
+                "description": "CHICANE_CMESH_DRAWGROUP_TEXTURES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "local",
+                "description": "CHICANE_CMESH_DRAWGROUP_LOCAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "boneIndex",
+                "description": "CHICANE_CMESH_DRAWGROUP_BONEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "emissiveStrength",
+                "description": "CHICANE_CMESH_DRAWGROUP_EMISSIVESTRENGTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tileSize",
+                "description": "CHICANE_CMESH_DRAWGROUP_TILESIZE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_CMESH_DESCRIPTION"
+        "description": "CHICANE_CMESH_DRAWGROUP_DESCRIPTION"
     },
     "children": []
 }

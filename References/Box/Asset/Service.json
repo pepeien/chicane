@@ -1,0 +1,295 @@
+{
+    "title": "Service",
+    "filename": "Service",
+    "path": "Box/Asset/Service",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Service.hpp",
+        "namespace": "Chicane::Box::AssetService",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AssetService",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSETSERVICE_ASSETSERVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AssetService",
+                    "suffix": "&",
+                    "path": "Box/Asset/Service",
+                    "templates": []
+                },
+                "name": "sInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_ASSETSERVICE_SINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "enqueue",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSETSERVICE_ENQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isPending",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_ASSETSERVICE_ISPENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "queueNotify",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Asset",
+                            "suffix": "*",
+                            "path": "Box/Asset",
+                            "templates": []
+                        },
+                        "name": "inAsset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSETSERVICE_QUEUENOTIFY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drain",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "const ",
+                                    "name": "Asset",
+                                    "suffix": "*",
+                                    "path": "Box/Asset",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outReady"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSETSERVICE_DRAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "finish",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSETSERVICE_FINISH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Asset",
+                    "suffix": "*",
+                    "path": "Box/Asset",
+                    "templates": []
+                },
+                "name": "decodeAsset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        },
+                        "name": "inFilePath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_DECODEASSET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::mutex",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mutex",
+                "description": "CHICANE_BOX_ASSETSERVICE_M_MUTEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_set",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_inFlight",
+                "description": "CHICANE_BOX_ASSETSERVICE_M_INFLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "",
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "FileSystem::Path",
+                            "suffix": "",
+                            "path": "Core/FileSystem/Path",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_ready",
+                "description": "CHICANE_BOX_ASSETSERVICE_M_READY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "",
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Asset",
+                            "suffix": "*",
+                            "path": "Box/Asset",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_notify",
+                "description": "CHICANE_BOX_ASSETSERVICE_M_NOTIFY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_DESCRIPTION"
+    },
+    "children": []
+}

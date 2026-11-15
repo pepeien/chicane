@@ -256,6 +256,32 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setInline",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_SETINLINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "set",
                 "parameters": [
                     {
@@ -1942,6 +1968,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_SPLITONELINER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleRuleset::Properties",
+                    "suffix": "",
+                    "path": "Grid/Style/Ruleset",
+                    "templates": []
+                },
+                "name": "parseDeclarations",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_PARSEDECLARATIONS_DESCRIPTION"
             }
         ],
         "members": [
@@ -2024,6 +2076,22 @@
                 },
                 "name": "URL_KEYWORD",
                 "description": "CHICANE_GRID_STYLE_URL_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "COMMAND_SPERATOR",
+                "description": "CHICANE_GRID_STYLE_COMMAND_SPERATOR_DESCRIPTION"
             },
             {
                 "accessor": "public",

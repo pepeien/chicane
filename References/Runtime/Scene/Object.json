@@ -856,64 +856,6 @@
             },
             {
                 "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createDefaultComponents",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_OBJECT_CREATEDEFAULTCOMPONENTS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "ensureDefaultComponents",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_ENSUREDEFAULTCOMPONENTS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "T",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createDefaultComponent",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_OBJECT_CREATEDEFAULTCOMPONENT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -1298,19 +1240,6 @@
                 },
                 "name": "m_bCanCollide",
                 "description": "CHICANE_OBJECT_M_BCANCOLLIDE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bHasDefaultComponents",
-                "description": "CHICANE_OBJECT_M_BHASDEFAULTCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "protected",

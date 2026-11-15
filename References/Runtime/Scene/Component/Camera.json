@@ -66,6 +66,54 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_CCAMERA_ONRESIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Transform2D",
+                    "suffix": "",
+                    "path": "Core/Math/Transform/2D",
+                    "templates": []
+                },
+                "name": "projectToScreenSpace",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inViewport"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inOffset"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CCAMERA_PROJECTTOSCREENSPACE_DESCRIPTION"
             }
         ],
         "members": [],

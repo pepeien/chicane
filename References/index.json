@@ -272,6 +272,23 @@
                         "children": []
                     },
                     {
+                        "title": "Service",
+                        "filename": "Service",
+                        "path": "Box/Asset/Service",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Service.hpp",
+                            "namespace": "Chicane::Box::AssetService",
+                            "types": [],
+                            "enums": [],
+                            "constructors": [],
+                            "destructors": [],
+                            "functions": [],
+                            "members": [],
+                            "description": null
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Type",
                         "filename": "Type",
                         "path": "Box/Asset/Type",
@@ -8787,7 +8804,7 @@
                                 "path": "Runtime/Scene/Component/Mesh",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Scene/Component/Mesh.hpp",
-                                    "namespace": "Chicane::CMesh",
+                                    "namespace": "Chicane::CMesh::DrawGroup",
                                     "types": [],
                                     "enums": [],
                                     "constructors": [],
