@@ -4,10 +4,6 @@
 #include <cstdio>
 
 #include "Chicane/Core/FileSystem/Path.hpp"
-#include "Chicane/Core/Math/Rotator.hpp"
-#include "Chicane/Core/Math/Vec/Vec2.hpp"
-#include "Chicane/Core/Math/Vec/Vec3.hpp"
-#include "Chicane/Core/Math/Vec/Vec4.hpp"
 #include "Chicane/Core/Reflection/Enum/Registry.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 
@@ -298,27 +294,22 @@ namespace Chicane
 
         if (const FileSystem::Path* value = getValue<FileSystem::Path>(inInstance))
         {
-            return static_cast<String>(*value);
+            return value->toString();
         }
 
-        if (const Vec2* value = getValue<Vec2>(inInstance))
+        if (typeIndex.has_value())
         {
-            return static_cast<String>(*value);
-        }
-
-        if (const Vec3* value = getValue<Vec3>(inInstance))
-        {
-            return static_cast<String>(*value);
-        }
-
-        if (const Vec4* value = getValue<Vec4>(inInstance))
-        {
-            return static_cast<String>(*value);
-        }
-
-        if (const Rotator* value = getValue<Rotator>(inInstance))
-        {
-            return static_cast<String>(*value);
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeIndex.value()))
+            {
+                if (type->stringifier && type->size == size)
+                {
+                    const char* field = address(inInstance);
+                    if (field)
+                    {
+                        return type->stringifier(field);
+                    }
+                }
+            }
         }
 
         if (const char* value = getValue<char>(inInstance))
@@ -369,19 +360,6 @@ namespace Chicane
         if (const std::uint8_t* value = getValue<std::uint8_t>(inInstance))
         {
             return static_cast<String>(*value);
-        }
-
-        if (typeIndex.has_value())
-        {
-            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(typeIndex.value()))
-            {
-                if (type->stringifier && type->size == size)
-                {
-                    const char* field = address(inInstance);
-
-                    return field != nullptr ? type->stringifier(field) : String();
-                }
-            }
         }
 
         if (elementIndex.has_value())

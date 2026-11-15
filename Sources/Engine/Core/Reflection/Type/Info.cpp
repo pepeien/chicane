@@ -14,7 +14,8 @@ namespace Chicane
         const Methods&      inMethods,
         const Fields&       inFields,
         Stringifier         inStringifier,
-        AnyStringifier      inAnyStringifier
+        AnyStringifier      inAnyStringifier,
+        AnyUnpacker         inAnyUnpacker
     )
         : property(std::move(inProperty)),
           size(inSize),
@@ -23,7 +24,8 @@ namespace Chicane
           methods(std::move(inMethods)),
           fields(std::move(inFields)),
           stringifier(inStringifier),
-          anyStringifier(inAnyStringifier)
+          anyStringifier(inAnyStringifier),
+          anyUnpacker(std::move(inAnyUnpacker))
     {}
 
     ReflectionTypeInfo::ReflectionTypeInfo()
@@ -34,7 +36,8 @@ namespace Chicane
           methods({}),
           fields({}),
           stringifier(nullptr),
-          anyStringifier(nullptr)
+          anyStringifier(nullptr),
+          anyUnpacker(nullptr)
     {}
 
     bool ReflectionTypeInfo::containsName(const String& inValue) const
@@ -167,5 +170,31 @@ namespace Chicane
             nullptr,
             field->isTransient()
         };
+    }
+
+    const void* ReflectionTypeInfo::unpack(const std::any& inValue) const
+    {
+        return anyUnpacker ? anyUnpacker(inValue) : nullptr;
+    }
+
+    String ReflectionTypeInfo::stringify(const std::any& inValue) const
+    {
+        if (anyStringifier)
+        {
+            return anyStringifier(inValue);
+        }
+
+        if (!stringifier)
+        {
+            return {};
+        }
+
+        const void* instance = unpack(inValue);
+        if (!instance)
+        {
+            return {};
+        }
+
+        return stringifier(instance);
     }
 }

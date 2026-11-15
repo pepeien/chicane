@@ -27,6 +27,7 @@ namespace Chicane
         using Constructors   = std::vector<Constructor>;
         using Stringifier    = std::function<String(const void*)>;
         using AnyStringifier = std::function<String(const std::any&)>;
+        using AnyUnpacker    = std::function<const void*(const std::any&)>;
 
     public:
         static constexpr inline const char OBJECT_SEPARATOR = '.';
@@ -40,7 +41,8 @@ namespace Chicane
             const Methods&      inMethods,
             const Fields&       inFields,
             Stringifier         inStringifier,
-            AnyStringifier      inAnyStringifier
+            AnyStringifier      inAnyStringifier,
+            AnyUnpacker         inAnyUnpacker = {}
         );
         ReflectionTypeInfo();
 
@@ -56,6 +58,12 @@ namespace Chicane
             return sMakeAnyStringifier<T>(std::bool_constant<std::is_convertible_v<const T&, String>>{});
         }
 
+        template <typename T>
+        static AnyUnpacker sMakeAnyUnpacker()
+        {
+            return [](const std::any& inValue) -> const void* { return std::any_cast<T>(&inValue); };
+        }
+
     public:
         bool containsName(const String& inValue) const;
         const String& getName() const;
@@ -69,6 +77,9 @@ namespace Chicane
         const ReflectionTypeMethodInfo* findMethod(const String& inName) const;
 
         ReflectionFieldAccessor resolve(const String& inAccessor) const;
+
+        const void* unpack(const std::any& inValue) const;
+        String stringify(const std::any& inValue) const;
 
         template <typename T>
         T* create(std::vector<std::any> inArgs = {}) const
@@ -101,16 +112,6 @@ namespace Chicane
             throw std::runtime_error("No matching reflected constructor for type [" + getName() + "]");
         }
 
-    public:
-        ReflectionProperty property;
-        std::size_t        size;
-        TypeIdex           typeIndex;
-        Constructors       constructors;
-        Methods            methods;
-        Fields             fields;
-        Stringifier        stringifier;
-        AnyStringifier     anyStringifier;
-
     private:
         template <typename T>
         static String sStringify(const void* inInstance)
@@ -133,7 +134,7 @@ namespace Chicane
         template <typename T>
         static Stringifier sMakeStringifier(std::true_type)
         {
-            return &sStringify<T>;
+            return [](const void* inInstance) { return sStringify<T>(inInstance); };
         }
 
         template <typename T>
@@ -145,7 +146,7 @@ namespace Chicane
         template <typename T>
         static AnyStringifier sMakeAnyStringifier(std::true_type)
         {
-            return &sStringifyAny<T>;
+            return [](const std::any& inValue) { return sStringifyAny<T>(inValue); };
         }
 
         template <typename T>
@@ -153,5 +154,16 @@ namespace Chicane
         {
             return {};
         }
+
+    public:
+        ReflectionProperty property;
+        std::size_t        size;
+        TypeIdex           typeIndex;
+        Constructors       constructors;
+        Methods            methods;
+        Fields             fields;
+        Stringifier        stringifier;
+        AnyStringifier     anyStringifier;
+        AnyUnpacker        anyUnpacker;
     };
 }

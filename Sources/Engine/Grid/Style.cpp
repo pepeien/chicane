@@ -669,6 +669,16 @@ namespace Chicane
             cursor.parseWith([this](const String& inValue) { return parseCursor(inValue); });
         }
 
+        void Style::setInline(const String& inValue)
+        {
+            if (inValue.isEmpty())
+            {
+                return;
+            }
+
+            applyProperties(parseDeclarations(inValue));
+        }
+
         void Style::set(const String& inKey, const String& inValue)
         {
             StyleRuleset::Properties properties;
@@ -2518,6 +2528,146 @@ namespace Chicane
             }
         }
 
+        static bool consumeBindingOpen(const String& inValue, std::size_t& ioIndex)
+        {
+            if (ioIndex + 1 >= inValue.size() || inValue.at(ioIndex) != Style::RULESET_OPENING ||
+                inValue.at(ioIndex + 1) != Style::RULESET_OPENING)
+            {
+                return false;
+            }
+
+            ioIndex++;
+
+            return true;
+        }
+
+        static bool consumeBindingClose(const String& inValue, std::size_t& ioIndex)
+        {
+            if (ioIndex + 1 >= inValue.size() || inValue.at(ioIndex) != Style::RULESET_CLOSING ||
+                inValue.at(ioIndex + 1) != Style::RULESET_CLOSING)
+            {
+                return false;
+            }
+
+            ioIndex++;
+
+            return true;
+        }
+
+        static bool updateDeclarationDepth(
+            const String& inValue, std::size_t& ioIndex, std::uint32_t& outParenthesis, std::uint32_t& outBinding
+        )
+        {
+            const char character = inValue.at(ioIndex);
+
+            if (consumeBindingOpen(inValue, ioIndex))
+            {
+                outBinding++;
+
+                return true;
+            }
+
+            if (outBinding > 0 && consumeBindingClose(inValue, ioIndex))
+            {
+                outBinding--;
+
+                return true;
+            }
+
+            if (character == METHOD_PARAMS_OPENING)
+            {
+                outParenthesis++;
+
+                return true;
+            }
+
+            if (character == METHOD_PARAMS_CLOSING && outParenthesis > 0)
+            {
+                outParenthesis--;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        StyleRuleset::Properties parseDeclarations(const String& inValue)
+        {
+            StyleRuleset::Properties properties;
+            if (inValue.isEmpty())
+            {
+                return properties;
+            }
+
+            const auto flush = [&](const String& inDeclaration)
+            {
+                const String declaration = inDeclaration.trim();
+                if (declaration.isEmpty())
+                {
+                    return;
+                }
+
+                std::size_t   colon            = String::npos;
+                std::uint32_t parenthesisCount = 0;
+                std::uint32_t bindingCount     = 0;
+
+                for (std::size_t i = 0; i < declaration.size(); i++)
+                {
+                    if (updateDeclarationDepth(declaration, i, parenthesisCount, bindingCount))
+                    {
+                        continue;
+                    }
+
+                    if (declaration.at(i) != Style::COMMAND_SPERATOR || parenthesisCount > 0 || bindingCount > 0)
+                    {
+                        continue;
+                    }
+
+                    colon = i;
+
+                    break;
+                }
+
+                if (colon == String::npos)
+                {
+                    return;
+                }
+
+                const String key   = declaration.substr(0, colon).trim();
+                const String value = declaration.substr(colon + 1).trim();
+                if (key.isEmpty() || value.isEmpty())
+                {
+                    return;
+                }
+
+                properties[key] = value;
+            };
+
+            std::size_t   start            = 0;
+            std::uint32_t parenthesisCount = 0;
+            std::uint32_t bindingCount     = 0;
+
+            for (std::size_t i = 0; i < inValue.size(); i++)
+            {
+                if (updateDeclarationDepth(inValue, i, parenthesisCount, bindingCount))
+                {
+                    continue;
+                }
+
+                if (inValue.at(i) != Style::COMMAND_ENDING || parenthesisCount > 0 || bindingCount > 0)
+                {
+                    continue;
+                }
+
+                flush(inValue.substr(start, i - start));
+                start = i + 1;
+            }
+
+            flush(inValue.substr(start));
+
+            return properties;
+        }
+
         std::vector<String> splitOneliner(const String& inValue)
         {
             std::vector<String> result;
@@ -2525,29 +2675,27 @@ namespace Chicane
             std::uint32_t start = 0;
             std::uint32_t end   = 0;
 
-            std::uint32_t parathesisCount = 0;
+            std::uint32_t parenthesisCount = 0;
+            std::uint32_t bindingCount     = 0;
 
             for (std::uint32_t i = 0; i < inValue.size(); i++)
             {
-                const char character = inValue.at(i);
+                std::size_t index = i;
 
                 end++;
 
-                if (character == METHOD_PARAMS_OPENING)
+                if (updateDeclarationDepth(inValue, index, parenthesisCount, bindingCount))
                 {
-                    parathesisCount++;
+                    if (index > i)
+                    {
+                        end += static_cast<std::uint32_t>(index - i);
+                        i = static_cast<std::uint32_t>(index);
+                    }
 
                     continue;
                 }
 
-                if (character == METHOD_PARAMS_CLOSING)
-                {
-                    parathesisCount--;
-
-                    continue;
-                }
-
-                if (character != Style::ONELINE_SEPARATOR || parathesisCount > 0)
+                if (inValue.at(i) != Style::ONELINE_SEPARATOR || parenthesisCount > 0 || bindingCount > 0)
                 {
                     continue;
                 }

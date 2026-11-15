@@ -22,6 +22,7 @@ namespace Chicane
 
         public:
             static String sNormalizeData(const String& inValue);
+            static Properties sParseProperties(const String& inValue);
 
         public:
             StyleRuleset();

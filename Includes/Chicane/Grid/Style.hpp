@@ -68,6 +68,7 @@ namespace Chicane
             static constexpr inline const char*            URL_KEYWORD    = "url";
 
             // Ruleset
+            static constexpr inline const char             COMMAND_SPERATOR = ':';
             static constexpr inline const char             COMMAND_ENDING   = ';';
             static constexpr inline const char             VARIABLE_KEYWORD = '$';
             static constexpr inline const char             RULESET_OPENING  = '{';
@@ -447,6 +448,9 @@ namespace Chicane
 
         public:
             CH_FUNCTION()
+            void setInline(const String& inValue);
+
+            CH_FUNCTION()
             void set(const String& inKey, const String& inValue);
 
         public:
@@ -601,5 +605,6 @@ namespace Chicane
         };
 
         CHICANE_GRID std::vector<String> splitOneliner(const String& inValue);
+        CHICANE_GRID StyleRuleset::Properties parseDeclarations(const String& inValue);
     }
 }

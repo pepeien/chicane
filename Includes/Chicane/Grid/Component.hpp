@@ -74,6 +74,8 @@ namespace Chicane
             static constexpr inline const char* ON_DRAG_END_ATTRIBUTE_NAME = "onDragEnd";
             static constexpr inline const char* FOCUSABLE_ATTRIBUTE_NAME   = "focusable";
 
+            static constexpr inline const char* STYLE_ATTRIBUTE_NAME = "style";
+
         public:
             static Component* sCreate(const XmlNode& inNode);
             static Component* sCreate(const FileSystem::Path& inTemplate);
@@ -426,61 +428,61 @@ namespace Chicane
 
         protected:
             // Properties
-            String                         m_tag;
-            String                         m_id;
-            ClassList::ChangesSubscription m_classListSubscription;
+            String                           m_tag;
+            String                           m_id;
+            ClassList::ChangesSubscription   m_classListSubscription;
 
             // Status
-            ComponentStatus                m_status;
-            ComponentDirty                 m_flags;
+            ComponentStatus                  m_status;
+            ComponentDirty                   m_flags;
 
             // Hash
-            String                         m_live;
-            std::uint64_t                  m_liveHash;
+            String                           m_live;
+            std::uint64_t                    m_liveHash;
 
             // Modifier
-            Directives                     m_directives;
+            Directives                       m_directives;
 
             // Runtime
-            Variables                      m_variables;
+            Variables                        m_variables;
 
             // Style
-            StyleFile::Variables           m_styleVariables;
-            StyleFile*                     m_styleFile;
-            std::unique_ptr<StyleFile>     m_styles;
-            bool                           m_bHasOwnStyle;
+            StyleFile::Variables             m_styleVariables;
+            StyleFile*                       m_styleFile;
+            std::unique_ptr<StyleFile>       m_styles;
+            bool                             m_bHasOwnStyle;
 
             // Imports
-            Imports                        m_imports;
-            Component*                     m_importOwner;
+            Imports                          m_imports;
+            Component*                       m_importOwner;
 
             // Hierarchy
-            Component*                     m_root;
-            Component*                     m_parent;
-            std::vector<Component*>        m_children;
-            std::vector<Component*>        m_peripherals;
-            std::vector<Component*>        m_paintChildren;
+            Component*                       m_root;
+            Component*                       m_parent;
+            std::vector<Component*>          m_children;
+            std::vector<Component*>          m_peripherals;
+            std::vector<Component*>          m_paintChildren;
 
             // Position
-            Vec2                           m_size;
-            Vec2                           m_scale;
-            Vec2                           m_offset;
-            Vec2                           m_cursor;
-            float                          m_scratch;
-            Vec2                           m_layoutParentSize;
-            float                          m_layoutParentFontSize;
+            Vec2                             m_size;
+            Vec2                             m_scale;
+            Vec2                             m_offset;
+            Vec2                             m_cursor;
+            float                            m_scratch;
+            Vec2                             m_layoutParentSize;
+            float                            m_layoutParentFontSize;
 
             // Draw
-            Primitive                      m_primitive;
-            DrawCache                      m_draw;
+            Primitive                        m_primitive;
+            DrawCache                        m_draw;
 
             // For-loop
-            std::vector<Component*>        m_forInstances;
-            String                         m_forVariable;
-            std::any                       m_forSource;
+            std::vector<Component*>          m_forInstances;
+            String                           m_forVariable;
+            std::any                         m_forSource;
 
             // Script
-            std::unique_ptr<ComponentScript>    m_script;
+            std::unique_ptr<ComponentScript> m_script;
 
         private:
             void loadScript(const FileSystem::Path& inTemplate);

@@ -15,6 +15,8 @@
 
 namespace Chicane
 {
+    struct ReflectionTypeInfo;
+
     struct CHICANE_CORE ReflectionTypeMethodInfo
     {
     public:
@@ -42,6 +44,10 @@ namespace Chicane
     public:
         std::any invoke(void* inInstance, Params inParams = {}) const;
         String toString(const std::any& inValue) const;
+        String toString(const std::any& inValue, const String& inPath) const;
+
+        const ReflectionTypeInfo* findReturnType() const;
+        const void* unpack(const std::any& inValue) const;
 
         bool isIterable() const;
         ReflectionFieldAccessor makeAccessor(const std::any& inValue) const;

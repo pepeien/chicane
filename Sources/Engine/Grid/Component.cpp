@@ -578,6 +578,7 @@ namespace Chicane
             }
 
             style.escape.set(inValue);
+
             markPaintDirty();
         }
 
@@ -646,7 +647,11 @@ namespace Chicane
                 addFile(m_styles.get());
             }
 
-            if (files.empty())
+            const String inlineStyle =
+                hasAttribute(STYLE_ATTRIBUTE_NAME) ? getAttribute(STYLE_ATTRIBUTE_NAME) : String::sEmpty();
+            const bool bHasInlineStyle = !inlineStyle.trim().isEmpty();
+
+            if (files.empty() && !bHasInlineStyle)
             {
                 style.restore();
 
@@ -732,6 +737,21 @@ namespace Chicane
             for (const StyleMatch& match : matches)
             {
                 for (const auto& [key, value] : match.source->properties)
+                {
+                    if (key.startsWith(Style::VARIABLE_KEYWORD))
+                    {
+                        m_styleVariables[key.substr(1)] = value;
+
+                        continue;
+                    }
+
+                    properties[key] = value;
+                }
+            }
+
+            if (bHasInlineStyle)
+            {
+                for (const auto& [key, value] : parseDeclarations(inlineStyle))
                 {
                     if (key.startsWith(Style::VARIABLE_KEYWORD))
                     {
@@ -963,9 +983,9 @@ namespace Chicane
 
                     if (leftoverH > 0.0f)
                     {
-                        const bool bShareMainAuto = !style.isPosition(StylePosition::Absolute) && bIsParentFlex &&
-                                                    !bIsParentRow && (bIsTopAuto || bIsBottomAuto);
-                        const int   mainAutos = bShareMainAuto ? m_parent->countTrailingMainAutoMargins(this) : 0;
+                        const bool  bShareMainAuto = !style.isPosition(StylePosition::Absolute) && bIsParentFlex &&
+                                                     !bIsParentRow && (bIsTopAuto || bIsBottomAuto);
+                        const int   mainAutos      = bShareMainAuto ? m_parent->countTrailingMainAutoMargins(this) : 0;
                         const float mainShare = mainAutos > 0 ? leftoverH / static_cast<float>(mainAutos) : leftoverH;
 
                         const bool bShareMainAutoAndMainAutosPositive =
@@ -1675,14 +1695,13 @@ namespace Chicane
 
             const bool bStyleRefreshed = hasFlag(ComponentDirty::Style);
 
-            const bool bStyleRefreshed2 = static_cast<bool>(bStyleRefreshed);
-
-            if (bStyleRefreshed2)
+            if (bStyleRefreshed)
             {
                 const LayoutMetrics before = LayoutMetrics::sCapture(style);
 
                 refreshStyleRuleset();
                 setFlag(ComponentDirty::Style, false);
+
                 refreshStyle();
                 setFlag(ComponentDirty::Text);
 
@@ -1692,7 +1711,7 @@ namespace Chicane
                 }
             }
 
-            if (!bStyleRefreshed2)
+            if (!bStyleRefreshed)
             {
                 bool bAnimatedDisplay = false;
 
@@ -3456,7 +3475,7 @@ namespace Chicane
                 const Vec2   box   = getChildIntrinsicSize(sibling);
                 const float  marginStart =
                     bIsRow ? (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get())
-                            : (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
+                           : (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
                 const float marginEnd =
                     bIsRow ? (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get())
                            : (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get());
@@ -3506,7 +3525,7 @@ namespace Chicane
                 const Vec2   box   = getChildIntrinsicSize(sibling);
                 const float  marginStart =
                     bIsRow ? (style.margin.left.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.left.get())
-                            : (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
+                           : (style.margin.top.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.top.get());
                 const float marginEnd =
                     bIsRow ? (style.margin.right.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.right.get())
                            : (style.margin.bottom.isRaw(Size::AUTO_KEYWORD) ? 0.0f : style.margin.bottom.get());
@@ -4268,10 +4287,49 @@ namespace Chicane
             return hasParent() ? m_parent->parseReference(inValue) : inValue;
         }
 
+        static std::size_t findMatchingClose(const String& inValue, std::size_t inOpen)
+        {
+            if (inOpen >= inValue.size() || inValue.at(inOpen) != METHOD_PARAMS_OPENING)
+            {
+                return String::npos;
+            }
+
+            std::uint32_t depth = 0;
+            for (std::size_t i = inOpen; i < inValue.size(); i++)
+            {
+                const char character = inValue.at(i);
+                if (character == METHOD_PARAMS_OPENING)
+                {
+                    depth++;
+
+                    continue;
+                }
+
+                if (character != METHOD_PARAMS_CLOSING || depth == 0)
+                {
+                    continue;
+                }
+
+                depth--;
+                if (depth == 0)
+                {
+                    return i;
+                }
+            }
+
+            return String::npos;
+        }
+
         String Component::parseMethod(const String& inValue) const
         {
             const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
             if (open == String::npos)
+            {
+                return String::sEmpty();
+            }
+
+            const std::size_t close = findMatchingClose(inValue, open);
+            if (close == String::npos)
             {
                 return String::sEmpty();
             }
@@ -4289,6 +4347,9 @@ namespace Chicane
             {
                 return String::sEmpty();
             }
+
+            const String signature = inValue.substr(0, close + 1);
+            const String postfix   = inValue.substr(close + 1).trim();
 
             for (const Component* node = this; node != nullptr; node = node->hasParent() ? node->getParent() : nullptr)
             {
@@ -4335,9 +4396,10 @@ namespace Chicane
                         {
                             ReflectionTypeMethod call(method);
                             call.bind(instance);
-                            populateMethodParams(call, inValue);
 
-                            return method->toString(call.invoke());
+                            populateMethodParams(call, signature);
+
+                            return method->toString(call.invoke(), postfix);
                         }
                         catch (const std::exception&)
                         {
@@ -4506,10 +4568,13 @@ namespace Chicane
                 return false;
             }
 
-            const bool bHasOpening = inValue.firstOf(METHOD_PARAMS_OPENING) != String::npos;
-            const bool bHasClosing = inValue.lastOf(METHOD_PARAMS_CLOSING) != String::npos;
+            const std::size_t open = inValue.firstOf(METHOD_PARAMS_OPENING);
+            if (open == String::npos)
+            {
+                return false;
+            }
 
-            return bHasOpening && bHasClosing;
+            return findMatchingClose(inValue, open) != String::npos;
         }
 
         static bool parseLuaStringArgs(const String& inSignature, std::vector<String>& outArgs)

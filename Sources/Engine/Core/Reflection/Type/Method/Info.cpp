@@ -1,11 +1,8 @@
 #include "Chicane/Core/Reflection/Type/Method/Info.hpp"
 
 #include "Chicane/Core/FileSystem/Path.hpp"
+#include "Chicane/Core/Reflection/Type/Info.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
-#include "Chicane/Core/Math/Rotator.hpp"
-#include "Chicane/Core/Math/Vec/Vec2.hpp"
-#include "Chicane/Core/Math/Vec/Vec3.hpp"
-#include "Chicane/Core/Math/Vec/Vec4.hpp"
 
 namespace Chicane
 {
@@ -59,11 +56,80 @@ namespace Chicane
         return m_invoker(inInstance, inParams);
     }
 
+    const ReflectionTypeInfo* ReflectionTypeMethodInfo::findReturnType() const
+    {
+        if (returnTypeIndex.has_value())
+        {
+            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(returnTypeIndex.value()))
+            {
+                return type;
+            }
+        }
+
+        String name = returnType.trim();
+        while (name.endsWith('*') || name.endsWith('&'))
+        {
+            name = name.substr(0, name.size() - 1).trim();
+        }
+
+        return name.isEmpty() ? nullptr : ReflectionTypeRegistry::sInstance().find(name);
+    }
+
+    const void* ReflectionTypeMethodInfo::unpack(const std::any& inValue) const
+    {
+        if (containerResolver)
+        {
+            return containerResolver(inValue);
+        }
+
+        const ReflectionTypeInfo* type = findReturnType();
+
+        return type ? type->unpack(inValue) : nullptr;
+    }
+
     String ReflectionTypeMethodInfo::toString(const std::any& inValue) const
+    {
+        return toString(inValue, String::sEmpty());
+    }
+
+    String ReflectionTypeMethodInfo::toString(const std::any& inValue, const String& inPath) const
     {
         if (!inValue.has_value())
         {
             return "";
+        }
+
+        const String path = inPath.startsWith('.') ? inPath.substr(1).trim() : inPath.trim();
+        if (!path.isEmpty())
+        {
+            const void* instance = unpack(inValue);
+            if (!instance)
+            {
+                return "";
+            }
+
+            const ReflectionTypeInfo* type = findReturnType();
+            if (!type)
+            {
+                return "";
+            }
+
+            if (returnType.trim().endsWith('*'))
+            {
+                instance = *reinterpret_cast<void* const*>(instance);
+                if (!instance)
+                {
+                    return "";
+                }
+            }
+
+            const ReflectionFieldAccessor accessor = type->resolve(path);
+            if (!accessor.isValid())
+            {
+                return "";
+            }
+
+            return accessor.toString(instance);
         }
 
         if (bIsIterable)
@@ -72,6 +138,15 @@ namespace Chicane
             if (accessor.isValid())
             {
                 return accessor.toString(nullptr);
+            }
+        }
+
+        if (const ReflectionTypeInfo* type = findReturnType())
+        {
+            const String result = type->stringify(inValue);
+            if (type->anyStringifier || type->stringifier)
+            {
+                return result;
             }
         }
 
@@ -87,27 +162,7 @@ namespace Chicane
 
         if (const FileSystem::Path* value = std::any_cast<FileSystem::Path>(&inValue))
         {
-            return static_cast<String>(*value);
-        }
-
-        if (const Vec2* value = std::any_cast<Vec2>(&inValue))
-        {
-            return static_cast<String>(*value);
-        }
-
-        if (const Vec3* value = std::any_cast<Vec3>(&inValue))
-        {
-            return static_cast<String>(*value);
-        }
-
-        if (const Vec4* value = std::any_cast<Vec4>(&inValue))
-        {
-            return static_cast<String>(*value);
-        }
-
-        if (const Rotator* value = std::any_cast<Rotator>(&inValue))
-        {
-            return static_cast<String>(*value);
+            return value->toString();
         }
 
         if (const char* value = std::any_cast<char>(&inValue))
@@ -158,17 +213,6 @@ namespace Chicane
         if (const std::uint8_t* value = std::any_cast<std::uint8_t>(&inValue))
         {
             return static_cast<String>(*value);
-        }
-
-        if (returnTypeIndex.has_value())
-        {
-            if (const ReflectionTypeInfo* type = ReflectionTypeRegistry::sInstance().find(returnTypeIndex.value()))
-            {
-                if (type->anyStringifier)
-                {
-                    return type->anyStringifier(inValue);
-                }
-            }
         }
 
         return "<" + returnType + ">";

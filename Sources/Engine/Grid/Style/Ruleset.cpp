@@ -137,27 +137,14 @@ namespace Chicane
             }
         }
 
+        StyleRuleset::Properties StyleRuleset::sParseProperties(const String& inValue)
+        {
+            return parseDeclarations(inValue);
+        }
+
         void StyleRuleset::addProperties(const String& inValue)
         {
-            for (const String& property : inValue.trim().split(';'))
-            {
-                const std::vector<String> splittedProperty = property.trim().split(':');
-
-                if (splittedProperty.size() < 2)
-                {
-                    continue;
-                }
-
-                const String key   = splittedProperty.at(0).trim();
-                const String value = splittedProperty.at(1).trim();
-
-                if (key.isEmpty() || value.isEmpty())
-                {
-                    continue;
-                }
-
-                properties[key] = value;
-            }
+            addProperties(sParseProperties(inValue));
         }
 
         void StyleRuleset::addProperties(const Properties& inProperties)
