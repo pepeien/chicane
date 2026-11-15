@@ -5,6 +5,7 @@
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Rotator.hpp"
+#include "Chicane/Core/Math/Transform/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Reflection.hpp"
@@ -20,9 +21,6 @@ namespace Chicane
     public:
         const Mat4& getMatrix() const;
         void setTransform(const Transform& inTransform);
-
-        bool toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition) const;
-        Vec2 toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const;
 
         // Translation
         const Vec3& getTranslation() const;
@@ -75,6 +73,12 @@ namespace Chicane
         void setScale(float inX, float inY, float inZ);
         void setScale(const Vec3& inValue);
 
+        // Convertion
+        Transform2D toScreenSpace(
+            const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, const Vec3& inOffset = Vec3::sZero()
+        ) const;
+
+        // Sync
         inline void syncMatrix() { refresh(); }
 
     protected:

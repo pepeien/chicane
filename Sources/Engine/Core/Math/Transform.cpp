@@ -1,5 +1,8 @@
 #include "Chicane/Core/Math/Transform.reflected.hpp"
 
+#include <cfloat>
+#include <cmath>
+
 namespace Chicane
 {
     Transform::Transform()
@@ -13,18 +16,6 @@ namespace Chicane
     const Mat4& Transform::getMatrix() const
     {
         return m_matrix;
-    }
-
-    bool Transform::toPosition(
-        const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, Vec2& outPosition
-    ) const
-    {
-        return m_matrix.toPosition(inView, inProjection, inViewport, outPosition);
-    }
-
-    Vec2 Transform::toPosition(const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport) const
-    {
-        return m_matrix.toPosition(inView, inProjection, inViewport);
     }
 
     void Transform::setTransform(const Transform& inTransform)
@@ -135,6 +126,33 @@ namespace Chicane
         scale = inScale;
 
         refresh();
+    }
+
+    Transform2D Transform::toScreenSpace(
+        const Mat4& inView, const Mat4& inProjection, const Vec2& inViewport, const Vec3& inOffset
+    ) const
+    {
+        const Vec3 worldPosition = getTranslation() + inOffset;
+        const Vec4 clip          = inProjection * inView * Vec4(worldPosition, 1.0f);
+
+        if (std::fabs(clip.w) < FLT_EPSILON || clip.w <= 0.0f)
+        {
+            return {};
+        }
+
+        const float inverseW = 1.0f / clip.w;
+        const Vec2  ndc(clip.x * inverseW, clip.y * inverseW);
+
+        Vec2 screenPosition = Vec2::sZero();
+        screenPosition.x    = (ndc.x * 0.5f + 0.5f) * inViewport.x;
+        screenPosition.y    = (0.5f - ndc.y * 0.5f) * inViewport.y;
+
+        Transform2D result = {};
+        result.setTranslation(screenPosition);
+        result.setScale(Vec2(scale.x * inverseW, scale.y * inverseW));
+        result.setRotation(0.0f);
+
+        return result;
     }
 
     void Transform::refresh()
