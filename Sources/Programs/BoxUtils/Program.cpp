@@ -21,6 +21,7 @@
 #include <Chicane/Core/Image.hpp>
 #include <Chicane/Core/Math/Mat/Mat4.hpp>
 #include <Chicane/Core/Math/Vertex.hpp>
+#include <Chicane/Core/Worker/Pool.hpp>
 #include <Chicane/Box/Animation.hpp>
 #include <Chicane/Box/Animation/Gltf.hpp>
 #include <Chicane/Box/Animation/Loop.hpp>
@@ -1172,6 +1173,7 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
         throw std::runtime_error("Bake path does not exist");
     }
 
+    std::vector<Chicane::FileSystem::Path> textureAssets;
     std::vector<Chicane::FileSystem::Path> runtimeAssets;
     std::vector<Chicane::FileSystem::Path> cpuAssets;
 
@@ -1184,19 +1186,7 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
 
         if (Chicane::Box::getTypeFromExtension(inPath) == Chicane::Box::AssetType::Texture)
         {
-            try
-            {
-                Chicane::Box::Texture texture(inPath);
-                if (texture.bakeMips())
-                {
-                    texture.saveXML();
-                    std::cout << "Baked mips for [" << inPath.toString() << "]" << std::endl;
-                }
-            }
-            catch (const std::exception& exception)
-            {
-                std::cerr << "Failed to bake mips for [" << inPath.toString() << "]: " << exception.what() << std::endl;
-            }
+            textureAssets.push_back(inPath);
         }
 
         switch (Chicane::Box::getTypeFromExtension(inPath))
@@ -1234,6 +1224,27 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
         }
     }
 
+    Chicane::WorkerPool::sParallel(
+        textureAssets.size(),
+        [&textureAssets](std::size_t index)
+        {
+            const Chicane::FileSystem::Path& inPath = textureAssets[index];
+            try
+            {
+                Chicane::Box::Texture texture(inPath);
+                if (texture.bakeMips())
+                {
+                    texture.saveXML();
+                    std::cout << "Baked mips for [" << inPath.toString() << "]" << std::endl;
+                }
+            }
+            catch (const std::exception& exception)
+            {
+                std::cerr << "Failed to bake mips for [" << inPath.toString() << "]: " << exception.what() << std::endl;
+            }
+        }
+    );
+
     auto bakeCpu = [](const Chicane::FileSystem::Path& inPath)
     {
         try
@@ -1255,10 +1266,13 @@ void Program::bakePreviews(const Chicane::FileSystem::Path& inRoot)
         }
     };
 
-    for (const Chicane::FileSystem::Path& path : cpuAssets)
-    {
-        bakeCpu(path);
-    }
+    Chicane::WorkerPool::sParallel(
+        cpuAssets.size(),
+        [&cpuAssets, &bakeCpu](std::size_t index)
+        {
+            bakeCpu(cpuAssets[index]);
+        }
+    );
 
     if (runtimeAssets.empty())
     {

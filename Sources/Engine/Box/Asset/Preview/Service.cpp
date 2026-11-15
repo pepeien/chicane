@@ -1,6 +1,6 @@
 #include "Chicane/Box/Asset/Preview/Service.hpp"
 
-#include "Chicane/Core/Worker.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
 namespace Chicane
 {
@@ -15,7 +15,7 @@ namespace Chicane
 
             m_inFlight.insert(inFilePath);
 
-            Worker::sSubmit(
+            WorkerPool::sDetach(
                 [inFilePath]()
                 {
                     std::unique_ptr<AssetPreview> preview;

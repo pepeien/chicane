@@ -12,6 +12,7 @@
 #include "Chicane/Box/Model/Wavefront.hpp"
 
 #include "Chicane/Core/Base64.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
@@ -560,12 +561,25 @@ namespace Chicane
 
         ModelParsed::Map Model::normalizeData(const ModelParsed::Map& inValue) const
         {
-            ModelParsed::Map result;
-
-            for (const auto& [name, model] : inValue)
+            if (inValue.empty())
             {
-                result[name] = model;
-                Model::sGenerateTangents(result[name]);
+                return {};
+            }
+
+            std::vector<std::pair<String, ModelParsed>> entries(inValue.begin(), inValue.end());
+
+            WorkerPool::sParallel(
+                entries.size(),
+                [&entries](std::size_t index)
+                {
+                    Model::sGenerateTangents(entries[index].second);
+                }
+            );
+
+            ModelParsed::Map result;
+            for (auto& [name, model] : entries)
+            {
+                result.emplace(std::move(name), std::move(model));
             }
 
             return result;

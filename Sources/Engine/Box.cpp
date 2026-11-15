@@ -6,6 +6,7 @@
 #include <memory>
 #include <mutex>
 #include <system_error>
+#include <thread>
 #include <unordered_map>
 #include <vector>
 
@@ -14,6 +15,7 @@
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/CacheEntry.hpp"
 #include "Chicane/Box/Asset/Preview/Service.hpp"
+#include "Chicane/Box/Asset/Service.hpp"
 #include "Chicane/Box/Effect.hpp"
 #include "Chicane/Box/Font.hpp"
 #include "Chicane/Box/Material.hpp"
@@ -27,6 +29,7 @@
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
 namespace Chicane
 {
@@ -663,7 +666,7 @@ namespace Chicane
 
             if (created)
             {
-                g_assetObservable.next(created);
+                AssetService::sInstance().queueNotify(created);
             }
 
             return result;
@@ -843,19 +846,28 @@ namespace Chicane
                     loadSkeleton(asset->getSkeleton().getSource());
                 }
 
-                for (const AssetReference& animation : asset->getAnimations())
-                {
-                    loadAnimation(animation.getSource());
-                }
-
-                for (const MeshGroup& group : asset->getGroups())
-                {
-                    if (group.hasMaterial())
+                const std::vector<AssetReference>& animations = asset->getAnimations();
+                WorkerPool::sParallel(
+                    animations.size(),
+                    [&animations](std::size_t index)
                     {
-                        loadMaterial(group.getMaterial().getSource());
+                        loadAnimation(animations[index].getSource());
                     }
-                    loadModel(group.getModel().getSource());
-                }
+                );
+
+                const std::vector<MeshGroup>& groups = asset->getGroups();
+                WorkerPool::sParallel(
+                    groups.size(),
+                    [&groups](std::size_t index)
+                    {
+                        const MeshGroup& group = groups[index];
+                        if (group.hasMaterial())
+                        {
+                            loadMaterial(group.getMaterial().getSource());
+                        }
+                        loadModel(group.getModel().getSource());
+                    }
+                );
 
                 return asset;
             }
@@ -920,6 +932,11 @@ namespace Chicane
             return result;
         }
 
+        const Asset* findLoaded(const FileSystem::Path& inFilePath)
+        {
+            return getAsset(inFilePath);
+        }
+
         const Font* findFont(const String& inFamily, float inWeight)
         {
             const std::shared_ptr<const AssetCache> cache     = std::atomic_load(&g_cache);
@@ -973,20 +990,8 @@ namespace Chicane
             g_assetObservable.next(inAsset);
         }
 
-        const Asset* load(const FileSystem::Path& inFilePath)
+        const Asset* decodeAsset(const FileSystem::Path& inFilePath)
         {
-            if (const Asset* cached = getAsset(inFilePath))
-            {
-                return cached;
-            }
-
-            if (!isFileAsset(inFilePath))
-            {
-                Log::warning("File [%s] is not a valid asset", inFilePath.toChar());
-
-                return nullptr;
-            }
-
             switch (getTypeFromExtension(inFilePath))
             {
             case AssetType::Animation:
@@ -1021,6 +1026,70 @@ namespace Chicane
 
             default:
                 return nullptr;
+            }
+        }
+
+        const Asset* load(const FileSystem::Path& inFilePath)
+        {
+            if (const Asset* cached = getAsset(inFilePath))
+            {
+                return cached;
+            }
+
+            if (!isFileAsset(inFilePath))
+            {
+                Log::warning("File [%s] is not a valid asset", inFilePath.toChar());
+
+                return nullptr;
+            }
+
+            if (WorkerPoolParallel::sIsWorker())
+            {
+                return decodeAsset(inFilePath);
+            }
+
+            request(inFilePath);
+
+            AssetService& service = AssetService::sInstance();
+            while (!getAsset(inFilePath) && service.isPending(inFilePath))
+            {
+                pump();
+                std::this_thread::yield();
+            }
+
+            pump();
+
+            return getAsset(inFilePath);
+        }
+
+        void request(const FileSystem::Path& inFilePath)
+        {
+            if (inFilePath.isEmpty())
+            {
+                return;
+            }
+
+            if (getAsset(inFilePath))
+            {
+                return;
+            }
+
+            if (!isFileAsset(inFilePath))
+            {
+                return;
+            }
+
+            AssetService::sInstance().enqueue(inFilePath);
+        }
+
+        void pump()
+        {
+            std::vector<const Asset*> ready;
+            AssetService::sInstance().drain(ready);
+
+            for (const Asset* asset : ready)
+            {
+                notify(asset);
             }
         }
 

@@ -51,6 +51,8 @@ namespace Chicane
             return nullptr;
         }
 
+        CHICANE_BOX const class Asset* findLoaded(const FileSystem::Path& inFilePath);
+
         CHICANE_BOX const class Font* findFont(const String& inFamily, float inWeight);
 
         CHICANE_BOX void notify(const class Asset* inAsset);
@@ -62,6 +64,10 @@ namespace Chicane
         {
             return static_cast<const T*>(load(inFilePath));
         }
+
+        CHICANE_BOX void request(const FileSystem::Path& inFilePath);
+
+        CHICANE_BOX void pump();
 
         CHICANE_BOX const AssetPreview* findPreview(const FileSystem::Path& inFilePath);
         CHICANE_BOX const AssetPreview* loadPreview(const FileSystem::Path& inFilePath);
