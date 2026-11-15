@@ -301,6 +301,8 @@ void Character::onShoot()
         if (Apple* apple = static_cast<Apple*>(hit.object))
         {
             apple->onHit(this);
+
+            getScene()->removeActor(apple);
         }
     }
 }

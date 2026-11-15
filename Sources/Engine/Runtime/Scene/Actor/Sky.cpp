@@ -89,30 +89,24 @@ namespace Chicane
     ASky::ASky()
         : Actor(),
           sky(),
-          m_sun(nullptr),
           intensity(0.35f),
           exposure(1.0f),
           bIsVisible(true),
-          m_asset(nullptr)
+          m_asset(nullptr),
+          m_sun(nullptr)
     {}
 
-    void ASky::createDefaultComponents()
+    void ASky::onLoad()
     {
-        m_sun = createDefaultComponent<CLight>("Environment");
-        if (!m_sun)
-        {
-            return;
-        }
-
+        m_sun = getScene()->createComponent<CLight>();
+        m_sun->setOrigin(ObjectOrigin::Native);
+        m_sun->setId("Environment");
+        m_sun->attachTo(this);
         m_sun->setType(LightType::Environment);
         m_sun->setColor(Vec3(1.0f));
         m_sun->setCanCastShadows(false);
         m_sun->activate();
-        setIntensity(intensity);
-    }
 
-    void ASky::onLoad()
-    {
         setIntensity(intensity);
         placeEnvironmentLightAtSun();
     }

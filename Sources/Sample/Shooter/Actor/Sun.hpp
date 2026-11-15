@@ -11,7 +11,7 @@ public:
     Sun();
 
 protected:
-    void createDefaultComponents() override;
+    void onLoad() override;
 
 private:
     float m_distance;

@@ -13,7 +13,6 @@
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/Upload.hpp"
 #include "Chicane/Box/Font.hpp"
-#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Mesh.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Sky.hpp"
@@ -261,42 +260,7 @@ namespace Chicane
                 continue;
             }
 
-            const Mat4& matrix = mesh->getMatrix();
-            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-            {
-                Renderer::DrawPoly3DCommandMesh subcommand;
-                subcommand.model                     = resolveModelDrawId(group.getModel());
-                subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
-                subcommand.instance.flags            = mesh->getFlags();
-                subcommand.instance.emissiveStrength = group.getEmissiveStrength() * mesh->getEmissiveStrength();
-                subcommand.instance.tileSize         = group.getTileSize();
-
-                const Box::Material* material = nullptr;
-                if (group.hasMaterial())
-                {
-                    material = Box::load<Box::Material>(group.getMaterial().getSource());
-                }
-
-                for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
-                {
-                    const TextureMaterial type        = static_cast<TextureMaterial>(slot);
-                    const bool            bHasTexture = static_cast<bool>(material && material->hasTexture(type));
-
-                    if (bHasTexture)
-                    {
-                        subcommand.textures[slot] = material->getTexture(type).getReference();
-                    }
-
-                    const bool bDefaultAlbedo = !bHasTexture && (type == TextureMaterial::Albedo);
-
-                    if (bDefaultAlbedo)
-                    {
-                        subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
-                    }
-                }
-
-                outMeshes.emplace_back(std::move(subcommand));
-            }
+            mesh->appendDrawMeshes(outMeshes);
         }
     }
 
@@ -448,7 +412,6 @@ namespace Chicane
     Instance::Instance()
         : m_telemetry({}),
           m_bIsRunning(false),
-          m_states({}),
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
@@ -1023,6 +986,8 @@ namespace Chicane
         {
             telemetry.start();
             {
+                Box::pump();
+
                 std::shared_ptr<Scene> scene = getScene();
 
                 if (!scene)
@@ -1101,57 +1066,14 @@ namespace Chicane
             command.lights.push_back(light->getLight());
         }
 
+        std::vector<CMesh*>        candidateMeshes;
         std::unordered_set<CMesh*> submittedMeshes;
 
-        auto submitMesh = [&](CMesh* mesh)
+        auto addCandidateMesh = [&](CMesh* mesh)
         {
-            if (!mesh || !mesh->isActive() || !mesh->hasMesh() || !submittedMeshes.insert(mesh).second)
+            if (mesh && mesh->isActive() && mesh->hasMesh() && submittedMeshes.insert(mesh).second)
             {
-                return;
-            }
-
-            const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
-            if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
-            {
-                return;
-            }
-
-            const Mat4& matrix = mesh->getMatrix();
-
-            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-            {
-                Renderer::DrawPoly3DCommandMesh subcommand;
-                subcommand.model                     = resolveModelDrawId(group.getModel());
-                subcommand.instance.model            = matrix * mesh->getGroupMatrix(group);
-                subcommand.instance.flags            = mesh->getFlags();
-                subcommand.instance.emissiveStrength = group.getEmissiveStrength() * mesh->getEmissiveStrength();
-                subcommand.instance.tileSize         = group.getTileSize();
-
-                const Box::Material* material = nullptr;
-                if (group.hasMaterial())
-                {
-                    material = Box::load<Box::Material>(group.getMaterial().getSource());
-                }
-
-                for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
-                {
-                    const TextureMaterial type           = static_cast<TextureMaterial>(slot);
-                    const bool bHasMaterialAndHasTexture = static_cast<bool>(material && material->hasTexture(type));
-
-                    if (bHasMaterialAndHasTexture)
-                    {
-                        subcommand.textures[slot] = material->getTexture(type).getReference();
-                    }
-
-                    const bool bTypeAlbedo = !bHasMaterialAndHasTexture && (type == TextureMaterial::Albedo);
-
-                    if (bTypeAlbedo)
-                    {
-                        subcommand.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
-                    }
-                }
-
-                command.meshes.emplace_back(std::move(subcommand));
+                candidateMeshes.push_back(mesh);
             }
         };
 
@@ -1161,14 +1083,14 @@ namespace Chicane
         {
             inScene->forEachInFrustum(
                 activeCamera->getFrustum(),
-                [&submitMesh](Object* object)
+                [&addCandidateMesh](Object* object)
                 {
                     if (!object || typeid(*object) != typeid(CMesh))
                     {
                         return;
                     }
 
-                    submitMesh(static_cast<CMesh*>(object));
+                    addCandidateMesh(static_cast<CMesh*>(object));
                 }
             );
 
@@ -1184,7 +1106,7 @@ namespace Chicane
 
                 if (CMesh* mesh = dynamic_cast<CMesh*>(object))
                 {
-                    submitMesh(mesh);
+                    addCandidateMesh(mesh);
                 }
 
                 const std::vector<Object*>& children = object->getAttachments();
@@ -1196,7 +1118,59 @@ namespace Chicane
         {
             for (CMesh* mesh : inScene->getActiveComponents<CMesh>())
             {
-                submitMesh(mesh);
+                addCandidateMesh(mesh);
+            }
+        }
+
+        auto emitMesh = [&command, activeCamera](CMesh* mesh)
+        {
+            const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
+            if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
+            {
+                return;
+            }
+
+            mesh->appendDrawMeshes(command.meshes);
+        };
+
+        static constexpr std::size_t kParallelMeshCommandCount = 256;
+        if (candidateMeshes.size() >= kParallelMeshCommandCount)
+        {
+            std::vector<Renderer::DrawPoly3DCommandMesh::List> perMeshCommands(candidateMeshes.size());
+            WorkerPool::sParallel(
+                candidateMeshes.size(),
+                [&candidateMeshes, &perMeshCommands, activeCamera](std::size_t index)
+                {
+                    CMesh*     mesh              = candidateMeshes[index];
+                    const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
+                    if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
+                    {
+                        return;
+                    }
+
+                    mesh->appendDrawMeshes(perMeshCommands[index]);
+                }
+            );
+
+            std::size_t totalCommandMeshes = 0;
+            for (const auto& list : perMeshCommands)
+            {
+                totalCommandMeshes += list.size();
+            }
+            command.meshes.reserve(command.meshes.size() + totalCommandMeshes);
+            for (auto& list : perMeshCommands)
+            {
+                for (auto& subcommand : list)
+                {
+                    command.meshes.emplace_back(std::move(subcommand));
+                }
+            }
+        }
+        else
+        {
+            for (CMesh* mesh : candidateMeshes)
+            {
+                emitMesh(mesh);
             }
         }
 
@@ -1609,6 +1583,7 @@ namespace Chicane
 
         while (m_bIsRunning)
         {
+            Box::pump();
             Box::pumpPreview();
 
             std::shared_ptr<Grid::View> view = getView();

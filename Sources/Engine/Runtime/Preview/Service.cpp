@@ -61,7 +61,7 @@ namespace Chicane
                 continue;
             }
 
-            camera->activate();
+            camera->component->activate();
 
             break;
         }

@@ -16,5 +16,10 @@ namespace Chicane
 
     public:
         void onResize(const Vec<2, std::uint32_t>& inSize) override;
+
+    public:
+        Transform2D projectToScreenSpace(
+            const Object* inTarget, const Vec2& inViewport = Vec2::sZero(), const Vec3& inOffset = Vec3::sZero()
+        ) const;
     };
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
 #include <unordered_map>
 #include <vector>
 
@@ -13,6 +15,7 @@
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Core/Reflection.hpp"
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Texture/Material.hpp"
 
 #include "Chicane/Drift/Queue.hpp"
 
@@ -83,6 +86,7 @@ namespace Chicane
         const String& getPlayingAnimation() const;
 
         Mat4 getGroupMatrix(const Box::MeshGroup& inGroup) const;
+        void appendDrawMeshes(Renderer::DrawPoly3DCommandMesh::List& outMeshes) const;
 
         Renderer::DrawPoly3DFlag getFlags() const;
         void setFlags(Renderer::DrawPoly3DFlag inValue);
@@ -109,10 +113,22 @@ namespace Chicane
         void evaluatePose();
 
     protected:
+        struct DrawGroup
+        {
+            Renderer::Draw::Reference                                     model             = {};
+            std::array<Renderer::Draw::Reference, TEXTURE_MATERIAL_COUNT> textures = {};
+            Mat4                                                          local    = Mat4::One;
+            std::int32_t                                                  boneIndex = -1;
+            float                                                         emissiveStrength = 1.0f;
+            float                                                         tileSize         = 0.0f;
+        };
+
         void generateBounds();
         void bindSkeleton();
+        void rebuildDrawGroups();
         String resolveAnimationId(const String& inId) const;
         std::int32_t findBoundBone(const Box::MeshGroup& inGroup) const;
+        Mat4 getGroupMatrix(const DrawGroup& inGroup) const;
 
         void setFlag(Renderer::DrawPoly3DFlag inFlag, bool inValue);
 
@@ -133,5 +149,6 @@ namespace Chicane
         Drift::Queue                                      m_queue;
         std::vector<Mat4>                                 m_bones;
         std::vector<Mat4>                                 m_skins;
+        std::vector<DrawGroup>                            m_drawGroups;
     };
 }

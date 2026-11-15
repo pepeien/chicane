@@ -123,7 +123,7 @@ namespace Reflector
 
         static string EmitMethodContainerResolver(FunctionModel f)
         {
-            if (!f.IsIterable)
+            if (f.ReturnType == "void")
             {
                 return "\t\t\t\t{}";
             }
@@ -271,7 +271,8 @@ namespace Reflector
             }
             sb.AppendLine("\t\t},");
             sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeStringifier<{t.Name}>(),");
-            sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeAnyStringifier<{t.Name}>()");
+            sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeAnyStringifier<{t.Name}>(),");
+            sb.AppendLine($"\t\tChicane::ReflectionTypeInfo::sMakeAnyUnpacker<{t.Name}>()");
             sb.AppendLine("\t)");
             sb.AppendLine(");");
             sb.AppendLine();

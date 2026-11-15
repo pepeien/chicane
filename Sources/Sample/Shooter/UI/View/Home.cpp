@@ -9,5 +9,6 @@ HomeView::HomeView()
 {
     import <Crosshair>();
     import <Telemetry>();
+
     load("Assets/Sample/Shooter/UI/Views/Home/Index.grid", "Assets/Sample/Shooter/UI/Views/Home/Index.decal");
 }

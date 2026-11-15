@@ -52,12 +52,6 @@ namespace Chicane
         inline virtual void onTick(float inDeltaTime) { return; }
         inline virtual void onPropertyEdited(const String& inName) { return; }
         inline virtual void onAttachment(Object* inParent) { return; }
-        inline virtual void createDefaultComponents() { return; }
-
-        void ensureDefaultComponents();
-
-        template <typename T>
-        T* createDefaultComponent(const String& inId);
 
     public:
         CH_FUNCTION()
@@ -160,7 +154,6 @@ namespace Chicane
     protected:
         bool                 m_bCanTick;
         bool                 m_bCanCollide;
-        bool                 m_bHasDefaultComponents;
         ObjectOrigin         m_origin;
 
         String               m_id;

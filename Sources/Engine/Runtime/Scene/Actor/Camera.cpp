@@ -6,27 +6,14 @@ namespace Chicane
 {
     ACamera::ACamera()
         : Actor(),
-          m_camera(nullptr)
+          component(nullptr)
     {}
 
-    void ACamera::createDefaultComponents()
+    void ACamera::onLoad()
     {
-        m_camera = createDefaultComponent<CCamera>("Camera");
-    }
-
-    void ACamera::activate()
-    {
-        if (m_camera)
-        {
-            m_camera->activate();
-        }
-    }
-
-    void ACamera::deactivate()
-    {
-        if (m_camera)
-        {
-            m_camera->deactivate();
-        }
+        component = getScene()->createComponent<CCamera>();
+        component->setOrigin(ObjectOrigin::Native);
+        component->setId("Camera");
+        component->attachTo(this);
     }
 }

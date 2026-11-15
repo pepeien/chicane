@@ -9,17 +9,17 @@ namespace Chicane
           light(nullptr)
     {}
 
+    void ALight::onLoad()
+    {
+        light = getScene()->createComponent<CLight>();
+        light->setOrigin(ObjectOrigin::Native);
+        light->setId("Light");
+        light->attachTo(this);
+        light->activate();
+    }
+
     Component* ALight::getLight() const
     {
         return light;
-    }
-
-    void ALight::createDefaultComponents()
-    {
-        light = createDefaultComponent<CLight>("Light");
-        if (light)
-        {
-            light->activate();
-        }
     }
 }

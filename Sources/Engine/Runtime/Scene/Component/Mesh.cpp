@@ -4,11 +4,13 @@
 #include <cmath>
 #include <unordered_map>
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Animation.hpp"
 #include "Chicane/Box/Animation/Clip.hpp"
 #include "Chicane/Box/Animation/Keyframe.hpp"
 #include "Chicane/Box/Animation/Loop.hpp"
 #include "Chicane/Box/Animation/Track.hpp"
+#include "Chicane/Box/Material.hpp"
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Box/Skeleton.hpp"
 #include "Chicane/Box/Texture.hpp"
@@ -176,7 +178,8 @@ namespace Chicane
           m_animationById({}),
           m_queue(),
           m_bones({}),
-          m_skins({})
+          m_skins({}),
+          m_drawGroups({})
     {}
 
     void CMesh::onPropertyEdited(const String& inName)
@@ -231,6 +234,7 @@ namespace Chicane
 
         generateBounds();
         evaluatePose();
+        rebuildDrawGroups();
     }
 
     const Box::Mesh* CMesh::getMesh() const
@@ -506,6 +510,111 @@ namespace Chicane
         }
 
         return m_skins.at(static_cast<std::size_t>(index)) * local;
+    }
+
+    Mat4 CMesh::getGroupMatrix(const DrawGroup& inGroup) const
+    {
+        if (m_skins.empty() || !m_skeleton || inGroup.boneIndex < 0 ||
+            static_cast<std::size_t>(inGroup.boneIndex) >= m_skins.size())
+        {
+            return inGroup.local;
+        }
+
+        return m_skins.at(static_cast<std::size_t>(inGroup.boneIndex)) * inGroup.local;
+    }
+
+    void CMesh::appendDrawMeshes(Renderer::DrawPoly3DCommandMesh::List& outMeshes) const
+    {
+        if (m_drawGroups.empty())
+        {
+            return;
+        }
+
+        const Mat4&                    matrix   = getMatrix();
+        const Renderer::DrawPoly3DFlag flags    = getFlags();
+        const float                    emissive = getEmissiveStrength();
+
+        outMeshes.reserve(outMeshes.size() + m_drawGroups.size());
+        for (const DrawGroup& group : m_drawGroups)
+        {
+            Renderer::DrawPoly3DCommandMesh subcommand;
+            subcommand.model                     = group.model;
+            subcommand.textures                  = group.textures;
+            subcommand.instance.model            = matrix * getGroupMatrix(group);
+            subcommand.instance.flags            = flags;
+            subcommand.instance.emissiveStrength = group.emissiveStrength * emissive;
+            subcommand.instance.tileSize         = group.tileSize;
+
+            outMeshes.emplace_back(std::move(subcommand));
+        }
+    }
+
+    void CMesh::rebuildDrawGroups()
+    {
+        m_drawGroups.clear();
+        if (!m_asset)
+        {
+            return;
+        }
+
+        for (const Box::MeshGroup& group : m_asset->getGroups())
+        {
+            DrawGroup cached;
+            cached.local             = group.getModelMatrix();
+            cached.boneIndex         = findBoundBone(group);
+            cached.emissiveStrength  = group.getEmissiveStrength();
+            cached.tileSize          = group.getTileSize();
+
+            const Box::Model* model = Box::load<Box::Model>(group.getModel().getSource());
+            if (!model)
+            {
+                model = Box::Model::sGetDefault();
+            }
+
+            if (model)
+            {
+                cached.model = model->getUniqueId(group.getModel().getReference());
+            }
+
+            if (cached.model.isEmpty())
+            {
+                cached.model = group.getModel().getReference();
+            }
+
+            const Box::Material*        material = nullptr;
+            const FileSystem::Path&     source   = group.getMaterial().getSource();
+            if (!source.isEmpty())
+            {
+                if (const Box::Asset* loaded = Box::findLoaded(source))
+                {
+                    material = dynamic_cast<const Box::Material*>(loaded);
+                }
+
+                if (!material && group.hasMaterial())
+                {
+                    material = Box::load<Box::Material>(source);
+                }
+            }
+
+            for (std::uint8_t slot = 0; slot < TEXTURE_MATERIAL_COUNT; slot++)
+            {
+                const TextureMaterial type      = static_cast<TextureMaterial>(slot);
+                const bool            bHasTexture = static_cast<bool>(material && material->hasTexture(type));
+
+                if (bHasTexture)
+                {
+                    cached.textures[slot] = material->getTexture(type).getReference();
+                }
+
+                const bool bDefaultAlbedo = !bHasTexture && (type == TextureMaterial::Albedo);
+                if (bDefaultAlbedo)
+                {
+                    cached.textures[slot] = Box::Texture::DEFAULT_REFERENCE;
+                }
+            }
+
+            m_drawGroups.push_back(std::move(cached));
+        }
     }
 
     void CMesh::onTick(float inDeltaTime)

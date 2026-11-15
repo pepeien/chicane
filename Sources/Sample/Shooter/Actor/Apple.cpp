@@ -19,17 +19,13 @@ Apple::Apple()
     setCanCollide(true);
 }
 
-void Apple::createDefaultComponents()
+void Apple::onLoad()
 {
-    static const Chicane::FileSystem::Path meshPath("Assets/Sample/Shooter/Meshes/Apple.bmsh");
-
-    m_meshComponent = createDefaultComponent<Chicane::CMesh>("Mesh");
-    if (!m_meshComponent)
-    {
-        return;
-    }
-
-    m_meshComponent->setMesh(meshPath);
+    m_meshComponent = getScene()->createComponent<Chicane::CMesh>();
+    m_meshComponent->setOrigin(Chicane::ObjectOrigin::Native);
+    m_meshComponent->setId("Mesh");
+    m_meshComponent->attachTo(this);
+    m_meshComponent->setMesh("Assets/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->activate();
 }
 

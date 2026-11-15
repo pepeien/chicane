@@ -19,9 +19,8 @@ namespace Chicane
         APawn();
 
     protected:
-        void createDefaultComponents() override;
+        void onLoad() override;
 
-    protected:
         virtual void onControlAttachment() { return; }
         virtual void onControleDeattachment() { return; }
         virtual void onInput() { return; }

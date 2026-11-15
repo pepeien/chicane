@@ -10,9 +10,9 @@ Sun::Sun()
       m_angle(0.0f)
 {}
 
-void Sun::createDefaultComponents()
+void Sun::onLoad()
 {
-    Chicane::ALight::createDefaultComponents();
+    Chicane::ALight::onLoad();
 
     setAbsoluteTranslation(0.0f, 0.0f, m_distance);
     lookAt(Chicane::Vec3::sZero());

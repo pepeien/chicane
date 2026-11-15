@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Scene.hpp"
 
+#include <future>
 #include <stdexcept>
 
 #include "Chicane/Core/FileSystem.hpp"
@@ -300,16 +301,41 @@ namespace Chicane
             throw std::runtime_error("Unknown actor type [" + inTypeName.toStandard() + "]");
         }
 
-        Object* instance = type->create<Object>({});
-        Actor*  actor    = dynamic_cast<Actor*>(instance);
-        if (!actor)
+        auto construct = [type, inTypeName]() -> Actor*
         {
-            delete instance;
+            Object* instance = type->create<Object>({});
+            Actor*  actor    = dynamic_cast<Actor*>(instance);
+            if (!actor)
+            {
+                delete instance;
 
-            throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not an actor");
+                throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not an actor");
+            }
+
+            return actor;
+        };
+
+        if (WorkerPoolParallel::sIsWorker() || ownsObjects())
+        {
+            return adoptActor(construct());
         }
 
-        return adoptActor(actor);
+        std::promise<Actor*> promise;
+        WorkerPool::sDetach(
+            [&promise, construct]()
+            {
+                try
+                {
+                    promise.set_value(construct());
+                }
+                catch (...)
+                {
+                    promise.set_exception(std::current_exception());
+                }
+            }
+        );
+
+        return adoptActor(promise.get_future().get());
     }
 
     Component* Scene::createComponentFromTag(const String& inTypeName)
@@ -320,16 +346,41 @@ namespace Chicane
             throw std::runtime_error("Unknown component type [" + inTypeName.toStandard() + "]");
         }
 
-        Object*    instance  = type->create<Object>({});
-        Component* component = dynamic_cast<Component*>(instance);
-        if (!component)
+        auto construct = [type, inTypeName]() -> Component*
         {
-            delete instance;
+            Object*    instance  = type->create<Object>({});
+            Component* component = dynamic_cast<Component*>(instance);
+            if (!component)
+            {
+                delete instance;
 
-            throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not a component");
+                throw std::runtime_error("Reflected type [" + inTypeName.toStandard() + "] is not a component");
+            }
+
+            return component;
+        };
+
+        if (WorkerPoolParallel::sIsWorker() || ownsObjects())
+        {
+            return adoptComponent(construct());
         }
 
-        return adoptComponent(component);
+        std::promise<Component*> promise;
+        WorkerPool::sDetach(
+            [&promise, construct]()
+            {
+                try
+                {
+                    promise.set_value(construct());
+                }
+                catch (...)
+                {
+                    promise.set_exception(std::current_exception());
+                }
+            }
+        );
+
+        return adoptComponent(promise.get_future().get());
     }
 
     Actor* Scene::adoptActor(Actor* inActor)

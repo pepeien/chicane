@@ -13,14 +13,12 @@ namespace Chicane
         setCanCollide(true);
     }
 
-    void APawn::createDefaultComponents()
+    void APawn::onLoad()
     {
-        m_physics = createDefaultComponent<CPhysics>("Physics");
-        if (!m_physics)
-        {
-            return;
-        }
-
+        m_physics = getScene()->createComponent<CPhysics>();
+        m_physics->setOrigin(ObjectOrigin::Native);
+        m_physics->setId("Physics");
+        m_physics->attachTo(this);
         m_physics->setShape(Kerb::BodyShape::Capsule);
         m_physics->setMotion(Kerb::MotionType::Dynamic);
         m_physics->setCollisionPreset(Kerb::CollisionPreset::Pawn);

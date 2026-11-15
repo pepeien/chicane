@@ -16,16 +16,10 @@ namespace Chicane
         ACamera();
 
     protected:
-        void createDefaultComponents() override;
+        void onLoad() override;
 
     public:
-        CH_FUNCTION()
-        void activate();
-
-        CH_FUNCTION()
-        void deactivate();
-
-    protected:
-        CCamera* m_camera;
+        CH_FIELD()
+        CCamera* component;
     };
 }

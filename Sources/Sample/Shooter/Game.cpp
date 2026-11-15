@@ -32,6 +32,7 @@ namespace Game
     {
         Chicane::Instance::sInstance().setScene<Scene>();
         Chicane::Instance::sInstance().setView<HomeView>();
+
         postScoreEvents();
     }
 
@@ -45,6 +46,7 @@ namespace Game
         m_score = std::min(m_score + inScore, m_maxScore);
 
         m_scoreObservable.next(m_score);
+
         postScoreEvents();
     }
 
@@ -53,6 +55,7 @@ namespace Game
         m_score = std::max(m_score - inScore, 0U);
 
         m_scoreObservable.next(m_score);
+
         postScoreEvents();
     }
 
@@ -74,6 +77,7 @@ namespace Game
     void setMaxScore(std::uint32_t inScore)
     {
         m_maxScore = inScore;
+
         postScoreEvents();
     }
 }

@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
+#include <exception>
 #include <functional>
+#include <future>
 #include <memory>
 #include <thread>
 #include <type_traits>
@@ -19,6 +21,7 @@
 #include "Chicane/Core/Script/Bus.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
+#include "Chicane/Core/Worker/Pool.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
@@ -137,7 +140,27 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            return static_cast<T*>(adoptActor(new T(inParams...)));
+            if (WorkerPoolParallel::sIsWorker() || ownsObjects())
+            {
+                return static_cast<T*>(adoptActor(new T(inParams...)));
+            }
+
+            std::promise<T*> promise;
+            WorkerPool::sDetach(
+                [&promise, inParams...]()
+                {
+                    try
+                    {
+                        promise.set_value(new T(inParams...));
+                    }
+                    catch (...)
+                    {
+                        promise.set_exception(std::current_exception());
+                    }
+                }
+            );
+
+            return static_cast<T*>(adoptActor(promise.get_future().get()));
         }
 
         void removeActor(Actor* inActor);
@@ -219,7 +242,27 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            return static_cast<T*>(adoptComponent(new T(inParams...)));
+            if (WorkerPoolParallel::sIsWorker() || ownsObjects())
+            {
+                return static_cast<T*>(adoptComponent(new T(inParams...)));
+            }
+
+            std::promise<T*> promise;
+            WorkerPool::sDetach(
+                [&promise, inParams...]()
+                {
+                    try
+                    {
+                        promise.set_value(new T(inParams...));
+                    }
+                    catch (...)
+                    {
+                        promise.set_exception(std::current_exception());
+                    }
+                }
+            );
+
+            return static_cast<T*>(adoptComponent(promise.get_future().get()));
         }
 
         void removeComponent(Component* inComponent);
@@ -563,5 +606,3 @@ namespace Chicane
         std::unique_ptr<SceneScript>                                 m_sceneScript;
     };
 }
-
-#include "Chicane/Runtime/Scene/Object.inl"

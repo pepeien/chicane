@@ -110,7 +110,6 @@ namespace Chicane
           Serializable(),
           m_bCanTick(false),
           m_bCanCollide(false),
-          m_bHasDefaultComponents(false),
           m_origin(ObjectOrigin::Instance),
           m_id(""),
           m_parent(nullptr),
@@ -400,17 +399,6 @@ namespace Chicane
         }
     }
 
-    void Object::ensureDefaultComponents()
-    {
-        if (m_bHasDefaultComponents)
-        {
-            return;
-        }
-
-        m_bHasDefaultComponents = true;
-        createDefaultComponents();
-    }
-
     void Object::notifyPropertyEdited(const String& inName)
     {
         onPropertyEdited(inName);
@@ -600,11 +588,6 @@ namespace Chicane
 
         m_scene = inScene;
         markSpatialDirty();
-
-        if (m_scene)
-        {
-            ensureDefaultComponents();
-        }
     }
 
     void Object::markSpatialDirty()

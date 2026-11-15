@@ -13,7 +13,7 @@ public:
     Strcuture();
 
 protected:
-    void createDefaultComponents() override;
+    void onLoad() override;
 
 private:
     Chicane::CMesh*    m_mesh;
