@@ -1,5 +1,5 @@
 {
-    "title": "CollisionPreset",
+    "title": "Preset",
     "filename": "Preset",
     "path": "Kerb/Collision/Preset",
     "source": {
@@ -7,17 +7,6 @@
         "namespace": "Chicane::Kerb::CollisionPreset",
         "types": [],
         "enums": [
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Custom",
-                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_DESCRIPTION"
-            },
             {
                 "type": {
                     "prefix": "",
@@ -94,6 +83,127 @@
                 },
                 "name": "OverlapAll",
                 "description": "CHICANE_KERB_COLLISIONPRESET_OVERLAPALL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_0",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_0_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_1",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_2",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_3",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_4",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_5",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_6",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_7",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_8",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_9",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_10",
+                "description": "CHICANE_KERB_COLLISIONPRESET_CUSTOM_10_DESCRIPTION"
             }
         ],
         "constructors": [],
@@ -124,10 +234,118 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_TOSTRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isCustomPreset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CollisionPreset",
+                            "suffix": "",
+                            "path": "Kerb/Collision/Preset",
+                            "templates": []
+                        },
+                        "name": "inPreset"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_ISCUSTOMPRESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasCustomPreset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CollisionPreset",
+                            "suffix": "",
+                            "path": "Kerb/Collision/Preset",
+                            "templates": []
+                        },
+                        "name": "inPreset"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_HASCUSTOMPRESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "defineCollisionPreset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "CollisionPreset",
+                            "suffix": "",
+                            "path": "Kerb/Collision/Preset",
+                            "templates": []
+                        },
+                        "name": "inPreset"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInSensor"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "ObjectLayer",
+                                    "suffix": "",
+                                    "path": "Kerb/Object/Layer",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inLayers"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_DEFINECOLLISIONPRESET_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_KERB_COLLISIONPRESET_DESCRIPTION"
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

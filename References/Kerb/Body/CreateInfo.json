@@ -139,6 +139,19 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "bUsePreset",
+                "description": "CHICANE_KERB_BODYCREATEINFO_BUSEPRESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "bIsSensor",
                 "description": "CHICANE_KERB_BODYCREATEINFO_BISSENSOR_DESCRIPTION"
             },

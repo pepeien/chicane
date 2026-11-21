@@ -1,0 +1,91 @@
+{
+    "title": "Tracer",
+    "filename": "Tracer",
+    "path": "Core/Tracer",
+    "source": {
+        "header": "Includes/Chicane/Core/Tracer.hpp",
+        "namespace": "Chicane::Tracer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sMarkFrame",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TRACER_SMARKFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sSetThreadName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TRACER_SSETTHREADNAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sSetThreadName",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TRACER_SSETTHREADNAME_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_TRACER_DESCRIPTION"
+    },
+    "children": []
+}

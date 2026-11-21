@@ -1,0 +1,83 @@
+{
+    "title": "Location",
+    "filename": "Location",
+    "path": "Core/Tracer/Location",
+    "source": {
+        "header": "Includes/Chicane/Core/Tracer/Location.hpp",
+        "namespace": "Chicane::TracerLocation",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_TRACERLOCATION_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "function",
+                "description": "CHICANE_TRACERLOCATION_FUNCTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "file",
+                "description": "CHICANE_TRACERLOCATION_FILE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "line",
+                "description": "CHICANE_TRACERLOCATION_LINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_TRACERLOCATION_COLOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TRACERLOCATION_DESCRIPTION"
+    },
+    "children": []
+}

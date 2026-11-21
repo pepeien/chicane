@@ -1,0 +1,44 @@
+{
+    "title": "Contact",
+    "filename": "Contact",
+    "path": "Kerb/Body/Contact",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Body/Contact.hpp",
+        "namespace": "Chicane::Kerb::BodyContact",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Body",
+                    "suffix": "",
+                    "path": "Kerb/Body",
+                    "templates": []
+                },
+                "name": "first",
+                "description": "CHICANE_KERB_BODYCONTACT_FIRST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Body",
+                    "suffix": "",
+                    "path": "Kerb/Body",
+                    "templates": []
+                },
+                "name": "second",
+                "description": "CHICANE_KERB_BODYCONTACT_SECOND_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_BODYCONTACT_DESCRIPTION"
+    },
+    "children": []
+}

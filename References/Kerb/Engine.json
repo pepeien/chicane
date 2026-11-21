@@ -501,6 +501,93 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setBodyOwner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Body",
+                            "suffix": "",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inBody"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOwner"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_SETBODYOWNER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getBodyOwner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Body",
+                            "suffix": "",
+                            "path": "Kerb/Body",
+                            "templates": []
+                        },
+                        "name": "inBody"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_KERB_ENGINE_GETBODYOWNER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "BodyContact",
+                            "suffix": "",
+                            "path": "Kerb/Body/Contact",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "drainBodyContacts",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_DRAINBODYCONTACTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "activateBody",
                 "parameters": [
                     {
@@ -1008,6 +1095,52 @@
                     "const"
                 ],
                 "description": "CHICANE_KERB_ENGINE_GETBODYPOLYGON_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyObjectLayerPair",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inA"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inB"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInCollide"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_APPLYOBJECTLAYERPAIR_DESCRIPTION"
             }
         ],
         "members": [

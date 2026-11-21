@@ -1,0 +1,114 @@
+{
+    "title": "Zone",
+    "filename": "Zone",
+    "path": "Core/Tracer/Zone",
+    "source": {
+        "header": "Includes/Chicane/Core/Tracer/Zone.hpp",
+        "namespace": "Chicane::TracerZone",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "TracerZone",
+                    "suffix": "",
+                    "path": "Core/Tracer/Zone",
+                    "templates": []
+                },
+                "name": "sBegin",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "TracerLocation",
+                            "suffix": "*",
+                            "path": "Core/Tracer/Location",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TRACERZONE_SBEGIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sEnd",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "TracerZone",
+                            "suffix": "",
+                            "path": "Core/Tracer/Zone",
+                            "templates": []
+                        },
+                        "name": "inZone"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TRACERZONE_SEND_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_TRACERZONE_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "active",
+                "description": "CHICANE_TRACERZONE_ACTIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint64_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "connectionId",
+                "description": "CHICANE_TRACERZONE_CONNECTIONID_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TRACERZONE_DESCRIPTION"
+    },
+    "children": []
+}

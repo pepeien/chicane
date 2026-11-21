@@ -1429,6 +1429,34 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "accepts",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENETRACEREQUEST_ACCEPTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "intersects",
                 "parameters": [
                     {
@@ -1558,6 +1586,19 @@
                 },
                 "name": "destination",
                 "description": "CHICANE_SCENETRACEREQUEST_DESTINATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Kerb::CollisionPreset",
+                    "suffix": "",
+                    "path": "Kerb/Collision/Preset",
+                    "templates": []
+                },
+                "name": "preset",
+                "description": "CHICANE_SCENETRACEREQUEST_PRESET_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -218,6 +218,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isLoaded",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_ISLOADED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -836,6 +853,35 @@
                     "const"
                 ],
                 "description": "CHICANE_SCENE_GETACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "forEachActor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Function",
+                            "suffix": "&&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFunction"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_FOREACHACTOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1835,23 +1881,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isLoaded",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_SCENE_ISLOADED_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -2328,10 +2357,60 @@
                         "name": "inBase"
                     }
                 ],
-                "modifiers": [
-                    "const"
-                ],
+                "modifiers": [],
                 "description": "CHICANE_SCENE_MAKEUNIQUEID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rememberId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_REMEMBERID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "forgetId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        },
+                        "name": "inObject"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_FORGETID_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -2699,6 +2778,83 @@
                 },
                 "name": "m_objectCells",
                 "description": "CHICANE_SCENE_M_OBJECTCELLS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint64_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_cellKeys",
+                "description": "CHICANE_SCENE_M_CELLKEYS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Object",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Object",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_ids",
+                "description": "CHICANE_SCENE_M_IDS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_idSerial",
+                "description": "CHICANE_SCENE_M_IDSERIAL_DESCRIPTION"
             },
             {
                 "accessor": "private",

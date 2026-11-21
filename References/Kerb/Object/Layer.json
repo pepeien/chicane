@@ -103,6 +103,127 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "Custom_0",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_0_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_1",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_2",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_3",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_4",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_5",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_6",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_7",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_8",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_9",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom_10",
+                "description": "CHICANE_KERB_OBJECTLAYER_CUSTOM_10_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "Count",
                 "description": "CHICANE_KERB_OBJECTLAYER_COUNT_DESCRIPTION"
             },
@@ -152,6 +273,34 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isCustomLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_ISCUSTOMLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "ObjectLayer",
                     "suffix": "",
                     "path": "Kerb/Object/Layer",
@@ -182,6 +331,162 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_KERB_RESOLVEOBJECTLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "canCollide",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inA"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inB"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_CANCOLLIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clearCustomLayerPairs",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_CLEARCUSTOMLAYERPAIRS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCustomLayerPair",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inLayer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ObjectLayer",
+                            "suffix": "",
+                            "path": "Kerb/Object/Layer",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInCollide"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_SETCUSTOMLAYERPAIR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setObjectLayerPairCallback",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void(ObjectLayer",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "ObjectLayer",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "bool)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_SETOBJECTLAYERPAIRCALLBACK_DESCRIPTION"
             }
         ],
         "members": [],

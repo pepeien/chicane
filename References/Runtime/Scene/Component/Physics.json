@@ -802,21 +802,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "updateCollision",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CPHYSICS_UPDATECOLLISION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "captureSyncedTransform",
                 "parameters": [],
                 "modifiers": [],
@@ -881,6 +866,23 @@
                     "const"
                 ],
                 "description": "CHICANE_CPHYSICS_MAKEBODYTRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "dispatchContacts",
+                "parameters": [],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_CPHYSICS_DISPATCHCONTACTS_DESCRIPTION"
             }
         ],
         "members": [

@@ -1,0 +1,109 @@
+{
+    "title": "Scope",
+    "filename": "Scope",
+    "path": "Core/Tracer/Scope",
+    "source": {
+        "header": "Includes/Chicane/Core/Tracer/Scope.hpp",
+        "namespace": "Chicane::TracerScope",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TracerScope",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TRACERSCOPE_TRACERSCOPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TracerScope",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "TracerLocation",
+                            "suffix": "*",
+                            "path": "Core/Tracer/Location",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TRACERSCOPE_TRACERSCOPE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~TracerScope",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TRACERSCOPE_~TRACERSCOPE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "TracerScope",
+                    "suffix": "&",
+                    "path": "Core/Tracer/Scope",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TRACERSCOPE_OPERATOR=_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "TracerZone",
+                    "suffix": "",
+                    "path": "Core/Tracer/Zone",
+                    "templates": []
+                },
+                "name": "m_zone",
+                "description": "CHICANE_TRACERSCOPE_M_ZONE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TRACERSCOPE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -132,6 +132,24 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Time",
+                    "suffix": "",
+                    "path": "Core/Time",
+                    "templates": []
+                },
+                "name": "sNow",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_TIME_SNOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
