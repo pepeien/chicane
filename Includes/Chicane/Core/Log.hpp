@@ -6,6 +6,7 @@
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Log/Entry.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -66,5 +67,8 @@ namespace Chicane
         }
 
         CHICANE_CORE void clear();
+
+        CHICANE_CORE void dump();
+        CHICANE_CORE void dump(const FileSystem::Path& inFilepath);
     }
 }

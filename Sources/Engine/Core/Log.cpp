@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Chicane/Core/Time.hpp"
+
 namespace Chicane
 {
     namespace Log
@@ -90,6 +92,24 @@ namespace Chicane
         {
             g_history.clear();
             g_observable.next(g_history);
+        }
+
+        void dump()
+        {
+            dump(String::sSprint("%d.txt", Time::sNow().point.time_since_epoch()));
+        }
+
+        void dump(const FileSystem::Path& inFilepath)
+        {
+            String contents;
+
+            for (const Entry& entry : g_history)
+            {
+                contents.append(entry.text);
+                contents.append('\n');
+            }
+
+            FileSystem::write(contents, inFilepath);
         }
     }
 }
