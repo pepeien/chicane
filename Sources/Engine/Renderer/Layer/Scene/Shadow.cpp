@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Layer/Scene/Shadow.hpp"
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
@@ -75,6 +76,8 @@ namespace Chicane
 
         void LSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("Shadows");
+
             RHI::Frame*  rhi    = static_cast<RHI::Frame*>(inData);
             LScene*      parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);
             RHI::Device* device = m_backend->getRHIDevice();

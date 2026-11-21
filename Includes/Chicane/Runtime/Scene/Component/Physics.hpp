@@ -40,6 +40,8 @@ namespace Chicane
     public:
         bool hasBody() const;
 
+        static void dispatchContacts();
+
         void setShape(Kerb::BodyShape inType);
         void setShape(const Kerb::BodyPolygon& inPolygon);
 
@@ -90,7 +92,6 @@ namespace Chicane
         void syncBody();
         void syncTickState();
         void syncCollisionSettings();
-        void updateCollision();
         void captureSyncedTransform();
         Vec3 colliderCenter() const;
         void applyBodyTransform();

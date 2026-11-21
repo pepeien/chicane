@@ -1,15 +1,14 @@
 #include "Chicane/Kerb/Collision/Preset.hpp"
 #include "Chicane/Kerb/Collision/Preset.reflected.hpp"
 
+#include <string>
+
 namespace Chicane
 {
     String toString(Kerb::CollisionPreset inValue)
     {
         switch (inValue)
         {
-        case Kerb::CollisionPreset::Custom:
-            return "Custom";
-
         case Kerb::CollisionPreset::Default:
             return "Default";
 
@@ -32,6 +31,13 @@ namespace Chicane
             return "OverlapAll";
 
         default:
+            if (Kerb::isCustomPreset(inValue))
+            {
+                const int index = static_cast<int>(inValue) - static_cast<int>(Kerb::CollisionPreset::Custom_0);
+
+                return String("Custom_") + String(std::to_string(index));
+            }
+
             return "";
         }
     }

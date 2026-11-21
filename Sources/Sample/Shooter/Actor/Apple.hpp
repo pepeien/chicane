@@ -2,6 +2,7 @@
 
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
+#include <Chicane/Runtime/Scene/Component/Physics.hpp>
 #include <Chicane/Runtime/Scene/Component/Sound.hpp>
 
 class Apple : public Chicane::Actor
@@ -25,6 +26,7 @@ private:
 
     Chicane::Vec3 m_startPosition;
 
-    Chicane::CMesh*  m_meshComponent;
-    Chicane::CSound* m_hitSound;
+    Chicane::CMesh*    m_meshComponent;
+    Chicane::CPhysics* m_physics;
+    Chicane::CSound*   m_hitSound;
 };

@@ -87,5 +87,14 @@ target_link_libraries(
         libtess2::libtess2
 )
 
+if (CHICANE_TRACER)
+    target_link_libraries(
+        ${CHICANE_ENGINE_CORE_TARGET_NAME}
+
+        PRIVATE
+            Tracy::TracyClient
+    )
+endif()
+
 CH_ADD_COMPILER(${CHICANE_ENGINE_CORE_TARGET_NAME})
 CH_GENERATE_REFLECTION(${CHICANE_ENGINE_CORE_TARGET_NAME})

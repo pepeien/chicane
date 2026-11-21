@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <exception>
 #include <functional>
-#include <future>
 #include <memory>
 #include <thread>
 #include <type_traits>
@@ -15,13 +14,13 @@
 #include <vector>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Script/Bus.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
-#include "Chicane/Core/Worker/Pool.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
@@ -59,6 +58,7 @@ namespace Chicane
 
     public:
         // Lifecycle
+        bool isLoaded() const;
         void load();
         void unload();
 
@@ -121,6 +121,24 @@ namespace Chicane
             return result;
         }
 
+        template <class T, class Function>
+        inline void forEachActor(Function&& inFunction) const
+        {
+            auto found = m_actors.find(std::type_index(typeid(T)));
+            if (found == m_actors.end())
+            {
+                return;
+            }
+
+            for (Actor* actor : found->second)
+            {
+                if (actor)
+                {
+                    inFunction(static_cast<T*>(actor));
+                }
+            }
+        }
+
         bool hasActor(const String& inId) const;
 
         template <class T>
@@ -140,27 +158,7 @@ namespace Chicane
         template <class T = Actor, typename... Params>
         inline T* createActor(Params... inParams)
         {
-            if (WorkerPoolParallel::sIsWorker() || ownsObjects())
-            {
-                return static_cast<T*>(adoptActor(new T(inParams...)));
-            }
-
-            std::promise<T*> promise;
-            WorkerPool::sDetach(
-                [&promise, inParams...]()
-                {
-                    try
-                    {
-                        promise.set_value(new T(inParams...));
-                    }
-                    catch (...)
-                    {
-                        promise.set_exception(std::current_exception());
-                    }
-                }
-            );
-
-            return static_cast<T*>(adoptActor(promise.get_future().get()));
+            return static_cast<T*>(adoptActor(new T(inParams...)));
         }
 
         void removeActor(Actor* inActor);
@@ -242,27 +240,7 @@ namespace Chicane
         template <class T = Component, typename... Params>
         inline T* createComponent(Params... inParams)
         {
-            if (WorkerPoolParallel::sIsWorker() || ownsObjects())
-            {
-                return static_cast<T*>(adoptComponent(new T(inParams...)));
-            }
-
-            std::promise<T*> promise;
-            WorkerPool::sDetach(
-                [&promise, inParams...]()
-                {
-                    try
-                    {
-                        promise.set_value(new T(inParams...));
-                    }
-                    catch (...)
-                    {
-                        promise.set_exception(std::current_exception());
-                    }
-                }
-            );
-
-            return static_cast<T*>(adoptComponent(promise.get_future().get()));
+            return static_cast<T*>(adoptComponent(new T(inParams...)));
         }
 
         void removeComponent(Component* inComponent);
@@ -373,6 +351,8 @@ namespace Chicane
                 return false;
             }
 
+            CH_TRACER_SCOPE_NAMED("Trace");
+
             std::unordered_set<const Object*> ignored(inIgnored.begin(), inIgnored.end());
 
             auto                              append = [&](Object* object)
@@ -388,6 +368,11 @@ namespace Chicane
                     {
                         return;
                     }
+                }
+
+                if (!inRequest.accepts(object))
+                {
+                    return;
                 }
 
                 float enter = 0.0f;
@@ -449,8 +434,10 @@ namespace Chicane
                 }
             }
 
-            if constexpr (!std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
-                          std::is_base_of_v<Actor, T>)
+            if constexpr (
+                !std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
+                std::is_base_of_v<Actor, T>
+            )
             {
                 auto found = m_actors.find(std::type_index(typeid(T)));
                 if (found == m_actors.end() || found->second.empty())
@@ -464,8 +451,10 @@ namespace Chicane
                 }
             }
 
-            if constexpr (!std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
-                          !std::is_base_of_v<Actor, T> && std::is_base_of_v<Component, T>)
+            if constexpr (
+                !std::is_same_v<T, Object> && !std::is_same_v<T, Actor> && !std::is_same_v<T, Component> &&
+                !std::is_base_of_v<Actor, T> && std::is_base_of_v<Component, T>
+            )
             {
                 auto found = m_components.find(std::type_index(typeid(T)));
                 if (found == m_components.end() || found->second.empty())
@@ -553,8 +542,6 @@ namespace Chicane
         }
 
     protected:
-        bool isLoaded() const;
-
         void tickActors(float inDeltaTime);
         void deleteActors();
 
@@ -576,7 +563,9 @@ namespace Chicane
     private:
         void attachObject(Object* inObject, const String& inFallback);
         void assignUniqueId(Object* inObject, const String& inFallback);
-        String makeUniqueId(const String& inBase) const;
+        String makeUniqueId(const String& inBase);
+        void rememberId(Object* inObject);
+        void forgetId(const Object* inObject);
         void ensureUniqueId(const String& inId, const Object* inIgnored) const;
         void drainMutations();
         void unlinkActor(Actor* inActor, const std::type_index& inType);
@@ -598,6 +587,10 @@ namespace Chicane
         float                                                        m_cellSize;
         std::unordered_map<std::uint64_t, SceneSpatialCell>          m_cells;
         std::unordered_map<Object*, std::vector<std::uint64_t>>      m_objectCells;
+        std::vector<std::uint64_t>                                   m_cellKeys;
+
+        std::unordered_map<String, Object*>                          m_ids;
+        std::unordered_map<String, std::uint32_t>                    m_idSerial;
 
         std::atomic<std::thread::id>                                 m_owner;
         Mailbox<std::function<void()>>                               m_mutations;

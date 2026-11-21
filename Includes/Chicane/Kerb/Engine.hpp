@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
@@ -8,6 +9,7 @@
 #include "Chicane/Kerb.hpp"
 #include "Chicane/Kerb/Body.hpp"
 #include "Chicane/Kerb/Body/CreateInfo.hpp"
+#include "Chicane/Kerb/Body/Contact.hpp"
 #include "Chicane/Kerb/Gravity/Planet.hpp"
 #include "Chicane/Kerb/Motion/Type.hpp"
 #include "Chicane/Kerb/Object/Layer.hpp"
@@ -21,6 +23,9 @@ namespace Chicane
         class CHICANE_KERB Engine
         {
             friend class ::Chicane::Instance;
+
+        public:
+            struct Implementation;
 
         public:
             static Engine& sInstance();
@@ -60,6 +65,10 @@ namespace Chicane
             const Vec3& getGravity() const;
 
             Body createBody(const BodyCreateInfo& inCreateInfo);
+            void setBodyOwner(Body inBody, void* inOwner);
+            void* getBodyOwner(Body inBody) const;
+            std::vector<BodyContact> drainBodyContacts();
+
             void activateBody(Body inBody);
             void deactivateBody(Body inBody);
             void destroyBody(Body inBody);
@@ -82,7 +91,7 @@ namespace Chicane
             BodyPolygon getBodyPolygon(Body inBody) const;
 
         private:
-            struct Implementation;
+            void applyObjectLayerPair(ObjectLayer inA, ObjectLayer inB, bool bInCollide);
 
             std::unique_ptr<Implementation> m_implementation;
         };

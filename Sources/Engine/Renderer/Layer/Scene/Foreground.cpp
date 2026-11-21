@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Layer/Scene/Foreground.hpp"
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Layer/Scene.hpp"
 #include "Chicane/Renderer/Layer/Util.hpp"
@@ -101,6 +102,8 @@ namespace Chicane
 
         void LSceneForeground::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("Foreground");
+
             RHI::Frame*  rhi    = static_cast<RHI::Frame*>(inData);
             LScene*      parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);
             RHI::Device* device = m_backend->getRHIDevice();

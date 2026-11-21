@@ -2,11 +2,13 @@
 
 #include "Chicane/Box/Model.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
 
 #include <algorithm>
 #include <cfloat>
 #include <cmath>
+#include <memory>
 
 namespace Chicane
 {
@@ -132,5 +134,45 @@ namespace Chicane
                 m_indices.push_back(offset + index);
             }
         }
+    }
+
+    SceneTraceRequest SceneTraceRequest::sMesh(const Box::Mesh* inMesh, float inCellSize)
+    {
+        SceneTraceRequest request;
+        request.shape    = std::make_shared<SceneTraceShapeMesh>(inMesh);
+        request.cellSize = std::max(inCellSize, FLT_EPSILON);
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sMesh(
+        const Vec3& inOrigin, const Vec3& inDestination, const Box::Mesh* inMesh, float inCellSize
+    )
+    {
+        SceneTraceRequest request = sMesh(inMesh, inCellSize);
+        request.origin            = inOrigin;
+        request.destination       = inDestination;
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sMesh(const FileSystem::Path& inMesh, float inCellSize)
+    {
+        SceneTraceRequest request;
+        request.shape    = std::make_shared<SceneTraceShapeMesh>(inMesh);
+        request.cellSize = std::max(inCellSize, FLT_EPSILON);
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sMesh(
+        const Vec3& inOrigin, const Vec3& inDestination, const FileSystem::Path& inMesh, float inCellSize
+    )
+    {
+        SceneTraceRequest request = sMesh(inMesh, inCellSize);
+        request.origin            = inOrigin;
+        request.destination       = inDestination;
+
+        return request;
     }
 }

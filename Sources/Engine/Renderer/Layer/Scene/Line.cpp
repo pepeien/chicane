@@ -3,6 +3,7 @@
 #include <array>
 #include <cstring>
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Draw/Poly.hpp"
@@ -304,6 +305,8 @@ namespace Chicane
 
         void LSceneLine::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("Debug Lines");
+
             RHI::Frame*  rhi    = static_cast<RHI::Frame*>(inData);
             LScene*      parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);
             RHI::Device* device = m_backend->getRHIDevice();

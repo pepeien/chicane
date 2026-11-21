@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Chicane/Box/Animation.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
 #include "Chicane/Box/Asset/Preview.hpp"
 #include "Chicane/Box/Asset/Preview/CacheEntry.hpp"
@@ -1084,6 +1085,8 @@ namespace Chicane
 
         void pump()
         {
+            CH_TRACER_SCOPE_NAMED("Assets");
+
             std::vector<const Asset*> ready;
             AssetService::sInstance().drain(ready);
 
@@ -1190,6 +1193,8 @@ namespace Chicane
 
         void pumpPreview()
         {
+            CH_TRACER_SCOPE_NAMED("Asset Previews");
+
             std::vector<std::unique_ptr<AssetPreview>> ready;
             PreviewService::sInstance().drain(ready);
 

@@ -1,7 +1,10 @@
 #include "Chicane/Runtime/Scene/Trace/Shape/Box.hpp"
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
+
+#include <memory>
 
 #include <algorithm>
 #include <cfloat>
@@ -37,5 +40,25 @@ namespace Chicane
         SceneTraceShapeUtility::closestPointOnSegment(inBounds.getCenter(), inOrigin, inDestination, outEnter);
 
         return true;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sBox(const Vec3& inHalfExtents, float inCellSize)
+    {
+        SceneTraceRequest request;
+        request.shape    = std::make_shared<SceneTraceShapeBox>(inHalfExtents);
+        request.cellSize = std::max(inCellSize, FLT_EPSILON);
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sBox(
+        const Vec3& inOrigin, const Vec3& inDestination, const Vec3& inHalfExtents, float inCellSize
+    )
+    {
+        SceneTraceRequest request = sBox(inHalfExtents, inCellSize);
+        request.origin            = inOrigin;
+        request.destination       = inDestination;
+
+        return request;
     }
 }

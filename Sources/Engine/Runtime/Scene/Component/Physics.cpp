@@ -1,8 +1,12 @@
 #include "Chicane/Runtime/Scene/Component/Physics.reflected.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <unordered_set>
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Kerb/Engine.hpp"
 #include "Chicane/Kerb/Collision/Preset/Info.hpp"
 #include "Chicane/Renderer/Debug.hpp"
@@ -80,7 +84,6 @@ namespace Chicane
         if (body.motion == Kerb::MotionType::Kinematic)
         {
             applyBodyTransform();
-            updateCollision();
 
             return;
         }
@@ -96,8 +99,6 @@ namespace Chicane
         {
             m_parent->setAbsoluteTranslation(location);
         }
-
-        updateCollision();
     }
 
     void CPhysics::onActivation()
@@ -183,6 +184,23 @@ namespace Chicane
         if (name.equals("preset"))
         {
             setCollisionPreset(body.preset);
+
+            return;
+        }
+
+        if (name.equals("bUsePreset"))
+        {
+            if (body.bUsePreset)
+            {
+                setCollisionPreset(body.preset);
+
+                return;
+            }
+
+            if (hasBody())
+            {
+                syncCollisionSettings();
+            }
 
             return;
         }
@@ -335,8 +353,8 @@ namespace Chicane
 
     void CPhysics::setObjectLayer(Kerb::ObjectLayer inLayer)
     {
-        body.layer  = inLayer;
-        body.preset = Kerb::CollisionPreset::Custom;
+        body.layer      = inLayer;
+        body.bUsePreset = false;
 
         if (hasBody())
         {
@@ -348,12 +366,13 @@ namespace Chicane
     {
         const bool bWasSensor = body.bIsSensor;
         body.preset           = inPreset;
+        body.bUsePreset       = true;
 
-        if (inPreset != Kerb::CollisionPreset::Custom)
+        const Kerb::CollisionPresetInfo info = Kerb::resolveCollisionPreset(inPreset, body.motion);
+        if (info.layer != Kerb::ObjectLayer::Auto)
         {
-            const Kerb::CollisionPresetInfo info = Kerb::resolveCollisionPreset(inPreset, body.motion);
-            body.layer                           = info.layer;
-            body.bIsSensor                       = info.bIsSensor;
+            body.layer     = info.layer;
+            body.bIsSensor = info.bIsSensor;
         }
 
         if (!hasBody())
@@ -457,28 +476,45 @@ namespace Chicane
         Kerb::Engine::sInstance().addBodyImpulse(m_body, inDirection, inForce, inLocation);
     }
 
-    void CPhysics::updateCollision()
+    void CPhysics::dispatchContacts()
     {
-        if (!canCollide())
+        const std::vector<Kerb::BodyContact> contacts = Kerb::Engine::sInstance().drainBodyContacts();
+        if (contacts.empty())
         {
             return;
         }
 
-        Actor* attachment = dynamic_cast<Actor*>(getParent());
-        if (!attachment || !attachment->canCollide())
-        {
-            return;
-        }
+        CH_TRACER_SCOPE_NAMED("Contacts");
 
-        for (Actor* actor : getScene()->getActors())
+        std::unordered_set<std::uint64_t> seen;
+        seen.reserve(contacts.size());
+
+        for (const Kerb::BodyContact& contact : contacts)
         {
-            if (actor == attachment || !actor->canCollide() || !actor->isCollidingWith(attachment))
+            const std::uint32_t low  = std::min(contact.first.value(), contact.second.value());
+            const std::uint32_t high = std::max(contact.first.value(), contact.second.value());
+            const std::uint64_t key  = (static_cast<std::uint64_t>(low) << 32) | high;
+            if (!seen.insert(key).second)
             {
                 continue;
             }
 
-            attachment->collideWith(actor);
-            actor->collideWith(attachment);
+            CPhysics* first  = static_cast<CPhysics*>(Kerb::Engine::sInstance().getBodyOwner(contact.first));
+            CPhysics* second = static_cast<CPhysics*>(Kerb::Engine::sInstance().getBodyOwner(contact.second));
+            if (!first || !second || first == second || !first->canCollide() || !second->canCollide())
+            {
+                continue;
+            }
+
+            Actor* left  = dynamic_cast<Actor*>(first->getParent());
+            Actor* right = dynamic_cast<Actor*>(second->getParent());
+            if (!left || !right || left == right)
+            {
+                continue;
+            }
+
+            left->collideWith(right);
+            right->collideWith(left);
         }
     }
 
@@ -511,6 +547,8 @@ namespace Chicane
 
             return;
         }
+
+        Kerb::Engine::sInstance().setBodyOwner(m_body, this);
 
         if (isActive())
         {
@@ -586,17 +624,14 @@ namespace Chicane
             return;
         }
 
-        Kerb::ObjectLayer resolved      = body.layer;
-        const bool        bPresetCustom = static_cast<bool>(body.preset != Kerb::CollisionPreset::Custom);
-
-        if (bPresetCustom)
+        Kerb::ObjectLayer resolved = Kerb::resolveObjectLayer(body.layer, body.motion);
+        if (body.bUsePreset)
         {
-            resolved = Kerb::resolveCollisionPreset(body.preset, body.motion).layer;
-        }
-
-        if (!bPresetCustom)
-        {
-            resolved = Kerb::resolveObjectLayer(body.layer, body.motion);
+            const Kerb::ObjectLayer presetLayer = Kerb::resolveCollisionPreset(body.preset, body.motion).layer;
+            if (presetLayer != Kerb::ObjectLayer::Auto)
+            {
+                resolved = presetLayer;
+            }
         }
 
         Kerb::Engine::sInstance().setBodyObjectLayer(m_body, resolved);

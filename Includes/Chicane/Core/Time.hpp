@@ -14,6 +14,7 @@ namespace Chicane
 
     public:
         static inline Time sZero() { return Time(Clock::duration::zero()); }
+        static inline Time sNow() { return Time(); }
 
         static float sMiliseconds(Clock::duration inDuration);
         static float sSeconds(Clock::duration inTime);

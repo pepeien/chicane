@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Feature.hpp"
 #include "Chicane/Renderer/Layer/Util.hpp"
@@ -200,6 +201,8 @@ namespace Chicane
 
         void LUI::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("UI");
+
             RHI::Frame*         rhi      = static_cast<RHI::Frame*>(inData);
             RHI::Device*        device   = m_backend->getRHIDevice();
             const RHI::Viewport viewport = m_backend->getRHIViewport(this);

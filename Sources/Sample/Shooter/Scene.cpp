@@ -1,7 +1,9 @@
 #include "Sample/Shooter/Scene.hpp"
 
+#include <Chicane/Kerb/Collision/Preset.hpp>
 #include <Chicane/Kerb/Engine.hpp>
 #include <Chicane/Kerb/Gravity.hpp>
+#include <Chicane/Kerb/Object/Layer.hpp>
 #include <Chicane/Runtime/Instance.hpp>
 #include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 
@@ -21,12 +23,17 @@ Scene::Scene()
 
 void Scene::onLoad()
 {
+    Chicane::Kerb::defineCollisionPreset(
+        Chicane::Kerb::CollisionPreset::Custom_0,
+        false,
+        { Chicane::Kerb::ObjectLayer::NonMoving, Chicane::Kerb::ObjectLayer::Custom_0 }
+    );
+
     Chicane::Kerb::Engine::sSetGravity(
         Chicane::Kerb::Gravity::sDown(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
     );
 
     open(DEFAULT_SCRIPT);
-
     spawnApples();
 }
 

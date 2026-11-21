@@ -19,6 +19,7 @@
 #include "Chicane/Box/Texture.hpp"
 
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Math/Mat/Mat3.hpp"
 #include "Chicane/Core/View/Frustum.hpp"
 #include "Chicane/Core/View/Projection/Type.hpp"
@@ -448,32 +449,47 @@ namespace Chicane
 
     void Instance::run(const InstanceCreateInfo& inCreateInfo)
     {
-        initWindow(inCreateInfo.window);
-        initRenderer(inCreateInfo.renderer);
-        initBox();
-        initKerb();
-        initDrift();
-        initScreech();
-        initSmoke();
-        initModules(inCreateInfo.modules);
+        Tracer::sSetThreadName("Main");
+
+        {
+            CH_TRACER_SCOPE_NAMED("Startup");
+
+            initWindow(inCreateInfo.window);
+            initRenderer(inCreateInfo.renderer);
+            initBox();
+            initKerb();
+            initDrift();
+            initScreech();
+            initSmoke();
+            initModules(inCreateInfo.modules);
+
+            if (inCreateInfo.onSetup)
+            {
+                inCreateInfo.onSetup();
+            }
+
+            m_bIsRunning.store(true, std::memory_order_seq_cst);
+            initScene();
+            initUI();
+        }
 
         const std::function<void()> onFrame = inCreateInfo.onFrame;
 
-        if (inCreateInfo.onSetup)
+        while (true)
         {
-            inCreateInfo.onSetup();
-        }
+            Tracer::sMarkFrame();
+            CH_TRACER_SCOPE_NAMED("Frame");
 
-        m_bIsRunning.store(true, std::memory_order_seq_cst);
-        initScene();
-        initUI();
+            if (!m_window->run())
+            {
+                break;
+            }
 
-        while (m_window->run())
-        {
             m_telemetry.loop.start();
             {
                 if (hasController())
                 {
+                    CH_TRACER_SCOPE_NAMED("Controller");
                     m_controller->repeat();
                 }
 
@@ -481,6 +497,7 @@ namespace Chicane
 
                 if (onFrame)
                 {
+                    CH_TRACER_SCOPE_NAMED("Game");
                     onFrame();
                 }
 
@@ -490,6 +507,8 @@ namespace Chicane
         }
 
         m_bIsRunning.store(false, std::memory_order_seq_cst);
+
+        CH_TRACER_SCOPE_NAMED("Shutdown");
 
         shutdownScene();
         shutdownUI();
@@ -504,6 +523,8 @@ namespace Chicane
 
     void Instance::render()
     {
+        CH_TRACER_SCOPE_NAMED("Render");
+
         snapshotRendererState();
         uploadPreviewTextures();
 
@@ -521,6 +542,8 @@ namespace Chicane
 
     void Instance::uploadPreviewTextures()
     {
+        CH_TRACER_SCOPE_NAMED("Preview Upload");
+
         if (!m_renderer)
         {
             return;
@@ -571,6 +594,8 @@ namespace Chicane
 
     void Instance::snapshotRendererState()
     {
+        CH_TRACER_SCOPE_NAMED("Renderer Snapshot");
+
         if (!m_renderer)
         {
             m_featureFlags.store(0, std::memory_order_relaxed);
@@ -980,6 +1005,8 @@ namespace Chicane
 
     void Instance::tickScene()
     {
+        Tracer::sSetThreadName("Scene");
+
         Telemetry telemetry = {};
 
         while (m_bIsRunning)
@@ -996,6 +1023,8 @@ namespace Chicane
 
                     continue;
                 }
+
+                CH_TRACER_SCOPE_NAMED("Scene Loop");
 
                 scene->claim();
                 scene->pumpEvents();
@@ -1040,6 +1069,8 @@ namespace Chicane
         {
             return;
         }
+
+        CH_TRACER_SCOPE_NAMED("Scene Commands");
 
         const std::size_t index = m_sceneWriteIndex.load(std::memory_order_relaxed);
 
@@ -1136,29 +1167,44 @@ namespace Chicane
         static constexpr std::size_t kParallelMeshCommandCount = 256;
         if (candidateMeshes.size() >= kParallelMeshCommandCount)
         {
-            std::vector<Renderer::DrawPoly3DCommandMesh::List> perMeshCommands(candidateMeshes.size());
-            WorkerPool::sParallel(
-                candidateMeshes.size(),
-                [&candidateMeshes, &perMeshCommands, activeCamera](std::size_t index)
-                {
-                    CMesh*     mesh              = candidateMeshes[index];
-                    const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
-                    if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
-                    {
-                        return;
-                    }
+            unsigned cores = std::thread::hardware_concurrency();
+            if (cores < 1)
+            {
+                cores = 1;
+            }
 
-                    mesh->appendDrawMeshes(perMeshCommands[index]);
+            const std::size_t workers = std::min(candidateMeshes.size(), static_cast<std::size_t>(cores));
+            std::vector<Renderer::DrawPoly3DCommandMesh::List> chunks(workers);
+            WorkerPool::sParallel(
+                workers,
+                [&candidateMeshes, &chunks, activeCamera, workers](std::size_t worker)
+                {
+                    const std::size_t begin = (candidateMeshes.size() * worker) / workers;
+                    const std::size_t end   = (candidateMeshes.size() * (worker + 1)) / workers;
+                    Renderer::DrawPoly3DCommandMesh::List& out = chunks[worker];
+                    out.reserve(end - begin);
+
+                    for (std::size_t index = begin; index < end; index++)
+                    {
+                        CMesh*     mesh              = candidateMeshes[index];
+                        const bool bAttachedToCamera = activeCamera != nullptr && mesh->isDescendantOf(activeCamera);
+                        if (!bAttachedToCamera && activeCamera != nullptr && !activeCamera->canSee(mesh))
+                        {
+                            continue;
+                        }
+
+                        mesh->appendDrawMeshes(out);
+                    }
                 }
             );
 
             std::size_t totalCommandMeshes = 0;
-            for (const auto& list : perMeshCommands)
+            for (const auto& list : chunks)
             {
                 totalCommandMeshes += list.size();
             }
             command.meshes.reserve(command.meshes.size() + totalCommandMeshes);
-            for (auto& list : perMeshCommands)
+            for (auto& list : chunks)
             {
                 for (auto& subcommand : list)
                 {
@@ -1340,7 +1386,8 @@ namespace Chicane
             pending.emplace_back(name, binding);
         }
 
-        const std::vector<CMesh*>                meshes = inScene->getActiveComponents<CMesh>();
+        const std::vector<CMesh*> meshes =
+            pending.empty() ? std::vector<CMesh*>{} : inScene->getActiveComponents<CMesh>();
         std::vector<Renderer::ViewTargetCommand> built(pending.size());
         WorkerPool::sParallel(
             pending.size(),
@@ -1388,6 +1435,8 @@ namespace Chicane
 
     void Instance::renderScene()
     {
+        CH_TRACER_SCOPE_NAMED("Scene Submit");
+
         const std::size_t index = m_sceneReadIndex.load(std::memory_order_acquire);
         m_sceneBusyIndex.store(index, std::memory_order_release);
 
@@ -1447,6 +1496,8 @@ namespace Chicane
 
     void Instance::publishViewTargets(const std::vector<Renderer::ViewTargetCommand>& inCommands)
     {
+        CH_TRACER_SCOPE_NAMED("View Targets");
+
         if (!m_renderer)
         {
             return;
@@ -1579,6 +1630,8 @@ namespace Chicane
 
     void Instance::tickUI()
     {
+        Tracer::sSetThreadName("UI");
+
         Time::Point lastTick = Time::Clock::now();
 
         while (m_bIsRunning)
@@ -1602,6 +1655,8 @@ namespace Chicane
 
             if (!isState(InstanceSystem::UI, InstanceState::Paused))
             {
+                CH_TRACER_SCOPE_NAMED("UI Loop");
+
                 m_telemetry.ui.start();
 
                 view->pumpEvents();
@@ -1736,6 +1791,8 @@ namespace Chicane
         {
             return;
         }
+
+        CH_TRACER_SCOPE_NAMED("UI Commands");
 
         std::size_t index = m_viewWriteIndex.load(std::memory_order_relaxed);
 
@@ -1953,6 +2010,8 @@ namespace Chicane
 
     void Instance::renderUI()
     {
+        CH_TRACER_SCOPE_NAMED("UI Submit");
+
         if (!hasRenderer())
         {
             return;

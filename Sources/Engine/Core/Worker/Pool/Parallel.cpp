@@ -1,3 +1,4 @@
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Worker/Pool/Parallel.hpp"
 
 #include <algorithm>
@@ -23,14 +24,7 @@ namespace Chicane
             return;
         }
 
-        unsigned cores = std::thread::hardware_concurrency();
-        if (cores < 1)
-        {
-            cores = 1;
-        }
-
-        const bool bFew = inCount <= static_cast<std::size_t>(cores);
-        if (inCount == 1 || bFew || g_bWorkerPoolParallel)
+        if (inCount == 1 || g_bWorkerPoolParallel)
         {
             for (std::size_t index = 0; index < inCount; index++)
             {
@@ -190,12 +184,15 @@ namespace Chicane
 
     void WorkerPoolParallel::loop()
     {
+        Tracer::sSetThreadName("Parallel");
+
         g_bWorkerPoolParallel = true;
 
         while (true)
         {
             std::shared_ptr<Batch> batch;
             std::size_t            index = 0;
+            std::size_t            count = 0;
             Job                    job;
 
             {
@@ -219,16 +216,21 @@ namespace Chicane
                         continue;
                     }
 
+                    const std::size_t workers = std::max<std::size_t>(1, m_workers.size());
+                    std::size_t       chunk   = std::max<std::size_t>(1, candidate->count / (workers * 4));
+                    chunk                     = std::min<std::size_t>(chunk, 256);
+
                     batch = candidate;
                     index = batch->next;
-                    batch->next++;
+                    count = std::min<std::size_t>(batch->count, index + chunk) - index;
+                    batch->next += count;
                     job = batch->job;
 
                     break;
                 }
             }
 
-            if (!batch)
+            if (!batch || count == 0)
             {
                 continue;
             }
@@ -237,7 +239,12 @@ namespace Chicane
             {
                 try
                 {
-                    job(index);
+                    CH_TRACER_SCOPE_NAMED("Parallel Job");
+
+                    for (std::size_t step = 0; step < count; step++)
+                    {
+                        job(index + step);
+                    }
                 }
                 catch (...)
                 {
@@ -251,9 +258,13 @@ namespace Chicane
 
             {
                 std::lock_guard<std::mutex> lock(m_mutex);
-                if (batch->remaining > 0)
+                if (batch->remaining > count)
                 {
-                    batch->remaining--;
+                    batch->remaining -= count;
+                }
+                else
+                {
+                    batch->remaining = 0;
                 }
 
                 if (batch->remaining == 0)

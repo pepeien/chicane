@@ -20,6 +20,7 @@ project(
 option(CHICANE_SHARED   "Build shared library"    ON)
 option(CHICANE_OPENGL   "Enable OpenGL"           ON)
 option(CHICANE_VULKAN   "Enable Vulkan"           ON)
+option(CHICANE_TRACER   "Enable Tracer profiling" ON)
 option(CHICANE_PROGRAMS "Compile engine programs" ON)
 option(CHICANE_EDITOR   "Compile engine editor"   ON)
 option(CHICANE_SAMPLE   "Compile engine sample"   ON)
@@ -37,6 +38,10 @@ endif()
 
 if (CHICANE_SHARED)
     add_definitions(-DBUILD_SHARED)
+endif()
+
+if (CHICANE_TRACER)
+    add_definitions(-DCHICANE_TRACER)
 endif()
 
 if (CHICANE_OPENGL)

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -12,6 +13,7 @@
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyInterface.h>
 #include <Jolt/Physics/Body/BodyLock.h>
+#include <Jolt/Physics/Collision/ContactListener.h>
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayerInterfaceTable.h>
 #include <Jolt/Physics/Collision/BroadPhase/ObjectVsBroadPhaseLayerFilterTable.h>
 #include <Jolt/Physics/Collision/CollisionGroup.h>
@@ -25,6 +27,7 @@
 #include <Jolt/Physics/PhysicsSystem.h>
 
 #include "Chicane/Core/Hash.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Kerb/Collision/Preset/Info.hpp"
 #include "Chicane/Kerb/Gravity.hpp"
@@ -50,6 +53,49 @@ namespace Chicane
             JPH::BodyID      id       = JPH::BodyID();
             JPH::Vec3        vector   = JPH::Vec3::sZero();
             JPH::Vec3        location = JPH::Vec3::sZero();
+        };
+
+        struct ContactRecord
+        {
+        public:
+            std::uint32_t first  = 0;
+            std::uint32_t second = 0;
+        };
+
+        class ContactRelay final : public JPH::ContactListener
+        {
+        public:
+            void OnContactAdded(
+                const JPH::Body& inBody1,
+                const JPH::Body& inBody2,
+                const JPH::ContactManifold&,
+                JPH::ContactSettings&
+            ) override
+            {
+                push(inBody1, inBody2);
+            }
+
+            void OnContactPersisted(
+                const JPH::Body& inBody1,
+                const JPH::Body& inBody2,
+                const JPH::ContactManifold&,
+                JPH::ContactSettings&
+            ) override
+            {
+                push(inBody1, inBody2);
+            }
+
+            void push(const JPH::Body& inBody1, const JPH::Body& inBody2)
+            {
+                const std::lock_guard<std::mutex> lock(mutex);
+                pairs.push_back(
+                    {inBody1.GetID().GetIndexAndSequenceNumber(), inBody2.GetID().GetIndexAndSequenceNumber()}
+                );
+            }
+
+        public:
+            std::mutex                 mutex;
+            std::vector<ContactRecord> pairs;
         };
 
         struct Engine::Implementation
@@ -79,9 +125,11 @@ namespace Chicane
             JPH::ObjectLayerPairFilterTable                            objectLayer;
             std::unique_ptr<JPH::ObjectVsBroadPhaseLayerFilterTable>   objectVsBroadPhaseLayer;
             JPH::RefConst<JPH::GroupFilterTable>                       groupFilter;
+            std::unique_ptr<ContactRelay>                              contacts;
             JPH::PhysicsSystem                                         system;
             std::unordered_map<Hash::Value, JPH::RefConst<JPH::Shape>> shapes;
             std::vector<JPH::BodyID>                                   ids;
+            std::unordered_map<std::uint32_t, void*>                   owners;
             Mailbox<PendingWrite>                                      pending;
             std::unordered_map<std::uint32_t, JPH::Vec3>               horizontalWish;
             std::unordered_map<std::uint32_t, JPH::RVec3>              previousPosition;
@@ -130,9 +178,13 @@ namespace Chicane
 
         static ObjectLayer resolveCreateLayer(const BodyCreateInfo& inCreateInfo)
         {
-            if (inCreateInfo.preset != CollisionPreset::Custom)
+            if (inCreateInfo.bUsePreset)
             {
-                return resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).layer;
+                const ObjectLayer layer = resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).layer;
+                if (layer != ObjectLayer::Auto)
+                {
+                    return layer;
+                }
             }
 
             return resolveObjectLayer(inCreateInfo.layer, inCreateInfo.motion);
@@ -140,10 +192,13 @@ namespace Chicane
 
         static bool resolveCreateSensor(const BodyCreateInfo& inCreateInfo)
         {
-            if (inCreateInfo.preset != CollisionPreset::Custom)
+            if (inCreateInfo.bUsePreset)
             {
-                return resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion).bIsSensor ||
-                       inCreateInfo.bIsSensor;
+                const CollisionPresetInfo info = resolveCollisionPreset(inCreateInfo.preset, inCreateInfo.motion);
+                if (info.layer != ObjectLayer::Auto)
+                {
+                    return info.bIsSensor || inCreateInfo.bIsSensor;
+                }
             }
 
             return inCreateInfo.bIsSensor || inCreateInfo.layer == ObjectLayer::Trigger;
@@ -165,42 +220,25 @@ namespace Chicane
             }
         }
 
+        static void disableLayerPair(JPH::ObjectLayerPairFilterTable& inTable, ObjectLayer inA, ObjectLayer inB)
+        {
+            inTable.DisableCollision(toPhysicsObjectLayer(inA), toPhysicsObjectLayer(inB));
+        }
+
         static void setupObjectLayerMatrix(JPH::ObjectLayerPairFilterTable& inTable)
         {
-            // WorldStatic / NonMoving
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Moving);
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Pawn);
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::PhysicsBody);
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Projectile);
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Trigger);
-            enableLayerPair(inTable, ObjectLayer::NonMoving, ObjectLayer::Debris);
-
-            // WorldDynamic / Moving
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Moving);
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Pawn);
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::PhysicsBody);
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Projectile);
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Trigger);
-            enableLayerPair(inTable, ObjectLayer::Moving, ObjectLayer::Debris);
-
-            // Pawn
-            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Pawn);
-            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::PhysicsBody);
-            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Projectile);
-            enableLayerPair(inTable, ObjectLayer::Pawn, ObjectLayer::Trigger);
-
-            // PhysicsBody
-            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::PhysicsBody);
-            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Projectile);
-            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Trigger);
-            enableLayerPair(inTable, ObjectLayer::PhysicsBody, ObjectLayer::Debris);
-
-            // Projectile ignores other projectiles
-            enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Trigger);
-            enableLayerPair(inTable, ObjectLayer::Projectile, ObjectLayer::Debris);
-
-            // Trigger
-            enableLayerPair(inTable, ObjectLayer::Trigger, ObjectLayer::Debris);
+            for (std::uint32_t left = 0; left < OBJECT_LAYER_COUNT; ++left)
+            {
+                for (std::uint32_t right = left; right < OBJECT_LAYER_COUNT; ++right)
+                {
+                    const ObjectLayer a = static_cast<ObjectLayer>(left);
+                    const ObjectLayer b = static_cast<ObjectLayer>(right);
+                    if (canCollide(a, b))
+                    {
+                        enableLayerPair(inTable, a, b);
+                    }
+                }
+            }
         }
 
         static Hash::Value hashPolygon(const BodyPolygon& inPolygon)
@@ -245,6 +283,27 @@ namespace Chicane
 
             setupObjectLayerMatrix(objectLayer);
 
+            // Custom layers stay reachable in both broadphase trees. The pair table is the real filter
+            // and can change after startup.
+            std::vector<std::pair<ObjectLayer, ObjectLayer>> temporaryPairs;
+            for (std::uint8_t index = static_cast<std::uint8_t>(ObjectLayer::Custom_0);
+                 index < static_cast<std::uint8_t>(ObjectLayer::Count);
+                 ++index)
+            {
+                const ObjectLayer layer = static_cast<ObjectLayer>(index);
+                if (!canCollide(layer, ObjectLayer::NonMoving))
+                {
+                    enableLayerPair(objectLayer, layer, ObjectLayer::NonMoving);
+                    temporaryPairs.emplace_back(layer, ObjectLayer::NonMoving);
+                }
+
+                if (!canCollide(layer, ObjectLayer::Moving))
+                {
+                    enableLayerPair(objectLayer, layer, ObjectLayer::Moving);
+                    temporaryPairs.emplace_back(layer, ObjectLayer::Moving);
+                }
+            }
+
             objectVsBroadPhaseLayer = std::make_unique<JPH::ObjectVsBroadPhaseLayerFilterTable>(
                 broadLayer,
                 BroadPhaseLayer::Count,
@@ -252,6 +311,12 @@ namespace Chicane
                 OBJECT_LAYER_COUNT
             );
 
+            for (const std::pair<ObjectLayer, ObjectLayer>& pair : temporaryPairs)
+            {
+                disableLayerPair(objectLayer, pair.first, pair.second);
+            }
+
+            contacts = std::make_unique<ContactRelay>();
             system.Init(
                 MAX_BODIES,
                 MAX_BODY_MUTEXES,
@@ -261,6 +326,7 @@ namespace Chicane
                 *objectVsBroadPhaseLayer,
                 objectLayer
             );
+            system.SetContactListener(contacts.get());
             system.SetGravity(Convert::toPhysicsPosition(gravity));
         }
 
@@ -500,12 +566,38 @@ namespace Chicane
             engine.m_implementation->applyGravity(inValue);
         }
 
+        void Engine::applyObjectLayerPair(ObjectLayer inA, ObjectLayer inB, bool bInCollide)
+        {
+            if (!m_implementation)
+            {
+                return;
+            }
+
+            if (bInCollide)
+            {
+                enableLayerPair(m_implementation->objectLayer, inA, inB);
+
+                return;
+            }
+
+            disableLayerPair(m_implementation->objectLayer, inA, inB);
+        }
+
         Engine::Engine()
             : m_implementation(std::make_unique<Implementation>())
-        {}
+        {
+            setObjectLayerPairCallback(
+                [this](ObjectLayer inA, ObjectLayer inB, bool bInCollide)
+                {
+                    applyObjectLayerPair(inA, inB, bInCollide);
+                }
+            );
+        }
 
         Engine::~Engine()
         {
+            setObjectLayerPairCallback({});
+
             if (!m_implementation)
             {
                 return;
@@ -543,6 +635,8 @@ namespace Chicane
 
         void Engine::Implementation::applyPendingWrites()
         {
+            CH_TRACER_SCOPE_NAMED("Physics Writes");
+
             const std::vector<PendingWrite> writes = pending.drain();
 
             JPH::BodyInterface& interface = bodies();
@@ -578,6 +672,8 @@ namespace Chicane
             {
                 return;
             }
+
+            CH_TRACER_SCOPE_NAMED("Physics");
 
             m_implementation->applyPendingWrites();
             m_implementation->accumulator += std::min(std::max(inDeltaTime, 0.0f), 0.25f);
@@ -616,12 +712,16 @@ namespace Chicane
                     interface.SetLinearVelocity(id, velocity);
                 }
 
-                m_implementation->system.Update(
-                    FIXED_STEP,
-                    COLLISION_STEPS,
-                    &m_implementation->tempAllocator,
-                    &m_implementation->threadPool
-                );
+                {
+                    CH_TRACER_SCOPE_NAMED("Physics Step");
+
+                    m_implementation->system.Update(
+                        FIXED_STEP,
+                        COLLISION_STEPS,
+                        &m_implementation->tempAllocator,
+                        &m_implementation->threadPool
+                    );
+                }
                 m_implementation->accumulator -= FIXED_STEP;
 
                 steps++;
@@ -661,6 +761,7 @@ namespace Chicane
             );
             settings.mAllowSleeping                = bIsStatic;
             settings.mAllowDynamicOrKinematic      = true;
+            settings.mCollideKinematicVsNonDynamic = inCreateInfo.motion == MotionType::Kinematic;
             settings.mGravityFactor                = inCreateInfo.gravityFactor;
             settings.mIsSensor                     = bSensor;
             settings.mOverrideMassProperties       = JPH::EOverrideMassProperties::CalculateInertia;
@@ -704,6 +805,69 @@ namespace Chicane
             m_implementation->ids.push_back(id);
 
             return toBody(id);
+        }
+
+        void Engine::setBodyOwner(Body inBody, void* inOwner)
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation)
+            {
+                return;
+            }
+
+            const std::uint32_t key = id.GetIndexAndSequenceNumber();
+            if (!inOwner)
+            {
+                m_implementation->owners.erase(key);
+
+                return;
+            }
+
+            m_implementation->owners[key] = inOwner;
+        }
+
+        void* Engine::getBodyOwner(Body inBody) const
+        {
+            const JPH::BodyID id = toId(inBody);
+            if (id.IsInvalid() || !m_implementation)
+            {
+                return nullptr;
+            }
+
+            const auto found = m_implementation->owners.find(id.GetIndexAndSequenceNumber());
+            if (found == m_implementation->owners.end())
+            {
+                return nullptr;
+            }
+
+            return found->second;
+        }
+
+        std::vector<BodyContact> Engine::drainBodyContacts()
+        {
+            std::vector<BodyContact> result;
+            if (!m_implementation || !m_implementation->contacts)
+            {
+                return result;
+            }
+
+            std::vector<ContactRecord> records;
+            {
+                const std::lock_guard<std::mutex> lock(m_implementation->contacts->mutex);
+                records.swap(m_implementation->contacts->pairs);
+            }
+
+            result.reserve(records.size());
+            for (const ContactRecord& record : records)
+            {
+                BodyContact contact;
+                contact.first  = Body(record.first);
+                contact.second = Body(record.second);
+
+                result.push_back(contact);
+            }
+
+            return result;
         }
 
         void Engine::activateBody(Body inBody)
@@ -756,6 +920,7 @@ namespace Chicane
             }
 
             interface.DestroyBody(id);
+            m_implementation->owners.erase(id.GetIndexAndSequenceNumber());
             m_implementation->horizontalWish.erase(id.GetIndexAndSequenceNumber());
             m_implementation->previousPosition.erase(id.GetIndexAndSequenceNumber());
 

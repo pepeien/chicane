@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 
 #include "Chicane/Renderer/Backend.hpp"
@@ -384,6 +385,8 @@ namespace Chicane
 
         void LSceneSky::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("Sky");
+
             RHI::Frame*  rhi    = static_cast<RHI::Frame*>(inData);
             LScene*      parent = m_backend->getLayer<LScene>(SCENE_LAYER_ID);
             RHI::Device* device = m_backend->getRHIDevice();

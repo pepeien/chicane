@@ -1,6 +1,9 @@
 #include "Chicane/Runtime/Scene/Trace/Shape/Cone.hpp"
 
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
+
+#include <memory>
 
 #include <algorithm>
 #include <cfloat>
@@ -56,5 +59,25 @@ namespace Chicane
             getRadiusAt(fraction, length),
             outEnter
         );
+    }
+
+    SceneTraceRequest SceneTraceRequest::sCone(float inAngle, float inCellSize, std::uint32_t inSegmentCount)
+    {
+        SceneTraceRequest request;
+        request.shape    = std::make_shared<SceneTraceShapeCone>(inAngle, 0.0f, inSegmentCount);
+        request.cellSize = std::max(inCellSize, FLT_EPSILON);
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sCone(
+        const Vec3& inOrigin, const Vec3& inDestination, float inAngle, float inCellSize, std::uint32_t inSegmentCount
+    )
+    {
+        SceneTraceRequest request = sCone(inAngle, inCellSize, inSegmentCount);
+        request.origin            = inOrigin;
+        request.destination       = inDestination;
+
+        return request;
     }
 }

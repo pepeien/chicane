@@ -230,7 +230,31 @@ namespace Chicane
 
     void Object::setOrigin(ObjectOrigin inOrigin)
     {
+        if (m_origin == inOrigin)
+        {
+            return;
+        }
+
+        const bool bWasNative = isNative();
+
         m_origin = inOrigin;
+
+        if (!m_scene)
+        {
+            return;
+        }
+
+        if (!bWasNative && isNative())
+        {
+            m_scene->forgetId(this);
+
+            return;
+        }
+
+        if (bWasNative && !isNative())
+        {
+            m_scene->rememberId(this);
+        }
     }
 
     bool Object::isAttached() const

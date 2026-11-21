@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Tracer.hpp"
 
 #include "Chicane/Drift/Clip.hpp"
 #include "Chicane/Drift/Engine.hpp"
@@ -119,6 +120,8 @@ namespace Chicane
             {
                 return;
             }
+
+            CH_TRACER_SCOPE_NAMED("Animation");
 
             for (auto& [target, queue] : engine().bindings)
             {

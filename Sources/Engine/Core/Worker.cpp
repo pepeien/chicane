@@ -1,3 +1,4 @@
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Worker.hpp"
 
 namespace Chicane
@@ -54,6 +55,8 @@ namespace Chicane
 
     void Worker::loop()
     {
+        Tracer::sSetThreadName("Worker");
+
         while (true)
         {
             Job job;
@@ -78,6 +81,7 @@ namespace Chicane
 
             try
             {
+                CH_TRACER_SCOPE_NAMED("Worker Job");
                 job();
             }
             catch (...)

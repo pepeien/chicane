@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Layer/Util.hpp"
 #include "Chicane/Renderer/Shader/Bindings.hpp"
@@ -72,6 +73,8 @@ namespace Chicane
 
         void LSceneParticle::onRender(const Frame& inFrame, void* inData)
         {
+            CH_TRACER_SCOPE_NAMED("Particles");
+
             RHI::Frame*  rhi    = static_cast<RHI::Frame*>(inData);
             RHI::Device* device = m_backend->getRHIDevice();
 

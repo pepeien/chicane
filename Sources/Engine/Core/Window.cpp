@@ -12,6 +12,7 @@
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Wheel/Event.hpp"
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -109,6 +110,8 @@ namespace Chicane
 
     bool Window::run()
     {
+        CH_TRACER_SCOPE_NAMED("Input");
+
         SDL_Event data;
 
         while (SDL_PollEvent(&data))

@@ -3,11 +3,15 @@
 #include <cstdint>
 #include <memory>
 
+#include "Chicane/Box/Mesh.hpp"
+
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Reflection.hpp"
+
+#include "Chicane/Kerb/Collision/Preset.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape.hpp"
@@ -15,11 +19,7 @@
 
 namespace Chicane
 {
-    namespace Box
-    {
-        class Mesh;
-    }
-
+    class Object;
     CH_TYPE(Type = (Manual), Alias = (TraceRequest))
     struct CHICANE_RUNTIME SceneTraceRequest
     {
@@ -178,6 +178,8 @@ namespace Chicane
         CH_FUNCTION()
         void setDestination(const Vec3& inValue) { destination = inValue; }
 
+        bool accepts(const Object* inObject) const;
+
     public:
         bool intersects(const Bounds3D& inBounds, float& outEnter) const;
 
@@ -193,6 +195,9 @@ namespace Chicane
 
         CH_FIELD()
         Vec3 destination = Vec3::sZero();
+
+        CH_FIELD()
+        Kerb::CollisionPreset preset = Kerb::CollisionPreset::Default;
 
     public:
         std::shared_ptr<SceneTraceShape> shape = std::make_shared<SceneTraceShapeLine>();

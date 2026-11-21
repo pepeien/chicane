@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
@@ -66,6 +67,8 @@ namespace Chicane
 
         void View::tick(float inDelta)
         {
+            CH_TRACER_SCOPE_NAMED("UI Layout");
+
             pumpEvents();
 
             Container::tick(inDelta);

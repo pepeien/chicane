@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Debug.hpp"
 #include "Chicane/Renderer/Resource.hpp"
 
@@ -73,6 +74,8 @@ namespace Chicane
                 return;
             }
 
+            CH_TRACER_SCOPE_NAMED("Renderer");
+
             syncDirtyResources();
 
             Frame& currentFrame = getCurrentFrame();
@@ -80,12 +83,16 @@ namespace Chicane
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_textureStreamer.tick(
-                currentFrame,
-                m_textureResources,
-                m_backend->getResourceBudget(Resource::Texture),
-                getResolution().y
-            );
+            {
+                CH_TRACER_SCOPE_NAMED("Texture Stream");
+
+                m_textureStreamer.tick(
+                    currentFrame,
+                    m_textureResources,
+                    m_backend->getResourceBudget(Resource::Texture),
+                    getResolution().y
+                );
+            }
 
             if (m_textureResources.isDirty())
             {
@@ -100,9 +107,13 @@ namespace Chicane
                 target.frame.setup(m_skyResource);
             }
 
-            m_backend->onBeginRender();
-            m_backend->onRender(currentFrame);
-            m_backend->onEndRender();
+            {
+                CH_TRACER_SCOPE_NAMED("Draw");
+
+                m_backend->onBeginRender();
+                m_backend->onRender(currentFrame);
+                m_backend->onEndRender();
+            }
 
             currentFrame.reset();
             for (InstanceViewTarget& target : m_viewTargets)
@@ -475,6 +486,8 @@ namespace Chicane
 
         void Instance::syncDirtyResources()
         {
+            CH_TRACER_SCOPE_NAMED("Sync Resources");
+
             for (auto& [type, resource] : m_polyResources)
             {
                 if (resource.isDirty())

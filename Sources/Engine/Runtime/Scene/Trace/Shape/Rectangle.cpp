@@ -1,6 +1,9 @@
 #include "Chicane/Runtime/Scene/Trace/Shape/Rectangle.hpp"
 
+#include "Chicane/Runtime/Scene/Trace/Request.hpp"
 #include "Chicane/Runtime/Scene/Trace/Shape/Utility.hpp"
+
+#include <memory>
 
 #include <algorithm>
 #include <cfloat>
@@ -57,5 +60,25 @@ namespace Chicane
         outEnter = fraction;
 
         return true;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sRectangle(const Vec2& inHalfExtents, float inCellSize)
+    {
+        SceneTraceRequest request;
+        request.shape    = std::make_shared<SceneTraceShapeRectangle>(inHalfExtents);
+        request.cellSize = std::max(inCellSize, FLT_EPSILON);
+
+        return request;
+    }
+
+    SceneTraceRequest SceneTraceRequest::sRectangle(
+        const Vec3& inOrigin, const Vec3& inDestination, const Vec2& inHalfExtents, float inCellSize
+    )
+    {
+        SceneTraceRequest request = sRectangle(inHalfExtents, inCellSize);
+        request.origin            = inOrigin;
+        request.destination       = inDestination;
+
+        return request;
     }
 }

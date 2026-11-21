@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "Chicane/Box.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Box/Effect.hpp"
 
 #include "Chicane/Smoke/Module.hpp"
@@ -33,6 +34,8 @@ namespace Chicane
 
         void Engine::tick(float inDeltaTime)
         {
+            CH_TRACER_SCOPE_NAMED("Effects");
+
             for (std::unique_ptr<System>& system : m_systems)
             {
                 if (system)

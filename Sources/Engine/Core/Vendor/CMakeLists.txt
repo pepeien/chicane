@@ -52,3 +52,18 @@ add_subdirectory(pugixml)
 
 # lua
 add_subdirectory(lua)
+
+# tracy
+if (CHICANE_TRACER)
+    if (CHICANE_SHARED)
+        set(TRACY_STATIC OFF CACHE BOOL "")
+    else()
+        set(TRACY_STATIC ON CACHE BOOL "")
+    endif()
+
+    set(TRACY_ENABLE         ON CACHE BOOL "")
+    set(TRACY_ON_DEMAND      ON CACHE BOOL "")
+    set(TRACY_ONLY_LOCALHOST ON CACHE BOOL "")
+
+    add_subdirectory(tracy EXCLUDE_FROM_ALL)
+endif()

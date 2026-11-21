@@ -289,21 +289,40 @@ void Character::onShoot()
     Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::sLine();
     request.origin                     = m_camera->getTranslation();
     request.destination                = request.origin + (m_camera->getForward() * m_camera->getFarClip());
+    request.preset                     = Chicane::Kerb::CollisionPreset::Custom_0;
 
     std::vector<Chicane::SceneTraceResponse> response;
-    if (!getScene()->traceMulti<Apple>(response, request, {this}))
+    if (!getScene()->traceMulti(response, request, {this}))
     {
         return;
     }
 
     for (const Chicane::SceneTraceResponse& hit : response)
     {
-        if (Apple* apple = static_cast<Apple*>(hit.object))
+        if (!hit.object || hit.object == this || hit.object->isDescendantOf(this))
+        {
+            continue;
+        }
+
+        Chicane::Object* current = hit.object;
+        while (current && !dynamic_cast<Chicane::Actor*>(current))
+        {
+            current = current->getParent();
+        }
+
+        if (!current || current == this || current->isDescendantOf(this))
+        {
+            continue;
+        }
+
+        if (Apple* apple = dynamic_cast<Apple*>(current))
         {
             apple->onHit(this);
 
             getScene()->removeActor(apple);
         }
+
+        return;
     }
 }
 

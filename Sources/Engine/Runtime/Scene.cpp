@@ -1,14 +1,15 @@
 #include "Chicane/Runtime/Scene.hpp"
 
-#include <future>
 #include <stdexcept>
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Reflection/Type/Registry.hpp"
 #include "Chicane/Core/Script/Channel.hpp"
 #include "Chicane/Core/Worker/Pool.hpp"
 
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Physics.hpp"
 #include "Chicane/Runtime/Scene/Script.hpp"
 #include "Chicane/Runtime/Track.hpp"
 
@@ -16,6 +17,8 @@ namespace Chicane
 {
     static void evaluateMeshPoses(Scene& inScene)
     {
+        CH_TRACER_SCOPE_NAMED("Mesh Poses");
+
         std::vector<CMesh*> meshes;
         for (CMesh* mesh : inScene.getComponents<CMesh>())
         {
@@ -55,31 +58,46 @@ namespace Chicane
         deleteActors();
     }
 
+    bool Scene::isLoaded() const
+    {
+        return m_bIsLoaded;
+    }
+
     void Scene::load()
     {
+        CH_TRACER_SCOPE_NAMED("Scene Load");
+
+        claim();
+
         onLoad();
 
-        for (auto& [type, actors] : m_actors)
+        const std::vector<Actor*> actors = getActors();
+        for (Actor* actor : actors)
         {
-            for (Actor* actor : actors)
+            if (actor)
             {
                 actor->onLoad();
             }
         }
 
-        for (auto& [type, components] : m_components)
+        const std::vector<Component*> components = getComponents();
+        for (Component* component : components)
         {
-            for (Component* component : components)
+            if (component)
             {
                 component->onLoad();
             }
         }
 
         m_bIsLoaded = true;
+
+        drainMutations();
     }
 
     void Scene::unload()
     {
+        CH_TRACER_SCOPE_NAMED("Scene Unload");
+
         m_bIsLoaded = false;
 
         for (auto& [type, components] : m_components)
@@ -105,6 +123,8 @@ namespace Chicane
 
     void Scene::tick(float inDeltaTime)
     {
+        CH_TRACER_SCOPE_NAMED("Scene");
+
         claim();
         drainMutations();
 
@@ -112,6 +132,7 @@ namespace Chicane
 
         if (m_sceneScript)
         {
+            CH_TRACER_SCOPE_NAMED("Scene Script");
             m_sceneScript->tick(inDeltaTime);
         }
 
@@ -155,6 +176,8 @@ namespace Chicane
 
     void Scene::drainMutations()
     {
+        CH_TRACER_SCOPE_NAMED("Mutations");
+
         std::vector<std::function<void()>> mutations = m_mutations.drain();
         for (std::function<void()>& mutation : mutations)
         {
@@ -164,6 +187,8 @@ namespace Chicane
 
     void Scene::open(const FileSystem::Path& inFilepath)
     {
+        CH_TRACER_SCOPE_NAMED("Scene Open");
+
         m_sceneScript.reset();
 
         Track::open(*this, inFilepath);
@@ -315,27 +340,7 @@ namespace Chicane
             return actor;
         };
 
-        if (WorkerPoolParallel::sIsWorker() || ownsObjects())
-        {
-            return adoptActor(construct());
-        }
-
-        std::promise<Actor*> promise;
-        WorkerPool::sDetach(
-            [&promise, construct]()
-            {
-                try
-                {
-                    promise.set_value(construct());
-                }
-                catch (...)
-                {
-                    promise.set_exception(std::current_exception());
-                }
-            }
-        );
-
-        return adoptActor(promise.get_future().get());
+        return adoptActor(construct());
     }
 
     Component* Scene::createComponentFromTag(const String& inTypeName)
@@ -360,27 +365,7 @@ namespace Chicane
             return component;
         };
 
-        if (WorkerPoolParallel::sIsWorker() || ownsObjects())
-        {
-            return adoptComponent(construct());
-        }
-
-        std::promise<Component*> promise;
-        WorkerPool::sDetach(
-            [&promise, construct]()
-            {
-                try
-                {
-                    promise.set_value(construct());
-                }
-                catch (...)
-                {
-                    promise.set_exception(std::current_exception());
-                }
-            }
-        );
-
-        return adoptComponent(promise.get_future().get());
+        return adoptComponent(construct());
     }
 
     Actor* Scene::adoptActor(Actor* inActor)
@@ -471,23 +456,7 @@ namespace Chicane
 
     Actor* Scene::getActor(const String& inId) const
     {
-        if (inId.isEmpty())
-        {
-            return nullptr;
-        }
-
-        for (const auto& [type, actors] : m_actors)
-        {
-            for (Actor* actor : actors)
-            {
-                if (actor && !actor->isNative() && actor->getId().equals(inId))
-                {
-                    return actor;
-                }
-            }
-        }
-
-        return nullptr;
+        return dynamic_cast<Actor*>(getObject(inId));
     }
 
     bool Scene::hasActor(const String& inId) const
@@ -527,6 +496,7 @@ namespace Chicane
             return;
         }
 
+        forgetId(inActor);
         typed->second.erase(found);
         m_actorCount--;
 
@@ -570,23 +540,7 @@ namespace Chicane
 
     Component* Scene::getComponent(const String& inId) const
     {
-        if (inId.isEmpty())
-        {
-            return nullptr;
-        }
-
-        for (const auto& [type, components] : m_components)
-        {
-            for (Component* component : components)
-            {
-                if (component && !component->isNative() && component->getId().equals(inId))
-                {
-                    return component;
-                }
-            }
-        }
-
-        return nullptr;
+        return dynamic_cast<Component*>(getObject(inId));
     }
 
     void Scene::removeComponent(Component* inComponent)
@@ -621,6 +575,7 @@ namespace Chicane
             return;
         }
 
+        forgetId(inComponent);
         typed->second.erase(found);
         m_componentCount--;
 
@@ -651,12 +606,18 @@ namespace Chicane
 
     Object* Scene::getObject(const String& inId) const
     {
-        if (Actor* actor = getActor(inId))
+        if (inId.isEmpty())
         {
-            return actor;
+            return nullptr;
         }
 
-        return getComponent(inId);
+        const auto found = m_ids.find(inId);
+        if (found == m_ids.end() || !found->second || found->second->isNative())
+        {
+            return nullptr;
+        }
+
+        return found->second;
     }
 
     void Scene::assignUniqueId(Object* inObject, const String& inFallback)
@@ -673,6 +634,7 @@ namespace Chicane
         }
 
         inObject->m_id = makeUniqueId(typeName);
+        rememberId(inObject);
     }
 
     void Scene::attachObject(Object* inObject, const String& inFallback)
@@ -688,7 +650,11 @@ namespace Chicane
         if (inObject->m_id.isEmpty())
         {
             assignUniqueId(inObject, inFallback);
+
+            return;
         }
+
+        rememberId(inObject);
     }
 
     void Scene::ensureUniqueId(const String& inId, const Object* inIgnored) const
@@ -714,36 +680,56 @@ namespace Chicane
 
         ensureUniqueId(inId, inObject);
 
+        forgetId(inObject);
         inObject->m_id = inId;
+        rememberId(inObject);
     }
 
-    String Scene::makeUniqueId(const String& inBase) const
+    String Scene::makeUniqueId(const String& inBase)
     {
-        if (!hasObject(inBase))
+        const auto    serial = m_idSerial.find(inBase);
+        std::uint32_t index  = serial == m_idSerial.end() ? 1 : serial->second;
+        String        candidate = index <= 1 ? inBase : String::sSprint("%s%u", inBase.toChar(), index);
+
+        while (hasObject(candidate))
         {
-            return inBase;
+            index++;
+            candidate = String::sSprint("%s%u", inBase.toChar(), index);
         }
 
-        std::size_t index = 2;
-        String      candidate;
-
-        do
-        {
-            candidate = String::sSprint("%s%d", inBase.toChar(), index);
-
-            index++;
-        } while (hasObject(candidate));
+        m_idSerial[inBase] = index + 1;
 
         return candidate;
     }
 
-    bool Scene::isLoaded() const
+    void Scene::rememberId(Object* inObject)
     {
-        return m_bIsLoaded;
+        if (!inObject || inObject->m_id.isEmpty() || inObject->isNative())
+        {
+            return;
+        }
+
+        m_ids[inObject->m_id] = inObject;
+    }
+
+    void Scene::forgetId(const Object* inObject)
+    {
+        if (!inObject || inObject->m_id.isEmpty())
+        {
+            return;
+        }
+
+        const auto found = m_ids.find(inObject->m_id);
+        if (found != m_ids.end() && found->second == inObject)
+        {
+            m_ids.erase(found);
+        }
     }
 
     void Scene::tickActors(float inDeltaTime)
     {
+        CH_TRACER_SCOPE_NAMED("Actors");
+
         std::vector<Actor*> actors;
         actors.reserve(m_actorCount);
 
@@ -770,6 +756,7 @@ namespace Chicane
         {
             for (Actor* actor : actors)
             {
+                forgetId(actor);
                 delete actor;
                 actor = nullptr;
             }
@@ -781,6 +768,10 @@ namespace Chicane
 
     void Scene::tickComponents(float inDeltaTime)
     {
+        CH_TRACER_SCOPE_NAMED("Components");
+
+        CPhysics::dispatchContacts();
+
         std::vector<Component*> components;
         components.reserve(m_componentCount);
 
@@ -807,6 +798,7 @@ namespace Chicane
         {
             for (Component* component : components)
             {
+                forgetId(component);
                 delete component;
                 component = nullptr;
             }
@@ -818,6 +810,8 @@ namespace Chicane
 
     void Scene::flushSpatial()
     {
+        CH_TRACER_SCOPE_NAMED("Spatial");
+
         for (auto& [type, actors] : m_actors)
         {
             for (Actor* actor : actors)
@@ -855,11 +849,11 @@ namespace Chicane
             return;
         }
 
-        std::vector<std::uint64_t> keys;
-        collectCellKeys(inObject, keys);
+        m_cellKeys.clear();
+        collectCellKeys(inObject, m_cellKeys);
 
         auto found = m_objectCells.find(inObject);
-        if (found != m_objectCells.end() && found->second == keys)
+        if (found != m_objectCells.end() && found->second == m_cellKeys)
         {
             return;
         }
@@ -873,12 +867,12 @@ namespace Chicane
                 eraseFromCell(inObject, key);
             }
 
-            found->second = keys;
+            found->second = m_cellKeys;
         }
 
         if (!bFoundEnd)
         {
-            found = m_objectCells.emplace(inObject, keys).first;
+            found = m_objectCells.emplace(inObject, m_cellKeys).first;
         }
 
         for (std::uint64_t key : found->second)

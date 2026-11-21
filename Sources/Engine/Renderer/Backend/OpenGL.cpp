@@ -11,6 +11,7 @@
 #include <SDL3/SDL_opengl.h>
 
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Renderer/Instance.hpp"
@@ -228,10 +229,15 @@ namespace Chicane
 
         void OpenGLBackend::onRender(const Frame& inFrame)
         {
+            CH_TRACER_SCOPE_NAMED("OpenGL");
+
             m_currentFrameIndex = (m_currentFrameIndex + 1) % frames.size();
             prepareViewTargets();
             fillRhiFrame(inFrame);
-            renderViewTargets(m_rhiFrame, false);
+            {
+                CH_TRACER_SCOPE_NAMED("View Targets");
+                renderViewTargets(m_rhiFrame, false);
+            }
             renderLayers(
                 inFrame,
                 &m_rhiFrame,
@@ -252,6 +258,8 @@ namespace Chicane
 
         void OpenGLBackend::onEndRender()
         {
+            CH_TRACER_SCOPE_NAMED("Swap");
+
             endGpuQuery();
 
             SDL_Window* window = static_cast<SDL_Window*>(getRenderer()->getWindow()->getInstance());

@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "Chicane/Core/Tracer.hpp"
 #include "Chicane/Renderer/Instance.hpp"
 #include "Backend/Vulkan/CommandBuffer.hpp"
 #include "Backend/Vulkan/CommandBuffer/Pool.hpp"
@@ -142,6 +143,8 @@ namespace Chicane
                 return;
             }
 
+            CH_TRACER_SCOPE_NAMED("Vulkan");
+
             VulkanFrame& nextFrame = frames.at(m_currentFrameIndex);
             nextFrame.wait();
             resolveGpuTimestamp(m_currentFrameIndex);
@@ -175,7 +178,10 @@ namespace Chicane
                 writeGpuTimestampStart(nextFrame.commandBuffer, m_currentFrameIndex);
 
                 fillRhiFrame(nextFrame, nextImage);
-                renderViewTargets(m_rhiFrame, true);
+                {
+                    CH_TRACER_SCOPE_NAMED("View Targets");
+                    renderViewTargets(m_rhiFrame, true);
+                }
                 renderLayers(
                     inFrame,
                     &m_rhiFrame,
@@ -183,6 +189,7 @@ namespace Chicane
                 );
                 if (!isScreenComposited(inFrame))
                 {
+                    CH_TRACER_SCOPE_NAMED("Bloom");
                     bloom.apply(
                         m_rhiFrame.commands,
                         m_rhiFrame.sceneColor,

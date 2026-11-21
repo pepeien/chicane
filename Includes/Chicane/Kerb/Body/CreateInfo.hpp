@@ -41,7 +41,10 @@ namespace Chicane
             ObjectLayer layer = ObjectLayer::Auto;
 
             CH_FIELD()
-            CollisionPreset preset = CollisionPreset::Custom;
+            CollisionPreset preset = CollisionPreset::Default;
+
+            CH_FIELD()
+            bool bUsePreset = true;
 
             CH_FIELD()
             bool bIsSensor = false;
