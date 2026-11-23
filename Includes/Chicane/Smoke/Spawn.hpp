@@ -1,3 +1,10 @@
+// .bvfx
+// <Asset version="1" id="Fire">
+//     <System name="Flame" duration="0.2">
+//         <Spawn shape="Cone" anchor="Origin" burst="8" rate="0" lifetime="0.1,0.2" speed="4,10" size="0.1" sizeEnd="0.02" spread="8" color="1,0.4,0.05,1" colorEnd="1,0.1,0,0" blend="Additive"/>
+//     </System>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
@@ -28,11 +35,11 @@ namespace Chicane
             static constexpr inline const char* LIFETIME_ATTRIBUTE_NAME  = "lifetime";
             static constexpr inline const char* SPEED_ATTRIBUTE_NAME     = "speed";
             static constexpr inline const char* SIZE_ATTRIBUTE_NAME      = "size";
-            static constexpr inline const char* SIZE_END_ATTRIBUTE_NAME  = "sizeEnd";
+            static constexpr inline const char* SIZE_END_ATTRIBUTE_NAME  = "size-end";
             static constexpr inline const char* SPREAD_ATTRIBUTE_NAME    = "spread";
             static constexpr inline const char* RADIUS_ATTRIBUTE_NAME    = "radius";
             static constexpr inline const char* COLOR_ATTRIBUTE_NAME     = "color";
-            static constexpr inline const char* COLOR_END_ATTRIBUTE_NAME = "colorEnd";
+            static constexpr inline const char* COLOR_END_ATTRIBUTE_NAME = "color-end";
             static constexpr inline const char* BLEND_ATTRIBUTE_NAME     = "blend";
 
             // Values

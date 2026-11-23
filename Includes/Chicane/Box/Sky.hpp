@@ -1,6 +1,12 @@
-#pragma once
+// .bsky
+// <Asset version="1" id="Day" kind="Cube">
+//     <Textures>
+//         <Texture source="Assets/Engine/Textures/Color/Black.btex">Color_Black</Texture>
+//     </Textures>
+//     <Model source="Assets/Engine/Models/Sky/Box.bmdl">Body</Model>
+// </Asset>
 
-#include <map>
+#pragma once
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"

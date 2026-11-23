@@ -1,3 +1,10 @@
+// .bvfx
+// <Asset version="1" id="Fire">
+//     <System name="Bolt" duration="0.1">
+//         <Renderer::Beam width="0.2" blend="Additive" color="1,0.5,0.1,1"/>
+//     </System>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Core/Reflection.hpp"

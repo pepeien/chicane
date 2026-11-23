@@ -1,3 +1,13 @@
+// .bani
+// <Asset version="1" id="Walk">
+//     <Skeleton source="Assets/Character.bskl">Character</Skeleton>
+//     <Clip duration="1" loop="Repeat">
+//         <Track name="Hips">
+//             <Keyframe time="0" translation="0,0,0" rotation="0,0,0" scale="1,1,1"/>
+//         </Track>
+//     </Clip>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"

@@ -1,3 +1,8 @@
+// .bfon
+// <Asset version="1" id="Lexend" vendor="TTF">
+//     <Value>base64</Value>
+// </Asset>
+
 #pragma once
 
 #include <unordered_map>

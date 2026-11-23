@@ -1,3 +1,8 @@
+// .bsnd
+// <Asset version="1" id="Hit">
+//     <Value>base64</Value>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"

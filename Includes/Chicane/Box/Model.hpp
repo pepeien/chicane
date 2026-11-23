@@ -1,3 +1,8 @@
+// .bmdl
+// <Asset version="1" id="Cube" vendor="OBJ">
+//     <Value>base64</Value>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"

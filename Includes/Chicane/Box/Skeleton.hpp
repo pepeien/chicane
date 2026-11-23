@@ -1,3 +1,10 @@
+// .bskl
+// <Asset version="1" id="Character">
+//     <Bone id="Hips" translation="0,0,1" rotation="0,0,0" scale="1,1,1">
+//         <Bone id="Spine"/>
+//     </Bone>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"

@@ -1,3 +1,11 @@
+// .bvfx
+// <Asset version="1" id="Fire">
+//     <System name="Embers" duration="0.3">
+//         <Spawn shape="Point" burst="8" speed="1"/>
+//         <Force::Gravity value="0,0,6"/>
+//     </System>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Core/Math/Vec/Vec3.hpp"

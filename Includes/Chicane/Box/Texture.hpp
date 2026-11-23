@@ -1,3 +1,8 @@
+// .btex
+// <Asset version="2" id="Gray" vendor="PNG" width="1" height="1">
+//     <Value>base64</Value>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"

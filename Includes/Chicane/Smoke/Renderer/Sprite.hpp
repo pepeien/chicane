@@ -1,3 +1,11 @@
+// .bvfx
+// <Asset version="1" id="Fire">
+//     <System name="Flame" duration="0.2">
+//         <Spawn shape="Point" burst="8"/>
+//         <Renderer::Sprite blend="Additive"/>
+//     </System>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Core/Reflection.hpp"

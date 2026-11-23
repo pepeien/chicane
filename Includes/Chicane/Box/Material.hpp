@@ -1,3 +1,8 @@
+// .bmat
+// <Asset version="1" id="Apple">
+//     <Albedo source="Assets/Engine/Textures/Color/Gray.btex">Color_Gray</Albedo>
+// </Asset>
+
 #pragma once
 
 #include <map>

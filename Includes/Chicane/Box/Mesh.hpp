@@ -1,3 +1,11 @@
+// .bmsh
+// <Asset version="1" id="Wand">
+//     <Group id="Body">
+//         <Model source="Assets/Engine/Models/Shape/Cube.bmdl">Body</Model>
+//         <Material source="Assets/Engine/Materials/Color/Gray.bmat">Color_Gray</Material>
+//     </Group>
+// </Asset>
+
 #pragma once
 
 #include "Chicane/Box.hpp"
