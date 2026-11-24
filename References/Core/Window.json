@@ -1370,6 +1370,73 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_EMMITERROR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeMouse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bCapture"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_SETRELATIVEMOUSE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "applyRelativeMouse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bCapture"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_APPLYRELATIVEMOUSE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "drainWorker",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_DRAINWORKER_DESCRIPTION"
             }
         ],
         "members": [
@@ -1556,6 +1623,35 @@
                 },
                 "name": "m_cursors",
                 "description": "CHICANE_WINDOW_M_CURSORS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mailbox",
+                    "suffix": "",
+                    "path": "Core/Mailbox",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void()",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "name": "m_worker",
+                "description": "CHICANE_WINDOW_M_WORKER_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -2172,6 +2172,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "consumeCommandsDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_CONSUMECOMMANDSDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -4796,6 +4811,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "publishPaintDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_PUBLISHPAINTDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sealPaintDirty",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SEALPAINTDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "loadScript",
                 "parameters": [
                     {
@@ -5128,6 +5173,32 @@
                 },
                 "name": "m_flags",
                 "description": "CHICANE_GRID_COMPONENT_M_FLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bDescendantPaintDirty",
+                "description": "CHICANE_GRID_COMPONENT_M_BDESCENDANTPAINTDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bCommandsDirty",
+                "description": "CHICANE_GRID_COMPONENT_M_BCOMMANDSDIRTY_DESCRIPTION"
             },
             {
                 "accessor": "protected",
