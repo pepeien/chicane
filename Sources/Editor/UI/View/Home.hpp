@@ -140,6 +140,8 @@ namespace Editor
         Chicane::Object*                      m_editingOutlinerItem;
         Chicane::String                       m_outlinerEditId;
         std::atomic<bool>                     m_bOutlinerDirty;
+        std::uint64_t                         m_actorOutlinerSignature;
+        std::uint64_t                         m_componentOutlinerSignature;
         std::shared_ptr<bool>                 m_bIsListening;
         Chicane::Controller::PawnSubscription m_pawnSubscription;
     };

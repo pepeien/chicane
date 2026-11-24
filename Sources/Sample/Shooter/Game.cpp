@@ -24,6 +24,11 @@ namespace Game
             if (Game::didReachMaxScore())
             {
                 scene->send("victory", "");
+
+                if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
+                {
+                    window->blur();
+                }
             }
         }
     }
@@ -59,9 +64,21 @@ namespace Game
         postScoreEvents();
     }
 
-    void watchScore(std::function<void(std::uint32_t)> inNext)
+    void reset()
     {
-        m_scoreObservable.subscribe(inNext);
+        m_score = 0;
+
+        postScoreEvents();
+
+        if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
+        {
+            window->focus();
+        }
+    }
+
+    Chicane::EventSubscription<std::uint32_t> watchScore(std::function<void(std::uint32_t)> inNext)
+    {
+        return m_scoreObservable.subscribe(inNext);
     }
 
     std::uint32_t getMaxScore()

@@ -177,13 +177,6 @@ namespace Chicane
         void Text::refresh()
         {
             Component::refresh();
-
-            if (style.isDisplay(StyleDisplay::None))
-            {
-                return;
-            }
-
-            syncGlyphs();
         }
 
         void Text::refreshPeripherals()
@@ -201,15 +194,24 @@ namespace Chicane
             }
 
             const bool bIsTextDirty = hasFlag(ComponentDirty::Text);
+            const bool bLaidOut     = hasFlag(ComponentDirty::LaidOut);
 
-            if (!isReference(m_text) && !hasFlag(ComponentDirty::LaidOut) && !bIsTextDirty &&
-                !m_layoutSignature.isEmpty())
+            if (!bLaidOut && !bIsTextDirty && !m_layoutSignature.isEmpty())
             {
-                return;
+                if (!isReference(m_text))
+                {
+                    return;
+                }
+
+                if (parseText(m_text).equals(m_parsedText))
+                {
+                    return;
+                }
             }
 
             refreshFont();
             refreshText();
+            syncGlyphs();
         }
 
         const String& Text::getText() const

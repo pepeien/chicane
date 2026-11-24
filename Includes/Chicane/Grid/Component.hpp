@@ -264,6 +264,8 @@ namespace Chicane
             void markPaintDirty();
             void markPaintDirtySubtree();
 
+            bool consumeCommandsDirty();
+
             void paint(const ComponentPaintContext& inContext);
             Component* getHitAt(const Vec2& inLocation) const;
             bool containsPoint(const Vec2& inLocation) const;
@@ -435,6 +437,8 @@ namespace Chicane
             // Status
             ComponentStatus                  m_status;
             ComponentDirty                   m_flags;
+            bool                             m_bDescendantPaintDirty;
+            bool                             m_bCommandsDirty;
 
             // Hash
             String                           m_live;
@@ -485,6 +489,8 @@ namespace Chicane
             std::unique_ptr<ComponentScript> m_script;
 
         private:
+            void publishPaintDirty();
+            void sealPaintDirty();
             void loadScript(const FileSystem::Path& inTemplate);
         };
     }

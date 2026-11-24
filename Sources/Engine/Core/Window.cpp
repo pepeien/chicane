@@ -37,6 +37,7 @@ namespace Chicane
           m_moveHitTest(nullptr),
           m_cursor(WindowCursor::Default),
           m_cursors({}),
+          m_worker({}),
           m_eventObservable({}),
           m_sizeObservable({}),
           m_backendObservable({})
@@ -111,6 +112,8 @@ namespace Chicane
     bool Window::run()
     {
         CH_TRACER_SCOPE_NAMED("Input");
+
+        drainWorker();
 
         SDL_Event data;
 
@@ -248,6 +251,8 @@ namespace Chicane
 
             m_eventObservable.next(event);
         }
+
+        drainWorker();
 
         return true;
     }
@@ -608,19 +613,7 @@ namespace Chicane
 
     void Window::focus()
     {
-        if (!hasInstance())
-        {
-            return;
-        }
-
-        if (!SDL_SetWindowRelativeMouseMode(static_cast<SDL_Window*>(m_instance), true))
-        {
-            emmitWarning("Failed to focus the window");
-
-            return;
-        }
-
-        m_bIsFocused = true;
+        setRelativeMouse(true);
     }
 
     void Window::switchFocus()
@@ -645,19 +638,48 @@ namespace Chicane
 
     void Window::blur()
     {
+        setRelativeMouse(false);
+    }
+
+    void Window::setRelativeMouse(bool bInCapture)
+    {
         if (!hasInstance())
         {
             return;
         }
 
-        if (!SDL_SetWindowRelativeMouseMode(static_cast<SDL_Window*>(m_instance), false))
-        {
-            emmitWarning("Failed to blur the window");
+        m_worker.push([this, bInCapture]() { applyRelativeMouse(bInCapture); });
+    }
 
+    void Window::applyRelativeMouse(bool bInCapture)
+    {
+        if (!hasInstance())
+        {
             return;
         }
 
-        m_bIsFocused = false;
+        SDL_Window* const window = static_cast<SDL_Window*>(m_instance);
+        if (!SDL_SetWindowRelativeMouseMode(window, bInCapture))
+        {
+            emmitWarning(bInCapture ? "Failed to focus the window" : "Failed to blur the window");
+        }
+
+        if (!bInCapture)
+        {
+            SDL_SetWindowMouseGrab(window, false);
+            SDL_CaptureMouse(false);
+            SDL_ShowCursor();
+        }
+
+        m_bIsFocused = bInCapture && SDL_GetWindowRelativeMouseMode(window);
+    }
+
+    void Window::drainWorker()
+    {
+        for (const std::function<void()>& job : m_worker.drain())
+        {
+            job();
+        }
     }
 
     bool Window::isTextInputActive() const

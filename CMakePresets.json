@@ -2,97 +2,257 @@
     "version": 3,
     "configurePresets": [
         {
+            "name": "common",
+            "hidden": true,
+            "cacheVariables": {
+                "CHICANE_OPENGL_MAJOR_VERSION": "4",
+                "CHICANE_OPENGL_MINOR_VERSION": "6",
+
+                "CHICANE_VULKAN_MAJOR_VERSION": "1",
+                "CHICANE_VULKAN_MINOR_VERSION": "3",
+                "CHICANE_VULKAN_PATCH_VERSION": "296"
+            }
+        },
+
+        {
             "name": "debug",
-            "displayName": "Debug",
-            "description": "Building directly on your host machine",
+            "displayName": "Debug (Ninja)",
+            "description": "Single-config Ninja build",
+            "inherits": "common",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-
-                "CHICANE_BUILD_DIR": "Binaries/Debug",
-
-                "CHICANE_OPENGL_MAJOR_VERSION": "4",
-                "CHICANE_OPENGL_MINOR_VERSION": "6",
-
-                "CHICANE_VULKAN_MAJOR_VERSION": "1",
-                "CHICANE_VULKAN_MINOR_VERSION": "3",
-                "CHICANE_VULKAN_PATCH_VERSION": "296"
+                "CHICANE_BUILD_DIR": "Binaries/Debug"
             }
         },
         {
+            "name": "debug-vs",
+            "displayName": "Debug (Visual Studio)",
+            "description": "Visual Studio 2026 x64 project",
+            "inherits": "common",
+            "generator": "Visual Studio 18 2026",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/build-debug-vs",
+            "cacheVariables": {
+                "CHICANE_BUILD_DIR": "Binaries/Debug"
+            }
+        },
+        {
+            "name": "debug-gcc",
+            "displayName": "Debug (GCC)",
+            "description": "Ninja build with gcc and g++",
+            "inherits": "common",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-debug-gcc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CHICANE_BUILD_DIR": "Binaries/Debug"
+            }
+        },
+
+        {
             "name": "release",
-            "displayName": "Release",
-            "description": "Optimized build with debug symbols",
+            "displayName": "Release (Ninja)",
+            "description": "Single-config Ninja build",
+            "inherits": "common",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build-release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-
-                "CHICANE_BUILD_DIR": "Binaries/Release",
-
-                "CHICANE_OPENGL_MAJOR_VERSION": "4",
-                "CHICANE_OPENGL_MINOR_VERSION": "6",
-
-                "CHICANE_VULKAN_MAJOR_VERSION": "1",
-                "CHICANE_VULKAN_MINOR_VERSION": "3",
-                "CHICANE_VULKAN_PATCH_VERSION": "296"
+                "CHICANE_BUILD_DIR": "Binaries/Release"
             }
         },
         {
+            "name": "release-vs",
+            "displayName": "Release (Visual Studio)",
+            "description": "Visual Studio 2026 x64 project",
+            "inherits": "common",
+            "generator": "Visual Studio 18 2026",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/build-release-vs",
+            "cacheVariables": {
+                "CHICANE_BUILD_DIR": "Binaries/Release"
+            }
+        },
+        {
+            "name": "release-gcc",
+            "displayName": "Release (GCC)",
+            "description": "Ninja build with gcc and g++",
+            "inherits": "common",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-release-gcc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CHICANE_BUILD_DIR": "Binaries/Release"
+            }
+        },
+
+        {
             "name": "relwithdebinfo",
-            "displayName": "RelWithDebInfo",
-            "description": "Optimized build with debug symbols",
+            "displayName": "RelWithDebInfo (Ninja)",
+            "description": "Single-config Ninja build",
+            "inherits": "common",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build-relwithdebinfo",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-
-                "CHICANE_BUILD_DIR": "Binaries/RelWithDebInfo",
-
-                "CHICANE_OPENGL_MAJOR_VERSION": "4",
-                "CHICANE_OPENGL_MINOR_VERSION": "6",
-
-                "CHICANE_VULKAN_MAJOR_VERSION": "1",
-                "CHICANE_VULKAN_MINOR_VERSION": "3",
-                "CHICANE_VULKAN_PATCH_VERSION": "296"
+                "CHICANE_BUILD_DIR": "Binaries/RelWithDebInfo"
             }
         },
         {
+            "name": "relwithdebinfo-vs",
+            "displayName": "RelWithDebInfo (Visual Studio)",
+            "description": "Visual Studio 2026 x64 project",
+            "inherits": "common",
+            "generator": "Visual Studio 18 2026",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/build-relwithdebinfo-vs",
+            "cacheVariables": {
+                "CHICANE_BUILD_DIR": "Binaries/RelWithDebInfo"
+            }
+        },
+        {
+            "name": "relwithdebinfo-gcc",
+            "displayName": "RelWithDebInfo (GCC)",
+            "description": "Ninja build with gcc and g++",
+            "inherits": "common",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-relwithdebinfo-gcc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CHICANE_BUILD_DIR": "Binaries/RelWithDebInfo"
+            }
+        },
+
+        {
             "name": "minsizerel",
-            "displayName": "MinSizeRel",
-            "description": "Size-optimized release build",
+            "displayName": "MinSizeRel (Ninja)",
+            "description": "Single-config Ninja build",
+            "inherits": "common",
+            "generator": "Ninja",
             "binaryDir": "${sourceDir}/build-minsizerel",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "MinSizeRel",
-
-                "CHICANE_BUILD_DIR": "Binaries/MinSizeRel",
-
-                "CHICANE_OPENGL_MAJOR_VERSION": "4",
-                "CHICANE_OPENGL_MINOR_VERSION": "6",
-
-                "CHICANE_VULKAN_MAJOR_VERSION": "1",
-                "CHICANE_VULKAN_MINOR_VERSION": "3",
-                "CHICANE_VULKAN_PATCH_VERSION": "296"
+                "CHICANE_BUILD_DIR": "Binaries/MinSizeRel"
+            }
+        },
+        {
+            "name": "minsizerel-vs",
+            "displayName": "MinSizeRel (Visual Studio)",
+            "description": "Visual Studio 2026 x64 project",
+            "inherits": "common",
+            "generator": "Visual Studio 18 2026",
+            "architecture": {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/build-minsizerel-vs",
+            "cacheVariables": {
+                "CHICANE_BUILD_DIR": "Binaries/MinSizeRel"
+            }
+        },
+        {
+            "name": "minsizerel-gcc",
+            "displayName": "MinSizeRel (GCC)",
+            "description": "Ninja build with gcc and g++",
+            "inherits": "common",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build-minsizerel-gcc",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "MinSizeRel",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CHICANE_BUILD_DIR": "Binaries/MinSizeRel"
             }
         }
     ],
     "buildPresets": [
         {
             "name": "debug",
+            "displayName": "Debug (Ninja)",
             "configurePreset": "debug",
             "configuration": "Debug"
         },
         {
+            "name": "debug-vs",
+            "displayName": "Debug (Visual Studio)",
+            "configurePreset": "debug-vs",
+            "configuration": "Debug"
+        },
+        {
+            "name": "debug-gcc",
+            "displayName": "Debug (GCC)",
+            "configurePreset": "debug-gcc",
+            "configuration": "Debug"
+        },
+        {
             "name": "release",
+            "displayName": "Release (Ninja)",
             "configurePreset": "release",
             "configuration": "Release"
         },
         {
+            "name": "release-vs",
+            "displayName": "Release (Visual Studio)",
+            "configurePreset": "release-vs",
+            "configuration": "Release"
+        },
+        {
+            "name": "release-gcc",
+            "displayName": "Release (GCC)",
+            "configurePreset": "release-gcc",
+            "configuration": "Release"
+        },
+        {
             "name": "relwithdebinfo",
+            "displayName": "RelWithDebInfo (Ninja)",
             "configurePreset": "relwithdebinfo",
             "configuration": "RelWithDebInfo"
         },
         {
+            "name": "relwithdebinfo-vs",
+            "displayName": "RelWithDebInfo (Visual Studio)",
+            "configurePreset": "relwithdebinfo-vs",
+            "configuration": "RelWithDebInfo"
+        },
+        {
+            "name": "relwithdebinfo-gcc",
+            "displayName": "RelWithDebInfo (GCC)",
+            "configurePreset": "relwithdebinfo-gcc",
+            "configuration": "RelWithDebInfo"
+        },
+        {
             "name": "minsizerel",
+            "displayName": "MinSizeRel (Ninja)",
             "configurePreset": "minsizerel",
+            "configuration": "MinSizeRel"
+        },
+        {
+            "name": "minsizerel-vs",
+            "displayName": "MinSizeRel (Visual Studio)",
+            "configurePreset": "minsizerel-vs",
+            "configuration": "MinSizeRel"
+        },
+        {
+            "name": "minsizerel-gcc",
+            "displayName": "MinSizeRel (GCC)",
+            "configurePreset": "minsizerel-gcc",
             "configuration": "MinSizeRel"
         }
     ]

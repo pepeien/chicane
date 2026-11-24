@@ -15,6 +15,15 @@ Instance.onLoad(function()
     end)
 end)
 
+function onRestart()
+    local banner = Instance.find(".victory")
+    if banner then
+        banner.classList:remove("--shown")
+    end
+
+    Instance.send("restart", "")
+end
+
 function onFire()
     Instance.send("hud:fire", "")
 end

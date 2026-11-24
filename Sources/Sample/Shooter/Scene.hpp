@@ -16,6 +16,8 @@ public:
 public:
     void onLoad() override;
 
+    void restart();
+
 public:
     void activateLeftCamera();
     void activateCenterCamera();

@@ -26,14 +26,26 @@ void Scene::onLoad()
     Chicane::Kerb::defineCollisionPreset(
         Chicane::Kerb::CollisionPreset::Custom_0,
         false,
-        { Chicane::Kerb::ObjectLayer::NonMoving, Chicane::Kerb::ObjectLayer::Custom_0 }
+        {Chicane::Kerb::ObjectLayer::NonMoving, Chicane::Kerb::ObjectLayer::Custom_0}
     );
 
     Chicane::Kerb::Engine::sSetGravity(
         Chicane::Kerb::Gravity::sDown(Chicane::Kerb::Gravity::Earth * WORLD_GRAVITY_SCALE)
     );
 
+    subscribe("restart", [this](const Chicane::String&) { restart(); });
+
     open(DEFAULT_SCRIPT);
+
+    spawnApples();
+}
+
+void Scene::restart()
+{
+    Game::reset();
+
+    open(DEFAULT_SCRIPT);
+
     spawnApples();
 }
 

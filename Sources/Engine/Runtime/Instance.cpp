@@ -1677,6 +1677,30 @@ namespace Chicane
         }
     }
 
+    template <typename Visitor>
+    static bool visitPaint(Grid::Component* inNode, const Visitor& inVisit)
+    {
+        if (!inNode)
+        {
+            return false;
+        }
+
+        for (Grid::Component* child : inNode->getPaintChildren())
+        {
+            if (!child)
+            {
+                continue;
+            }
+
+            if (inVisit(child) || visitPaint(child, inVisit))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void Instance::snapshotScreenViewport(const std::shared_ptr<Grid::View>& inView)
     {
         Vec<2, std::uint32_t> size     = {0, 0};
@@ -1695,23 +1719,26 @@ namespace Chicane
 
             if (!viewport)
             {
-                for (Grid::Component* child : inView->getChildrenFlat())
-                {
-                    Grid::Viewport* candidate = dynamic_cast<Grid::Viewport*>(child);
-                    if (!candidate || !candidate->isDisplayable())
+                visitPaint(
+                    inView.get(),
+                    [&](Grid::Component* child)
                     {
-                        continue;
+                        Grid::Viewport* candidate = dynamic_cast<Grid::Viewport*>(child);
+                        if (!candidate || !candidate->isDisplayable())
+                        {
+                            return false;
+                        }
+
+                        if (!candidate->target.isEmpty() && !candidate->target.equals(Grid::Viewport::DEFAULT_TARGET))
+                        {
+                            return false;
+                        }
+
+                        viewport = candidate;
+
+                        return true;
                     }
-
-                    if (!candidate->target.isEmpty() && !candidate->target.equals(Grid::Viewport::DEFAULT_TARGET))
-                    {
-                        continue;
-                    }
-
-                    viewport = candidate;
-
-                    break;
-                }
+                );
             }
         }
 
@@ -1740,29 +1767,35 @@ namespace Chicane
         std::map<String, std::pair<std::uint32_t, std::uint32_t>> sizes;
         if (inView)
         {
-            for (Grid::Component* child : inView->getChildrenFlat())
-            {
-                Grid::Viewport* viewport = dynamic_cast<Grid::Viewport*>(child);
-                if (!viewport || !viewport->isDisplayable())
+            visitPaint(
+                inView.get(),
+                [&](Grid::Component* child)
                 {
-                    continue;
-                }
-
-                const String& target = viewport->target;
-                if (target.isEmpty() || target.equals(Renderer::SCREEN_TARGET_ID) || sizes.find(target) != sizes.end())
-                {
-                    continue;
-                }
-
-                const Bounds2D bounds = viewport->getDrawBounds();
-                sizes.emplace(
-                    target,
-                    std::pair<std::uint32_t, std::uint32_t>{
-                        static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.right - bounds.left))),
-                        static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.bottom - bounds.top)))
+                    Grid::Viewport* viewport = dynamic_cast<Grid::Viewport*>(child);
+                    if (!viewport || !viewport->isDisplayable())
+                    {
+                        return false;
                     }
-                );
-            }
+
+                    const String& target = viewport->target;
+                    if (target.isEmpty() || target.equals(Renderer::SCREEN_TARGET_ID) ||
+                        sizes.find(target) != sizes.end())
+                    {
+                        return false;
+                    }
+
+                    const Bounds2D bounds = viewport->getDrawBounds();
+                    sizes.emplace(
+                        target,
+                        std::pair<std::uint32_t, std::uint32_t>{
+                            static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.right - bounds.left))),
+                            static_cast<std::uint32_t>(std::max(0.0f, std::round(bounds.bottom - bounds.top)))
+                        }
+                    );
+
+                    return false;
+                }
+            );
         }
 
         const std::shared_ptr<const ViewTargetMap> current = std::atomic_load(&m_publishedViewTargets);
@@ -1787,7 +1820,7 @@ namespace Chicane
 
     void Instance::buildUICommands(std::shared_ptr<Grid::View> inView)
     {
-        if (!inView)
+        if (!inView || !inView->consumeCommandsDirty())
         {
             return;
         }

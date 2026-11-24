@@ -1,7 +1,7 @@
 <View path="home">
     <Container class="victory">
         <Text class="victory__prompt">Victory</Text>
-        <Button>
+        <Button onClick="{{ onRestart() }}">
             <Text>Restart</Text>
         </Button>
     </Container>

@@ -581,6 +581,7 @@ namespace Chicane
             }
 
             instance->setOrigin(ObjectOrigin::Instance);
+            applyAttributes(*instance, inNode);
 
             const bool bHasActor = static_cast<bool>(actor);
 
@@ -593,8 +594,6 @@ namespace Chicane
             {
                 inScene.adoptComponent(component);
             }
-
-            applyAttributes(*instance, inNode);
 
             if (inParent)
             {

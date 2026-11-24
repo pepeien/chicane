@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Mailbox.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
@@ -131,26 +132,33 @@ namespace Chicane
         void emmitWarning(const String& inMessage);
         void emmitError(const String& inMessage);
 
+        void setRelativeMouse(bool bCapture);
+        void applyRelativeMouse(bool bCapture);
+
+        void drainWorker();
+
     private:
-        void*                         m_instance;
+        void*                          m_instance;
 
-        WindowSettings                m_settings;
+        WindowSettings                 m_settings;
 
-        bool                          m_bIsFocused;
-        bool                          m_bIsResizable;
-        bool                          m_bIsMinimized;
-        bool                          m_bIsFillMaximized;
-        int                           m_restoreX;
-        int                           m_restoreY;
-        int                           m_restoreWidth;
-        int                           m_restoreHeight;
-        std::function<bool(int, int)> m_moveHitTest;
+        bool                           m_bIsFocused;
+        bool                           m_bIsResizable;
+        bool                           m_bIsMinimized;
+        bool                           m_bIsFillMaximized;
+        int                            m_restoreX;
+        int                            m_restoreY;
+        int                            m_restoreWidth;
+        int                            m_restoreHeight;
+        std::function<bool(int, int)>  m_moveHitTest;
 
-        WindowCursor                  m_cursor;
-        WindowCursors                 m_cursors;
+        WindowCursor                   m_cursor;
+        WindowCursors                  m_cursors;
 
-        WindowEventObservable         m_eventObservable;
-        WindowSizeObservable          m_sizeObservable;
-        WindowBackendObservable       m_backendObservable;
+        Mailbox<std::function<void()>> m_worker;
+
+        WindowEventObservable          m_eventObservable;
+        WindowSizeObservable           m_sizeObservable;
+        WindowBackendObservable        m_backendObservable;
     };
 }

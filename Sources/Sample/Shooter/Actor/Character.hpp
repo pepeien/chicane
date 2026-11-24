@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Chicane/Core/Event/Subscription.hpp>
 #include <Chicane/Core/Reflection.hpp>
 #include <Chicane/Runtime/Controller.hpp>
 #include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
@@ -16,6 +17,7 @@ public:
 public:
     CH_CONSTRUCTOR()
     Character();
+    ~Character() override;
 
 protected:
     void onLoad() override;
@@ -40,6 +42,8 @@ private:
     void onJump();
     void refreshMoveInput();
 
+    Chicane::CCamera* camera();
+
 private:
     bool  m_bIsMovingForward;
     bool  m_bIsMovingBackward;
@@ -50,4 +54,6 @@ private:
 
     Chicane::CCamera* m_camera;
     Chicane::CSound*  m_victorySound;
+
+    Chicane::EventSubscription<std::uint32_t> m_scoreWatch;
 };

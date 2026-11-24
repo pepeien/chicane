@@ -1,0 +1,57 @@
+<Asset version="1" id="WandFire">
+    <System name="Core" duration="0.1">
+        <Renderer::Beam width="0.08" blend="Additive" color="1,0.96,0.75,1"/>
+    </System>
+    <System name="Fire" duration="0.16">
+        <Renderer::Beam width="0.28" blend="Additive" color="1,0.42,0.07,0.9"/>
+    </System>
+    <System name="Muzzle" duration="0.04">
+        <Spawn
+            shape="Cone"
+            anchor="Origin"
+            burst="12"
+            lifetime="0.05,0.12"
+            speed="2,7"
+            size="0.06,0.14"
+            size-end="0.015,0.04"
+            spread="3,12"
+            color="1,0.96,0.75,1"
+            color-end="1,0.45,0.08,0"
+            blend="Additive"
+        />
+        <Renderer::Sprite blend="Additive"/>
+    </System>
+    <System name="Along" duration="0.04">
+        <Spawn
+            shape="Box"
+            anchor="Origin"
+            burst="48"
+            lifetime="0.1,0.22"
+            speed="0.15,1.2"
+            size="0.18,0.45"
+            size-end="0.03,0.1"
+            color="1,0.5,0.08,1"
+            color-end="0.7,0.06,0,0"
+            blend="Additive"
+        />
+        <Force::Gravity value="0,0,3"/>
+        <Renderer::Sprite blend="Additive"/>
+    </System>
+    <System name="Impact" duration="0.04">
+        <Spawn
+            shape="Sphere"
+            anchor="Impact"
+            burst="16"
+            lifetime="0.12,0.28"
+            speed="2,7"
+            size="1.2,2.8"
+            size-end="0.15,0.45"
+            radius="0.1,0.55"
+            color="1,0.72,0.18,1"
+            color-end="0.55,0.04,0,0"
+            blend="Additive"
+        />
+        <Force::Gravity value="0,0,8"/>
+        <Renderer::Sprite blend="Additive"/>
+    </System>
+</Asset>

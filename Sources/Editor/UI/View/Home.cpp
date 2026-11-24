@@ -234,6 +234,8 @@ namespace Editor
           m_editingOutlinerItem(nullptr),
           m_outlinerEditId(Chicane::String::sEmpty()),
           m_bOutlinerDirty(false),
+          m_actorOutlinerSignature(0),
+          m_componentOutlinerSignature(0),
           m_bIsListening(nullptr),
           m_pawnSubscription({})
     {
@@ -273,6 +275,25 @@ namespace Editor
         Chicane::Grid::View::onTick(inDeltaTime);
     }
 
+    template <typename T>
+    static std::uint64_t outlinerSignature(const std::vector<T*>& inObjects)
+    {
+        std::uint64_t hash = 14695981039346656037ull;
+
+        for (T* object : inObjects)
+        {
+            if (!object || object->isTransient())
+            {
+                continue;
+            }
+
+            hash ^= static_cast<std::uint64_t>(reinterpret_cast<std::uintptr_t>(object));
+            hash *= 1099511628211ull;
+        }
+
+        return hash;
+    }
+
     void HomeView::bindScene()
     {
         auto bind = [this](const std::shared_ptr<Scene>& scene)
@@ -282,8 +303,32 @@ namespace Editor
                 return;
             }
 
-            scene->watchActors([this](std::vector<Chicane::Actor*>) { requestOutlinerRebuild(); });
-            scene->watchComponents([this](std::vector<Chicane::Component*>) { requestOutlinerRebuild(); });
+            scene->watchActors(
+                [this](std::vector<Chicane::Actor*> inActors)
+                {
+                    const std::uint64_t signature = outlinerSignature(inActors);
+                    if (signature == m_actorOutlinerSignature)
+                    {
+                        return;
+                    }
+
+                    m_actorOutlinerSignature = signature;
+                    requestOutlinerRebuild();
+                }
+            );
+            scene->watchComponents(
+                [this](std::vector<Chicane::Component*> inComponents)
+                {
+                    const std::uint64_t signature = outlinerSignature(inComponents);
+                    if (signature == m_componentOutlinerSignature)
+                    {
+                        return;
+                    }
+
+                    m_componentOutlinerSignature = signature;
+                    requestOutlinerRebuild();
+                }
+            );
         };
 
         bind(Application::sInstance().getHomeScene());

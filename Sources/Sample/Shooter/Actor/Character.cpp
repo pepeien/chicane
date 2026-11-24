@@ -5,6 +5,7 @@
 #include <Chicane/Runtime/Instance.hpp>
 
 #include "Sample/Shooter/Actor/Apple.hpp"
+#include "Sample/Shooter/Component/Wand.hpp"
 #include "Sample/Shooter/Game.hpp"
 #include "Sample/Shooter/Scene.hpp"
 
@@ -22,21 +23,37 @@ Character::Character()
       m_padForward(0.0f),
       m_padRight(0.0f),
       m_camera(nullptr),
-      m_victorySound(nullptr)
+      m_victorySound(nullptr),
+      m_scoreWatch()
 {}
+
+Character::~Character()
+{
+    if (m_controller && m_controller->getPawn<Chicane::APawn>() == this)
+    {
+        m_controller->deattach();
+    }
+
+    m_scoreWatch.complete();
+}
 
 void Character::onLoad()
 {
     Chicane::ACharacter::onLoad();
 
     setMoveScale(MOVE_COEFFICIENT);
+    enablePhysics();
 
-    m_camera       = getScene()->getComponent<Chicane::CCamera>(CAMERA_ID);
     m_victorySound = getScene()->getComponent<Chicane::CSound>(VICTORY_SOUND_ID);
 
-    Game::watchScore(
-        [this](std::uint32_t inScore)
+    m_scoreWatch = Game::watchScore(
+        [this](std::uint32_t)
         {
+            if (!m_victorySound && getScene())
+            {
+                m_victorySound = getScene()->getComponent<Chicane::CSound>(VICTORY_SOUND_ID);
+            }
+
             if (m_victorySound && Game::didReachMaxScore())
             {
                 m_victorySound->play();
@@ -44,14 +61,15 @@ void Character::onLoad()
         }
     );
 
-    Chicane::Controller* controller = Chicane::Instance::sInstance().getController();
-    if (!controller || controller->isAttached())
+    if (Chicane::Controller* controller = Chicane::Instance::sInstance().getController())
     {
-        return;
+        controller->attachTo(this);
     }
 
-    enablePhysics();
-    controller->attachTo(this);
+    if (Chicane::Window* window = Chicane::Instance::sInstance().getWindow())
+    {
+        window->focus();
+    }
 }
 
 void Character::onInput()
@@ -69,11 +87,6 @@ void Character::onControlAttachment()
         Chicane::Input::MouseButton::Left,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onLeftClick, this)
-    );
-    m_controller->bindEvent(
-        Chicane::Input::MouseButton::Right,
-        Chicane::Input::Status::Released,
-        std::bind(&Character::onRightClick, this)
     );
 
     const auto bindMoveKey = [this](Chicane::Input::KeyboardButton inButton)
@@ -93,15 +106,20 @@ void Character::onControlAttachment()
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onJump, this)
     );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::Escape,
+        Chicane::Input::Status::Released,
+        std::bind(&Character::onRightClick, this)
+    );
 
     m_controller->bindEvent(
         Chicane::Input::KeyboardButton::F1,
         Chicane::Input::Status::Released,
         [this]()
         {
-            if (m_camera)
+            if (Chicane::CCamera* view = camera())
             {
-                m_camera->activate();
+                view->activate();
             }
 
             getScene<Scene>()->disableCameras();
@@ -114,9 +132,9 @@ void Character::onControlAttachment()
         {
             getScene<Scene>()->activateLeftCamera();
 
-            if (m_camera)
+            if (Chicane::CCamera* view = camera())
             {
-                m_camera->deactivate();
+                view->deactivate();
             }
         }
     );
@@ -127,9 +145,9 @@ void Character::onControlAttachment()
         {
             getScene<Scene>()->activateCenterCamera();
 
-            if (m_camera)
+            if (Chicane::CCamera* view = camera())
             {
-                m_camera->deactivate();
+                view->deactivate();
             }
         }
     );
@@ -218,8 +236,15 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
 
 void Character::onLeftClick()
 {
+    if (Game::didReachMaxScore())
+    {
+        return;
+    }
+
     if (!Chicane::Instance::sInstance().getWindow()->isFocused())
     {
+        Chicane::Instance::sInstance().getWindow()->focus();
+
         return;
     }
 
@@ -281,59 +306,80 @@ void Character::onShoot()
 {
     Chicane::Instance& application = Chicane::Instance::sInstance();
 
-    if (!application.getWindow()->isFocused() || !m_camera)
+    Chicane::CCamera* view = camera();
+    if (!application.getWindow()->isFocused() || !view)
     {
         return;
     }
+
+    const Chicane::Vec3 aim = view->getForward();
 
     Chicane::SceneTraceRequest request = Chicane::SceneTraceRequest::sLine();
-    request.origin                     = m_camera->getTranslation();
-    request.destination                = request.origin + (m_camera->getForward() * m_camera->getFarClip());
+    request.origin                     = view->getTranslation();
+    request.destination                = request.origin + (aim * view->getFarClip());
     request.preset                     = Chicane::Kerb::CollisionPreset::Custom_0;
 
+    Chicane::Vec3 impact = request.destination;
+
     std::vector<Chicane::SceneTraceResponse> response;
-    if (!getScene()->traceMulti(response, request, {this}))
+    if (getScene()->traceMulti(response, request, {this}))
     {
-        return;
+        for (const Chicane::SceneTraceResponse& hit : response)
+        {
+            if (!hit.object || hit.object == this || hit.object->isDescendantOf(this))
+            {
+                continue;
+            }
+
+            Chicane::Object* current = hit.object;
+            while (current && !dynamic_cast<Chicane::Actor*>(current))
+            {
+                current = current->getParent();
+            }
+
+            if (!current || current == this || current->isDescendantOf(this))
+            {
+                continue;
+            }
+
+            impact = hit.location;
+
+            if (Apple* apple = dynamic_cast<Apple*>(current))
+            {
+                apple->onHit(this);
+
+                getScene()->removeActor(apple);
+            }
+
+            break;
+        }
     }
 
-    for (const Chicane::SceneTraceResponse& hit : response)
+    if (Wand* wand = getScene()->getComponent<Wand>(Wand::ID))
     {
-        if (!hit.object || hit.object == this || hit.object->isDescendantOf(this))
-        {
-            continue;
-        }
-
-        Chicane::Object* current = hit.object;
-        while (current && !dynamic_cast<Chicane::Actor*>(current))
-        {
-            current = current->getParent();
-        }
-
-        if (!current || current == this || current->isDescendantOf(this))
-        {
-            continue;
-        }
-
-        if (Apple* apple = dynamic_cast<Apple*>(current))
-        {
-            apple->onHit(this);
-
-            getScene()->removeActor(apple);
-        }
-
-        return;
+        wand->playFire(aim, impact);
     }
+}
+
+Chicane::CCamera* Character::camera()
+{
+    if (!m_camera && getScene())
+    {
+        m_camera = getScene()->getComponent<Chicane::CCamera>(CAMERA_ID);
+    }
+
+    return m_camera;
 }
 
 void Character::onLook(float inX, float inY)
 {
-    if (!Chicane::Instance::sInstance().getWindow()->isFocused() || !m_camera)
+    Chicane::CCamera* view = camera();
+    if (!Chicane::Instance::sInstance().getWindow()->isFocused() || !view)
     {
         return;
     }
 
-    m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
+    view->addRelativeRotation(inY, 0.0f, 0.0f);
 
     addYaw(inX);
 }

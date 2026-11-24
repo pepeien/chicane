@@ -163,9 +163,16 @@ namespace Chicane
 
             const Component* parent      = getParent();
             const Style&     parentStyle = parent->getStyle();
+            const Vec2       next = parent->getPosition() + Vec2(parentStyle.insetLeft(), parentStyle.insetTop()) +
+                              m_relative;
+            const Vec2& current = getTranslation();
 
-            setPosition(parent->getPosition() + Vec2(parentStyle.insetLeft(), parentStyle.insetTop()) + m_relative);
+            if (current.x == next.x && current.y == next.y)
+            {
+                return;
+            }
 
+            setPosition(next);
             refreshBounds();
         }
     }

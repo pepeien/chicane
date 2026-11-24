@@ -6,7 +6,7 @@
     <Structure id="Ground" absoluteScale="500,500,2" />
     <Character id="Player" absoluteTranslation="0,-75,0">
         <CCamera id="First Person">
-            <CMesh
+            <Wand
                 id="Wand"
                 mesh="Assets/Sample/Shooter/Meshes/Character/Wand.bmsh"
                 relativeTranslation="0.15,0.4,-0.1"

@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <functional>
 
+#include <Chicane/Core/Event/Subscription.hpp>
+
 #include "Sample/Export.hpp"
 
 namespace Game
@@ -12,8 +14,9 @@ namespace Game
     std::uint32_t getScore();
     void incrementScore(std::uint32_t inScore);
     void decrementScore(std::uint32_t inScore);
+    void reset();
 
-    void watchScore(std::function<void(std::uint32_t)> inNext);
+    Chicane::EventSubscription<std::uint32_t> watchScore(std::function<void(std::uint32_t)> inNext);
 
     std::uint32_t getMaxScore();
     bool didReachMaxScore();
