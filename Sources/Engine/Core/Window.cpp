@@ -37,7 +37,6 @@ namespace Chicane
           m_moveHitTest(nullptr),
           m_cursor(WindowCursor::Default),
           m_cursors({}),
-          m_worker({}),
           m_eventObservable({}),
           m_sizeObservable({}),
           m_backendObservable({})
